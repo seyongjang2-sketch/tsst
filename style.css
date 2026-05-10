@@ -97,10 +97,33 @@ header h1 {
   letter-spacing: -1px;
 }
 
-header p {
+header .subtitle {
+  color: var(--text-main);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.intro-section {
+  background: rgba(74, 144, 226, 0.05);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  text-align: left;
+}
+
+[data-theme="dark"] .intro-section {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.intro-section p {
   color: var(--text-muted);
-  font-size: 1rem;
-  margin-bottom: 40px;
+  font-size: 0.95rem;
+}
+
+.intro-section strong {
+  color: var(--primary-color);
 }
 
 .numbers-container {
