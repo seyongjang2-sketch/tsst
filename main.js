@@ -1,7 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('numbers-container');
   const generateBtn = document.getElementById('generate-btn');
+  const themeBtn = document.getElementById('theme-btn');
+  const body = document.body;
 
+  // Theme Logic
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  body.setAttribute('data-theme', savedTheme);
+
+  themeBtn.addEventListener('click', () => {
+    const currentTheme = body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  });
+
+  // Lotto Logic
   function getRangeClass(num) {
     if (num <= 10) return 'range-1';
     if (num <= 20) return 'range-11';

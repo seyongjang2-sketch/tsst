@@ -4,13 +4,22 @@
   --card-bg: #ffffff;
   --text-main: #333333;
   --text-muted: #777777;
+  --shadow: rgba(0, 0, 0, 0.1);
   
   /* Lotto Ball Colors */
-  --ball-1: #fbc400; /* 1-10 */
-  --ball-11: #69c8f2; /* 11-20 */
-  --ball-21: #ff7272; /* 21-30 */
-  --ball-31: #aaaaaa; /* 31-40 */
-  --ball-41: #b0d840; /* 41-45 */
+  --ball-1: #fbc400;
+  --ball-11: #69c8f2;
+  --ball-21: #ff7272;
+  --ball-31: #aaaaaa;
+  --ball-41: #b0d840;
+}
+
+[data-theme="dark"] {
+  --bg-gradient: linear-gradient(135deg, #1a1c20 0%, #0f1013 100%);
+  --card-bg: #25282e;
+  --text-main: #f0f0f0;
+  --text-muted: #aaaaaa;
+  --shadow: rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -27,6 +36,7 @@ body {
   align-items: center;
   justify-content: center;
   color: var(--text-main);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .app-wrapper {
@@ -39,9 +49,44 @@ body {
   background: var(--card-bg);
   border-radius: 24px;
   padding: 40px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px var(--shadow);
   text-align: center;
+  position: relative;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
+
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+#theme-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+#theme-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] #theme-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.icon-sun, .icon-moon {
+  font-size: 1.4rem;
+}
+
+[data-theme="dark"] .icon-sun { display: none; }
+body:not([data-theme="dark"]) .icon-moon { display: none; }
 
 header h1 {
   font-family: 'Montserrat', sans-serif;
@@ -68,7 +113,8 @@ header p {
 }
 
 .placeholder {
-  color: #ddd;
+  color: var(--text-muted);
+  opacity: 0.5;
   font-size: 1.1rem;
   font-weight: 500;
 }
@@ -99,7 +145,6 @@ header p {
   }
 }
 
-/* Color Classes */
 .ball.range-1 { background: var(--ball-1); }
 .ball.range-11 { background: var(--ball-11); }
 .ball.range-21 { background: var(--ball-21); }
