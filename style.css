@@ -1,1 +1,148 @@
-/* Add styles here */
+:root {
+  --primary-color: #4a90e2;
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --card-bg: #ffffff;
+  --text-main: #333333;
+  --text-muted: #777777;
+  
+  /* Lotto Ball Colors */
+  --ball-1: #fbc400; /* 1-10 */
+  --ball-11: #69c8f2; /* 11-20 */
+  --ball-21: #ff7272; /* 21-30 */
+  --ball-31: #aaaaaa; /* 31-40 */
+  --ball-41: #b0d840; /* 41-45 */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', 'Montserrat', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-main);
+}
+
+.app-wrapper {
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+header h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  letter-spacing: -1px;
+}
+
+header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+.numbers-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  min-height: 60px;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.placeholder {
+  color: #ddd;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.ball {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: inset -4px -4px 8px rgba(0, 0, 0, 0.2), 
+              4px 4px 10px rgba(0, 0, 0, 0.1);
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  opacity: 0;
+  transform: scale(0.5);
+}
+
+@keyframes popIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Color Classes */
+.ball.range-1 { background: var(--ball-1); }
+.ball.range-11 { background: var(--ball-11); }
+.ball.range-21 { background: var(--ball-21); }
+.ball.range-31 { background: var(--ball-31); }
+.ball.range-41 { background: var(--ball-41); }
+
+.actions button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.actions button:hover {
+  background: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+.actions button:active {
+  transform: translateY(0);
+}
+
+.actions button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (max-width: 400px) {
+  .ball {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .numbers-container {
+    gap: 8px;
+  }
+}
