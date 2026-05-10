@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('numbers-container');
   const generateBtn = document.getElementById('generate-btn');
   const themeBtn = document.getElementById('theme-btn');
+  const gameCountSelect = document.getElementById('game-count');
   const body = document.body;
 
   // Theme Logic
@@ -36,25 +37,32 @@ document.addEventListener('DOMContentLoaded', () => {
       return Array.from(numbers).sort((a, b) => a - b);
     }
 
-    async function displayNumbers(numbers) {
+    async function displayNumbers(count) {
       container.innerHTML = '';
       generateBtn.disabled = true;
 
-      for (let i = 0; i < numbers.length; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 200));
-        
-        const ball = document.createElement('div');
-        ball.className = `ball ${getRangeClass(numbers[i])}`;
-        ball.textContent = numbers[i];
-        container.appendChild(ball);
+      for (let g = 0; g < count; g++) {
+        const row = document.createElement('div');
+        row.className = 'numbers-row';
+        container.appendChild(row);
+
+        const numbers = generateLottoNumbers();
+        for (let i = 0; i < numbers.length; i++) {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          
+          const ball = document.createElement('div');
+          ball.className = `ball ${getRangeClass(numbers[i])}`;
+          ball.textContent = numbers[i];
+          row.appendChild(ball);
+        }
       }
 
       generateBtn.disabled = false;
     }
 
     generateBtn.addEventListener('click', () => {
-      const numbers = generateLottoNumbers();
-      displayNumbers(numbers);
+      const count = parseInt(gameCountSelect.value) || 1;
+      displayNumbers(count);
     });
   }
 });

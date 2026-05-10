@@ -128,11 +128,47 @@ header .subtitle {
 
 .numbers-container {
   display: flex;
-  justify-content: center;
-  gap: 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   min-height: 60px;
   margin-bottom: 40px;
-  flex-wrap: wrap;
+}
+
+.numbers-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.game-selector {
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.game-selector label {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.game-selector select {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+}
+
+[data-theme="dark"] .game-selector select {
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .placeholder {
