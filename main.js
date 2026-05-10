@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('numbers-container');
   const generateBtn = document.getElementById('generate-btn');
+  const clearBtn = document.getElementById('clear-btn');
   const themeBtn = document.getElementById('theme-btn');
   const gameCountSelect = document.getElementById('game-count');
   const body = document.body;
@@ -40,11 +41,23 @@ document.addEventListener('DOMContentLoaded', () => {
     async function displayNumbers(count) {
       container.innerHTML = '';
       generateBtn.disabled = true;
+      if (clearBtn) clearBtn.disabled = true;
+
+      const alphabet = 'ABCDEFGHIJ';
 
       for (let g = 0; g < count; g++) {
+        const rowWrapper = document.createElement('div');
+        rowWrapper.className = 'game-row-wrapper';
+        
+        const label = document.createElement('div');
+        label.className = 'game-label';
+        label.textContent = `제 ${alphabet[g]} 게임`;
+        rowWrapper.appendChild(label);
+
         const row = document.createElement('div');
         row.className = 'numbers-row';
-        container.appendChild(row);
+        rowWrapper.appendChild(row);
+        container.appendChild(rowWrapper);
 
         const numbers = generateLottoNumbers();
         for (let i = 0; i < numbers.length; i++) {
@@ -58,11 +71,18 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       generateBtn.disabled = false;
+      if (clearBtn) clearBtn.disabled = false;
     }
 
     generateBtn.addEventListener('click', () => {
       const count = parseInt(gameCountSelect.value) || 1;
       displayNumbers(count);
     });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        container.innerHTML = '<div class="placeholder">번호 생성 버튼을 눌러주세요</div>';
+      });
+    }
   }
 });

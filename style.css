@@ -130,9 +130,10 @@ header .subtitle {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
   min-height: 60px;
   margin-bottom: 40px;
+  width: 100%;
 }
 
 .numbers-row {
@@ -210,7 +211,13 @@ header .subtitle {
 .ball.range-31 { background: var(--ball-31); }
 .ball.range-41 { background: var(--ball-41); }
 
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
 .actions button {
+  flex: 2;
   background: var(--primary-color);
   color: white;
   border: none;
@@ -220,8 +227,26 @@ header .subtitle {
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%;
   box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.actions button.secondary-btn {
+  flex: 1;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--text-muted);
+  box-shadow: none;
+}
+
+.actions button.secondary-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-main);
+  border-color: var(--text-main);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .actions button.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .actions button:hover {
@@ -238,6 +263,45 @@ header .subtitle {
   background: #ccc;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+.game-row-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(74, 144, 226, 0.03);
+  border: 1px solid rgba(74, 144, 226, 0.1);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+[data-theme="dark"] .game-row-wrapper {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.game-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  background: rgba(74, 144, 226, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+[data-theme="dark"] .game-label {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
 }
 
 /* Navbar Styles */
