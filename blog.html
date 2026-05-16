@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가족 일기장 - FamilySpace</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="auth.js"></script>
+  </head>
+  <body class="blog-page">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="dad.html">아빠</a></li>
+          <li><a href="mom.html">엄마</a></li>
+          <li><a href="baby.html">아기</a></li>
+          <li><a href="blog.html">가족 일기장</a></li>
+          <li><a href="#" onclick="logout()" class="logout-btn">로그아웃</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <header style="text-align: center; margin-bottom: 50px;">
+        <h1>우리 가족 일기장 (Nhật ký gia đình)</h1>
+        <p style="color: #666;">베트남에서의 소중한 기록을 함께 나누어요.</p>
+      </header>
+
+      <div class="content-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: flex-start;">
+        <!-- Blog Form -->
+        <div class="content-card" style="position: sticky; top: 100px;">
+          <h3>오늘의 기록 쓰기</h3>
+          <div style="margin-top: 20px;">
+            <select id="post-author" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd;">
+              <option value="dad">아빠 (Bố)</option>
+              <option value="mom">엄마 (Mẹ)</option>
+              <option value="baby">아기 (Bé)</option>
+            </select>
+            <input type="text" id="post-title" style="width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px;" placeholder="제목 (Tiêu đề)">
+            <textarea id="post-content" style="width: 100%; height: 150px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; resize: none;" placeholder="오늘의 일상을 남겨주세요..."></textarea>
+            <button onclick="savePost()" class="btn-enter" style="background: var(--primary-color); color: white; border: none; width: 100%; cursor: pointer;">글 올리기 (Đăng bài)</button>
+          </div>
+        </div>
+
+        <!-- Blog Posts List -->
+        <div>
+          <h3 style="margin-bottom: 20px;">최근 일기</h3>
+          <div id="blog-posts">
+            <!-- Posts will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+      // Load all blog posts from all family members
+      document.addEventListener('DOMContentLoaded', function() {
+        renderAllPosts();
+      });
+
+      function renderAllPosts() {
+        var blogList = document.getElementById('blog-posts');
+        var allPosts = [];
+        ['dad', 'mom', 'baby'].forEach(function(member) {
+          var posts = JSON.parse(localStorage.getItem('blog_' + member) || '[]');
+          allPosts = allPosts.concat(posts);
+        });
+
+        // Sort by date (ID is timestamp)
+        allPosts.sort(function(a, b) { return b.id - a.id; });
+
+        if (allPosts.length === 0) {
+          blogList.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">아직 작성된 일기가 없습니다.</p>';
+          return;
+        }
+
+        var html = '';
+        allPosts.forEach(function(post) {
+          var authorColor = post.author.indexOf('아빠') !== -1 ? '#2c3e50' : (post.author.indexOf('엄마') !== -1 ? '#d35400' : '#27ae60');
+          html += '<div class="content-card" style="margin-bottom: 25px; border-left: 5px solid ' + authorColor + ';">';
+          html += '<h4 style="color: ' + authorColor + ';">' + post.title + '</h4>';
+          html += '<p style="font-size: 0.8rem; color: #777; margin-bottom: 15px;">' + post.date + ' | 작성자: ' + post.author + '</p>';
+          html += '<div style="white-space: pre-wrap;">' + post.content + '</div>';
+          html += '</div>';
+        });
+        blogList.innerHTML = html;
+      }
+
+      window.savePost = function() {
+        var authorKey = document.getElementById('post-author').value;
+        var titleInput = document.getElementById('post-title');
+        var contentInput = document.getElementById('post-content');
+
+        if (!titleInput.value || !contentInput.value) {
+          alert('제목과 내용을 입력해주세요!');
+          return;
+        }
+
+        var authorName = authorKey === 'dad' ? '아빠 (Bố)' : (authorKey === 'mom' ? '엄마 (Mẹ)' : '아기 (Bé)');
+        var newPost = {
+          id: Date.now(),
+          title: titleInput.value,
+          content: contentInput.value,
+          date: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
+          author: authorName
+        };
+
+        var posts = JSON.parse(localStorage.getItem('blog_' + authorKey) || '[]');
+        posts.unshift(newPost);
+        localStorage.setItem('blog_' + authorKey, JSON.stringify(posts));
+
+        titleInput.value = '';
+        contentInput.value = '';
+        renderAllPosts();
+      };
+    </script>
+  </body>
+</html>

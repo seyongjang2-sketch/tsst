@@ -4,22 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Góc của Mẹ - FamilySpace</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
-    <style>
-      .page-header.mom-header {
-        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1200');
-        background-size: cover; background-position: center;
-      }
-      .ad-placeholder { background: #f8f9fa; border: 2px dashed #ddd; border-radius: 12px; height: 100px; display: flex; align-items: center; justify-content: center; color: #777; margin: 20px 0; font-size: 0.8rem; }
-      .shopee-item { border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; text-decoration: none; color: inherit; transition: background 0.2s; }
-      .shopee-item:hover { background: #fff5eb; }
-      .shopee-img { width: 60px; height: 60px; border-radius: 8px; background: #eee; flex-shrink: 0; }
-    </style>
+    <script src="auth.js"></script>
   </head>
-  <body>
+  <body class="mom-page">
     <nav class="navbar">
       <div class="nav-container">
         <a href="index.html" class="nav-logo">FamilySpace</a>
@@ -28,69 +16,41 @@
           <li><a href="dad.html">Bố</a></li>
           <li><a href="mom.html">Mẹ</a></li>
           <li><a href="baby.html">Bé</a></li>
+          <li><a href="blog.html">Nhật ký</a></li>
+          <li><a href="#" onclick="logout()" class="logout-btn">Đăng xuất</a></li>
         </ul>
       </div>
     </nav>
 
-    <header class="page-header mom-header">
-      <h1>Không gian của Mẹ 🌸</h1>
-      <p>Kiến thức chuyên sâu và Cuộc sống tại Việt Nam</p>
-    </header>
-
     <div class="main-wrapper">
-      <div class="ad-placeholder">Google AdSense Auto-Ads (Không gian quảng cáo)</div>
+      <header style="text-align: center; margin-bottom: 40px;">
+        <h1 style="font-size: 3rem; color: #d35400;">Mẹ (엄마)</h1>
+        <p>Không gian nấu ăn và chăm sóc gia đình</p>
+      </header>
 
-      <div class="content-grid">
-        <div class="content-card" style="grid-column: span 2;">
-          <h3>[Chuyên mục] Chăm sóc sức khỏe gia đình tại Việt Nam</h3>
-          <p>Tại Việt Nam, khí hậu nhiệt đới gió mùa có thể gây ra nhiều vấn đề về da và sức khỏe hô hấp. Mẹ cần chú ý bổ sung vitamin và duy trì độ ẩm cho da. Đặc biệt, việc lựa chọn các sản phẩm làm sạch nhà cửa tự nhiên là rất quan trọng để bảo vệ đường hô hấp của trẻ nhỏ...</p>
-          <p>Ngoài ra, việc cập nhật giá cả thị trường hàng ngày tại WinMart hay Lotte Mart giúp mẹ quản lý tài chính gia đình thông minh hơn. Hãy chú ý các chương trình khuyến mãi cuối tuần để tiết kiệm chi phí...</p>
-          <a href="https://kenh14.vn/doi-song.chn" target="_blank" class="action-btn">Xem thêm tin tức đời sống</a>
+      <div class="content-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+        <div class="content-card">
+          <h3>Món ngon mỗi ngày</h3>
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-bottom: 15px;">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLm_pY2A9nE6v6-L701ZkI0zT1T_lP8h8h" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+          </div>
+          <p>Học cách nấu các món Hàn - Việt chuẩn vị cho cả nhà.</p>
         </div>
 
         <div class="content-card">
-          <h3>Đề xuất Shopee (Shopee Picks)</h3>
-          <div class="ad-placeholder" style="height: 50px;">Shopee Affiliate Banner</div>
-          <a href="#" class="shopee-item">
-            <div class="shopee-img">🧴</div>
-            <div>
-              <strong>Kem dưỡng ẩm Laneige</strong>
-              <p><small>Sản phẩm K-Beauty hot tại Shopee Mall</small></p>
-            </div>
-          </a>
-          <a href="#" class="shopee-item">
-            <div class="shopee-img">🥗</div>
-            <div>
-              <strong>Máy xay đa năng Bear</strong>
-              <p><small>Tiện lợi cho việc chuẩn bị bữa ăn</small></p>
-            </div>
-          </a>
+          <h3>Làm đẹp & Sức khỏe</h3>
+          <p>Mẹo vặt hữu ích tại Việt Nam</p>
+          <ul style="margin-top: 15px;">
+            <li>Bí quyết dưỡng da K-Beauty</li>
+            <li>Thông tin y tế cho bé tại VN</li>
+            <li>Siêu thị WinMart & Lotte Mart</li>
+          </ul>
         </div>
       </div>
-
-      <section style="margin-top: 60px;">
-        <h2 style="margin-bottom: 25px; text-align: center;">📔 Nhật ký của Mẹ</h2>
-        <div class="blog-form" id="blog-form">
-          <input type="text" id="post-title" class="blog-input" placeholder="Tiêu đề">
-          <textarea id="post-content" class="blog-textarea" placeholder="Nội dung bài viết"></textarea>
-          <button onclick="savePost()" class="btn-enter" style="background: var(--mom-color); color: white; border: none; cursor: pointer; width: 100%;">Đăng bài</button>
-        </div>
-        <div id="blog-posts"></div>
-      </section>
 
       <div style="text-align: center; margin-top: 40px;">
-        <a href="index.html" class="btn-enter" style="background: var(--mom-color); color: white; text-decoration: none;">Về trang chủ</a>
+        <a href="blog.html" class="btn-enter" style="background: #d35400; color: white;">Viết nhật ký của Mẹ</a>
       </div>
     </div>
-
-    <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="privacy.html">Chính sách bảo mật</a> | <a href="terms.html">Điều khoản</a>
-        </div>
-      </div>
-    </footer>
-    <script src="main.js"></script>
   </body>
 </html>

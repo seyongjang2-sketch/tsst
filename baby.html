@@ -4,22 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>아기 놀이터 - FamilySpace</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
-    <style>
-      .page-header.baby-header {
-        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=1200');
-        background-size: cover; background-position: center;
-      }
-      .ad-placeholder { background: #f8f9fa; border: 2px dashed #ddd; border-radius: 12px; height: 100px; display: flex; align-items: center; justify-content: center; color: #777; margin: 20px 0; font-size: 0.8rem; }
-      .shopee-item { border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; text-decoration: none; color: inherit; transition: background 0.2s; }
-      .shopee-item:hover { background: #f0fff4; }
-      .shopee-img { width: 60px; height: 60px; border-radius: 8px; background: #eee; flex-shrink: 0; }
-    </style>
+    <script src="auth.js"></script>
   </head>
-  <body>
+  <body class="baby-page">
     <nav class="navbar">
       <div class="nav-container">
         <a href="index.html" class="nav-logo">FamilySpace</a>
@@ -28,87 +16,36 @@
           <li><a href="dad.html">아빠</a></li>
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
+          <li><a href="blog.html">가족 일기장</a></li>
+          <li><a href="#" onclick="logout()" class="logout-btn">로그아웃</a></li>
         </ul>
       </div>
     </nav>
 
-    <header class="page-header baby-header">
-      <h1>우리 아기 놀이터 👶</h1>
-      <p>베트남 현지 육아 및 교육 전문 정보</p>
-    </header>
-
     <div class="main-wrapper">
-      <div class="ad-placeholder">Google AdSense (애드센스 승인 대기 중)</div>
+      <header style="text-align: center; margin-bottom: 40px;">
+        <h1 style="font-size: 3rem; color: #27ae60;">Bé (아기)</h1>
+        <p>한국어와 베트남어를 함께 배우는 즐거운 놀이터</p>
+      </header>
 
-      <div class="content-grid">
-        <div class="content-card" style="grid-column: span 2;">
-          <h3>[육아 칼럼] 베트남에서 건강한 아이 키우기: 필수 정보</h3>
-          <p>베트남은 한국과 예방접종 스케줄이 다소 차이가 있을 수 있으므로 현지 소아과(예: Vinmec, Family Medical Practice)와 상의하는 것이 중요합니다. 특히 수족구병이나 뎅기열과 같은 현지 질병에 대한 예방 지침을 숙지해야 합니다...</p>
-          <p>또한, 베트남의 뜨거운 햇빛으로부터 아기 피부를 보호하기 위한 유아용 자외선 차단제 선택법과 현지 마트에서 쉽게 구할 수 있는 신선한 열대 과일을 활용한 이유식 레시피도 추천합니다...</p>
-          <a href="https://jr.naver.com/" target="_blank" class="action-btn">쥬니어네이버 바로가기</a>
-        </div>
-
-        <div class="content-card">
-          <h3>우리 아기 쇼피 추천</h3>
-          <div class="ad-placeholder" style="height: 50px;">Shopee Affiliate Link</div>
-          <a href="#" class="shopee-item">
-            <div class="shopee-img">🧸</div>
-            <div>
-              <strong>몬테소리 교구 세트</strong>
-              <p><small>베트남 엄마들이 선호하는 교구</small></p>
-            </div>
-          </a>
-          <a href="#" class="shopee-item">
-            <div class="shopee-img">🍼</div>
-            <div>
-              <strong>Huggies 베트남 기저귀</strong>
-              <p><small>쇼피 브랜드위크 할인 중</small></p>
-            </div>
-          </a>
-        </div>
-      </div>
-
-      <!-- Alphabet & Game -->
-      <div class="content-grid" style="margin-top: 30px;">
+      <div class="content-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
         <div class="content-card">
           <h3>글자 공부 학습판</h3>
-          <div class="lang-tab">
-            <button class="tab-btn active" onclick="switchLang('kr')">한글</button>
-            <button class="tab-btn" onclick="switchLang('vi')">Tiếng Việt</button>
-          </div>
-          <div id="display-letter" class="display-letter">가</div>
-          <div class="alphabet-board" id="alphabet-board"></div>
+          <div id="display-letter" style="font-size: 5rem; text-align: center; color: #27ae60; margin: 20px 0; font-weight: 700;">가</div>
+          <div id="alphabet-board" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px;"></div>
         </div>
+
         <div class="content-card">
-          <h3>풍선 터뜨리기 놀이</h3>
-          <div style="height: 150px; background: #f0fff4; border-radius: 12px; position: relative; overflow: hidden; cursor: crosshair; margin-bottom: 15px;" id="game-area"></div>
+          <h3>신나는 동요 & 게임</h3>
+          <div style="height: 150px; background: white; border-radius: 12px; position: relative; overflow: hidden; border: 1px solid #eee;" id="game-area"></div>
+          <p style="margin-top: 15px;">풍선을 눌러 터뜨려 보세요!</p>
         </div>
       </div>
-
-      <section style="margin-top: 60px;">
-        <h2 style="margin-bottom: 25px; text-align: center;">📔 우리 아기 성장 일기</h2>
-        <div class="blog-form" id="blog-form">
-          <input type="text" id="post-title" class="blog-input" placeholder="제목">
-          <textarea id="post-content" class="blog-textarea" placeholder="아이의 소중한 순간을 기록하세요"></textarea>
-          <button onclick="savePost()" class="btn-enter" style="background: var(--baby-color); color: white; border: none; cursor: pointer; width: 100%;">등록</button>
-        </div>
-        <div id="blog-posts"></div>
-      </section>
 
       <div style="text-align: center; margin-top: 40px;">
-        <a href="index.html" class="btn-enter" style="background: var(--baby-color); color: white; text-decoration: none;">메인으로 돌아가기</a>
+        <a href="blog.html" class="btn-enter" style="background: #27ae60; color: white;">아기 성장 일기 보러가기</a>
       </div>
     </div>
-
-    <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="privacy.html">개인정보처리방침</a> | <a href="terms.html">이용약관</a>
-        </div>
-      </div>
-    </footer>
-
     <script src="main.js"></script>
     <script>
       var krLetters = '가나다라마바사아자차카타파하';
@@ -116,26 +53,21 @@
       var currentLang = 'kr';
       var board = document.getElementById('alphabet-board');
       var display = document.getElementById('display-letter');
-      function switchLang(lang) {
-        currentLang = lang;
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        if (event && event.target) event.target.classList.add('active');
-        renderBoard();
-        display.textContent = lang === 'kr' ? '가' : 'A';
-      }
+
       function renderBoard() {
         if (!board) return;
         board.innerHTML = '';
         var letters = currentLang === 'kr' ? krLetters : viLetters;
         letters.split('').forEach(function(char) {
           var btn = document.createElement('button');
-          btn.className = 'letter-btn';
+          btn.style = 'width: 100%; aspect-ratio: 1; background: white; border: 2px solid #27ae60; border-radius: 12px; font-size: 1.2rem; font-weight: 700; cursor: pointer;';
           btn.textContent = char;
           btn.onclick = function() { display.textContent = char; };
           board.appendChild(btn);
         });
       }
       renderBoard();
+
       var gameArea = document.getElementById('game-area');
       function createBalloon() {
         if (!gameArea) return;
@@ -148,10 +80,9 @@
         balloon.style.position = 'absolute';
         balloon.style.left = Math.random() * (gameArea.clientWidth - size) + 'px';
         balloon.style.bottom = '-60px';
-        balloon.style.cursor = 'pointer';
         balloon.style.transition = 'bottom 4s linear';
         balloon.onclick = function() {
-          balloon.style.transform = 'scale(2) rotate(20deg)';
+          balloon.style.transform = 'scale(2)';
           balloon.style.opacity = '0';
           setTimeout(function() { balloon.remove(); }, 200);
         };
