@@ -1,72 +1,75 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>엄마의 공간 - 우리 가족 놀이터</title>
+    <title>Góc của Mẹ - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .lang-switch { font-size: 0.8rem; color: #fff; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 20px; text-decoration: none; margin-left: 10px; }
+    </style>
   </head>
   <body>
     <nav class="navbar">
       <div class="nav-container">
         <a href="index.html" class="nav-logo">FamilySpace</a>
         <ul class="nav-links">
-          <li><a href="index.html">홈</a></li>
-          <li><a href="dad.html">아빠</a></li>
-          <li><a href="mom.html">엄마</a></li>
-          <li><a href="baby.html">아기</a></li>
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="dad.html">Bố</a></li>
+          <li><a href="mom.html">Mẹ</a></li>
+          <li><a href="baby.html">Bé</a></li>
         </ul>
       </div>
     </nav>
 
     <header class="page-header mom-header">
-      <h1>엄마의 힐링 존 🍳</h1>
-      <p>오늘의 요리, 뷰티, 그리고 우리 아기 건강 정보까지!</p>
+      <h1>Không gian của Mẹ 🌸 <a href="#" class="lang-switch">한국어 보기</a></h1>
+      <p>Nấu ăn, làm đẹp và chăm sóc sức khỏe cho cả gia đình</p>
     </header>
 
     <div class="main-wrapper">
       <div class="content-grid">
-        <!-- Cooking -->
+        <!-- Cooking: Fusion -->
         <div class="content-card">
-          <h3>오늘의 추천 레시피</h3>
+          <h3>Món ngon mỗi ngày (Hàn - Việt)</h3>
           <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLm_pY2A9nE6v6-L701ZkI0zT1T_lP8h8h" frameborder="0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLm_pY2A9nE6vE_L701ZkI0zT1T_lP8h8h" frameborder="0" allowfullscreen></iframe>
           </div>
-          <p>쉽고 맛있는 집밥 레시피를 모아봤어요.</p>
+          <p>Học cách nấu các món Hàn Quốc chuẩn vị cho Bố và các món Việt Nam đậm đà cho cả nhà.</p>
         </div>
 
-        <!-- Beauty & Tips -->
+        <!-- Beauty -->
         <div class="content-card">
-          <h3>생활 꿀팁 & 뷰티</h3>
+          <h3>Bí quyết làm đẹp & Lifestyle</h3>
           <ul>
-            <li>환절기 피부 관리법 5가지</li>
-            <li>옷에 묻은 얼룩 지우는 법</li>
-            <li>주방 기름때 제거하는 천연 세제 만들기</li>
+            <li><strong>K-Beauty:</strong> Cách dưỡng da căng bóng như phụ nữ Hàn Quốc.</li>
+            <li><strong>Mẹo vặt gia đình:</strong> Giữ nhà cửa luôn gọn gàng và thơm mát.</li>
+            <li><strong>Thời trang:</strong> Phối đồ phong cách cho mẹ hiện đại.</li>
           </ul>
         </div>
 
-        <!-- Baby Health -->
+        <!-- Health for Baby in VN -->
         <div class="content-card">
-          <h3>아기 건강 가이드</h3>
+          <h3>Sức khỏe của Bé tại Việt Nam</h3>
           <ul>
-            <li>월령별 필수 예방접종 리스트</li>
-            <li>우리아이 올바른 수면 습관 기르기</li>
-            <li>영양 만점 초기/중기/후기 이유식 정보</li>
+            <li>Lịch tiêm chủng cần thiết cho bé tại địa phương.</li>
+            <li>Cách phòng tránh các bệnh theo mùa tại Việt Nam (Sốt xuất huyết, tay chân miệng).</li>
+            <li>Thực đơn dinh dưỡng từ nguyên liệu địa phương tươi ngon.</li>
           </ul>
         </div>
       </div>
       
       <div style="text-align: center;">
-        <a href="index.html" class="btn-enter" style="background: var(--mom-color); color: white; text-decoration: none;">메인으로 돌아가기</a>
+        <a href="index.html" class="btn-enter" style="background: var(--mom-color); color: white; text-decoration: none;">Về trang chủ</a>
       </div>
     </div>
 
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2026 우리 가족 놀이터. All rights reserved.</p>
+        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
       </div>
     </footer>
   </body>
