@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
     <script src="auth.js"></script>
   </head>
   <body class="home-page">
@@ -69,5 +70,19 @@
       </div>
     </footer>
     <script src="main.js"></script>
+    
+    <!-- Login Modal -->
+    <div id="login-modal-overlay" class="modal-overlay">
+      <div class="login-modal">
+        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+        <h2>가족 로그인</h2>
+        <p>우리 가족 시크릿 아지트 입장</p>
+        <div class="modal-input-group">
+          <input type="password" id="modal-p-input" class="modal-input" placeholder="비밀번호" onkeypress="if(event.key==='Enter') handleModalLogin()">
+          <span id="modal-toggle-btn" class="modal-toggle-view" onclick="toggleModalPassword()">👁️</span>
+        </div>
+        <button onclick="handleModalLogin()" class="modal-login-btn">입장하기</button>
+      </div>
+    </div>
   </body>
 </html>
