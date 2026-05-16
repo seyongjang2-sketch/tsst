@@ -13,12 +13,10 @@
         background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200');
         background-size: cover; background-position: center;
       }
-      .tech-badge { background: #ff4757; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; }
-      .action-btn { display: block; width: 100%; padding: 12px; background: var(--dad-color); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; transition: opacity 0.2s; }
-      .action-btn:hover { opacity: 0.9; }
-      .blog-form { background: white; padding: 25px; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 30px; }
-      .blog-input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-      .blog-textarea { width: 100%; height: 120px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; resize: none; }
+      .ad-placeholder { background: #f8f9fa; border: 2px dashed #ddd; border-radius: 12px; height: 100px; display: flex; align-items: center; justify-content: center; color: #777; margin: 20px 0; font-size: 0.8rem; }
+      .shopee-item { border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; text-decoration: none; color: inherit; transition: background 0.2s; }
+      .shopee-item:hover { background: #fdf2f0; }
+      .shopee-img { width: 60px; height: 60px; border-radius: 8px; background: #eee; flex-shrink: 0; }
     </style>
   </head>
   <body>
@@ -36,45 +34,53 @@
 
     <header class="page-header dad-header">
       <h1>아빠의 파워 스테이션 ⚡</h1>
-      <p>베트남 현지 실시간 정보와 가족 블로그</p>
+      <p>베트남 현지 전문 정보와 가족 소통</p>
     </header>
 
     <div class="main-wrapper">
+      <!-- Top AdSense Placeholder -->
+      <div class="ad-placeholder">Google AdSense Auto-Ads (승인 후 자동 송출 공간)</div>
+
       <div class="content-grid">
-        <div class="content-card">
-          <h3>베트남 테크 뉴스 (LIVE)</h3>
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=400" alt="Tech" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
-          <a href="https://vnexpress.net/so-hoa" target="_blank" class="action-btn">VNExpress Tech 바로가기</a>
-          <a href="https://tinhte.vn/" target="_blank" class="action-btn" style="background: #34495e; margin-top: 10px;">Tinhte.vn (현지 최대 커뮤니티)</a>
+        <!-- Professional Column 1 -->
+        <div class="content-card" style="grid-column: span 2;">
+          <h3>[전문 칼럼] 베트남 현지 가전/가젯 구매 가이드 2024</h3>
+          <p>베트남에서 전자기기를 구매할 때 가장 주의해야 할 점은 정품(Chính hãng) 여부와 사후 서비스(Warranty)입니다. 베트남 최대 가전 유통사인 Thế Giới Di Động이나 FPT Shop을 이용하는 것이 안전하지만, 더 저렴한 가격을 원한다면 쇼피(Shopee)의 'Mall' 표시가 있는 공식 스토어를 추천합니다...</p>
+          <p>특히 베트남 전압(220V)은 한국과 동일하지만, 무더운 날씨 때문에 에어컨이나 제습기 구매 시 현지 기후에 최적화된 모델을 선택하는 것이 중요합니다...</p>
+          <a href="https://vnexpress.net/so-hoa" target="_blank" class="action-btn">최신 베트남 테크 뉴스 읽기</a>
         </div>
 
+        <!-- Shopee Affiliate Section -->
         <div class="content-card">
-          <h3>베트남 한인 정보</h3>
-          <ul class="list-unstyled">
-            <li class="mb-2"><strong>호치민 라이프</strong><br><small>현지 한인 정보 및 구인구직</small></li>
-            <li class="mb-2"><strong>K-Vina 비즈포스트</strong><br><small>베트남 경제/투자 정보</small></li>
-          </ul>
-          <a href="http://www.chaovietnam.co.kr/" target="_blank" class="action-btn">짜오베트남 뉴스</a>
-        </div>
-
-        <div class="content-card">
-          <h3>베트남 가족 여행 & 맛집</h3>
-          <a href="https://www.foody.vn/" target="_blank" class="action-btn" style="background: #e74c3c;">Foody.vn (베트남판 배민/맛집)</a>
-          <a href="https://www.google.com/maps/search/Family+Resort+Vietnam" target="_blank" class="action-btn">내 주변 가족 리조트 지도</a>
+          <h3>아빠를 위한 쇼피 추천 (Shopee Picks)</h3>
+          <div class="ad-placeholder" style="height: 50px;">Shopee Affiliate Banner</div>
+          <a href="#" class="shopee-item">
+            <div class="shopee-img">🎮</div>
+            <div>
+              <strong>Logitech G502 무선 마우스</strong>
+              <p><small>베트남 쇼피몰 최저가 확인</small></p>
+            </div>
+          </a>
+          <a href="#" class="shopee-item">
+            <div class="shopee-img">🎧</div>
+            <div>
+              <strong>Sony WH-1000XM5</strong>
+              <p><small>비행기 이동 시 필수 노캔 헤드셋</small></p>
+            </div>
+          </a>
+          <p style="font-size: 0.7rem; color: #999;">* 파트너스 활동을 통해 소정의 수수료를 제공받을 수 있습니다.</p>
         </div>
       </div>
 
       <!-- Blog Section -->
       <section style="margin-top: 60px;">
-        <h2 style="margin-bottom: 25px; text-align: center;">📔 아빠의 베트남 일기 (Blog)</h2>
+        <h2 style="margin-bottom: 25px; text-align: center;">📔 아빠의 베트남 일기</h2>
         <div class="blog-form" id="blog-form">
-          <input type="text" id="post-title" class="blog-input" placeholder="제목을 입력하세요 (Tiêu đề)">
-          <textarea id="post-content" class="blog-textarea" placeholder="오늘의 일상이나 정보를 공유해주세요 (Nội dung)"></textarea>
-          <button onclick="savePost()" class="btn-enter" style="background: var(--dad-color); color: white; border: none; cursor: pointer; width: 100%;">글 올리기 (Đăng bài)</button>
+          <input type="text" id="post-title" class="blog-input" placeholder="제목">
+          <textarea id="post-content" class="blog-textarea" placeholder="내용을 입력하세요"></textarea>
+          <button onclick="savePost()" class="btn-enter" style="background: var(--dad-color); color: white; border: none; cursor: pointer; width: 100%;">글 올리기</button>
         </div>
-        <div id="blog-posts">
-          <!-- Posts will appear here -->
-        </div>
+        <div id="blog-posts"></div>
       </section>
 
       <div style="text-align: center; margin-top: 40px;">
@@ -85,6 +91,9 @@
     <footer class="footer">
       <div class="footer-content">
         <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+        <div class="footer-links" style="margin-top: 10px;">
+          <a href="privacy.html">개인정보처리방침</a> | <a href="terms.html">이용약관</a>
+        </div>
       </div>
     </footer>
     <script src="main.js"></script>

@@ -10,20 +10,13 @@
     <link rel="stylesheet" href="style.css" />
     <style>
       .page-header.baby-header {
-        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1502086223501-7ea24ec3946d?auto=format&fit=crop&q=80&w=1200');
+        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=1200');
         background-size: cover; background-position: center;
       }
-      .alphabet-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 20px; }
-      .letter-btn { width: 60px; height: 60px; background: white; border: 2px solid var(--baby-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.1s; }
-      .letter-btn:active { transform: scale(0.9); background: var(--baby-color); color: white; }
-      .display-letter { font-size: 4rem; text-align: center; margin: 20px 0; height: 100px; color: var(--baby-color); font-weight: 700; }
-      .lang-tab { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-      .tab-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid var(--baby-color); background: white; cursor: pointer; font-weight: 700; }
-      .tab-btn.active { background: var(--baby-color); color: white; }
-      .action-btn { display: block; width: 100%; padding: 12px; background: var(--baby-color); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; transition: opacity 0.2s; }
-      .blog-form { background: white; padding: 25px; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 30px; }
-      .blog-input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-      .blog-textarea { width: 100%; height: 120px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; resize: none; }
+      .ad-placeholder { background: #f8f9fa; border: 2px dashed #ddd; border-radius: 12px; height: 100px; display: flex; align-items: center; justify-content: center; color: #777; margin: 20px 0; font-size: 0.8rem; }
+      .shopee-item { border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; display: flex; gap: 15px; text-decoration: none; color: inherit; transition: background 0.2s; }
+      .shopee-item:hover { background: #f0fff4; }
+      .shopee-img { width: 60px; height: 60px; border-radius: 8px; background: #eee; flex-shrink: 0; }
     </style>
   </head>
   <body>
@@ -41,19 +34,42 @@
 
     <header class="page-header baby-header">
       <h1>우리 아기 놀이터 👶</h1>
-      <p>베트남 현지 교육 정보와 성장 일기</p>
+      <p>베트남 현지 육아 및 교육 전문 정보</p>
     </header>
 
     <div class="main-wrapper">
+      <div class="ad-placeholder">Google AdSense (애드센스 승인 대기 중)</div>
+
       <div class="content-grid">
-        <div class="content-card">
-          <h3>신나는 동요 세상</h3>
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PL2V6X6qH6P2-p0V0lH5B_OQ9S3T_uI0K8" frameborder="0" allowfullscreen></iframe>
-          </div>
-          <a href="https://www.youtube.com/@AnChoiCungBe" target="_blank" class="action-btn">베트남 인기 키즈 채널</a>
+        <div class="content-card" style="grid-column: span 2;">
+          <h3>[육아 칼럼] 베트남에서 건강한 아이 키우기: 필수 정보</h3>
+          <p>베트남은 한국과 예방접종 스케줄이 다소 차이가 있을 수 있으므로 현지 소아과(예: Vinmec, Family Medical Practice)와 상의하는 것이 중요합니다. 특히 수족구병이나 뎅기열과 같은 현지 질병에 대한 예방 지침을 숙지해야 합니다...</p>
+          <p>또한, 베트남의 뜨거운 햇빛으로부터 아기 피부를 보호하기 위한 유아용 자외선 차단제 선택법과 현지 마트에서 쉽게 구할 수 있는 신선한 열대 과일을 활용한 이유식 레시피도 추천합니다...</p>
+          <a href="https://jr.naver.com/" target="_blank" class="action-btn">쥬니어네이버 바로가기</a>
         </div>
 
+        <div class="content-card">
+          <h3>우리 아기 쇼피 추천</h3>
+          <div class="ad-placeholder" style="height: 50px;">Shopee Affiliate Link</div>
+          <a href="#" class="shopee-item">
+            <div class="shopee-img">🧸</div>
+            <div>
+              <strong>몬테소리 교구 세트</strong>
+              <p><small>베트남 엄마들이 선호하는 교구</small></p>
+            </div>
+          </a>
+          <a href="#" class="shopee-item">
+            <div class="shopee-img">🍼</div>
+            <div>
+              <strong>Huggies 베트남 기저귀</strong>
+              <p><small>쇼피 브랜드위크 할인 중</small></p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- Alphabet & Game -->
+      <div class="content-grid" style="margin-top: 30px;">
         <div class="content-card">
           <h3>글자 공부 학습판</h3>
           <div class="lang-tab">
@@ -63,25 +79,20 @@
           <div id="display-letter" class="display-letter">가</div>
           <div class="alphabet-board" id="alphabet-board"></div>
         </div>
-
         <div class="content-card">
           <h3>풍선 터뜨리기 놀이</h3>
           <div style="height: 150px; background: #f0fff4; border-radius: 12px; position: relative; overflow: hidden; cursor: crosshair; margin-bottom: 15px;" id="game-area"></div>
-          <a href="https://www.tiNiWorld.com/" target="_blank" class="action-btn" style="background: #2ecc71;">tiNiWorld (키즈카페) 바로가기</a>
         </div>
       </div>
 
-      <!-- Blog Section -->
       <section style="margin-top: 60px;">
-        <h2 style="margin-bottom: 25px; text-align: center;">📔 우리 아기 성장 일기 (Blog)</h2>
+        <h2 style="margin-bottom: 25px; text-align: center;">📔 우리 아기 성장 일기</h2>
         <div class="blog-form" id="blog-form">
-          <input type="text" id="post-title" class="blog-input" placeholder="제목 (Tiêu đề)">
-          <textarea id="post-content" class="blog-textarea" placeholder="아기의 소중한 순간을 기록하세요 (Ghi lại khoảnh khắc của bé)"></textarea>
-          <button onclick="savePost()" class="btn-enter" style="background: var(--baby-color); color: white; border: none; cursor: pointer; width: 100%;">성장 일기 등록 (Đăng bài)</button>
+          <input type="text" id="post-title" class="blog-input" placeholder="제목">
+          <textarea id="post-content" class="blog-textarea" placeholder="아이의 소중한 순간을 기록하세요"></textarea>
+          <button onclick="savePost()" class="btn-enter" style="background: var(--baby-color); color: white; border: none; cursor: pointer; width: 100%;">등록</button>
         </div>
-        <div id="blog-posts">
-          <!-- Posts will appear here -->
-        </div>
+        <div id="blog-posts"></div>
       </section>
 
       <div style="text-align: center; margin-top: 40px;">
@@ -92,6 +103,9 @@
     <footer class="footer">
       <div class="footer-content">
         <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="privacy.html">개인정보처리방침</a> | <a href="terms.html">이용약관</a>
+        </div>
       </div>
     </footer>
 
@@ -102,7 +116,6 @@
       var currentLang = 'kr';
       var board = document.getElementById('alphabet-board');
       var display = document.getElementById('display-letter');
-
       function switchLang(lang) {
         currentLang = lang;
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -110,7 +123,6 @@
         renderBoard();
         display.textContent = lang === 'kr' ? '가' : 'A';
       }
-
       function renderBoard() {
         if (!board) return;
         board.innerHTML = '';
@@ -119,15 +131,11 @@
           var btn = document.createElement('button');
           btn.className = 'letter-btn';
           btn.textContent = char;
-          btn.onclick = function() {
-            display.textContent = char;
-          };
+          btn.onclick = function() { display.textContent = char; };
           board.appendChild(btn);
         });
       }
       renderBoard();
-
-      // Balloon Game
       var gameArea = document.getElementById('game-area');
       function createBalloon() {
         if (!gameArea) return;
@@ -142,13 +150,11 @@
         balloon.style.bottom = '-60px';
         balloon.style.cursor = 'pointer';
         balloon.style.transition = 'bottom 4s linear';
-        
         balloon.onclick = function() {
           balloon.style.transform = 'scale(2) rotate(20deg)';
           balloon.style.opacity = '0';
           setTimeout(function() { balloon.remove(); }, 200);
         };
-
         gameArea.appendChild(balloon);
         setTimeout(function() { balloon.style.bottom = '160px'; }, 10);
         setTimeout(function() { if (balloon.parentNode) balloon.remove(); }, 4000);
