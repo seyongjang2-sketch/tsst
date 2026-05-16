@@ -11,17 +11,13 @@
     <style>
       .page-header.mom-header {
         background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=1200');
-        background-size: cover;
-        background-position: center;
+        background-size: cover; background-position: center;
       }
       .action-btn { display: block; width: 100%; padding: 12px; background: var(--mom-color); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; transition: opacity 0.2s; }
       .action-btn:hover { opacity: 0.9; }
-      .comment-section { margin-top: 40px; background: white; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
-      .comment-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-      .comment-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
-      .comment-list { list-style: none; }
-      .comment-item { padding: 15px 0; border-bottom: 1px solid #eee; }
-      .comment-author { font-weight: 700; color: var(--mom-color); margin-right: 10px; }
+      .blog-form { background: white; padding: 25px; border-radius: 20px; box-shadow: var(--shadow); margin-bottom: 30px; }
+      .blog-input { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+      .blog-textarea { width: 100%; height: 120px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; outline: none; resize: none; }
     </style>
   </head>
   <body>
@@ -39,56 +35,57 @@
 
     <header class="page-header mom-header">
       <h1>Không gian của Mẹ 🌸</h1>
-      <p>Nấu ăn, làm đẹp và chăm sóc sức khỏe cho cả gia đình</p>
+      <p>Thông tin hữu ích tại Việt Nam và Blog gia đình</p>
     </header>
 
     <div class="main-wrapper">
       <div class="content-grid">
         <div class="content-card">
-          <h3>Món ngon mỗi ngày</h3>
-          <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLm_pY2A9nE6v6-L701ZkI0zT1T_lP8h8h" frameborder="0" allowfullscreen></iframe>
-          </div>
-          <a href="https://www.1000recipe.com/" target="_blank" class="action-btn">Tìm thêm công thức</a>
+          <h3>Mua sắm tại siêu thị (LIVE)</h3>
+          <img src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&q=80&w=400" alt="Supermarket" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
+          <a href="https://winmart.vn/" target="_blank" class="action-btn">WinMart Online</a>
+          <a href="https://www.lottemart.com.vn/" target="_blank" class="action-btn" style="background: #e67e22; margin-top: 10px;">Lotte Mart VN</a>
         </div>
 
         <div class="content-card">
-          <h3>Bí quyết làm đẹp</h3>
-          <img src="https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?auto=format&fit=crop&q=80&w=400" alt="Beauty" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
-          <a href="https://vnexpress.net/lam-dep" target="_blank" class="action-btn">Xem tin tức làm đẹp</a>
+          <h3>Giá cả & Lifestyle</h3>
+          <ul class="list-unstyled">
+            <li class="mb-2"><strong>Giá vàng & Ngoại tệ</strong><br><small>Cập nhật tỷ giá mới nhất</small></li>
+            <li class="mb-2"><strong>Kênh 14</strong><br><small>Tin tức giải trí & Đời sống</small></li>
+          </ul>
+          <a href="https://kenh14.vn/" target="_blank" class="action-btn">Kênh 14 바로가기</a>
         </div>
 
         <div class="content-card">
-          <h3>Sức khỏe của Bé</h3>
-          <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=400" alt="Health" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
-          <a href="https://bvnhidong.org.vn/" target="_blank" class="action-btn">Thông tin y tế</a>
+          <h3>Sức khỏe & Mẹ Bé</h3>
+          <a href="https://bibomart.com.vn/" target="_blank" class="action-btn" style="background: #ff4757;">Bibo Mart (Đồ dùng cho bé)</a>
+          <a href="https://www.vinmec.com/" target="_blank" class="action-btn">BV Vinmec (Thông tin y tế)</a>
         </div>
       </div>
 
-      <div class="comment-section">
-        <h3>💬 Lời nhắn cho Mẹ</h3>
-        <div class="comment-input-group">
-          <input type="text" id="comment-input" class="comment-input" placeholder="Lời nhắn...">
-          <button onclick="addComment()" class="btn-enter" style="background: var(--mom-color); color: white; border: none; cursor: pointer;">Gửi</button>
+      <!-- Blog Section -->
+      <section style="margin-top: 60px;">
+        <h2 style="margin-bottom: 25px; text-align: center;">📔 Nhật ký của Mẹ (Blog)</h2>
+        <div class="blog-form" id="blog-form">
+          <input type="text" id="post-title" class="blog-input" placeholder="Tiêu đề (제목)">
+          <textarea id="post-content" class="blog-textarea" placeholder="Chia sẻ nhật ký hoặc mẹo vặt của mẹ (오늘의 일상을 남겨주세요)"></textarea>
+          <button onclick="savePost()" class="btn-enter" style="background: var(--mom-color); color: white; border: none; cursor: pointer; width: 100%;">Đăng bài (글 올리기)</button>
         </div>
-        <ul id="comment-list" class="comment-list">
-          <li class="comment-item"><span class="comment-author">Bố:</span> Yêu mẹ nhiều! ❤️</li>
-        </ul>
+        <div id="blog-posts">
+          <!-- Posts will appear here -->
+        </div>
+      </section>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="index.html" class="btn-enter" style="background: var(--mom-color); color: white; text-decoration: none;">Về trang chủ</a>
       </div>
     </div>
 
-    <script>
-      function addComment() {
-        const input = document.getElementById('comment-input');
-        const list = document.getElementById('comment-list');
-        if (input.value.trim()) {
-          const li = document.createElement('li');
-          li.className = 'comment-item';
-          li.innerHTML = '<span class="comment-author">Gia đình:</span> ' + input.value;
-          list.prepend(li);
-          input.value = '';
-        }
-      }
-    </script>
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+      </div>
+    </footer>
+    <script src="main.js"></script>
   </body>
 </html>
