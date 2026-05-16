@@ -15,9 +15,18 @@
         background-position: center;
       }
       .tech-badge { background: #ff4757; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; }
-      .travel-card { display: flex; gap: 15px; margin-bottom: 15px; align-items: center; }
-      .travel-img { width: 80px; height: 80px; background: #eee; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; }
+      .travel-card { display: flex; gap: 15px; margin-bottom: 15px; align-items: center; text-decoration: none; color: inherit; transition: background 0.2s; padding: 10px; border-radius: 12px; }
+      .travel-card:hover { background: #f8f9fa; }
+      .travel-img { width: 80px; height: 80px; background: #eee; border-radius: 8px; flex-shrink: 0; overflow: hidden; }
       .travel-img img { width: 100%; height: 100%; object-fit: cover; }
+      .action-btn { display: block; width: 100%; padding: 12px; background: var(--dad-color); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; transition: opacity 0.2s; }
+      .action-btn:hover { opacity: 0.9; }
+      .comment-section { margin-top: 40px; background: white; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
+      .comment-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+      .comment-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+      .comment-list { list-style: none; }
+      .comment-item { padding: 15px 0; border-bottom: 1px solid #eee; }
+      .comment-author { font-weight: 700; color: var(--dad-color); margin-right: 10px; }
     </style>
   </head>
   <body>
@@ -35,60 +44,70 @@
 
     <header class="page-header dad-header">
       <h1>아빠의 파워 스테이션 ⚡</h1>
-      <p>액션 게임, 최신 테크, 그리고 베트남 가족 여행 정보</p>
+      <p>액션 게임 하이라이트와 최신 테크, 베트남 여행 정보</p>
     </header>
 
     <div class="main-wrapper">
       <div class="content-grid">
-        <!-- Action Games -->
         <div class="content-card">
-          <h3>화려한 액션 게임 하이라이트</h3>
+          <h3>화려한 액션 게임</h3>
           <div class="video-container">
             <iframe src="https://www.youtube.com/embed/videoseries?list=PLsiP_uYmId_7KqW1LhT4Xb_zF1X-9FjQv" frameborder="0" allowfullscreen></iframe>
           </div>
-          <p>스트레스 풀리는 짜릿한 타격감! 최신 액션 게임 트레일러를 감상하세요.</p>
+          <a href="https://www.youtube.com/results?search_query=latest+action+games+2024" target="_blank" class="action-btn">더 많은 게임 영상 보기</a>
         </div>
 
-        <!-- Tech Info -->
         <div class="content-card">
-          <h3>최신 전자기기 & 가젯 정보</h3>
+          <h3>최신 테크 & 가젯</h3>
           <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=400" alt="Tech" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
           <ul class="list-unstyled">
             <li class="mb-2"><strong>갤럭시 S24 울트라</strong> <span class="tech-badge">NEW</span></li>
-            <li class="mb-2"><strong>PS5 Pro 루머 총정리</strong></li>
-            <li><strong>M3 맥북 에어</strong></li>
+            <li class="mb-2"><strong>PS5 Pro 최신 루머</strong></li>
           </ul>
+          <a href="https://underkg.co.kr/" target="_blank" class="action-btn">최신 IT 뉴스 바로가기</a>
         </div>
 
-        <!-- Travel & Food in Vietnam -->
         <div class="content-card">
           <h3>베트남 가족 여행 & 맛집</h3>
-          <div class="travel-card">
+          <a href="https://www.tripadvisor.com/Search?q=Phu+Quoc+Family" target="_blank" class="travel-card">
             <div class="travel-img"><img src="https://images.unsplash.com/photo-1589118949245-7d38baf380d6?auto=format&fit=crop&q=80&w=150" alt="Phu Quoc"></div>
             <div>
-              <strong>푸꾸옥(Phu Quoc) 여행</strong>
-              <p><small>아이와 함께하기 좋은 빈원더스 코스</small></p>
+              <strong>푸꾸옥(Phu Quoc) 정보</strong>
+              <p><small>가족형 리조트와 맛집 리뷰</small></p>
             </div>
-          </div>
-          <div class="travel-card">
-            <div class="travel-img"><img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&q=80&w=150" alt="Da Lat"></div>
-            <div>
-              <strong>달랏(Da Lat) 힐링 투어</strong>
-              <p><small>시원한 고원 지대 가족 나들이</small></p>
-            </div>
-          </div>
+          </a>
+          <a href="https://www.google.com/maps/search/Korean+Restaurant+Vietnam" target="_blank" class="action-btn">내 주변 한식당 찾기</a>
         </div>
       </div>
+
+      <div class="comment-section">
+        <h3>💬 아빠에게 응원 한마디!</h3>
+        <div class="comment-input-group">
+          <input type="text" id="comment-input" class="comment-input" placeholder="아빠에게 하고 싶은 말을 적어주세요...">
+          <button onclick="addComment()" class="btn-enter" style="background: var(--dad-color); color: white; border: none; cursor: pointer;">등록</button>
+        </div>
+        <ul id="comment-list" class="comment-list">
+          <li class="comment-item"><span class="comment-author">엄마:</span> 아빠 힘내세요! ❤️</li>
+        </ul>
+      </div>
       
-      <div style="text-align: center;">
+      <div style="text-align: center; margin-top: 40px;">
         <a href="index.html" class="btn-enter" style="background: var(--dad-color); color: white; text-decoration: none;">메인으로 돌아가기</a>
       </div>
     </div>
 
-    <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
-      </div>
-    </footer>
+    <script>
+      function addComment() {
+        const input = document.getElementById('comment-input');
+        const list = document.getElementById('comment-list');
+        if (input.value.trim()) {
+          const li = document.createElement('li');
+          li.className = 'comment-item';
+          li.innerHTML = '<span class="comment-author">가족:</span> ' + input.value;
+          list.prepend(li);
+          input.value = '';
+        }
+      }
+    </script>
   </body>
 </html>

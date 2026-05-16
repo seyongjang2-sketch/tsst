@@ -14,7 +14,14 @@
         background-size: cover;
         background-position: center;
       }
-      .lang-switch { font-size: 0.8rem; color: #fff; background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 20px; text-decoration: none; margin-left: 10px; }
+      .action-btn { display: block; width: 100%; padding: 12px; background: var(--mom-color); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; transition: opacity 0.2s; }
+      .action-btn:hover { opacity: 0.9; }
+      .comment-section { margin-top: 40px; background: white; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
+      .comment-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+      .comment-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+      .comment-list { list-style: none; }
+      .comment-item { padding: 15px 0; border-bottom: 1px solid #eee; }
+      .comment-author { font-weight: 700; color: var(--mom-color); margin-right: 10px; }
     </style>
   </head>
   <body>
@@ -31,51 +38,57 @@
     </nav>
 
     <header class="page-header mom-header">
-      <h1>Không gian của Mẹ 🌸 <a href="#" class="lang-switch">한국어 보기</a></h1>
+      <h1>Không gian của Mẹ 🌸</h1>
       <p>Nấu ăn, làm đẹp và chăm sóc sức khỏe cho cả gia đình</p>
     </header>
 
     <div class="main-wrapper">
       <div class="content-grid">
-        <!-- Cooking: Fusion -->
         <div class="content-card">
-          <h3>Món ngon mỗi ngày (Hàn - Việt)</h3>
+          <h3>Món ngon mỗi ngày</h3>
           <div class="video-container">
             <iframe src="https://www.youtube.com/embed/videoseries?list=PLm_pY2A9nE6v6-L701ZkI0zT1T_lP8h8h" frameborder="0" allowfullscreen></iframe>
           </div>
-          <p>Học cách nấu các món Hàn Quốc chuẩn vị cho Bố và các món Việt Nam đậm đà cho cả nhà.</p>
+          <a href="https://www.1000recipe.com/" target="_blank" class="action-btn">Tìm thêm công thức</a>
         </div>
 
-        <!-- Beauty -->
         <div class="content-card">
-          <h3>Bí quyết làm đẹp & Lifestyle</h3>
+          <h3>Bí quyết làm đẹp</h3>
           <img src="https://images.unsplash.com/photo-1596462502278-27bfdc4033c8?auto=format&fit=crop&q=80&w=400" alt="Beauty" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
-          <ul>
-            <li><strong>K-Beauty:</strong> Cách dưỡng da căng bóng như phụ nữ Hàn Quốc.</li>
-            <li><strong>Mẹo vặt gia đình:</strong> Giữ nhà cửa luôn gọn gàng và thơm mát.</li>
-          </ul>
+          <a href="https://vnexpress.net/lam-dep" target="_blank" class="action-btn">Xem tin tức làm đẹp</a>
         </div>
 
-        <!-- Health for Baby in VN -->
         <div class="content-card">
-          <h3>Sức khỏe của Bé tại Việt Nam</h3>
+          <h3>Sức khỏe của Bé</h3>
           <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=400" alt="Health" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
-          <ul>
-            <li>Lịch tiêm chủng cần thiết cho bé tại địa phương.</li>
-            <li>Cách phòng tránh các bệnh theo mùa tại Việt Nam.</li>
-          </ul>
+          <a href="https://bvnhidong.org.vn/" target="_blank" class="action-btn">Thông tin y tế</a>
         </div>
       </div>
-      
-      <div style="text-align: center;">
-        <a href="index.html" class="btn-enter" style="background: var(--mom-color); color: white; text-decoration: none;">Về trang chủ</a>
+
+      <div class="comment-section">
+        <h3>💬 Lời nhắn cho Mẹ</h3>
+        <div class="comment-input-group">
+          <input type="text" id="comment-input" class="comment-input" placeholder="Lời nhắn...">
+          <button onclick="addComment()" class="btn-enter" style="background: var(--mom-color); color: white; border: none; cursor: pointer;">Gửi</button>
+        </div>
+        <ul id="comment-list" class="comment-list">
+          <li class="comment-item"><span class="comment-author">Bố:</span> Yêu mẹ nhiều! ❤️</li>
+        </ul>
       </div>
     </div>
 
-    <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
-      </div>
-    </footer>
+    <script>
+      function addComment() {
+        const input = document.getElementById('comment-input');
+        const list = document.getElementById('comment-list');
+        if (input.value.trim()) {
+          const li = document.createElement('li');
+          li.className = 'comment-item';
+          li.innerHTML = '<span class="comment-author">Gia đình:</span> ' + input.value;
+          list.prepend(li);
+          input.value = '';
+        }
+      }
+    </script>
   </body>
 </html>

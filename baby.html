@@ -21,6 +21,13 @@
       .lang-tab { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
       .tab-btn { padding: 8px 20px; border-radius: 20px; border: 1px solid var(--baby-color); background: white; cursor: pointer; font-weight: 700; }
       .tab-btn.active { background: var(--baby-color); color: white; }
+      .action-btn { display: block; width: 100%; padding: 12px; background: var(--baby-color); color: white; text-align: center; border-radius: 8px; text-decoration: none; font-weight: 700; margin-top: 15px; transition: opacity 0.2s; }
+      .comment-section { margin-top: 40px; background: white; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
+      .comment-input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+      .comment-input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+      .comment-list { list-style: none; }
+      .comment-item { padding: 15px 0; border-bottom: 1px solid #eee; }
+      .comment-author { font-weight: 700; color: var(--baby-color); margin-right: 10px; }
     </style>
   </head>
   <body>
@@ -38,49 +45,48 @@
 
     <header class="page-header baby-header">
       <h1>우리 아기 놀이터 👶</h1>
-      <p>한국어와 베트남어를 함께 배워요! (Học tiếng Hàn & Việt)</p>
+      <p>한국어와 베트남어를 함께 배워요!</p>
     </header>
 
     <div class="main-wrapper">
       <div class="content-grid">
-        <!-- Bilingual Rhymes -->
         <div class="content-card">
-          <h3>신나는 동요 (Nhạc thiếu nhi)</h3>
+          <h3>신나는 동요 세상</h3>
           <div class="video-container">
             <iframe src="https://www.youtube.com/embed/videoseries?list=PL2V6X6qH6P2-p0V0lH5B_OQ9S3T_uI0K8" frameborder="0" allowfullscreen></iframe>
           </div>
-          <p>한국 동요와 베트남 동요를 번갈아 들어보세요!</p>
+          <a href="https://www.youtube.com/@Pinkfong" target="_blank" class="action-btn">핑크퐁 채널</a>
         </div>
 
-        <!-- Bilingual Alphabet -->
         <div class="content-card">
-          <h3>글자 공부 (Học chữ cái)</h3>
+          <h3>글자 공부 학습판</h3>
           <div class="lang-tab">
-            <button class="tab-btn active" onclick="switchLang('kr')">한글 (KR)</button>
-            <button class="tab-btn" onclick="switchLang('vi')">Tiếng Việt (VN)</button>
+            <button class="tab-btn active" onclick="switchLang('kr')">한글</button>
+            <button class="tab-btn" onclick="switchLang('vi')">Tiếng Việt</button>
           </div>
           <div id="display-letter" class="display-letter">가</div>
           <div class="alphabet-board" id="alphabet-board"></div>
+          <a href="https://jr.naver.com/" target="_blank" class="action-btn">쥬니어네이버</a>
         </div>
 
-        <!-- Game Area -->
         <div class="content-card">
-          <h3>풍선 터뜨리기 🎈</h3>
+          <h3>풍선 터뜨리기 놀이</h3>
           <div style="height: 150px; background: #f0fff4; border-radius: 12px; position: relative; overflow: hidden; cursor: crosshair; margin-bottom: 15px;" id="game-area"></div>
-          <p>화려한 색깔의 풍선을 터뜨려 보세요!</p>
+          <p>풍선을 눌러보세요!</p>
         </div>
       </div>
-      
-      <div style="text-align: center;">
-        <a href="index.html" class="btn-enter" style="background: var(--baby-color); color: white; text-decoration: none;">메인으로 돌아가기</a>
+
+      <div class="comment-section">
+        <h3>💬 아기에게 전하는 사랑</h3>
+        <div class="comment-input-group">
+          <input type="text" id="comment-input" class="comment-input" placeholder="메시지...">
+          <button onclick="addComment()" class="btn-enter" style="background: var(--baby-color); color: white; border: none; cursor: pointer;">등록</button>
+        </div>
+        <ul id="comment-list" class="comment-list">
+          <li class="comment-item"><span class="comment-author">아빠:</span> 사랑해! ❤️</li>
+        </ul>
       </div>
     </div>
-
-    <footer class="footer">
-      <div class="footer-content">
-        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
-      </div>
-    </footer>
 
     <script>
       var krLetters = '가나다라마바사아자차카타파하';
@@ -113,7 +119,18 @@
 
       renderBoard();
 
-      // Balloon Game
+      function addComment() {
+        const input = document.getElementById('comment-input');
+        const list = document.getElementById('comment-list');
+        if (input.value.trim()) {
+          const li = document.createElement('li');
+          li.className = 'comment-item';
+          li.innerHTML = '<span class="comment-author">가족:</span> ' + input.value;
+          list.prepend(li);
+          input.value = '';
+        }
+      }
+
       var gameArea = document.getElementById('game-area');
       function createBalloon() {
         var balloon = document.createElement('div');
