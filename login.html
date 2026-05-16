@@ -4,41 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>로그인 - FamilySpace</title>
-    <link rel="stylesheet" href="style.css" />
     <style>
-      body {
-        display: flex; align-items: center; justify-content: center; min-height: 100vh;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 20px;
-        padding-top: 0 !important;
-      }
-      .login-container {
-        background: white; padding: 40px; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        max-width: 400px; width: 100%; text-align: center;
-      }
-      .login-input {
-        width: 100%; padding: 16px; border: 2px solid #f1f2f6; border-radius: 12px;
-        font-size: 1.1rem; outline: none; margin-bottom: 20px; text-align: center;
-      }
-      .login-btn {
-        width: 100%; padding: 16px; background: #4a90e2; color: white; border: none;
-        border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
-      }
+      html, body { height: 100%; margin: 0; padding: 0; }
+      body { display: flex; align-items: center; justify-content: center; font-family: sans-serif; background: #4a90e2; }
+      .login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 100%; max-width: 320px; text-align: center; }
+      input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
+      button { width: 100%; padding: 15px; background: #4a90e2; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
     </style>
   </head>
   <body>
-    <div class="login-container">
-      <h1 style="color: #4a90e2;">FamilySpace</h1>
-      <p style="color: #666; margin-bottom: 30px;">가족 비밀번호를 입력해주세요.</p>
-      <input type="password" id="p-input" class="login-input" placeholder="비밀번호 (Mật khẩu)">
-      <button id="l-btn" class="login-btn">입장하기 (Vào)</button>
+    <div class="login-box">
+      <h1 style="color:#4a90e2;">FamilySpace</h1>
+      <p style="color:#666;">우리 가족 비밀번호 입력</p>
+      <input type="password" id="p-input" placeholder="비밀번호">
+      <button id="btn-login">입장하기</button>
+      <p style="margin-top:20px;"><a href="index.html" style="color:#999;text-decoration:none;">홈으로</a></p>
     </div>
-    <script src="auth.js"></script>
     <script>
-      document.getElementById('l-btn').onclick = function() {
-        handleLogin(document.getElementById('p-input').value);
-      };
-      document.getElementById('p-input').onkeypress = function(e) {
-        if (e.keyCode == 13) handleLogin(this.value);
+      document.getElementById('btn-login').onclick = function() {
+        var val = document.getElementById('p-input').value;
+        if (val === 'family2026') {
+          sessionStorage.setItem('family_space_authenticated', 'true');
+          window.location.href = 'index.html';
+        } else { alert('비밀번호 오류'); }
       };
     </script>
   </body>
