@@ -1,25 +1,16 @@
-// FamilySpace Authentication & Modal System
+// FamilySpace Open-View & Secure-Write System
 (function() {
   const familyPassword = 'family2026';
   const authKey = 'family_space_authenticated';
   
-  const path = window.location.pathname;
-  const isPublicPage = path.endsWith('/') || path.endsWith('index.html') || path.endsWith('privacy.html') || path.endsWith('terms.html');
-
   function checkAuth() {
     const isAuthenticated = sessionStorage.getItem(authKey) === 'true';
-    
-    // Redirect to login page if accessing private area without auth
-    if (!isPublicPage && !isAuthenticated) {
-      window.location.href = 'index.html?triggerLogin=true';
-      return;
-    }
-
-    updateNavbarUI(isAuthenticated);
+    updateUI(isAuthenticated);
   }
 
-  function updateNavbarUI(isAuthenticated) {
+  function updateUI(isAuthenticated) {
     document.addEventListener('DOMContentLoaded', () => {
+      // 1. Update Navbar
       const authLink = document.getElementById('nav-auth-link');
       if (authLink) {
         if (isAuthenticated) {
@@ -28,10 +19,15 @@
           authLink.innerHTML = '<a href="#" onclick="showLoginModal()" class="login-menu-btn">로그인</a>';
         }
       }
-      
-      // Auto-trigger modal if requested via URL
-      if (window.location.search.includes('triggerLogin=true')) {
-        showLoginModal();
+
+      // 2. Control Write Form Visibility (for Blog)
+      const writeForm = document.getElementById('blog-write-section');
+      const loginAlert = document.getElementById('blog-login-alert');
+      if (writeForm) {
+        writeForm.style.display = isAuthenticated ? 'block' : 'none';
+      }
+      if (loginAlert) {
+        loginAlert.style.display = isAuthenticated ? 'none' : 'block';
       }
     });
   }
@@ -72,8 +68,9 @@
   window.handleLogout = function() {
     sessionStorage.removeItem(authKey);
     alert('로그아웃 되었습니다.');
-    window.location.href = 'index.html';
+    window.location.reload();
   };
 
+  // Run initial check
   checkAuth();
 })();

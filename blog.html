@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="login-modal.css" />
     <script src="auth.js"></script>
     <style>
-      .file-input-wrapper { margin-bottom: 15px; }
-      .file-preview { margin-top: 10px; max-width: 100%; border-radius: 8px; display: none; }
       .post-image { max-width: 100%; border-radius: 12px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-      .delete-post-btn { color: #ff4757; border: none; background: none; cursor: pointer; float: right; font-size: 1.2rem; }
+      .delete-post-btn { color: #ff4757; border: none; background: none; cursor: pointer; float: right; font-size: 1.2rem; display: none; }
+      body.is-admin .delete-post-btn { display: block; }
+      .login-alert-box { background: #f8f9fa; padding: 20px; border-radius: 16px; text-align: center; border: 2px dashed #ddd; }
     </style>
   </head>
   <body class="blog-page">
@@ -32,28 +32,34 @@
     <div class="main-wrapper">
       <header style="text-align: center; margin-bottom: 50px;">
         <h1>우리 가족 일기장 📔</h1>
-        <p style="color: #666;">사진과 함께 소중한 추억을 기록해보세요.</p>
+        <p style="color: #666;">우리 가족의 추억은 누구나 볼 수 있지만, 기록은 가족만 가능합니다.</p>
       </header>
 
       <div class="content-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: flex-start;">
         <div class="content-card" style="position: sticky; top: 100px;">
-          <h3>오늘의 기록 쓰기</h3>
-          <div style="margin-top: 20px;">
-            <select id="post-author" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd;">
-              <option value="dad">아빠 (Bố)</option>
-              <option value="mom">엄마 (Mẹ)</option>
-              <option value="baby">아기 (Bé)</option>
-            </select>
-            <input type="text" id="post-title" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd;" placeholder="제목">
-            <textarea id="post-content" style="width: 100%; height: 150px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; resize: none;" placeholder="내용을 입력하세요..."></textarea>
-            
-            <div class="file-input-wrapper">
-              <label style="display: block; margin-bottom: 5px; font-size: 0.9rem; color: #666;">사진 첨부 (Ảnh):</label>
-              <input type="file" id="post-file" accept="image/*" style="width: 100%;" onchange="previewImage(this)">
-              <img id="image-preview" class="file-preview">
-            </div>
+          <!-- Login Alert (Hidden when logged in) -->
+          <div id="blog-login-alert" class="login-alert-box">
+            <p style="margin-bottom: 15px;">기록을 남기려면 로그인이 필요합니다.</p>
+            <button onclick="showLoginModal()" class="btn-enter" style="background: var(--primary-color); color: white;">로그인 하기</button>
+          </div>
 
-            <button onclick="savePostWithFile()" class="btn-enter" style="background: var(--primary-color); color: white; border: none; width: 100%; cursor: pointer;">추억 저장하기</button>
+          <!-- Write Form (Hidden when logged out) -->
+          <div id="blog-write-section" style="display: none;">
+            <h3>오늘의 기록 쓰기</h3>
+            <div style="margin-top: 20px;">
+              <select id="post-author" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd;">
+                <option value="dad">아빠 (Bố)</option>
+                <option value="mom">엄마 (Mẹ)</option>
+                <option value="baby">아기 (Bé)</option>
+              </select>
+              <input type="text" id="post-title" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd;" placeholder="제목">
+              <textarea id="post-content" style="width: 100%; height: 150px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; resize: none;" placeholder="내용을 입력하세요..."></textarea>
+              <div style="margin-bottom: 15px;">
+                <input type="file" id="post-file" accept="image/*" onchange="previewImage(this)">
+                <img id="image-preview" style="max-width: 100%; border-radius: 8px; display: none; margin-top: 10px;">
+              </div>
+              <button onclick="savePostWithFile()" class="btn-enter" style="background: var(--primary-color); color: white; border: none; width: 100%; cursor: pointer;">추억 저장하기</button>
+            </div>
           </div>
         </div>
 
@@ -64,26 +70,22 @@
       </div>
     </div>
 
-    <footer class="footer">
-      <p>&copy; 2026 FamilySpace. All rights reserved.</p>
-    </footer>
-
+    <!-- Login Modal -->
     <div id="login-modal-overlay" class="modal-overlay">
       <div class="login-modal">
         <button class="modal-close" onclick="closeLoginModal()">&times;</button>
         <h2>가족 로그인</h2>
-        <p>비밀번호를 입력해주세요.</p>
+        <p>기록 권한을 활성화합니다.</p>
         <div class="modal-input-group">
           <input type="password" id="modal-p-input" class="modal-input" placeholder="비밀번호">
           <span id="modal-toggle-btn" class="modal-toggle-view" onclick="toggleModalPassword()">👁️</span>
         </div>
-        <button onclick="handleModalLogin()" class="modal-login-btn">입장하기</button>
+        <button onclick="handleModalLogin()" class="modal-login-btn">권한 활성화</button>
       </div>
     </div>
 
     <script>
       var currentImageData = "";
-
       function previewImage(input) {
         var preview = document.getElementById('image-preview');
         if (input.files && input.files[0]) {
@@ -99,12 +101,14 @@
 
       function renderAllPosts() {
         var blogList = document.getElementById('blog-posts');
+        var isAuthenticated = sessionStorage.getItem('family_space_authenticated') === 'true';
+        if (isAuthenticated) document.body.classList.add('is-admin');
+        
         var allPosts = [];
         ['dad', 'mom', 'baby'].forEach(function(member) {
           var posts = JSON.parse(localStorage.getItem('blog_' + member) || '[]');
           allPosts = allPosts.concat(posts);
         });
-
         allPosts.sort(function(a, b) { return b.id - a.id; });
 
         if (allPosts.length === 0) {
@@ -116,13 +120,13 @@
         allPosts.forEach(function(post) {
           var authorColor = post.author.indexOf('아빠') !== -1 ? '#2c3e50' : (post.author.indexOf('엄마') !== -1 ? '#d35400' : '#27ae60');
           html += '<div class="content-card" style="margin-bottom: 25px; border-left: 5px solid ' + authorColor + ';">';
-          html += '<button onclick="deletePost(' + post.id + ', '' + post.authorKey + '')" class="delete-post-btn">&times;</button>';
+          if (isAuthenticated) {
+            html += '<button onclick="deletePost(' + post.id + ', '' + post.authorKey + '')" class="delete-post-btn">&times;</button>';
+          }
           html += '<h4 style="color: ' + authorColor + ';">' + post.title + '</h4>';
           html += '<p style="font-size: 0.8rem; color: #777; margin-bottom: 15px;">' + post.date + ' | 작성자: ' + post.author + '</p>';
           html += '<div style="white-space: pre-wrap;">' + post.content + '</div>';
-          if (post.image) {
-            html += '<img src="' + post.image + '" class="post-image">';
-          }
+          if (post.image) html += '<img src="' + post.image + '" class="post-image">';
           html += '</div>';
         });
         blogList.innerHTML = html;
@@ -132,22 +136,11 @@
         var authorKey = document.getElementById('post-author').value;
         var title = document.getElementById('post-title').value;
         var content = document.getElementById('post-content').value;
-
-        if (!title || !content) {
-          alert('제목과 내용을 입력해주세요!');
-          return;
-        }
+        if (!title || !content) { alert('제목과 내용을 입력해주세요!'); return; }
 
         var authorName = authorKey === 'dad' ? '아빠 (Bố)' : (authorKey === 'mom' ? '엄마 (Mẹ)' : '아기 (Bé)');
-        var newPost = {
-          id: Date.now(),
-          authorKey: authorKey,
-          title: title,
-          content: content,
-          image: currentImageData,
-          date: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
-          author: authorName
-        };
+        var newPost = { id: Date.now(), authorKey: authorKey, title: title, content: content, image: currentImageData,
+          date: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }), author: authorName };
 
         var posts = JSON.parse(localStorage.getItem('blog_' + authorKey) || '[]');
         posts.unshift(newPost);
@@ -158,12 +151,11 @@
         document.getElementById('post-file').value = '';
         document.getElementById('image-preview').style.display = 'none';
         currentImageData = "";
-        
         renderAllPosts();
       };
 
       window.deletePost = function(postId, authorKey) {
-        if (confirm('이 글을 삭제하시겠습니까?')) {
+        if (confirm('삭제하시겠습니까?')) {
           var posts = JSON.parse(localStorage.getItem('blog_' + authorKey) || '[]');
           var filtered = posts.filter(function(p) { return p.id !== postId; });
           localStorage.setItem('blog_' + authorKey, JSON.stringify(filtered));
