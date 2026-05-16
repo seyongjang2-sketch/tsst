@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아기의 공간 - 우리 가족 놀이터</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .alphabet-board {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .letter-btn {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border: 2px solid var(--baby-color);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.1s, background 0.1s;
+      }
+      .letter-btn:active {
+        transform: scale(0.9);
+        background: var(--baby-color);
+        color: white;
+      }
+      .display-letter {
+        font-size: 4rem;
+        text-align: center;
+        margin: 20px 0;
+        height: 100px;
+        color: var(--baby-color);
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="dad.html">아빠</a></li>
+          <li><a href="mom.html">엄마</a></li>
+          <li><a href="baby.html">아기</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <header class="page-header baby-header">
+      <h1>아기 놀이터 👶</h1>
+      <p>즐거운 노래와 신나는 공부 시간!</p>
+    </header>
+
+    <div class="main-wrapper">
+      <div class="content-grid">
+        <div class="content-card">
+          <h3>신나는 동요 영상</h3>
+          <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PL2V6X6qH6P2-p0V0lH5B_OQ9S3T_uI0K8" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <p>엄마 아빠와 함께 따라 불러봐요!</p>
+        </div>
+
+        <div class="content-card">
+          <h3>가나다 글자 공부</h3>
+          <div id="display-letter" class="display-letter">가</div>
+          <div class="alphabet-board" id="alphabet-board"></div>
+          <p style="margin-top: 15px; text-align: center;">글자를 누르면 크게 보여요!</p>
+        </div>
+
+        <div class="content-card">
+          <h3>재미있는 놀이 공간</h3>
+          <p>아래 풍선을 터뜨려 보세요!</p>
+          <div style="height: 150px; background: #f0fff4; border-radius: 12px; position: relative; overflow: hidden; cursor: crosshair;" id="game-area"></div>
+        </div>
+      </div>
+      
+      <div style="text-align: center;">
+        <a href="index.html" class="btn-enter" style="background: var(--baby-color); color: white; text-decoration: none;">메인으로 돌아가기</a>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2026 우리 가족 놀이터. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      var letters = '가나다라마바사아자차카타파하';
+      var board = document.getElementById('alphabet-board');
+      var display = document.getElementById('display-letter');
+
+      letters.split('').forEach(function(char) {
+        var btn = document.createElement('button');
+        btn.className = 'letter-btn';
+        btn.textContent = char;
+        btn.onclick = function() {
+          display.textContent = char;
+        };
+        board.appendChild(btn);
+      });
+
+      var gameArea = document.getElementById('game-area');
+      function createBalloon() {
+        var balloon = document.createElement('div');
+        var size = 30 + Math.random() * 20;
+        balloon.style.width = size + 'px';
+        balloon.style.height = (size * 1.2) + 'px';
+        balloon.style.background = 'hsl(' + (Math.random() * 360) + ', 70%, 60%)';
+        balloon.style.borderRadius = '50%';
+        balloon.style.position = 'absolute';
+        balloon.style.left = Math.random() * (gameArea.clientWidth - size) + 'px';
+        balloon.style.bottom = '-60px';
+        balloon.style.cursor = 'pointer';
+        balloon.style.transition = 'bottom 4s linear';
+        
+        balloon.onclick = function() {
+          balloon.style.transform = 'scale(1.5)';
+          balloon.style.opacity = '0';
+          setTimeout(function() { balloon.remove(); }, 100);
+        };
+
+        gameArea.appendChild(balloon);
+        
+        setTimeout(function() {
+          balloon.style.bottom = '160px';
+        }, 10);
+
+        setTimeout(function() {
+          if (balloon.parentNode) balloon.remove();
+        }, 4000);
+      }
+
+      setInterval(createBalloon, 1000);
+    </script>
+  </body>
+</html>

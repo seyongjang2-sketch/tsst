@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>프리미엄 로또 번호 생성기</title>
+    <title>우리 가족 놀이터 - 행복한 우리집 공간</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
@@ -12,74 +12,64 @@
   <body>
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.html" class="nav-logo">LottoGen</a>
+        <a href="index.html" class="nav-logo">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
-          <li><a href="about.html">소개</a></li>
-          <li><a href="terms.html">이용약관</a></li>
-          <li><a href="privacy.html">개인정보처리방침</a></li>
-          <li><a href="contact.html">문의</a></li>
+          <li><a href="dad.html">아빠</a></li>
+          <li><a href="mom.html">엄마</a></li>
+          <li><a href="baby.html">아기</a></li>
         </ul>
       </div>
     </nav>
 
-    <div class="app-wrapper">
-      <div class="card">
-        <div class="theme-toggle">
-          <button id="theme-btn" aria-label="Toggle dark mode">
-            <span class="icon-sun">☀️</span>
-            <span class="icon-moon">🌙</span>
-          </button>
-        </div>
-        <header>
-          <h1>LOTTO 6/45</h1>
-          <p class="subtitle">프리미엄 로또 번호 생성기</p>
-        </header>
+    <div class="main-wrapper">
+      <header class="main-header">
+        <h1>우리 가족 놀이터</h1>
+        <p class="subtitle">모두가 즐거운 우리집 전용 공간입니다</p>
+      </header>
 
-        <section class="intro-section">
-          <p>
-            매주 행운을 꿈꾸는 당신을 위한 최고의 동반자입니다. 
-            <strong>프리미엄 로또 번호 생성기</strong>는 정교한 알고리즘을 통해 
-            당신에게 최적의 번호 조합을 제안합니다. 지금 바로 번호를 생성하고 행운의 주인공이 되어보세요!
-          </p>
-        </section>
-        
-        <div class="game-selector">
-          <label for="game-count">게임 횟수 선택:</label>
-          <select id="game-count">
-            <option value="1">1 게임</option>
-            <option value="5">5 게임</option>
-            <option value="10">10 게임</option>
-          </select>
-        </div>
+      <div class="gateway-container">
+        <a href="dad.html" class="gateway-card dad-card">
+          <div class="card-icon">🎮</div>
+          <h2>아빠의 공간</h2>
+          <ul>
+            <li>게임</li>
+            <li>유튜브</li>
+            <li>낚시</li>
+          </ul>
+          <div class="btn-enter">들어가기</div>
+        </a>
 
-        <div id="numbers-container" class="numbers-container">
-          <!-- 번호 공들이 여기에 생성됩니다 -->
-          <div class="placeholder">번호 생성 버튼을 눌러주세요</div>
-        </div>
+        <a href="mom.html" class="gateway-card mom-card">
+          <div class="card-icon">🍳</div>
+          <h2>엄마의 공간</h2>
+          <ul>
+            <li>오늘의 요리 & 뷰티</li>
+            <li>생활 팁</li>
+            <li>아기 건강</li>
+          </ul>
+          <div class="btn-enter">들어가기</div>
+        </a>
 
-        <div class="actions">
-          <button id="generate-btn">번호 생성하기</button>
-          <button id="clear-btn" class="secondary-btn">초기화</button>
-        </div>
-
-        <section class="info-section">
-          <h3>로또 6/45란?</h3>
-          <p>대한민국에서 발행되는 복권으로, 1부터 45까지의 숫자 중 6개를 맞추는 방식입니다. 매주 토요일 저녁 추첨이 진행됩니다.</p>
-          
-          <h3>왜 프리미엄 생성기를 사용해야 하나요?</h3>
-          <p>단순한 랜덤 추출을 넘어, 시각적으로 즐거운 경험을 제공하며 사용자의 기분 좋은 시작을 돕습니다. 행운은 마음가짐에서 시작됩니다.</p>
-        </section>
+        <a href="baby.html" class="gateway-card baby-card">
+          <div class="card-icon">👶</div>
+          <h2>아기의 공간</h2>
+          <ul>
+            <li>글자 공부 & 놀이</li>
+            <li>동요 영상</li>
+            <li>간단한 게임</li>
+          </ul>
+          <div class="btn-enter">들어가기</div>
+        </a>
       </div>
     </div>
 
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2026 프리미엄 로또 번호 생성기. All rights reserved.</p>
+        <p>&copy; 2026 우리 가족 놀이터. All rights reserved.</p>
         <div class="footer-links">
           <a href="about.html">소개</a>
           <a href="terms.html">이용약관</a>
-          <a href="privacy.html">개인정보처리방침</a>
           <a href="contact.html">문의</a>
         </div>
       </div>
