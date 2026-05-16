@@ -8,25 +8,49 @@
       html, body { height: 100%; margin: 0; padding: 0; }
       body { display: flex; align-items: center; justify-content: center; font-family: sans-serif; background: #4a90e2; }
       .login-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 100%; max-width: 320px; text-align: center; }
-      input { width: 100%; padding: 15px; margin-bottom: 20px; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
-      button { width: 100%; padding: 15px; background: #4a90e2; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; }
+      .input-container { position: relative; margin-bottom: 20px; }
+      input { width: 100%; padding: 15px; padding-right: 45px; border: 2px solid #eee; border-radius: 10px; box-sizing: border-box; font-size: 1rem; outline: none; }
+      input:focus { border-color: #4a90e2; }
+      .toggle-password { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999; font-size: 1.2rem; user-select: none; }
+      button { width: 100%; padding: 15px; background: #4a90e2; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+      button:hover { background: #357abd; }
     </style>
   </head>
   <body>
     <div class="login-box">
-      <h1 style="color:#4a90e2;">FamilySpace</h1>
-      <p style="color:#666;">우리 가족 비밀번호 입력</p>
-      <input type="password" id="p-input" placeholder="비밀번호">
+      <h1 style="color:#4a90e2; margin-top:0;">FamilySpace</h1>
+      <p style="color:#666; font-size: 0.9rem; margin-bottom: 25px;">가족 비밀번호를 입력해주세요.</p>
+      <div class="input-container">
+        <input type="password" id="p-input" placeholder="비밀번호">
+        <span id="toggle-btn" class="toggle-password">👁️</span>
+      </div>
       <button id="btn-login">입장하기</button>
-      <p style="margin-top:20px;"><a href="index.html" style="color:#999;text-decoration:none;">홈으로</a></p>
+      <p style="margin-top:20px;"><a href="index.html" style="color:#999;text-decoration:none;font-size:0.8rem;">홈으로 돌아가기</a></p>
     </div>
     <script>
+      var pInput = document.getElementById('p-input');
+      var toggleBtn = document.getElementById('toggle-btn');
+      
+      toggleBtn.onclick = function() {
+        if (pInput.type === 'password') {
+          pInput.type = 'text';
+          toggleBtn.textContent = '🔒';
+        } else {
+          pInput.type = 'password';
+          toggleBtn.textContent = '👁️';
+        }
+      };
+
       document.getElementById('btn-login').onclick = function() {
-        var val = document.getElementById('p-input').value;
+        var val = pInput.value;
         if (val === 'family2026') {
           sessionStorage.setItem('family_space_authenticated', 'true');
           window.location.href = 'index.html';
-        } else { alert('비밀번호 오류'); }
+        } else { alert('비밀번호가 틀렸습니다.'); }
+      };
+
+      pInput.onkeypress = function(e) {
+        if (e.key === 'Enter') document.getElementById('btn-login').click();
       };
     </script>
   </body>
