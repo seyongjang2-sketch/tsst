@@ -9,6 +9,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <style>
+      .page-header.baby-header {
+        background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1502086223501-7ea24ec3946d?auto=format&fit=crop&q=80&w=1200');
+        background-size: cover;
+        background-position: center;
+      }
       .alphabet-board { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px; margin-top: 20px; }
       .letter-btn { width: 60px; height: 60px; background: white; border: 2px solid var(--baby-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700; cursor: pointer; transition: transform 0.1s, background 0.1s; }
       .letter-btn:active { transform: scale(0.9); background: var(--baby-color); color: white; }
@@ -61,8 +66,8 @@
         <!-- Game Area -->
         <div class="content-card">
           <h3>풍선 터뜨리기 🎈</h3>
+          <div style="height: 150px; background: #f0fff4; border-radius: 12px; position: relative; overflow: hidden; cursor: crosshair; margin-bottom: 15px;" id="game-area"></div>
           <p>화려한 색깔의 풍선을 터뜨려 보세요!</p>
-          <div style="height: 150px; background: #f0fff4; border-radius: 12px; position: relative; overflow: hidden; cursor: crosshair;" id="game-area"></div>
         </div>
       </div>
       
@@ -87,7 +92,7 @@
       function switchLang(lang) {
         currentLang = lang;
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        if (event && event.target) event.target.classList.add('active');
         renderBoard();
         display.textContent = lang === 'kr' ? '가' : 'A';
       }

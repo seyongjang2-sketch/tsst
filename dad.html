@@ -3,11 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>아빠의 공간 - 우리 가족 놀이터</title>
+    <title>아빠의 공간 - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .page-header.dad-header {
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200');
+        background-size: cover;
+        background-position: center;
+      }
+      .tech-badge { background: #ff4757; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; vertical-align: middle; }
+      .travel-card { display: flex; gap: 15px; margin-bottom: 15px; align-items: center; }
+      .travel-img { width: 80px; height: 80px; background: #eee; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; }
+      .travel-img img { width: 100%; height: 100%; object-fit: cover; }
+    </style>
   </head>
   <body>
     <nav class="navbar">
@@ -23,40 +34,49 @@
     </nav>
 
     <header class="page-header dad-header">
-      <h1>아빠의 아지트 🎮</h1>
-      <p>게임, 유튜브, 그리고 낚시까지! 아빠만의 힐링 공간</p>
+      <h1>아빠의 파워 스테이션 ⚡</h1>
+      <p>액션 게임, 최신 테크, 그리고 베트남 가족 여행 정보</p>
     </header>
 
     <div class="main-wrapper">
       <div class="content-grid">
-        <!-- Games -->
+        <!-- Action Games -->
         <div class="content-card">
-          <h3>인기 게임 영상</h3>
+          <h3>화려한 액션 게임 하이라이트</h3>
           <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PL4unlB1_P_XN722e1VvE_O-2vPiz9lYxR" frameborder="0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLsiP_uYmId_7KqW1LhT4Xb_zF1X-9FjQv" frameborder="0" allowfullscreen></iframe>
           </div>
-          <p>최신 유행하는 게임 리뷰와 플레이 영상을 확인하세요.</p>
+          <p>스트레스 풀리는 짜릿한 타격감! 최신 액션 게임 트레일러를 감상하세요.</p>
         </div>
 
-        <!-- Fishing -->
+        <!-- Tech Info -->
         <div class="content-card">
-          <h3>이번 주 낚시 포인트</h3>
-          <ul>
-            <li>서해안 안면도 - 우럭/광어 포인트</li>
-            <li>동해안 속초항 - 고등어/전어 포인트</li>
-            <li>남해안 거제도 - 감성돔 포인트</li>
+          <h3>최신 전자기기 & 가젯 정보</h3>
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=400" alt="Tech" style="width: 100%; border-radius: 12px; margin-bottom: 15px;">
+          <ul class="list-unstyled">
+            <li class="mb-2"><strong>갤럭시 S24 울트라</strong> <span class="tech-badge">NEW</span></li>
+            <li class="mb-2"><strong>PS5 Pro 루머 총정리</strong></li>
+            <li><strong>M3 맥북 에어</strong></li>
           </ul>
-          <p style="margin-top: 15px;">안전한 낚시를 위해 구명조끼는 필수입니다!</p>
         </div>
 
-        <!-- Tech/YouTube -->
+        <!-- Travel & Food in Vietnam -->
         <div class="content-card">
-          <h3>추천 테크 유튜브</h3>
-          <ul>
-            <li>테크몽 (IT 기기 리뷰)</li>
-            <li>잇섭 (흥미로운 가젯들)</li>
-            <li>디에디트 (라이프스타일 & 테크)</li>
-          </ul>
+          <h3>베트남 가족 여행 & 맛집</h3>
+          <div class="travel-card">
+            <div class="travel-img"><img src="https://images.unsplash.com/photo-1589118949245-7d38baf380d6?auto=format&fit=crop&q=80&w=150" alt="Phu Quoc"></div>
+            <div>
+              <strong>푸꾸옥(Phu Quoc) 여행</strong>
+              <p><small>아이와 함께하기 좋은 빈원더스 코스</small></p>
+            </div>
+          </div>
+          <div class="travel-card">
+            <div class="travel-img"><img src="https://images.unsplash.com/photo-1518391846015-55a9cc003b25?auto=format&fit=crop&q=80&w=150" alt="Da Lat"></div>
+            <div>
+              <strong>달랏(Da Lat) 힐링 투어</strong>
+              <p><small>시원한 고원 지대 가족 나들이</small></p>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -67,7 +87,7 @@
 
     <footer class="footer">
       <div class="footer-content">
-        <p>&copy; 2026 우리 가족 놀이터. All rights reserved.</p>
+        <p>&copy; 2026 FamilySpace. All rights reserved.</p>
       </div>
     </footer>
   </body>
