@@ -3,20 +3,34 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>우리 아기 밤하늘 - FamilySpace</title>
+    <title>우리 아기 밤하늘 행성 탐험 - FamilySpace</title>
     <style>
-      body { margin: 0; overflow: hidden; background: #00040a; }
+      body { margin: 0; overflow: hidden; background: #00040a; font-family: 'Noto Sans KR', sans-serif; }
       canvas { display: block; touch-action: none; }
       .sky-ui {
-        position: absolute; top: 100px; left: 50%; transform: translateX(-50%);
-        text-align: center; color: white; pointer-events: none; width: 100%; font-family: sans-serif;
+        position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+        text-align: center; color: white; width: 100%; pointer-events: none;
       }
-      .sky-ui h1 { font-size: 2.2rem; text-shadow: 0 0 20px rgba(255,255,255,0.5); margin: 0; }
-      .sky-ui p { font-size: 1rem; opacity: 0.7; margin-top: 10px; }
-      .controls-hint {
-        position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-        color: rgba(255,255,255,0.4); font-size: 0.85rem; text-align: center; pointer-events: none;
+      .search-container {
+        position: absolute; top: 120px; left: 50%; transform: translateX(-50%);
+        z-index: 1000; display: flex; gap: 5px; pointer-events: auto;
       }
+      .search-input {
+        padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3);
+        background: rgba(0,0,0,0.5); color: white; outline: none; width: 150px;
+      }
+      .search-btn {
+        padding: 10px 20px; border-radius: 20px; border: none; background: #4a90e2; color: white; cursor: pointer;
+      }
+      .planet-popup {
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8);
+        width: 80%; max-width: 500px; background: rgba(0,0,0,0.9); border-radius: 24px;
+        border: 2px solid #4a90e2; padding: 30px; color: white; text-align: center;
+        z-index: 2000; display: none; opacity: 0; transition: all 0.3s ease;
+      }
+      .planet-popup.active { display: block; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      .popup-close { position: absolute; top: 15px; right: 15px; color: white; font-size: 1.5rem; cursor: pointer; background:none; border:none; }
+      .video-box { width: 100%; border-radius: 12px; overflow: hidden; margin: 20px 0; }
       .back-btn {
         position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1);
         color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px;
@@ -27,52 +41,48 @@
   <body>
     <canvas id="starCanvas"></canvas>
     <div class="sky-ui">
-      <h1>환상적인 우리 가족 은하수 🌌</h1>
-      <p>우주를 자유롭게 탐험해보세요</p>
+      <h1 style="font-size: 1.8rem;">🚀 행성 탐험대</h1>
+      <p style="font-size: 0.9rem; opacity: 0.7;">찾고 싶은 행성 이름을 입력해보세요 (지구, 화성, 목성 등)</p>
     </div>
-    <div class="controls-hint">
-      마우스 휠이나 두 손가락으로 확대/축소를 해보세요.<br>
-      화면을 드래그하면 은하수 속을 여행할 수 있습니다.
+    
+    <div class="search-container">
+      <input type="text" id="planetSearch" class="search-input" placeholder="행성 이름...">
+      <button onclick="findPlanet()" class="search-btn">찾아가기</button>
     </div>
+
+    <div id="planetPopup" class="planet-popup">
+      <button class="popup-close" onclick="closePopup()">&times;</button>
+      <h2 id="popupTitle">행성 이름</h2>
+      <div class="video-box" id="videoContainer"></div>
+      <p id="popupDesc">행성 설명이 여기에 나옵니다.</p>
+    </div>
+
     <a href="index.html" class="back-btn">돌아가기</a>
 
     <script>
       const canvas = document.getElementById('starCanvas');
       const ctx = canvas.getContext('2d');
-      let stars = [];
-      let nebula = [];
-      let scale = 1;
-      let offsetX = 0;
-      let offsetY = 0;
-      let isDragging = false;
-      let lastMouse = { x: 0, y: 0 };
+      let stars = [], nebula = [], planets = [];
+      let scale = 1, offsetX = 0, offsetY = 0;
+      let targetX = 0, targetY = 0, isMoving = false;
+
+      const planetData = {
+        '수성': { x: 500, y: -300, color: '#A5A5A5', desc: '태양과 가장 가까운 행성이에요!', vid: 'https://www.youtube.com/embed/0KBjnNuhRHs' },
+        '금성': { x: -800, y: 400, color: '#E3BB76', desc: '가장 뜨겁고 밝게 빛나는 행성이에요!', vid: 'https://www.youtube.com/embed/Z9U7Xm9Xis0' },
+        '지구': { x: 0, y: 0, color: '#2271B3', desc: '우리가 살고 있는 아름다운 푸른 행성이에요!', vid: 'https://www.youtube.com/embed/l789l6v-LKg' },
+        '화성': { x: 1200, y: 800, color: '#E27B58', desc: '붉은 흙과 돌로 가득한 신비로운 행성이에요!', vid: 'https://www.youtube.com/embed/D8pnmwOXhoY' },
+        '목성': { x: -1500, y: -1200, color: '#D39C7E', desc: '태양계에서 가장 큰 거대 행성이에요!', vid: 'https://www.youtube.com/embed/XycHSbeXvXk' },
+        '토성': { x: 2000, y: -500, color: '#C5AB6E', desc: '멋진 고리를 가진 아름다운 행성이에요!', vid: 'https://www.youtube.com/embed/epZdZaEQhS0' }
+      };
 
       function init() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        
-        // Create Nebula (Milky Way)
-        nebula = [];
-        for(let i=0; i<15; i++) {
-          nebula.push({
-            x: Math.random() * 3000 - 1500,
-            y: Math.random() * 2000 - 1000,
-            radius: 300 + Math.random() * 400,
-            color: 'hsla(' + (200 + Math.random() * 60) + ', 70%, 50%, 0.05)'
-          });
-        }
-
-        // Create Stars
         stars = [];
-        for (let i = 0; i < 1500; i++) {
-          stars.push({
-            x: Math.random() * 4000 - 2000,
-            y: Math.random() * 4000 - 2000,
-            size: Math.random() * 1.5,
-            opacity: Math.random(),
-            twinkle: 0.01 + Math.random() * 0.02
-          });
+        for (let i = 0; i < 1000; i++) {
+          stars.push({ x: Math.random() * 6000 - 3000, y: Math.random() * 6000 - 3000, size: Math.random() * 2, op: Math.random() });
         }
+        planets = Object.keys(planetData).map(name => ({ name, ...planetData[name] }));
       }
 
       function draw() {
@@ -80,78 +90,57 @@
         ctx.fillStyle = '#00040a';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.translate(canvas.width/2 + offsetX, canvas.height/2 + offsetY);
+        if (isMoving) {
+          offsetX += (targetX - offsetX) * 0.05;
+          offsetY += (targetY - offsetY) * 0.05;
+          if (Math.abs(targetX - offsetX) < 1) isMoving = false;
+        }
+
+        ctx.translate(canvas.width/2 - offsetX, canvas.height/2 - offsetY);
         ctx.scale(scale, scale);
 
-        // Draw Nebula
-        nebula.forEach(n => {
-          let grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.radius);
-          grd.addColorStop(0, n.color);
-          grd.addColorStop(1, 'transparent');
-          ctx.fillStyle = grd;
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-          ctx.fill();
+        stars.forEach(s => {
+          ctx.fillStyle = 'rgba(255,255,255,' + s.op + ')';
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.size, 0, Math.PI*2); ctx.fill();
         });
 
-        // Draw Stars
-        stars.forEach(star => {
-          ctx.fillStyle = 'rgba(255, 255, 255, ' + star.opacity + ')';
-          ctx.beginPath();
-          ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-          ctx.fill();
-          
-          star.opacity += star.twinkle;
-          if (star.opacity > 1 || star.opacity < 0.2) star.twinkle *= -1;
+        planets.forEach(p => {
+          ctx.fillStyle = p.color;
+          ctx.beginPath(); ctx.arc(p.x, p.y, 20 / scale, 0, Math.PI*2); ctx.fill();
+          ctx.fillStyle = 'white'; ctx.font = '12px Arial';
+          ctx.fillText(p.name, p.x + 25/scale, p.y + 5/scale);
         });
 
         requestAnimationFrame(draw);
       }
 
-      // Interaction
-      window.addEventListener('wheel', e => {
-        const zoomSpeed = 0.001;
-        scale -= e.deltaY * zoomSpeed;
-        scale = Math.min(Math.max(0.5, scale), 5);
-      });
-
-      window.addEventListener('mousedown', e => { isDragging = true; lastMouse = { x: e.x, y: e.y }; });
-      window.addEventListener('mousemove', e => {
-        if (isDragging) {
-          offsetX += e.x - lastMouse.x;
-          offsetY += e.y - lastMouse.y;
-          lastMouse = { x: e.x, y: e.y };
+      function findPlanet() {
+        const name = document.getElementById('planetSearch').value;
+        if (planetData[name]) {
+          targetX = planetData[name].x;
+          targetY = planetData[name].y;
+          isMoving = true;
+          setTimeout(() => showPopup(name), 1500);
+        } else {
+          alert('행성 이름을 다시 확인해주세요! (수성, 금성, 지구, 화성, 목성, 토성)');
         }
-      });
-      window.addEventListener('mouseup', () => isDragging = false);
+      }
 
-      // Mobile Touch
-      let lastTouchDist = 0;
-      window.addEventListener('touchstart', e => {
-        if (e.touches.length === 1) {
-          isDragging = true;
-          lastMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        } else if (e.touches.length === 2) {
-          lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-        }
-      });
-      window.addEventListener('touchmove', e => {
-        if (e.touches.length === 1 && isDragging) {
-          offsetX += e.touches[0].clientX - lastMouse.x;
-          offsetY += e.touches[0].clientY - lastMouse.y;
-          lastMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-        } else if (e.touches.length === 2) {
-          let dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-          scale *= dist / lastTouchDist;
-          scale = Math.min(Math.max(0.5, scale), 5);
-          lastTouchDist = dist;
-        }
-      });
-      window.addEventListener('touchend', () => isDragging = false);
+      function showPopup(name) {
+        const data = planetData[name];
+        document.getElementById('popupTitle').innerText = '🚀 ' + name + ' 탐험 완료!';
+        document.getElementById('popupDesc').innerText = data.desc;
+        document.getElementById('videoContainer').innerHTML = '<iframe width="100%" height="250" src="' + data.vid + '" frameborder="0" allowfullscreen></iframe>';
+        document.getElementById('planetPopup').classList.add('active');
+      }
 
-      window.addEventListener('resize', init);
-      init();
-      draw();
+      function closePopup() {
+        document.getElementById('planetPopup').classList.remove('active');
+        document.getElementById('videoContainer').innerHTML = '';
+      }
+
+      window.addEventListener('wheel', e => { scale -= e.deltaY * 0.001; scale = Math.max(0.2, Math.min(scale, 3)); });
+      init(); draw();
     </script>
   </body>
 </html>
