@@ -3,74 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ 꿈꾸는 우주 탐험대 ✨</title>
+    <title>🚀 3D 우주 탐험대 (GLTF 넥스트젠 버전) 🚀</title>
     <style>
-        body { margin: 0; padding: 0; overflow: hidden; background-color: #000; font-family: 'Malgun Gothic', 'Comic Sans MS', sans-serif; }
+        body { margin: 0; padding: 0; overflow: hidden; background-color: #000; font-family: 'Malgun Gothic', sans-serif; }
         
-        /* 마법 동화책 스타일의 오버레이 모달창 */
+        /* 3D 모달 정보창 스타일링 */
         #info-modal { 
             display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 90%; max-width: 600px; background: linear-gradient(135deg, rgba(20, 25, 50, 0.95), rgba(40, 15, 45, 0.95)); 
-            border: 4px solid #ffd700; border-radius: 30px; padding: 25px; text-align: center; color: white; 
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.2); 
-            z-index: 100; animation: floatUp 0.5s ease-out;
+            width: 85%; max-width: 650px; background: rgba(8, 12, 28, 0.96); 
+            border: 4px solid #00ffff; border-radius: 30px; padding: 25px; text-align: center; color: white; 
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.5); z-index: 100; animation: scaleUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        @keyframes floatUp {
-            from { opacity: 0; transform: translate(-50%, -40%); }
-            to { opacity: 1; transform: translate(-50%, -50%); }
+        @keyframes scaleUp {
+            from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+            to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
 
-        #info-modal h2 { margin: 0 0 15px 0; color: #fffacd; font-size: 32px; text-shadow: 0 0 15px #ffaa00; }
+        #info-modal h2 { margin: 0 0 15px 0; color: #00ffff; font-size: 32px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
         
-        /* 캔버스에 둥근 마법 거울 효과 적용 */
-        #star-canvas { 
-            width: 100%; height: 260px; border-radius: 20px; border: 3px dashed #88aaff; 
-            background: radial-gradient(circle, #112244 0%, #000011 100%); 
-            margin-bottom: 15px; display: block; box-shadow: inset 0 0 30px #000; 
-        }
+        /* [핵심 변형] 2D 캔버스를 제거하고 제2의 3D WebGL 캔버스 컨테이너 배치 */
+        #modal-3d-container { width: 100%; height: 300px; border-radius: 20px; border: 2px solid #335588; background-color: #030308; margin-bottom: 15px; overflow: hidden; position: relative; }
         
-        /* 아이들이 읽기 좋은 큼직하고 부드러운 텍스트 */
-        #star-desc { font-size: 20px; line-height: 1.6; word-break: keep-all; margin: 10px 0 25px 0; color: #eef; text-shadow: 1px 1px 2px #000; }
+        #star-desc { font-size: 19px; line-height: 1.6; word-break: keep-all; margin: 15px 0 25px 0; color: #ddeeff; }
         
-        /* 반짝이는 버튼 */
         .close-btn { 
-            padding: 12px 35px; font-size: 20px; font-weight: bold; background: linear-gradient(to right, #ffcc00, #ff9900); 
-            color: #4a2e00; border: none; border-radius: 40px; cursor: pointer; transition: 0.3s; 
-            box-shadow: 0 5px 15px rgba(255, 153, 0, 0.5);
+            padding: 12px 40px; font-size: 19px; font-weight: bold; background: linear-gradient(135deg, #00ffff, #0088cc); 
+            color: #fff; border: none; border-radius: 40px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
         }
-        .close-btn:hover { transform: scale(1.05) translateY(-3px); box-shadow: 0 8px 25px rgba(255, 200, 0, 0.8); color: #fff; }
-        
-        #guide { position: absolute; top: 15px; left: 15px; color: rgba(255,255,255,0.9); pointer-events: none; font-size: 16px; text-shadow: 1px 1px 3px black; z-index: 10; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 15px; }
-        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #ffd700; font-size: 24px; font-weight: bold; text-shadow: 0 0 10px #fff; }
+        .close-btn:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0, 255, 255, 0.7); }
+        #guide { position: absolute; top: 15px; left: 15px; color: rgba(255,255,255,0.8); pointer-events: none; font-size: 15px; text-shadow: 1px 1px 2px black; z-index: 10; font-weight: bold; }
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00ffff; font-size: 22px; font-weight: bold; }
     </style>
     <script type="importmap">
-        { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
     </script>
 </head>
 <body>
 
-<div id="loading">✨ 우주 마법 지도를 펼치는 중... ✨</div>
-<div id="guide">🚀 드래그: 우주 둘러보기 | 휠: 확대/축소<br>⭐ 크고 예쁜 별이나 행성을 클릭해봐!</div>
+<div id="loading">우주 망원경 가동 중...</div>
+<div id="guide">🔭 드래그: 은하계 궤도 선회 | 마우스 휠: 줌인/아웃<br>⭐ 탐사할 천체를 클릭하면 독립된 3D 분석창이 열립니다.</div>
 
 <div id="info-modal">
-    <h2 id="star-name">별 이름</h2>
-    <canvas id="star-canvas" width="600" height="260"></canvas>
-    <p id="star-desc">별 설명</p>
-    <button class="close-btn" id="close-btn">우주로 돌아가기 🌌</button>
+    <h2 id="star-name">천체 분석 고도계</h2>
+    <div id="modal-3d-container"></div>
+    <p id="star-desc">천체 데이터 로딩 중...</p>
+    <button class="close-btn" id="close-btn">궤도로 복귀 🚀</button>
 </div>
 
 <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'; // GLTF 로더 엔진 주입
 
     document.getElementById('loading').style.display = 'none';
 
+    // ==========================================
+    // 1. 메인 우주 공간 (Scene 1) 설정
+    // ==========================================
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x050510, 0.0008); // 신비로운 우주 안개
-
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 3000);
-    camera.position.set(0, 80, 600);
+    camera.position.set(0, 100, 600);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -79,197 +77,173 @@
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
 
-    // 풍성한 마법의 은하수 (입자 10,000개)
+    // 배경 입자 은하수
     const starsGeometry = new THREE.BufferGeometry();
-    const posArray = new Float32Array(10000 * 3);
-    const colorsArray = new Float32Array(10000 * 3);
-    const colorObj = new THREE.Color();
-
-    for(let i = 0; i < 10000 * 3; i+=3) { 
-        posArray[i] = (Math.random() - 0.5) * 3000;
-        posArray[i+1] = (Math.random() - 0.5) * 3000;
-        posArray[i+2] = (Math.random() - 0.5) * 3000;
-
-        // 배경 별들도 파란색, 분홍색, 노란색으로 다채롭게
-        const mix = Math.random();
-        if(mix < 0.3) colorObj.setHex(0x88ccff);
-        else if(mix < 0.6) colorObj.setHex(0xffddaa);
-        else colorObj.setHex(0xffffff);
-
-        colorsArray[i] = colorObj.r;
-        colorsArray[i+1] = colorObj.g;
-        colorsArray[i+2] = colorObj.b;
-    }
+    const posArray = new Float32Array(5000 * 3);
+    for(let i = 0; i < 5000 * 3; i++) { posArray[i] = (Math.random() - 0.5) * 2500; }
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    starsGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
-
-    const starParticles = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ size: 1.8, vertexColors: true, transparent: true, opacity: 0.8 }));
+    const starParticles = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ size: 1.5, color: 0xffffff }));
     scene.add(starParticles);
 
-    // [핵심] 상상력을 자극하는 천체 데이터 (type 속성 추가)
+    // 천체 메타데이터 정의
     const starDataList = [
-        { 
-            x: 0, y: 0, z: 0, radius: 25, color: 0xFFD700, type: 'star',
-            name: '태양 (The Sun) ☀️', 
-            desc: '안녕! 나는 태양계의 대장, 태양이야! 내가 매일 따뜻한 빛을 주지 않으면 지구는 꽁꽁 얼어붙고 말 거야. 내 품은 아주아주 뜨겁단다!'
-        },
-        { 
-            x: -150, y: 80, z: -100, radius: 15, color: 0xFFF4E8, type: 'star',
-            name: '북극성 (Polaris) 🧭', 
-            desc: '밤하늘에서 길을 잃었니? 나를 찾아봐! 나는 항상 북쪽을 가리키는 길잡이 요정이란다. 옛날 해적들과 탐험가들의 훌륭한 나침반이었지.'
-        },
-        { 
-            x: 200, y: -60, z: 120, radius: 20, color: 0x88CCFF, type: 'star',
-            name: '시리우스 (Sirius) 💎', 
-            desc: '멍멍! 나는 큰개자리에 있는 파란 강아지 별, 시리우스야! 밤하늘에서 제일 눈부시게 반짝이는 보석 같은 별이지.'
-        },
-        { 
-            x: -100, y: 180, z: -250, radius: 45, color: 0xFF4422, type: 'star',
-            name: '베텔게우스 (Betelgeuse) 🌋', 
-            desc: '나는 오리온자리의 어깨에 있는 붉은 할아버지 별이야. 수명이 다해가서 몸집이 태양보다 수백 배나 뚱뚱하게 부풀어 올랐지!'
-        },
-        { 
-            x: 180, y: 150, z: -80, radius: 18, color: 0xEEDD88, type: 'ring_planet', // 고리가 있는 행성
-            name: '스위티 토성 (Saturn) 🪐', 
-            desc: '내 허리에 있는 훌라후프가 보이니? 이건 얼음과 돌멩이로 만들어진 아름다운 고리란다. 우주에서 가장 멋진 패션 스타지!'
-        },
-        { 
-            x: -250, y: -100, z: 80, radius: 16, color: 0xDDDDDD, type: 'moon', // 분화구가 있는 달
-            name: '스마일 달 (The Moon) 🌙', 
-            desc: '지구의 단짝 친구 달님이야! 내 얼굴에 있는 얼룩덜룩한 자국들은 옛날에 우주 돌멩이(운석)들과 부딪혀서 생긴 흉터(크레이터)란다.'
-        }
+        { x: 0, y: 0, z: 0, radius: 25, color: 0xFF8800, name: '태양 (The Sun)', desc: '태양계 중심에 위치한 거대한 가스 항성입니다. 초당 400만 톤의 질량을 에너지로 변환하며 빛나고 있습니다.', modelPath: './models/sun.glb' },
+        { x: -180, y: 60, z: -120, radius: 15, color: 0x00FFFF, name: '시리우스 (Sirius)', desc: '밤하늘에서 가장 겉보기 등급이 높은 광도의 항성입니다. 표면 온도가 9,940K에 육박하는 A형 주계열성입니다.', modelPath: './models/sirius.glb' },
+        { x: 200, y: -80, z: 150, radius: 35, color: 0xFF3300, name: '베텔게우스 (Betelgeuse)', desc: '오리온자리에 위치한 적색 초거성입니다. 반경이 태양의 약 700배에 달하며, 수명이 임박하여 초신성 폭발 단계를 앞두고 있습니다.', modelPath: './models/betelgeuse.glb' }
     ];
 
     const specialStars = [];
-
     starDataList.forEach(data => {
-        const geometry = new THREE.SphereGeometry(data.radius, 32, 32); 
-        // type이 별이면 스스로 빛나는 재질, 행성이면 빛을 받는 재질 느낌의 기본 색상 적용
+        const geometry = new THREE.SphereGeometry(data.radius, 32, 32);
         const material = new THREE.MeshBasicMaterial({ color: data.color });
         const sphere = new THREE.Mesh(geometry, material);
         sphere.position.set(data.x, data.y, data.z);
-        
-        sphere.userData = { name: data.name, desc: data.desc, color: data.color, radius: data.radius, type: data.type };
+        sphere.userData = data;
         scene.add(sphere);
         specialStars.push(sphere);
     });
 
+    // ==========================================
+    // 2. 모달창 내부 독립형 3D 뷰어 (Scene 2) 설정
+    // ==========================================
+    const modalContainer = document.getElementById('modal-3d-container');
+    const modalScene = new THREE.Scene();
+    
+    const modalCamera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000); // 비율은 초기화 시 재조정
+    modalCamera.position.set(0, 0, 100);
+
+    const modalRenderer = new THREE.WebGLRenderer({ antialias: true });
+    modalRenderer.setSize(550, 300); // 임시 사이즈 지정
+    modalRenderer.setPixelRatio(window.devicePixelRatio);
+    modalContainer.appendChild(modalRenderer.domElement);
+
+    // 모달 전용 제어기 및 조명 (물리적 입체감을 위해 조명 필수 필수)
+    const modalControls = new OrbitControls(modalCamera, modalRenderer.domElement);
+    modalControls.enableDamping = true;
+    modalControls.autoRotate = true; // 아이들이 볼 때 자동으로 회전하도록 설정
+    modalControls.autoRotateSpeed = 2.0;
+
+    const subAmbientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    modalScene.add(subAmbientLight);
+    const subDirectionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    subDirectionalLight.position.set(50, 50, 50);
+    modalScene.add(subDirectionalLight);
+
+    let currentModel = null; // 메모리 관리를 위한 현재 로드된 모델 포인터
+    const gltfLoader = new GLTFLoader();
+
+    // 메인 루프 (Scene 1과 Scene 2를 동시 혹은 조건부 렌더링)
+    function animate() {
+        requestAnimationFrame(animate);
+        
+        // 메인 우주 제어
+        starParticles.rotation.y += 0.0003;
+        controls.update();
+        renderer.render(scene, camera);
+
+        // 모달창이 열려있을 때만 독립 3D 씬을 연산하여 성능 자원 방어
+        if (document.getElementById('info-modal').style.display === 'block') {
+            modalControls.update();
+            modalRenderer.render(modalScene, modalCamera);
+        }
+    }
+    animate();
+
+    // ==========================================
+    // 3. 인터랙션 및 GLTF 비동기 로딩 로직
+    // ==========================================
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     window.addEventListener('click', (event) => {
+        // 클릭 영역이 UI 도큐먼트 내부면 전파 차단하여 오작동 방지
+        if(event.target.tagName === 'BUTTON' || event.target.closest('#info-modal')) return;
+
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
+        
         const intersects = raycaster.intersectObjects(specialStars);
         if (intersects.length > 0) {
-            openModal(intersects[0].object.userData);
+            openGLTFModal(intersects[0].object.userData);
+        }
+    });
+
+    function openGLTFModal(starData) {
+        document.getElementById('star-name').innerText = starData.name;
+        document.getElementById('star-desc').innerText = starData.desc;
+
+        // 컨테이너 가로세로 비율 최적화 매핑
+        const rect = modalContainer.getBoundingClientRect();
+        modalCamera.aspect = rect.width / rect.height;
+        modalCamera.updateProjectionMatrix();
+        modalRenderer.setSize(rect.width, rect.height);
+
+        // 이전 모델이 존재하면 씬에서 명시적으로 제거하여 가비지 컬렉션(GC) 유도
+        if (currentModel) {
+            modalScene.remove(currentModel);
+        }
+
+        // [핵심] GLTF 비동기 로드 및 강력한 폴백(Fallback) 안전장치
+        gltfLoader.load(
+            starData.modelPath,
+            (gltf) => {
+                // 로딩 성공 시 3D 자산 주입
+                currentModel = gltf.scene;
+                
+                // 모델 스케일 및 위치 중앙 정렬 보정
+                const box = new THREE.Box3().setFromObject(currentModel);
+                const size = box.getSize(new THREE.Vector3()).length();
+                const center = box.getCenter(new THREE.Vector3());
+                
+                currentModel.position.x += (currentModel.position.x - center.x);
+                currentModel.position.y += (currentModel.position.y - center.y);
+                currentModel.position.z += (currentModel.position.z - center.z);
+                
+                // 화면 크기에 맞게 자동 스케일링 안정화
+                const scaleFactor = 40 / size;
+                currentModel.scale.set(scaleFactor, scaleFactor, scaleFactor);
+
+                modalScene.add(currentModel);
+            },
+            (xhr) => {
+                // 프로그레스 바 구현 가능 영역
+            },
+            (error) => {
+                // [폴백 시스템] 만약 로컬에 고유 모델(.glb)이 없거나 로딩 실패 시 
+                // 아이들에게 빈 화면을 보여주지 않고 즉시 아름다운 대체 고퀄리티 PBR 구체를 생성
+                console.warn(`${starData.name} 모델 로드 실패. 대체 엔진 가동.`);
+                
+                const fallbackGeo = new THREE.SphereGeometry(20, 64, 64);
+                const fallbackMat = new THREE.MeshStandardMaterial({
+                    color: starData.color,
+                    roughness: 0.2,
+                    metalness: 0.8,
+                    emissive: starData.color,
+                    emissiveIntensity: 0.3
+                });
+                
+                currentModel = new THREE.Mesh(fallbackGeo, fallbackMat);
+                modalScene.add(currentModel);
+            }
+        );
+
+        document.getElementById('info-modal').style.display = 'block';
+    }
+
+    document.getElementById('close-btn').addEventListener('click', () => {
+        document.getElementById('info-modal').style.display = 'none';
+        if (currentModel) {
+            modalScene.remove(currentModel);
+            currentModel = null;
         }
     });
 
     window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight; 
-        camera.updateProjectionMatrix(); 
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-
-    function animate() {
-        requestAnimationFrame(animate);
-        starParticles.rotation.y += 0.0008; // 우주가 부드럽게 돌아감
-        controls.update();
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    // === HTML 모달 및 마법 캔버스 드로잉 ===
-    const modal = document.getElementById('info-modal');
-    const vName = document.getElementById('star-name');
-    const vDesc = document.getElementById('star-desc');
-    const closeBtn = document.getElementById('close-btn');
-    const canvas = document.getElementById('star-canvas');
-    const ctx = canvas.getContext('2d');
-
-    function hexToRgb(hex) {
-        return `${(hex >> 16) & 255}, ${(hex >> 8) & 255}, ${hex & 255}`;
-    }
-
-    // 캔버스에 천체의 type에 따라 다르게 그림을 그리는 인공지능 화가 함수
-    function drawMagicCanvas(starData) {
-        const width = canvas.width;
-        const height = canvas.height;
-        const cx = width / 2;
-        const cy = height / 2;
-        const rgbString = hexToRgb(starData.color);
-
-        ctx.clearRect(0, 0, width, height); // 캔버스 지우기
-
-        // 1. 반짝이는 배경 입자들
-        for(let i = 0; i < 50; i++) {
-            ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.8})`;
-            ctx.beginPath();
-            ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 2, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        const baseRadius = Math.min(Math.max(starData.radius * 2.5, 40), 90);
-
-        // 2. 천체 타입별 렌더링
-        if (starData.type === 'star') {
-            // 항성: 거대한 빛 번짐(Glow)
-            const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseRadius * 2);
-            glow.addColorStop(0, `rgba(255, 255, 255, 1)`);
-            glow.addColorStop(0.2, `rgba(${rgbString}, 0.9)`);
-            glow.addColorStop(0.6, `rgba(${rgbString}, 0.3)`);
-            glow.addColorStop(1, `rgba(${rgbString}, 0)`);
-            ctx.fillStyle = glow;
-            ctx.beginPath(); ctx.arc(cx, cy, baseRadius * 2, 0, Math.PI * 2); ctx.fill();
-        } 
-        else if (starData.type === 'ring_planet') {
-            // 고리 행성 (토성)
-            ctx.fillStyle = `rgb(${rgbString})`;
-            ctx.beginPath(); ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2); ctx.fill();
-            
-            // 행성 무늬 (줄무늬)
-            ctx.fillStyle = 'rgba(0,0,0, 0.1)';
-            ctx.fillRect(cx - baseRadius, cy - 10, baseRadius * 2, 5);
-            ctx.fillRect(cx - baseRadius, cy + 5, baseRadius * 2, 8);
-
-            // 고리 그리기 (타원)
-            ctx.beginPath();
-            ctx.ellipse(cx, cy, baseRadius * 2.2, baseRadius * 0.4, 0, 0, Math.PI * 2);
-            ctx.strokeStyle = `rgba(255, 200, 150, 0.8)`;
-            ctx.lineWidth = 8;
-            ctx.stroke();
-        }
-        else if (starData.type === 'moon') {
-            // 달 (분화구)
-            ctx.fillStyle = `rgb(${rgbString})`;
-            ctx.beginPath(); ctx.arc(cx, cy, baseRadius, 0, Math.PI * 2); ctx.fill();
-
-            // 크레이터 그리기
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
-            const craters = [
-                {x: cx - 15, y: cy - 10, r: 12}, {x: cx + 20, y: cy - 25, r: 8},
-                {x: cx + 10, y: cy + 15, r: 18}, {x: cx - 25, y: cy + 20, r: 6}
-            ];
-            craters.forEach(c => {
-                ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = 'rgba(255,255,255,0.2)'; ctx.lineWidth = 2; ctx.stroke();
-            });
-        }
-    }
-
-    function openModal(starData) {
-        vName.innerText = starData.name;
-        vDesc.innerText = starData.desc;
-        drawMagicCanvas(starData);
-        modal.style.display = 'block';
-    }
-
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
     });
 </script>
 
