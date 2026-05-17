@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ 무한한 상상력의 우주 탐험대 (검색 엔진 탑재) ✨</title>
+    <title>✨ 무한한 상상력의 우주 탐험대 (태양계 랜드마크 탑재) ✨</title>
     <style>
         body { margin: 0; padding: 0; overflow: hidden; background-color: #000; font-family: 'Malgun Gothic', 'Comic Sans MS', sans-serif; }
         
-        /* 1. 마법 동화책 스타일의 모달창 */
         #info-modal { 
             display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             width: 90%; max-width: 600px; background: linear-gradient(135deg, rgba(15, 20, 40, 0.98), rgba(30, 10, 35, 0.98)); 
@@ -21,7 +20,6 @@
         }
         #info-modal h2 { margin: 0 0 15px 0; color: #00ffff; font-size: 30px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.6); }
         
-        /* 2. 캔버스 및 설명 텍스트 */
         #star-canvas { width: 100%; height: 260px; border-radius: 15px; border: 2px dashed #4488ff; background: radial-gradient(circle, #0a1128 0%, #000005 100%); margin-bottom: 15px; display: block; box-shadow: inset 0 0 30px #000; }
         #star-desc { font-size: 18px; line-height: 1.7; word-break: keep-all; margin: 10px 0 25px 0; color: #eef; }
         .close-btn { padding: 12px 35px; font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #00ffff, #0088ff); color: #000; border: none; border-radius: 40px; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3); }
@@ -30,10 +28,8 @@
         #guide { position: absolute; top: 15px; left: 15px; color: rgba(255,255,255,0.9); pointer-events: none; font-size: 15px; text-shadow: 1px 1px 3px black; z-index: 10; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; }
         #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00ffff; font-size: 22px; font-weight: bold; }
 
-        /* 3. [신규 추가] 우주 검색창 UI */
-        #search-container {
-            position: absolute; top: 20px; right: 20px; width: 300px; z-index: 50;
-        }
+        /* 검색 UI */
+        #search-container { position: absolute; top: 20px; right: 20px; width: 300px; z-index: 50; }
         #search-input {
             width: 100%; padding: 12px 20px; font-size: 16px; font-family: inherit;
             background: rgba(10, 15, 30, 0.8); border: 2px solid #00ffff; border-radius: 30px;
@@ -48,15 +44,14 @@
             border: 1px solid #4488ff; max-height: 250px; overflow-y: auto; display: none;
         }
         .search-item {
-            padding: 12px 20px; color: #00ffff; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1);
-            font-size: 15px; transition: 0.2s;
+            padding: 12px 20px; color: #00ffff; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 15px; transition: 0.2s;
         }
         .search-item:last-child { border-bottom: none; }
         .search-item:hover { background: rgba(0, 255, 255, 0.2); color: #fff; }
         
-        /* 스크롤바 디자인 */
-        #search-results::-webkit-scrollbar { width: 8px; }
-        #search-results::-webkit-scrollbar-thumb { background: #00ffff; border-radius: 10px; }
+        /* 유명 천체 강조 스타일 */
+        .special-star { color: #ffd700; font-weight: bold; }
+        .special-star::before { content: "⭐ "; }
     </style>
     <script type="importmap">
         { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
@@ -64,11 +59,11 @@
 </head>
 <body>
 
-<div id="loading">🌌 우주 검색 엔진 가동 중...</div>
-<div id="guide">🚀 우주 회전: 드래그 | 확대: 휠<br>⭐ 밤하늘의 '모든 반짝이는 별'을 클릭해 보세요!</div>
+<div id="loading">🌌 랜드마크 우주를 로딩 중...</div>
+<div id="guide">🚀 우주 회전: 드래그 | 확대: 휠<br>🔍 검색창에 '지구', '목성'을 쳐보세요!</div>
 
 <div id="search-container">
-    <input type="text" id="search-input" placeholder="🔍 별 이름 검색 (예: 별 100)" autocomplete="off">
+    <input type="text" id="search-input" placeholder="🔍 천체 검색 (예: 지구, 목성, 별 100)" autocomplete="off">
     <div id="search-results"></div>
 </div>
 
@@ -85,7 +80,6 @@
 
     document.getElementById('loading').style.display = 'none';
 
-    // 1. 씬 설정
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x020205, 0.0006);
 
@@ -101,7 +95,6 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 
-    // 2. 빛나는 텍스처 생성
     function createGlowingStarTexture() {
         const canvas = document.createElement('canvas');
         canvas.width = 64; canvas.height = 64;
@@ -116,40 +109,76 @@
     }
     const glowTexture = createGlowingStarTexture();
 
-    // 3. 10,000개의 파티클 생성 및 [검색 데이터베이스 구축]
+    // [핵심] 수동으로 고정할 유명 천체(Landmark) 데이터베이스
+    const specialBodies = [
+        { name: "태양 (Sun)", color: 0xFFDD44, desc: "우리 태양계의 중심이자 대장! 엄청나게 뜨거운 가스 불덩어리야. 태양이 없으면 지구는 꽁꽁 얼어붙고 말 거야. ☀️" },
+        { name: "수성 (Mercury)", color: 0xAAAAAA, desc: "태양에서 가장 가까운 꼬마 행성! 태양 옆에 바짝 붙어있어서 낮에는 엄청나게 뜨겁고, 밤에는 꽁꽁 얼어버려." },
+        { name: "금성 (Venus)", color: 0xFFBB66, desc: "두꺼운 구름 이불을 덮고 있어서 태양계에서 제일 뜨거운 찜질방 행성이야! 지구랑 크기가 비슷하단다." },
+        { name: "지구 (Earth)", color: 0x44AAFF, desc: "우리가 살고 있는 기적의 푸른 구슬! 맑은 물과 공기가 있어서 너와 나, 그리고 수많은 동물 친구들이 숨 쉬고 있어. 🌍" },
+        { name: "달 (Moon)", color: 0xDDDDDD, desc: "지구의 단짝 친구 달님이야! 우주 돌멩이들과 부딪혀서 생긴 동그란 크레이터 흉터가 많아. 🌙" },
+        { name: "화성 (Mars)", color: 0xFF4422, desc: "온통 붉은색 흙으로 덮여 있는 행성! 로봇 탐사선들이 윙윙 돌아다니며 외계인이나 물의 흔적을 찾고 있지. 🚀" },
+        { name: "목성 (Jupiter)", color: 0xDDAA88, desc: "태양계에서 덩치가 가장 큰 씨름선수 행성! 표면에 있는 거대한 빨간 점(대적점)은 수백 년째 불고 있는 거대한 태풍이야." },
+        { name: "토성 (Saturn)", color: 0xFFEEAA, desc: "얼음과 돌멩이로 만들어진 아름다운 훌라후프(고리)를 돌리고 있는 우주의 멋쟁이 행성이란다! 🪐" },
+        { name: "천왕성 (Uranus)", color: 0x66DDFF, desc: "아름다운 에메랄드 색깔을 띠고 있는 얼음 덩어리 행성! 특이하게도 옆으로 벌러덩 누워서 태양을 돌고 있어." },
+        { name: "해왕성 (Neptune)", color: 0x2244FF, desc: "태양계에서 가장 멀리 있는 파란색 행성! 우주에서 가장 세고 무서운 바람이 부는 춥고 험난한 곳이야." },
+        { name: "명왕성 (Pluto)", color: 0xBBBBBB, desc: "지금은 행성에서 탈락해서 '왜소행성'이 되었지만, 표면에 귀여운 하트 모양(톰보 영역)이 그려져 있는 사랑스러운 천체란다. 🤍" },
+        { name: "북극성 (Polaris)", color: 0xFFF4E8, desc: "우주에서 길을 잃었니? 항상 북쪽을 가리키고 있어서 뱃사람들의 요정이 되어준 길잡이 별이야. 🧭" },
+        { name: "시리우스 (Sirius)", color: 0x88CCFF, desc: "큰개자리에 있는 파란 보석! 밤하늘에서 제일 반짝반짝 눈부시게 빛나는 젊고 힘센 강아지 별이지. 💎" },
+        { name: "베텔게우스 (Betelgeuse)", color: 0xFF3311, desc: "오리온자리의 어깨에 있는 엄청나게 큰 할아버지 별! 수명이 다해서 언제 '펑!' 하고 초신성 폭발을 할지 몰라. 🌋" }
+    ];
+
     const PARTICLE_COUNT = 10000;
     const starsGeometry = new THREE.BufferGeometry();
     const posArray = new Float32Array(PARTICLE_COUNT * 3);
     const colorsArray = new Float32Array(PARTICLE_COUNT * 3);
     const colorObj = new THREE.Color();
     
-    // [핵심] 검색을 위한 인메모리 데이터베이스
     const starDatabase = [];
-    const prefixes = ["알파", "케플러", "안드로메다", "오리온", "시그너스", "글리제", "노바", "루미너스", "스타리아"];
+    const prefixes = ["알파", "케플러", "안드로메다", "오리온", "시그너스", "글리제", "노바"];
 
     for(let i = 0; i < PARTICLE_COUNT; i++) { 
-        const x = (Math.random() - 0.5) * 3000;
-        const y = (Math.random() - 0.5) * 3000;
-        const z = (Math.random() - 0.5) * 3000;
+        // 태양계는 중앙 부근에, 나머지는 넓게 퍼지도록
+        let x, y, z;
+        if (i < specialBodies.length) {
+            x = (Math.random() - 0.5) * 500;
+            y = (Math.random() - 0.5) * 500;
+            z = (Math.random() - 0.5) * 500;
+        } else {
+            x = (Math.random() - 0.5) * 3000;
+            y = (Math.random() - 0.5) * 3000;
+            z = (Math.random() - 0.5) * 3000;
+        }
         
         posArray[i*3] = x; posArray[i*3+1] = y; posArray[i*3+2] = z;
 
-        const rand = Math.random();
-        if(rand < 0.2) colorObj.setHex(0x66bbff);
-        else if(rand < 0.4) colorObj.setHex(0xff7755);
-        else if(rand < 0.7) colorObj.setHex(0xffee88);
-        else colorObj.setHex(0xffffff);
+        let starName, hexColor, isSpecial = false;
 
-        colorsArray[i*3] = colorObj.r; colorsArray[i*3+1] = colorObj.g; colorsArray[i*3+2] = colorObj.b;
+        // [데이터 오버라이딩 로직]
+        if (i < specialBodies.length) {
+            // 유명 천체 할당
+            hexColor = specialBodies[i].color;
+            starName = specialBodies[i].name;
+            isSpecial = true;
+        } else {
+            // 무작위 별 생성
+            const rand = Math.random();
+            if(rand < 0.2) hexColor = 0x66bbff;
+            else if(rand < 0.4) hexColor = 0xff7755;
+            else if(rand < 0.7) hexColor = 0xffee88;
+            else hexColor = 0xffffff;
 
-        // 이름 사전 생성 및 DB 저장
-        const pseudoRandom = (i * 137.5) % 1; 
-        const namePrefix = prefixes[Math.floor(pseudoRandom * prefixes.length)];
-        const starName = `${namePrefix} 구역의 반짝이는 별 ${i + 1}`;
+            const pseudoRandom = (i * 137.5) % 1; 
+            const namePrefix = prefixes[Math.floor(pseudoRandom * prefixes.length)];
+            starName = `${namePrefix} 구역의 반짝이는 별 ${i + 1 - specialBodies.length}`;
+        }
+
+        colorObj.setHex(hexColor);
+        colorsArray[i*3] = colorObj.r; 
+        colorsArray[i*3+1] = colorObj.g; 
+        colorsArray[i*3+2] = colorObj.b;
         
         starDatabase.push({
-            index: i, name: starName, x: x, y: y, z: z,
-            hex: (Math.floor(colorObj.r * 255) << 16) + (Math.floor(colorObj.g * 255) << 8) + Math.floor(colorObj.b * 255)
+            index: i, name: starName, x: x, y: y, z: z, hex: hexColor, isSpecial: isSpecial
         });
     }
     
@@ -163,31 +192,31 @@
     const starParticles = new THREE.Points(starsGeometry, starMaterial);
     scene.add(starParticles);
 
-    // 4. [신규] 카메라 비행(Fly-to) 로직 변수
     let isFlying = false;
     let targetCameraPos = new THREE.Vector3();
     let targetLookAtPos = new THREE.Vector3();
 
-    // 5. 검색창 UI 이벤트 제어
+    // 검색창 로직
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
 
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim().toLowerCase();
-        searchResults.innerHTML = ''; // 초기화
+        searchResults.innerHTML = ''; 
         
         if (query.length === 0) {
-            searchResults.style.display = 'none';
-            return;
+            searchResults.style.display = 'none'; return;
         }
 
-        // 이름에 검색어가 포함된 별 최대 50개까지만 필터링 (메모리 및 DOM 과부하 방지)
-        const matchedStars = starDatabase.filter(star => star.name.toLowerCase().includes(query)).slice(0, 50);
+        // 유명 천체가 검색 결과의 맨 위로 오도록 정렬(Sort)
+        const matchedStars = starDatabase.filter(star => star.name.toLowerCase().includes(query))
+                                         .sort((a, b) => (a.isSpecial === b.isSpecial) ? 0 : a.isSpecial ? -1 : 1)
+                                         .slice(0, 30);
 
         if (matchedStars.length > 0) {
             matchedStars.forEach(star => {
                 const div = document.createElement('div');
-                div.className = 'search-item';
+                div.className = star.isSpecial ? 'search-item special-star' : 'search-item';
                 div.innerText = star.name;
                 div.onclick = () => executeSearchAndFly(star);
                 searchResults.appendChild(div);
@@ -202,23 +231,14 @@
         }
     });
 
-    // 검색 실행 및 카메라 이동 함수
     function executeSearchAndFly(star) {
-        searchInput.value = '';
-        searchResults.style.display = 'none';
-        
-        // 목표 위치 설정: 별의 바로 앞(z축으로 +80)에 카메라 위치
+        searchInput.value = ''; searchResults.style.display = 'none';
         targetLookAtPos.set(star.x, star.y, star.z);
         targetCameraPos.set(star.x, star.y, star.z + 80);
         isFlying = true;
-
-        // 카메라 이동 완료 후 데이터 생성
-        setTimeout(() => {
-            generateProceduralStarData(star.index);
-        }, 1200); // 1.2초 뒤에 모달창 오픈
+        setTimeout(() => { generateProceduralStarData(star.index); }, 1200); 
     }
 
-    // 6. 클릭 인터랙션
     const raycaster = new THREE.Raycaster();
     raycaster.params.Points.threshold = 8.0;
     const mouse = new THREE.Vector2();
@@ -236,20 +256,24 @@
         }
     });
 
-    // 7. 절차적 데이터 생성기 및 모달 출력
     function generateProceduralStarData(index) {
         const star = starDatabase[index];
-        const r = (star.hex >> 16) & 255;
-        const g = (star.hex >> 8) & 255;
-        const b = star.hex & 255;
+        
+        // 유명 천체일 경우 하드코딩된 설명 사용, 아닐 경우 절차적 설명 생성
+        let finalDesc = "";
+        if (star.isSpecial) {
+            finalDesc = specialBodies[index].desc;
+        } else {
+            const r = (star.hex >> 16) & 255; const g = (star.hex >> 8) & 255; const b = star.hex & 255;
+            let colorDesc = "", featureDesc = "";
+            if (r > 200 && b < 120) { colorDesc = "수명이 다해가서 부풀어 오른 거대한 붉은색 별이네!"; featureDesc = "용암이 끓어오르는 화산 행성이 숨어 있을지도 몰라."; } 
+            else if (b > 200 && r < 120) { colorDesc = "우와! 태양보다 훨씬 뜨거워서 파란 불꽃을 내뿜는 젊고 힘센 별이야."; featureDesc = "우주 탐험가들이 여기서 빛의 에너지를 충전한대."; } 
+            else if (r > 200 && g > 200 && b < 150) { colorDesc = "우리 지구를 비춰주는 태양과 아주 비슷한 따뜻한 노란색 별이구나."; featureDesc = "이 별 주변에는 외계인 친구들이 살고 있을 확률이 높아!"; } 
+            else { colorDesc = "다이아몬드처럼 하얗고 눈부시게 빛나는 작고 단단한 백색 왜성이야."; featureDesc = "우주 요정들이 이 빛을 타고 여행한다는 전설이 있어."; }
+            finalDesc = `${colorDesc} ${featureDesc}`;
+        }
 
-        let colorDesc = "", featureDesc = "";
-        if (r > 200 && b < 120) { colorDesc = "수명이 다해가서 부풀어 오른 거대한 붉은색 별이네!"; featureDesc = "용암이 끓어오르는 화산 행성이 숨어 있을지도 몰라."; } 
-        else if (b > 200 && r < 120) { colorDesc = "우와! 태양보다 훨씬 뜨거워서 파란 불꽃을 내뿜는 젊고 힘센 별이야."; featureDesc = "우주 탐험가들이 여기서 빛의 에너지를 충전한대."; } 
-        else if (r > 200 && g > 200 && b < 150) { colorDesc = "우리 지구를 비춰주는 태양과 아주 비슷한 따뜻한 노란색 별이구나."; featureDesc = "이 별 주변에는 외계인 친구들이 살고 있을 확률이 높아!"; } 
-        else { colorDesc = "다이아몬드처럼 하얗고 눈부시게 빛나는 작고 단단한 백색 왜성이야."; featureDesc = "우주 요정들이 이 빛을 타고 여행한다는 전설이 있어."; }
-
-        openModal(star.name, `${colorDesc} ${featureDesc}`, star.hex);
+        openModal(star.name, finalDesc, star.hex);
     }
 
     const modal = document.getElementById('info-modal');
@@ -290,20 +314,15 @@
     });
 
     const clock = new THREE.Clock();
-
     function animate() {
         requestAnimationFrame(animate);
-        
-        // [신규] 카메라 부드러운 이동(Lerp) 로직
         if (isFlying) {
             camera.position.lerp(targetCameraPos, 0.04);
             controls.target.lerp(targetLookAtPos, 0.04);
-            // 목표 지점에 거의 도달하면 비행 종료
             if (camera.position.distanceTo(targetCameraPos) < 2) isFlying = false;
         } else {
             starParticles.rotation.y += 0.0003;
         }
-
         starMaterial.size = 8.0 + Math.sin(clock.getElapsedTime() * 2.0) * 1.5; 
         controls.update();
         renderer.render(scene, camera);
