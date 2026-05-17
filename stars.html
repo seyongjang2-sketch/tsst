@@ -3,10 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✨ 무한한 상상력의 우주 탐험대 (태양계 랜드마크 탑재) ✨</title>
+    <title>우주 탐험 - FamilySpace</title>
     <style>
-        body { margin: 0; padding: 0; overflow: hidden; background-color: #000; font-family: 'Malgun Gothic', 'Comic Sans MS', sans-serif; }
+        /* 모바일 터치 시 화면이 튕기는 현상을 막는 핵심 방어 코드 */
+        body { margin: 0; padding: 0; overflow: hidden; background-color: #000; font-family: 'Malgun Gothic', sans-serif; touch-action: none; }
         
+        /* 홈으로 돌아가기 버튼 (FamilySpace 연동) */
+        .back-home-btn {
+            position: absolute; top: 20px; left: 20px; z-index: 50; padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1); border: 2px solid #fff; border-radius: 30px;
+            color: #fff; text-decoration: none; font-weight: bold; font-size: 16px;
+            backdrop-filter: blur(5px); transition: 0.3s; box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+        .back-home-btn:hover { background: #fff; color: #000; box-shadow: 0 0 20px rgba(255,255,255,0.8); }
+
+        /* 모달창 스타일 */
         #info-modal { 
             display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
             width: 90%; max-width: 600px; background: linear-gradient(135deg, rgba(15, 20, 40, 0.98), rgba(30, 10, 35, 0.98)); 
@@ -18,40 +29,41 @@
             from { transform: translate(-50%, -40%) scale(0.9); opacity: 0; }
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
-        #info-modal h2 { margin: 0 0 15px 0; color: #00ffff; font-size: 30px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.6); }
+        #info-modal h2 { margin: 0 0 15px 0; color: #00ffff; font-size: 28px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.6); }
         
-        #star-canvas { width: 100%; height: 260px; border-radius: 15px; border: 2px dashed #4488ff; background: radial-gradient(circle, #0a1128 0%, #000005 100%); margin-bottom: 15px; display: block; box-shadow: inset 0 0 30px #000; }
-        #star-desc { font-size: 18px; line-height: 1.7; word-break: keep-all; margin: 10px 0 25px 0; color: #eef; }
+        #star-canvas { width: 100%; height: 240px; border-radius: 15px; border: 2px dashed #4488ff; background: radial-gradient(circle, #0a1128 0%, #000005 100%); margin-bottom: 15px; display: block; box-shadow: inset 0 0 30px #000; }
+        
+        /* 스크롤 가능한 스토리텔링 텍스트 영역 */
+        #star-desc { 
+            font-size: 17px; line-height: 1.8; word-break: keep-all; margin: 15px 0 20px 0; color: #eef; text-align: left;
+            max-height: 200px; overflow-y: auto; padding-right: 15px; background: rgba(0, 0, 0, 0.3); border-radius: 15px; padding: 15px;
+        }
+        #star-desc::-webkit-scrollbar { width: 8px; }
+        #star-desc::-webkit-scrollbar-thumb { background: #ffcc00; border-radius: 10px; }
+        
+        .story-title { color: #ffd700; font-size: 19px; font-weight: bold; display: block; margin-top: 15px; margin-bottom: 5px; }
+        .science-fact { color: #00ffff; font-weight: bold; }
+
         .close-btn { padding: 12px 35px; font-size: 18px; font-weight: bold; background: linear-gradient(135deg, #00ffff, #0088ff); color: #000; border: none; border-radius: 40px; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3); }
         .close-btn:hover { transform: scale(1.05); color: #fff; box-shadow: 0 8px 25px rgba(0, 255, 255, 0.6); }
         
-        #guide { position: absolute; top: 15px; left: 15px; color: rgba(255,255,255,0.9); pointer-events: none; font-size: 15px; text-shadow: 1px 1px 3px black; z-index: 10; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; }
+        #guide { position: absolute; top: 70px; left: 20px; color: rgba(255,255,255,0.9); pointer-events: none; font-size: 15px; text-shadow: 1px 1px 3px black; z-index: 10; font-weight: bold; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 10px; }
         #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00ffff; font-size: 22px; font-weight: bold; }
 
-        /* 검색 UI */
+        /* 검색창 UI */
         #search-container { position: absolute; top: 20px; right: 20px; width: 300px; z-index: 50; }
-        #search-input {
-            width: 100%; padding: 12px 20px; font-size: 16px; font-family: inherit;
-            background: rgba(10, 15, 30, 0.8); border: 2px solid #00ffff; border-radius: 30px;
-            color: #fff; outline: none; box-sizing: border-box; box-shadow: 0 0 15px rgba(0,255,255,0.2);
-            transition: 0.3s;
-        }
+        #search-input { width: 100%; padding: 12px 20px; font-size: 16px; font-family: inherit; background: rgba(10, 15, 30, 0.8); border: 2px solid #00ffff; border-radius: 30px; color: #fff; outline: none; box-sizing: border-box; box-shadow: 0 0 15px rgba(0,255,255,0.2); transition: 0.3s; }
         #search-input:focus { background: rgba(20, 30, 50, 0.95); box-shadow: 0 0 20px rgba(0,255,255,0.6); }
         #search-input::placeholder { color: rgba(255,255,255,0.5); }
         
-        #search-results {
-            margin-top: 10px; background: rgba(10, 15, 30, 0.95); border-radius: 15px;
-            border: 1px solid #4488ff; max-height: 250px; overflow-y: auto; display: none;
-        }
-        .search-item {
-            padding: 12px 20px; color: #00ffff; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 15px; transition: 0.2s;
-        }
+        #search-results { margin-top: 10px; background: rgba(10, 15, 30, 0.95); border-radius: 15px; border: 1px solid #4488ff; max-height: 250px; overflow-y: auto; display: none; }
+        .search-item { padding: 12px 20px; color: #00ffff; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 15px; transition: 0.2s; }
         .search-item:last-child { border-bottom: none; }
         .search-item:hover { background: rgba(0, 255, 255, 0.2); color: #fff; }
-        
-        /* 유명 천체 강조 스타일 */
         .special-star { color: #ffd700; font-weight: bold; }
         .special-star::before { content: "⭐ "; }
+        #search-results::-webkit-scrollbar { width: 8px; }
+        #search-results::-webkit-scrollbar-thumb { background: #00ffff; border-radius: 10px; }
     </style>
     <script type="importmap">
         { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
@@ -59,18 +71,20 @@
 </head>
 <body>
 
-<div id="loading">🌌 랜드마크 우주를 로딩 중...</div>
-<div id="guide">🚀 우주 회전: 드래그 | 확대: 휠<br>🔍 검색창에 '지구', '목성'을 쳐보세요!</div>
+<a href="index.html" class="back-home-btn">🏠 홈으로 돌아가기</a>
+
+<div id="loading">🌌 우주를 불러오는 중...</div>
+<div id="guide">🚀 우주 회전: 화면 드래그<br>🔍 천체를 터치하거나 검색해보세요!</div>
 
 <div id="search-container">
-    <input type="text" id="search-input" placeholder="🔍 천체 검색 (예: 지구, 목성, 별 100)" autocomplete="off">
+    <input type="text" id="search-input" placeholder="🔍 천체 검색 (예: 지구, 목성)" autocomplete="off">
     <div id="search-results"></div>
 </div>
 
 <div id="info-modal">
     <h2 id="star-name">별 이름</h2>
-    <canvas id="star-canvas" width="600" height="260"></canvas>
-    <p id="star-desc">설명</p>
+    <canvas id="star-canvas" width="600" height="240"></canvas>
+    <div id="star-desc">설명</div>
     <button class="close-btn" id="close-btn">다시 우주로 🚀</button>
 </div>
 
@@ -88,12 +102,13 @@
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // 모바일 최적화 (픽셀 비율 제한)
     document.body.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
+    controls.maxDistance = 1500; // 우주 밖으로 이탈 방지
 
     function createGlowingStarTexture() {
         const canvas = document.createElement('canvas');
@@ -109,22 +124,23 @@
     }
     const glowTexture = createGlowingStarTexture();
 
-    // [핵심] 수동으로 고정할 유명 천체(Landmark) 데이터베이스
+    // 15대 랜드마크 천체 메타데이터
     const specialBodies = [
-        { name: "태양 (Sun)", color: 0xFFDD44, desc: "우리 태양계의 중심이자 대장! 엄청나게 뜨거운 가스 불덩어리야. 태양이 없으면 지구는 꽁꽁 얼어붙고 말 거야. ☀️" },
-        { name: "수성 (Mercury)", color: 0xAAAAAA, desc: "태양에서 가장 가까운 꼬마 행성! 태양 옆에 바짝 붙어있어서 낮에는 엄청나게 뜨겁고, 밤에는 꽁꽁 얼어버려." },
-        { name: "금성 (Venus)", color: 0xFFBB66, desc: "두꺼운 구름 이불을 덮고 있어서 태양계에서 제일 뜨거운 찜질방 행성이야! 지구랑 크기가 비슷하단다." },
-        { name: "지구 (Earth)", color: 0x44AAFF, desc: "우리가 살고 있는 기적의 푸른 구슬! 맑은 물과 공기가 있어서 너와 나, 그리고 수많은 동물 친구들이 숨 쉬고 있어. 🌍" },
-        { name: "달 (Moon)", color: 0xDDDDDD, desc: "지구의 단짝 친구 달님이야! 우주 돌멩이들과 부딪혀서 생긴 동그란 크레이터 흉터가 많아. 🌙" },
-        { name: "화성 (Mars)", color: 0xFF4422, desc: "온통 붉은색 흙으로 덮여 있는 행성! 로봇 탐사선들이 윙윙 돌아다니며 외계인이나 물의 흔적을 찾고 있지. 🚀" },
-        { name: "목성 (Jupiter)", color: 0xDDAA88, desc: "태양계에서 덩치가 가장 큰 씨름선수 행성! 표면에 있는 거대한 빨간 점(대적점)은 수백 년째 불고 있는 거대한 태풍이야." },
-        { name: "토성 (Saturn)", color: 0xFFEEAA, desc: "얼음과 돌멩이로 만들어진 아름다운 훌라후프(고리)를 돌리고 있는 우주의 멋쟁이 행성이란다! 🪐" },
-        { name: "천왕성 (Uranus)", color: 0x66DDFF, desc: "아름다운 에메랄드 색깔을 띠고 있는 얼음 덩어리 행성! 특이하게도 옆으로 벌러덩 누워서 태양을 돌고 있어." },
-        { name: "해왕성 (Neptune)", color: 0x2244FF, desc: "태양계에서 가장 멀리 있는 파란색 행성! 우주에서 가장 세고 무서운 바람이 부는 춥고 험난한 곳이야." },
-        { name: "명왕성 (Pluto)", color: 0xBBBBBB, desc: "지금은 행성에서 탈락해서 '왜소행성'이 되었지만, 표면에 귀여운 하트 모양(톰보 영역)이 그려져 있는 사랑스러운 천체란다. 🤍" },
-        { name: "북극성 (Polaris)", color: 0xFFF4E8, desc: "우주에서 길을 잃었니? 항상 북쪽을 가리키고 있어서 뱃사람들의 요정이 되어준 길잡이 별이야. 🧭" },
-        { name: "시리우스 (Sirius)", color: 0x88CCFF, desc: "큰개자리에 있는 파란 보석! 밤하늘에서 제일 반짝반짝 눈부시게 빛나는 젊고 힘센 강아지 별이지. 💎" },
-        { name: "베텔게우스 (Betelgeuse)", color: 0xFF3311, desc: "오리온자리의 어깨에 있는 엄청나게 큰 할아버지 별! 수명이 다해서 언제 '펑!' 하고 초신성 폭발을 할지 몰라. 🌋" }
+        { name: "태양 (The Sun)", color: 0xFFDD44, desc: "<span class='science-fact'>[우주 사전]</span> 태양계 중심에 있는 G형 주계열성입니다. 지구보다 109배나 크고 표면 온도는 6,000도에 달해요.<br><span class='story-title'>📖 아폴론의 황금 마차</span> 옛날 그리스 사람들은 태양이 하늘을 날아다니는 빛나는 황금 마차라고 생각했어. 매일 아침 태양의 신 '아폴론'이 불을 뿜는 말 네 마리가 끄는 마차를 타고 동쪽 하늘에서 출발해 세상을 따뜻하게 비춰준다고 믿었단다." },
+        { name: "수성 (Mercury)", color: 0xAAAAAA, desc: "<span class='science-fact'>[우주 사전]</span> 태양에서 가장 가까운 행성으로, 대기가 없어서 운석 구덩이(크레이터)가 아주 많습니다.<br><span class='story-title'>📖 발이 가장 빠른 꼬마 우체부</span> 태양 곁을 쌩쌩 날아다니는 수성은 로마 신화에서 날개 달린 신발을 신은 전령의 신 '메르쿠리우스(머큐리)'의 이름을 땄어. 우주의 소식을 가장 먼저 전해주는 꼬마 우체부 요정이란다." },
+        { name: "금성 (Venus)", color: 0xFFBB66, desc: "<span class='science-fact'>[우주 사전]</span> 밤하늘에서 달 다음으로 밝은 행성입니다. 두꺼운 이산화탄소 구름 때문에 태양계에서 가장 뜨거워요.<br><span class='story-title'>📖 아름다움의 여신과 샛별</span> 금성은 너무 눈부시게 반짝여서 미의 여신 '비너스'라는 이름을 가졌어. 하지만 구름 이불을 꽁꽁 덮고 있어서 속은 용암이 끓어오르는 무시무시한 마법의 성이야." },
+        { name: "지구 (Earth)", color: 0x44AAFF, desc: "<span class='science-fact'>[우주 사전]</span> 우리가 살고 있는 기적의 행성입니다. 표면의 70%가 바다로 덮여 있어 생명체가 살 수 있죠.<br><span class='story-title'>📖 가이아 어머니의 품</span> 아주 먼 옛날, 우주에 흙과 물을 빚어 만든 생명의 여신 '가이아'가 있었어. 가이아는 숨을 크게 불어넣어 푸른 바다와 초록색 숲을 만들고, 우리를 품어주었지." },
+        { name: "달 (The Moon)", color: 0xDDDDDD, desc: "<span class='science-fact'>[우주 사전]</span> 지구를 도는 유일한 자연 위성입니다. 스스로 빛을 내지 못하고 태양빛을 반사해서 빛나요.<br><span class='story-title'>📖 달나라 옥토끼의 방아찧기</span> 옛날 우리나라 사람들은 보름달을 보며 달나라에 귀여운 옥토끼가 살고 있다고 믿었어. 계수나무 아래에서 쿵덕쿵덕 마법 구슬을 만들고 있다는 전설이 전해져 내려온단다." },
+        { name: "화성 (Mars)", color: 0xFF4422, desc: "<span class='science-fact'>[우주 사전]</span> 붉은 산화철 먼지로 덮여 있어 붉게 보이는 행성입니다. 올림푸스 화산이라는 태양계 최고 높이의 산이 있어요.<br><span class='story-title'>📖 큐리오시티의 모험</span> 지금 화성에는 '큐리오시티'라는 씩씩한 로봇 탐사선이 혼자서 윙윙 바퀴를 굴리며 옛날에 물이 있었던 흔적을 찾아 모험을 하고 있단다." },
+        { name: "목성 (Jupiter)", color: 0xDDAA88, desc: "<span class='science-fact'>[우주 사전]</span> 태양계에서 가장 크고 무거운 가스 행성입니다. 표면의 거대한 태풍인 '대적점'이 특징이에요.<br><span class='story-title'>📖 신들의 왕, 쥬피터</span> 덩치가 가장 커서 로마 신화 최고의 신 '주피터(제우스)'의 이름을 따왔어. 목성의 빨간 눈동자는 무려 300년이 넘게 쉬지 않고 휘몰아치는 우주의 거대한 마법 태풍이야!" },
+        { name: "토성 (Saturn)", color: 0xFFEEAA, desc: "<span class='science-fact'>[우주 사전]</span> 밀도가 낮아 물에 뜨는 행성입니다. 수많은 얼음과 암석 조각으로 이루어진 거대한 고리가 있어요.<br><span class='story-title'>📖 우주의 멋쟁이 훌라후프 챔피언</span> 토성은 우주에서 가장 예쁜 훌라후프를 돌리고 있어. 사실 수억 개의 반짝이는 얼음 알갱이들이 요정의 가루처럼 빛나고 있는 거란다." },
+        { name: "천왕성 (Uranus)", color: 0x66DDFF, desc: "<span class='science-fact'>[우주 사전]</span> 메탄가스 때문에 에메랄드빛으로 보이는 얼음 행성입니다. 자전축이 98도나 기울어져 있어요.<br><span class='story-title'>📖 벌러덩 누워서 구르는 얼음 별</span> 다른 행성들은 팽이처럼 똑바로 서서 도는데, 천왕성 혼자만 옆으로 벌러덩 누워서 대굴대굴 굴러가고 있어. 아주 먼 옛날 혜성과 부딪혀서 넘어졌다는 이야기가 있단다." },
+        { name: "해왕성 (Neptune)", color: 0x2244FF, desc: "<span class='science-fact'>[우주 사전]</span> 태양계의 맨 마지막 행성입니다. 가장 강하고 빠른 바람이 부는 아주 차가운 파란색 행성이에요.<br><span class='story-title'>📖 바다의 신 포세이돈의 얼음 왕국</span> 짙은 푸른색을 띠고 있어서 바다의 신 '넵튠(포세이돈)'이라는 이름이 붙었어. 너무 추워서 다이아몬드 우박이 펑펑 쏟아진다는 마법 같은 과학 이야기도 있단다." },
+        { name: "명왕성 (Pluto)", color: 0xBBBBBB, desc: "<span class='science-fact'>[우주 사전]</span> 과거에는 9번째 행성이었으나 2006년에 '왜소행성'으로 분류가 바뀌었어요.<br><span class='story-title'>📖 하트(❤)를 품은 꼬마 별</span> 몸집이 작아서 행성 무리에서는 빠지게 되었지만, 탐사선이 사진을 찍어보니 배에 커다랗고 예쁜 하트 무늬가 그려져 있었어. 우주를 사랑하는 따뜻한 꼬마 별이지." },
+        { name: "북극성 (Polaris)", color: 0xFFF4E8, desc: "<span class='science-fact'>[우주 사전]</span> 지구 자전축의 연장선에 위치해 있어 밤하늘에서 항상 북쪽을 가리키는 별입니다.<br><span class='story-title'>📖 길잡이 요정</span> 작은곰자리의 꼬리 끝에 매달려 있는 우주의 나침반 요정이야. 어두운 밤바다에서 길을 잃은 선장님이 북극성을 보고 항상 집을 찾아갈 수 있었대." },
+        { name: "시리우스 (Sirius)", color: 0x88CCFF, desc: "<span class='science-fact'>[우주 사전]</span> 밤하늘의 항성 중 가장 밝아 눈부시게 빛나는 주계열성입니다.<br><span class='story-title'>📖 오리온의 파란 강아지</span> 전설 속 사냥꾼 '오리온'을 따라다니던 충성스러운 사냥개 별이야. 주인을 지키기 위해 밤하늘에서 두 눈을 푸르게 빛내며 우주를 지키고 있단다." },
+        { name: "베텔게우스 (Betelgeuse)", color: 0xFF3311, desc: "<span class='science-fact'>[우주 사전]</span> 오리온자리의 붉은색 초거성입니다. 크기가 너무 커서 태양의 자리에 두면 목성의 궤도까지 삼킬 정도예요.<br><span class='story-title'>📖 폭발을 기다리는 붉은 거인</span> 하늘에서 가장 크고 뚱뚱한 할아버지 별이야. 우주 과학자들은 조만간 '펑!' 하고 거대하게 터지는 마법의 불꽃놀이(초신성)를 보여줄 거라고 기대하고 있어." },
+        { name: "안타레스 (Antares)", color: 0xFF2200, desc: "<span class='science-fact'>[우주 사전]</span> 전갈자리의 심장에 위치한 적색 초거성입니다. 화성(Ares)과 색깔이 비슷하여 '화성의 라이벌'이란 뜻을 가졌습니다.<br><span class='story-title'>📖 화성을 질투한 전갈의 심장</span> 붉게 빛나는 화성을 보고 질투한 거대한 전갈 요정이 자신의 심장을 더 뜨겁게 불태웠대. 그래서 여름 밤하늘 전갈의 가슴 한가운데서 무시무시한 붉은 빛이 뛰고 있단다." }
     ];
 
     const PARTICLE_COUNT = 10000;
@@ -137,30 +153,21 @@
     const prefixes = ["알파", "케플러", "안드로메다", "오리온", "시그너스", "글리제", "노바"];
 
     for(let i = 0; i < PARTICLE_COUNT; i++) { 
-        // 태양계는 중앙 부근에, 나머지는 넓게 퍼지도록
         let x, y, z;
         if (i < specialBodies.length) {
-            x = (Math.random() - 0.5) * 500;
-            y = (Math.random() - 0.5) * 500;
-            z = (Math.random() - 0.5) * 500;
+            x = (Math.random() - 0.5) * 500; y = (Math.random() - 0.5) * 500; z = (Math.random() - 0.5) * 500;
         } else {
-            x = (Math.random() - 0.5) * 3000;
-            y = (Math.random() - 0.5) * 3000;
-            z = (Math.random() - 0.5) * 3000;
+            x = (Math.random() - 0.5) * 3000; y = (Math.random() - 0.5) * 3000; z = (Math.random() - 0.5) * 3000;
         }
-        
         posArray[i*3] = x; posArray[i*3+1] = y; posArray[i*3+2] = z;
 
         let starName, hexColor, isSpecial = false;
 
-        // [데이터 오버라이딩 로직]
         if (i < specialBodies.length) {
-            // 유명 천체 할당
             hexColor = specialBodies[i].color;
             starName = specialBodies[i].name;
             isSpecial = true;
         } else {
-            // 무작위 별 생성
             const rand = Math.random();
             if(rand < 0.2) hexColor = 0x66bbff;
             else if(rand < 0.4) hexColor = 0xff7755;
@@ -173,13 +180,9 @@
         }
 
         colorObj.setHex(hexColor);
-        colorsArray[i*3] = colorObj.r; 
-        colorsArray[i*3+1] = colorObj.g; 
-        colorsArray[i*3+2] = colorObj.b;
+        colorsArray[i*3] = colorObj.r; colorsArray[i*3+1] = colorObj.g; colorsArray[i*3+2] = colorObj.b;
         
-        starDatabase.push({
-            index: i, name: starName, x: x, y: y, z: z, hex: hexColor, isSpecial: isSpecial
-        });
+        starDatabase.push({ index: i, name: starName, x: x, y: y, z: z, hex: hexColor, isSpecial: isSpecial });
     }
     
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
@@ -192,23 +195,19 @@
     const starParticles = new THREE.Points(starsGeometry, starMaterial);
     scene.add(starParticles);
 
+    // 카메라 비행 시스템
     let isFlying = false;
     let targetCameraPos = new THREE.Vector3();
     let targetLookAtPos = new THREE.Vector3();
 
-    // 검색창 로직
     const searchInput = document.getElementById('search-input');
     const searchResults = document.getElementById('search-results');
 
     searchInput.addEventListener('input', (e) => {
         const query = e.target.value.trim().toLowerCase();
         searchResults.innerHTML = ''; 
-        
-        if (query.length === 0) {
-            searchResults.style.display = 'none'; return;
-        }
+        if (query.length === 0) { searchResults.style.display = 'none'; return; }
 
-        // 유명 천체가 검색 결과의 맨 위로 오도록 정렬(Sort)
         const matchedStars = starDatabase.filter(star => star.name.toLowerCase().includes(query))
                                          .sort((a, b) => (a.isSpecial === b.isSpecial) ? 0 : a.isSpecial ? -1 : 1)
                                          .slice(0, 30);
@@ -239,28 +238,26 @@
         setTimeout(() => { generateProceduralStarData(star.index); }, 1200); 
     }
 
+    // 클릭 판정 시스템
     const raycaster = new THREE.Raycaster();
     raycaster.params.Points.threshold = 8.0;
     const mouse = new THREE.Vector2();
 
-    window.addEventListener('click', (event) => {
-        if(event.target.closest('#info-modal') || event.target.closest('#search-container')) return;
+    window.addEventListener('pointerdown', (event) => {
+        if(event.target.closest('#info-modal') || event.target.closest('#search-container') || event.target.closest('.back-home-btn')) return;
 
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
         
         const intersects = raycaster.intersectObject(starParticles);
-        if (intersects.length > 0) {
-            generateProceduralStarData(intersects[0].index);
-        }
+        if (intersects.length > 0) { generateProceduralStarData(intersects[0].index); }
     });
 
     function generateProceduralStarData(index) {
         const star = starDatabase[index];
-        
-        // 유명 천체일 경우 하드코딩된 설명 사용, 아닐 경우 절차적 설명 생성
         let finalDesc = "";
+        
         if (star.isSpecial) {
             finalDesc = specialBodies[index].desc;
         } else {
@@ -272,7 +269,6 @@
             else { colorDesc = "다이아몬드처럼 하얗고 눈부시게 빛나는 작고 단단한 백색 왜성이야."; featureDesc = "우주 요정들이 이 빛을 타고 여행한다는 전설이 있어."; }
             finalDesc = `${colorDesc} ${featureDesc}`;
         }
-
         openModal(star.name, finalDesc, star.hex);
     }
 
@@ -303,7 +299,8 @@
     }
 
     function openModal(name, desc, color) {
-        vName.innerText = name; vDesc.innerText = desc;
+        vName.innerText = name; 
+        vDesc.innerHTML = desc; 
         drawProceduralCanvas(color); modal.style.display = 'block';
     }
 
