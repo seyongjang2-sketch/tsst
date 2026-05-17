@@ -3,110 +3,102 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>아빠의 관제소 - FamilySpace</title>
+    <title>아빠의 공간 - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="login-modal.css" />
     <script src="auth.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-      /* 네오-사이버네틱 핵심 아키텍처 스타일 변수 선언 */
-      :root {
-        --neon-cyan: #06b6d4;
-        --neon-purple: #a855f7;
-        --dark-space: #020617;
-        --panel-bg: rgba(15, 23, 42, 0.65);
-      }
-
+      /* 모던 미니멀리즘 다크 테마 */
       body.dad-page { 
-        background: var(--dark-space) !important; 
-        color: #f1f5f9 !important;
-        font-family: 'Noto Sans KR', 'Orbitron', sans-serif;
-        overflow-x: hidden;
-        position: relative;
-      }
-      
-      /* 1층: 배경 레이어 - 고성능 실시간 입자 캔버스 */
-      #particle-canvas {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        z-index: -1; pointer-events: none;
+        background-color: #111827 !important; 
+        color: #f9fafb !important;
+        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
       
       .navbar {
-        background: rgba(2, 6, 23, 0.8) !important;
-        backdrop-filter: blur(16px);
-        border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+        background: rgba(17, 24, 39, 0.8) !important;
+        backdrop-filter: saturate(180%) blur(20px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: none !important;
       }
-      .nav-links a { color: #94a3b8 !important; font-weight: 500; }
-      .nav-links a:hover { color: var(--neon-cyan) !important; text-shadow: 0 0 8px var(--neon-cyan); }
+      .nav-links a { color: #9ca3af !important; font-weight: 500; }
+      .nav-links a:hover { color: #ffffff !important; }
       
-      /* 글래스모피즘 기술이 적용된 하이테크 계측 패널 */
-      .matrix-panel {
-        background: var(--panel-bg);
-        border: 1px solid rgba(6, 182, 212, 0.2);
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(6, 182, 212, 0.05);
-        backdrop-filter: blur(12px);
-        position: relative;
-        transition: all 0.3s ease;
-      }
-      .matrix-panel:hover {
-        border-color: var(--neon-purple);
-        box-shadow: 0 25px 60px rgba(168, 85, 247, 0.15);
-      }
-      .matrix-panel::after {
-        content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
-        background: linear-gradient(to bottom, var(--neon-cyan), var(--neon-purple));
-        border-top-left-radius: 16px; border-bottom-left-radius: 16px;
+      /* 애플 스타일 글래스 카드 레이아웃 */
+      .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+        margin-top: 40px;
       }
       
-      .matrix-panel h3 {
-        color: var(--neon-cyan); font-family: 'Orbitron', sans-serif; font-size: 1.25rem;
-        margin-top: 0; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
-        text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+      .modern-card {
+        background: #1f2937;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+        padding: 32px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .modern-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+      
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .card-icon {
+        width: 40px; height: 40px;
+        background: #374151;
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem;
+      }
+      .card-title {
+        font-size: 1.25rem; font-weight: 700; color: #ffffff; margin: 0;
+      }
+      .card-desc {
+        color: #9ca3af; font-size: 0.9rem; margin-top: 4px;
       }
 
-      /* 실시간 월드 타임 동기화 매트릭스 위젯 */
-      .time-display { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 700; color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
-      .zone-tag { font-size: 0.8rem; color: var(--neon-purple); font-weight: bold; letter-spacing: 1px; }
-
-      /* 양방향 CLI 쉘(Shell) 스트리밍 터미널 컴포넌트 */
-      .cli-terminal {
-        background: #000000; border-radius: 12px; padding: 15px;
-        font-family: monospace; font-size: 0.85rem; color: #4ade80;
-        height: 180px; overflow-y: auto; border: 1px solid #1e293b;
+      /* 실용적인 리스트 & 버튼 컴포넌트 */
+      .link-list { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+      .action-link {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 16px; background: rgba(0, 0, 0, 0.2);
+        border-radius: 16px; color: #d1d5db; text-decoration: none;
+        font-weight: 500; transition: background 0.2s;
       }
-      .cli-input-line { display: flex; gap: 8px; margin-top: 10px; background: #090d16; padding: 8px; border-radius: 6px; }
-      .cli-input-line input {
-        background: transparent; border: none; color: #ffffff; flex: 1; font-family: monospace; outline: none;
+      .action-link:hover { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
+      .action-link .sub-text { font-size: 0.8rem; color: #6b7280; font-weight: 400; }
+      
+      /* 강조형 프라이머리 버튼 */
+      .primary-btn {
+        background: #3b82f6; color: #ffffff;
+        padding: 16px; border-radius: 16px; text-align: center;
+        text-decoration: none; font-weight: 700; display: block;
+        transition: background 0.2s; margin-top: auto;
       }
-
-      /* 하이테크 조작 노드 버튼 */
-      .node-btn {
-        background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(6, 182, 212, 0.3);
-        padding: 12px; border-radius: 10px; color: #cbd5e1; text-decoration: none;
-        font-size: 0.9rem; font-weight: bold; text-align: center; transition: all 0.2s;
-        cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-      }
-      .node-btn:hover {
-        background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
-        color: var(--dark-space); font-weight: 700; transform: scale(1.02);
-        box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
-      }
+      .primary-btn:hover { background: #2563eb; }
     </style>
   </head>
   <body class="dad-page">
-    <canvas id="particle-canvas"></canvas>
-
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.html" class="nav-logo" style="color: var(--neon-cyan); text-shadow: 0 0 10px rgba(6,182,212,0.5);">FamilySpace</a>
+        <a href="index.html" class="nav-logo" style="color: #ffffff;">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
-          <li><a href="dad.html" style="color: var(--neon-cyan) !important; font-weight: 700;">아빠</a></li>
+          <li><a href="dad.html" style="color: #ffffff !important; font-weight: 700;">아빠</a></li>
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
           <li><a href="blog.html">가족 일기장</a></li>
@@ -116,202 +108,117 @@
       </div>
     </nav>
 
-    <div class="main-wrapper" style="max-width: 1300px; margin: 0 auto; padding: 60px 20px;">
-      <header style="text-align: center; margin-bottom: 50px; position: relative; z-index: 10;">
-        <h1 style="font-size: 3.5rem; font-family: 'Orbitron', sans-serif; font-weight: 700; background: linear-gradient(90deg, #06b6d4, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 10px;">CORE TERMINAL // BỐ</h1>
-        <p style="color: #94a3b8; font-size: 1.1rem;">차세대 프론트엔드 엔진 자원으로 가동되는 아빠만의 하이테크 인프라 공간입니다.</p>
+    <div class="main-wrapper" style="max-width: 1200px; margin: 0 auto; padding: 80px 20px;">
+      <header style="margin-bottom: 20px;">
+        <h1 style="font-size: 3rem; font-weight: 700; color: #ffffff; margin-bottom: 12px; letter-spacing: -0.5px;">Bố's Workspace</h1>
+        <p style="color: #9ca3af; font-size: 1.1rem; max-width: 600px;">생산성 도구, 게임 정보, 현지 생활을 아우르는 통합 대시보드입니다.</p>
       </header>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 30px; position: relative; z-index: 10;">
+      <div class="bento-grid">
         
-        <div class="matrix-panel" style="grid-column: span 2;">
-          <h3>📊 GENERATIVE AI PIPELINE THROUGHPUT (실시간 처리량 분석)</h3>
-          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">ComfyUI 가상 노드 모델 및 AI 오디오 렌더링 파이프라인의 런타임 연산 처리 효율 지표입니다.</p>
-          <div style="width: 100%; height: 280px; position: relative;">
-            <canvas id="runtimeChart"></canvas>
-          </div>
-        </div>
-
-        <div class="matrix-panel">
-          <h3>⏱️ DUAL-ZONE QUANTUM CLOCK</h3>
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 12px;">
+        <div class="modern-card">
+          <div class="card-header">
+            <div class="card-icon">🧠</div>
             <div>
-              <div class="zone-tag">VIETNAM (HANOI / HAI PHONG)</div>
-              <div class="time-display" id="clock-vn">00:00:00</div>
-            </div>
-            <div style="text-align: right;">
-              <div class="zone-tag">SOUTH KOREA (SEOUL)</div>
-              <div class="time-display" id="clock-kr" style="color: var(--neon-cyan);">00:00:00</div>
+              <h3 class="card-title">AI Content Pipeline</h3>
+              <p class="card-desc">쇼츠 영상 제작 및 자동화 툴킷</p>
             </div>
           </div>
-          
-          <div class="cli-terminal" id="terminal-log">
-            <div style="color: #cbd5e1;">[SYSTEM] 패밀리스페이스 테크 커널 구동 완료.</div>
-            <div style="color: var(--neon-cyan);">[INFO] 하드웨어 가속 입자 물리 가동 (Node: 80).</div>
-          </div>
-          <div class="cli-input-line">
-            <span style="color: var(--neon-purple); font-weight: bold;">$</span>
-            <input type="text" id="terminal-input" placeholder="명령어를 입력하세요 (help, status, clear)..." />
+          <div class="link-list">
+            <a href="http://127.0.0.1:8188" target="_blank" class="action-link">
+              <div>
+                <span>ComfyUI Local</span>
+                <div class="sub-text">Flux / SD3.5 노드 워크스페이스</div>
+              </div>
+              <span>→</span>
+            </a>
+            <a href="https://elevenlabs.io" target="_blank" class="action-link">
+              <div>
+                <span>ElevenLabs</span>
+                <div class="sub-text">AI 보이스 제너레이터</div>
+              </div>
+              <span>→</span>
+            </a>
+            <a href="https://n8n.io" target="_blank" class="action-link">
+              <div>
+                <span>n8n Webhook</span>
+                <div class="sub-text">업로드 파이프라인 자동화</div>
+              </div>
+              <span>→</span>
+            </a>
+            <a href="https://studio.youtube.com" target="_blank" class="action-link" style="margin-top: 8px;">
+              <div>
+                <span style="color:#ffffff;">YouTube Studio</span>
+              </div>
+              <span>▶</span>
+            </a>
           </div>
         </div>
 
-        <div class="matrix-panel" style="grid-column: span 2;">
-          <h3>🌐 REAL-TIME HOT GAME NEWS FEED (실시간 다이렉트 디스패치)</h3>
-          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">외부 파싱 차단 리스크가 없는 RESTful 다이렉트 쿼리 엔드포인트 세트입니다.</p>
-          
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-            <a href="https://www.inven.co.kr/webzine/news/?page=1" target="_blank" class="node-btn">📰 글로벌 종합 게임 웹진</a>
-            <a href="https://www.youtube.com/results?search_query=디아블로+4+시즌+최신+빌드+추천" target="_blank" class="node-btn">⚔️ 디아블로 4 고티어 빌드</a>
-            <a href="https://search.naver.com/search.naver?query=붉은사막+게임+소식" target="_blank" class="node-btn">🐎 붉은사막(Crimson Desert)</a>
-            <a href="https://bbs.ruliweb.com/game/86662" target="_blank" class="node-btn">🔮 검은사막 모바일 런타임 피드</a>
+        <div class="modern-card">
+          <div class="card-header">
+            <div class="card-icon">⚔️</div>
+            <div>
+              <h3 class="card-title">Endgame Hub</h3>
+              <p class="card-desc">최신 액션 게임 메타 및 정보</p>
+            </div>
+          </div>
+          <div class="link-list">
+            <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+69스킬포인트+빌드" target="_blank" class="action-link">
+              <div>
+                <span>Diablo 4: Max Level Builds</span>
+                <div class="sub-text">60레벨 (69스킬) 최적화 메타 빌드</div>
+              </div>
+              <span>→</span>
+            </a>
+            <a href="https://www.youtube.com/results?search_query=크림슨+데저트+공식+게임플레이" target="_blank" class="action-link">
+              <div>
+                <span>Crimson Desert</span>
+                <div class="sub-text">붉은사막 최신 게임플레이 트레일러</div>
+              </div>
+              <span>→</span>
+            </a>
+            <a href="https://bbs.ruliweb.com/game/86662" target="_blank" class="action-link">
+              <div>
+                <span>Black Desert Mobile</span>
+                <div class="sub-text">검은사막 모바일 커뮤니티</div>
+              </div>
+              <span>→</span>
+            </a>
           </div>
         </div>
 
-        <div class="matrix-panel">
-          <h3>⚙️ MASTER INFRASTRUCTURE CONTROL</h3>
-          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">가족 생산성 제어 및 외부 생성형 AI 모델 스택 링크</p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-            <a href="https://github.com" target="_blank" class="node-btn">💻 GitHub 레포</a>
-            <a href="https://studio.youtube.com" target="_blank" class="node-btn">📊 유튜브 스튜디오</a>
-            <a href="https://elevenlabs.io" target="_blank" class="node-btn">🔊 ElevenLabs</a>
-            <a href="blog.html" class="node-btn" style="border-color: var(--neon-purple); color: var(--neon-purple);">🔒 비밀 일기장</a>
+        <div class="modern-card">
+          <div class="card-header">
+            <div class="card-icon">🌴</div>
+            <div>
+              <h3 class="card-title">Vietnam Life</h3>
+              <p class="card-desc">현지 생활 및 일정 관리</p>
+            </div>
+          </div>
+          <div class="link-list">
+            <a href="https://www.skyscanner.co.kr/transport/flights/hph/sela/" target="_blank" class="action-link">
+              <div>
+                <span>Flight Check (HPH ✈️ ICN)</span>
+                <div class="sub-text">하이퐁 출발 인천행 최저가 항공권</div>
+              </div>
+              <span>→</span>
+            </a>
+            <a href="https://www.google.com/maps/search/Phu+Quoc+family+resort" target="_blank" class="action-link">
+              <div>
+                <span>Local Services</span>
+                <div class="sub-text">하이퐁 현지 유지보수 및 맛집 검색</div>
+              </div>
+              <span>→</span>
+            </a>
+            
+            <div style="margin-top: 20px;">
+              <a href="blog.html" class="primary-btn">🔒 아빠의 비밀 일기장 열기</a>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
-
-    <script>
-      // 1. HTML5 Canvas 고성능 실시간 입자 물리 엔진 스크립트
-      const canvas = document.getElementById('particle-canvas');
-      const ctx = canvas.getContext('2d');
-      let particles = [];
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.vx = (Math.random() - 0.5) * 0.6;
-          this.vy = (Math.random() - 0.5) * 0.6;
-          this.radius = Math.random() * 2 + 1;
-        }
-        update() {
-          this.x += this.vx; this.y += this.vy;
-          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-        }
-        draw() {
-          ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(6, 182, 212, 0.25)'; ctx.fill();
-        }
-      }
-
-      for (let i = 0; i < 80; i++) particles.push(new Particle());
-
-      function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
-        
-        // 근접 노드 간 실시간 벡터 와이어 매핑 연산
-        for (let i = 0; i < particles.length; i++) {
-          for (let j = i + 1; j < particles.length; j++) {
-            let dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-            if (dist < 110) {
-              ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
-              ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = `rgba(168, 85, 247, ${0.15 * (1 - dist/110)})`;
-              ctx.lineWidth = 0.5; ctx.stroke();
-            }
-          }
-        }
-        requestAnimationFrame(animateParticles);
-      }
-      animateParticles();
-
-      // 2. Chart.js 런타임 가상 데이터 시각화 엔진 초기화
-      const chartCtx = document.getElementById('runtimeChart').getContext('2d');
-      const runtimeChart = new Chart(chartCtx, {
-        type: 'line',
-        data: {
-          labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Runtime'],
-          datasets: [
-            {
-              label: 'ComfyUI (Flux/SD3.5 VRAM) FPS',
-              data: [45, 52, 49, 63, 58, 70, 68],
-              borderColor: '#06b6d4', backgroundColor: 'rgba(6, 182, 212, 0.05)',
-              tension: 0.4, fill: true, borderWidth: 2
-            },
-            {
-              label: 'ElevenLabs Voice Synthesis (Kbps)',
-              data: [128, 128, 192, 192, 256, 320, 320],
-              borderColor: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.05)',
-              tension: 0.2, fill: true, borderWidth: 2
-            }
-          ]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Noto Sans KR' } } } },
-          scales: {
-            x: { grid: { color: 'rgba(255,255,255,0.05)' }, McCticks: { color: '#64748b' } },
-            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } }
-          }
-        }
-      });
-
-      // 3. 고정밀 밀리초 월드 타임 동기화 모듈
-      function updateWorldClocks() {
-        const now = new Date();
-        const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-        
-        document.getElementById('clock-vn').innerText = now.toLocaleTimeString('vi-VN', { ...options, timeZone: 'Asia/Ho_Chi_Minh' });
-        document.getElementById('clock-kr').innerText = now.toLocaleTimeString('ko-KR', { ...options, timeZone: 'Asia/Seoul' });
-      }
-      setInterval(updateWorldClocks, 1000);
-      updateWorldClocks();
-
-      // 4. 양방향 런타임 CLI 터미널 컨트롤러 에뮬레이터
-      const terminalInput = document.getElementById('terminal-input');
-      const terminalLog = document.getElementById('terminal-log');
-
-      terminalInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          const cmd = this.value.trim().toLowerCase();
-          if (!cmd) return;
-
-          const userLine = document.createElement('div');
-          userLine.style.color = '#ffffff';
-          userLine.innerText = `$ ${this.value}`;
-          terminalLog.appendChild(userLine);
-
-          const responseLine = document.createElement('div');
-          responseLine.style.marginBottom = '5px';
-
-          if (cmd === 'help') {
-            responseLine.innerHTML = "<span style='color:#fde047;'>사용 가능한 하이테크 스택 명령어:</span><br>-> status : 커널 코어 상태 진단<br>-> clear : 로그 라인 초기화<br>-> system : 연동 인프라 버전 검증";
-          } else if (cmd === 'status') {
-            responseLine.innerHTML = "<span style='color:#4ade80;'>[OK] ALL SYSTEM COMPONENT IS OPTIMIZED.</span><br>- VRAM: STABLE (FLUX.1 DYNAMIC ALLOCATED)<br>- CLOUD: PARSING PROTECTED G-MAPS MAPPED.";
-          } else if (cmd === 'clear') {
-            terminalLog.innerHTML = "<div style='color:#cbd5e1;'>[SYSTEM] 터미널 콘솔 버퍼가 초기화되었습니다.</div>";
-            this.value = ''; return;
-          } else if (cmd === 'system') {
-            responseLine.innerHTML = "FamilySpace Core v2.0 // Web API Level: 2026.05";
-          } else {
-            responseLine.innerHTML = `<span style='color:#ff4757;'>Unknown core instruction: '${cmd}'. 'help'를 입력해 파이프라인 명령어를 조회하세요.</span>`;
-          }
-
-          terminalLog.appendChild(responseLine);
-          this.value = '';
-          terminalLog.scrollTop = terminalLog.scrollHeight;
-        }
-      });
-    </script>
   </body>
 </html>
