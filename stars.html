@@ -3,69 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 우주 탐험대 (Three.js)</title>
+    <title>3D 우주 탐험대 (이미지 갤러리 버전)</title>
     <style>
-        body {
-            margin: 0; padding: 0; overflow: hidden; background-color: #000;
-            font-family: 'Malgun Gothic', sans-serif;
-        }
-        
-        /* 정보 팝업창 UI */
-        #info-modal {
-            display: none; position: absolute;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 80%; max-width: 500px;
-            background: rgba(15, 20, 40, 0.95);
-            border: 3px solid #f9d71c; border-radius: 20px;
-            padding: 25px; text-align: center; color: white;
-            box-shadow: 0 0 30px rgba(249, 215, 28, 0.4);
-            z-index: 100;
-        }
+        body { margin: 0; padding: 0; overflow: hidden; background-color: #000; font-family: 'Malgun Gothic', sans-serif; }
+        #info-modal { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 500px; background: rgba(15, 20, 40, 0.95); border: 3px solid #f9d71c; border-radius: 20px; padding: 25px; text-align: center; color: white; box-shadow: 0 0 30px rgba(249, 215, 28, 0.4); z-index: 100; }
         #info-modal h2 { margin: 0 0 15px 0; color: #f9d71c; font-size: 28px; }
-        #info-modal iframe { width: 100%; height: 250px; border: none; border-radius: 10px; }
-        #info-modal p { font-size: 18px; line-height: 1.6; word-break: keep-all; }
-        .close-btn {
-            margin-top: 15px; padding: 12px 30px; font-size: 18px; font-weight: bold;
-            background-color: #f9d71c; color: #000;
-            border: none; border-radius: 30px; cursor: pointer;
-            transition: 0.2s;
-        }
-        .close-btn:hover { background-color: #fff; }
         
-        #guide {
-            position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.8);
-            pointer-events: none; font-size: 15px; text-shadow: 1px 1px 2px black;
-            z-index: 10;
-        }
-        /* 로딩 텍스트 */
-        #loading {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            color: white; font-size: 20px;
-        }
+        /* [수정] iframe 대신 이미지 스타일 정의 */
+        #star-portrait { width: 100%; height: 250px; object-fit: cover; border-radius: 10px; border: 2px solid #555; margin-bottom: 15px; }
+        
+        #info-modal p { font-size: 18px; line-height: 1.6; word-break: keep-all; margin-top: 0; }
+        .close-btn { margin-top: 15px; padding: 12px 30px; font-size: 18px; font-weight: bold; background-color: #f9d71c; color: #000; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s; }
+        .close-btn:hover { background-color: #fff; }
+        #guide { position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.8); pointer-events: none; font-size: 15px; text-shadow: 1px 1px 2px black; z-index: 10; }
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; }
     </style>
-    
     <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
+        { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
     </script>
 </head>
 <body>
 
-<div id="loading">우주를 불러오는 중...</div>
-<div id="guide">
-    💡 좌클릭 드래그: 우주 회전<br>
-    💡 마우스 휠: 확대/축소<br>
-    💡 우클릭 드래그: 우주 이동<br>
-    💡 큰 별을 클릭해 보세요!
-</div>
+<div id="loading">우주 갤러리를 불러오는 중...</div>
+<div id="guide">💡 좌클릭 드래그: 회전 | 마우스 휠: 줌 | 별을 클릭해 보세요!</div>
 
 <div id="info-modal">
     <h2 id="star-name">별 이름</h2>
-    <iframe id="star-video" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <img id="star-portrait" src="" alt="별 상세 사진">
     <p id="star-desc">별 설명</p>
     <button class="close-btn" id="close-btn">우주로 돌아가기</button>
 </div>
@@ -76,127 +40,129 @@
 
     document.getElementById('loading').style.display = 'none';
 
-    // 1. 씬, 카메라, 렌더러 설정
+    // 1. 씬 설정 (안개 제거하여 갤러리처럼 명확하게 표출)
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x000000, 0.0005); // 우주 외곽이 자연스럽게 어두워지는 안개 효과
 
+    // 2. 카메라 및 렌더러 설정
     const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
-    camera.position.set(0, 50, 400); // 초기 카메라 위치
+    camera.position.set(0, 50, 400);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
-    // 2. OrbitControls
+    // 3. OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; // 부드러운 감속 효과
-    controls.dampingFactor = 0.05;
-    controls.maxDistance = 1000; // 최대 줌아웃 제한
+    controls.enableDamping = true;
 
-    // 3. 배경 별 생성 (Particles 시스템)
+    // 4. [추가] 조명 설정 (텍스처를 입체적으로 보이게 하기 위해 필수)
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); // 전체적으로 부드러운 빛
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0xffffff, 1.5, 1000); // 특정 방향에서 비추는 강한 빛
+    pointLight.position.set(200, 200, 200);
+    scene.add(pointLight);
+
+    // 5. 배경 별 (Particles)
     const starsGeometry = new THREE.BufferGeometry();
-    const starsCount = 3000; // 3천개의 별
-    const posArray = new Float32Array(starsCount * 3);
-
-    for(let i = 0; i < starsCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 2000; 
-    }
+    const posArray = new Float32Array(3000 * 3);
+    for(let i = 0; i < 3000 * 3; i++) { posArray[i] = (Math.random() - 0.5) * 2000; }
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-
-    const starsMaterial = new THREE.PointsMaterial({
-        size: 1.5,
-        color: 0xffffff,
-        transparent: true,
-        opacity: 0.8
-    });
-    const starParticles = new THREE.Points(starsGeometry, starsMaterial);
+    const starParticles = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ size: 1.5, color: 0xffffff, transparent: true, opacity: 0.8 }));
     scene.add(starParticles);
 
-    // 4. 클릭 가능한 특별한 학습용 별 생성
-    const specialStars = [];
+    // 6. [수정] 텍스처 로더 초기화 및 데이터 리스트 업데이트
+    const textureLoader = new THREE.TextureLoader();
 
     const starDataList = [
-        { x: -100, y: 30, z: -50, color: 0xFFD700, name: '북극성 (Polaris)', desc: '안녕! 나는 북극성이야. 항상 북쪽을 가리키고 있어서 길 잃은 배들의 나침반이 되어준단다.', videoUrl: 'https://www.youtube.com/embed/1v0Wv1M5U4M?autoplay=1&mute=1' },
-        { x: 150, y: -40, z: 20, color: 0x00FFFF, name: '시리우스 (Sirius)', desc: '밤하늘에서 가장 눈부시게 빛나는 별 시리우스야! 아주 뜨거워서 파란 빛이 나지.', videoUrl: 'https://www.youtube.com/embed/9GsnA-0BIt8?autoplay=1&mute=1' },
-        { x: 0, y: 120, z: -150, color: 0xFFA500, name: '베텔게우스 (Betelgeuse)', desc: '오리온자리에 있는 거대하고 붉은 할아버지 별이란다. 태양보다 훨씬 커!', videoUrl: 'https://www.youtube.com/embed/v9qXyNf9Wb8?autoplay=1&mute=1' }
+        { 
+            x: -100, y: 30, z: -50, 
+            name: '북극성 (Polaris)', 
+            desc: '안녕! 나는 북극성이야. 항상 북쪽을 가리키고 있어서 길 잃은 배들의 나침반이 되어준단다.', 
+            // [수정] 3D 구체에 입힐 표면 텍스처 (Placeholder 이미지 사용)
+            textureUrl: 'https://cdn.pixabay.com/photo/2017/08/13/11/47/star-2636901_1280.jpg', 
+            // [수정] 팝업창에 보여줄 상세 사진
+            imageUrl: 'https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg'
+        },
+        { 
+            x: 150, y: -40, z: 20, 
+            name: '시리우스 (Sirius)', 
+            desc: '밤하늘에서 가장 눈부시게 빛나는 별 시리우스야! 아주 뜨거워서 파란 빛이 나지.', 
+            textureUrl: 'https://cdn.pixabay.com/photo/2016/09/29/13/08/planet-1702788_1280.jpg',
+            imageUrl: 'https://cdn.pixabay.com/photo/2011/12/13/17/09/abstract-11029_1280.jpg'
+        },
+        { 
+            x: 0, y: 120, z: -150, 
+            name: '베텔게우스 (Betelgeuse)', 
+            desc: '오리온자리에 있는 거대하고 붉은 할아버지 별이란다. 태양보다 훨씬 커!', 
+            textureUrl: 'https://cdn.pixabay.com/photo/2016/10/20/18/35/earth-1756274_1280.jpg',
+            imageUrl: 'https://cdn.pixabay.com/photo/2017/02/09/15/10/sky-2052646_1280.jpg'
+        }
     ];
 
+    const specialStars = [];
+
+    // 7. [수정] 단순 구체에서 텍스처가 적용된 입체 구체 모델로 생성
     starDataList.forEach(data => {
-        const geometry = new THREE.SphereGeometry(15, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ color: data.color });
+        // [수정] 텍스처 로드 및 MeshStandardMaterial 적용 (조명 영향 받음)
+        const texture = textureLoader.load(data.textureUrl);
+        const geometry = new THREE.SphereGeometry(15, 64, 64); // 세밀도를 높여 부드러운 구체 생성
+        const material = new THREE.MeshStandardMaterial({ 
+            map: texture,
+            roughness: 0.5, // 표면의 거칠기
+            metalness: 0.1  // 금속성
+        });
         const sphere = new THREE.Mesh(geometry, material);
         
         sphere.position.set(data.x, data.y, data.z);
         
-        sphere.userData = { 
-            name: data.name, 
-            desc: data.desc, 
-            videoUrl: data.videoUrl 
-        };
+        // 중요: Mesh 안에 별의 정보 데이터 보관 (imageUrl 포함)
+        sphere.userData = { name: data.name, desc: data.desc, imageUrl: data.imageUrl };
         
         scene.add(sphere);
         specialStars.push(sphere);
     });
 
-    // 5. 클릭(Raycaster) 충돌 감지
+    // 8. 클릭(Raycaster) 및 애니메이션 (기존과 동일)
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     window.addEventListener('click', (event) => {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
         raycaster.setFromCamera(mouse, camera);
         const intersects = raycaster.intersectObjects(specialStars);
-
         if (intersects.length > 0) {
-            const targetStarData = intersects[0].object.userData;
-            openModal(targetStarData);
+            openModal(intersects[0].object.userData);
         }
     });
 
-    // 6. 창 크기 조절 대응
     window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // 7. 애니메이션 렌더링 루프
-    const clock = new THREE.Clock();
     function animate() {
-        requestAnimationFrame(animate);
-        
-        const elapsedTime = clock.getElapsedTime();
-        starParticles.rotation.y = elapsedTime * 0.02;
-
-        controls.update();
-        renderer.render(scene, camera);
+        requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera);
     }
     animate();
 
-    // === HTML 모달 UI 제어 ===
+    // === [수정] HTML 모달 UI 제어 (영상 -> 이미지 변경) ===
     const modal = document.getElementById('info-modal');
     const vName = document.getElementById('star-name');
-    const vVideo = document.getElementById('star-video');
+    const vPortrait = document.getElementById('star-portrait'); // iframe에서 img로 변경
     const vDesc = document.getElementById('star-desc');
     const closeBtn = document.getElementById('close-btn');
 
     function openModal(starData) {
         vName.innerText = starData.name;
         vDesc.innerText = starData.desc;
-        
-        // [도메인 인증 우회 강화] 현재 접속 주소를 origin 파라미터로 명시하여 차단율을 낮춤
-        const currentOrigin = window.location.origin;
-        vVideo.src = `${starData.videoUrl}&origin=${encodeURIComponent(currentOrigin)}`;
-        
+        vPortrait.src = starData.imageUrl; // 영상 주소 대신 이미지 주소를 넣음
         modal.style.display = 'block';
     }
 
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
-        vVideo.src = ''; // 영상 중지 및 메모리 해제
+        vPortrait.src = ''; // 이미지 로딩 중지
     });
 </script>
 
