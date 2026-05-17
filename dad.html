@@ -11,70 +11,53 @@
     <link rel="stylesheet" href="login-modal.css" />
     <script src="auth.js"></script>
     <style>
-      /* 수익형 매거진 스타일 오버라이드 */
-      body.dad-page { 
-        background-color: #f8f9fa; 
-        color: #333333;
-        font-family: 'Pretendard', sans-serif;
-      }
-      
-      .navbar { background: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+      /* 베이스 스타일 */
+      body.dad-page { background-color: #f8f9fa; color: #333333; font-family: 'Pretendard', sans-serif; margin: 0; }
+      .navbar { background: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
       .nav-links a { color: #555555; font-weight: 600; }
       .nav-links a:hover { color: #4a90e2; }
       
       .magazine-header { text-align: center; padding: 40px 20px; background: #ffffff; border-bottom: 1px solid #eeeeee; }
-      .magazine-header h1 { font-size: 2.5rem; color: #111827; margin-bottom: 15px; font-weight: 700; }
-      .magazine-header p { color: #6b7280; font-size: 1.1rem; }
+      .magazine-header h1 { font-size: 2.2rem; color: #111827; margin-bottom: 10px; font-weight: 700; }
+      .magazine-header p { color: #6b7280; font-size: 1rem; }
 
-      /* 광고 배너 플레이스홀더 (수익화 공간) */
-      .ad-banner {
-        width: 100%; max-width: 900px; height: 100px; margin: 30px auto;
-        background: #e5e7eb; border: 2px dashed #9ca3af; border-radius: 12px;
-        display: flex; align-items: center; justify-content: center;
-        color: #6b7280; font-weight: bold; font-size: 0.9rem; text-align: center;
-      }
+      /* 광고 영역 */
+      .ad-banner { width: 100%; max-width: 900px; height: 100px; margin: 30px auto; background: #e5e7eb; border: 2px dashed #9ca3af; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280; font-weight: bold; font-size: 0.9rem; }
 
-      /* 매거진 그리드 레이아웃 */
-      .magazine-grid {
-        display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 30px; margin-top: 40px;
-      }
+      /* 뷰 컨테이너 (SPA 전환용) */
+      .view-section { display: none; max-width: 1100px; margin: 0 auto; padding: 20px; }
+      .view-section.active { display: block; animation: fadeIn 0.4s ease; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-      .article-card {
-        background: #ffffff; border-radius: 16px; overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s;
-        border: 1px solid #f3f4f6; text-decoration: none; color: inherit; display: block;
-      }
+      /* 1. 메인 피드 (목록) 스타일 */
+      .magazine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-top: 20px; }
+      .article-card { background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border: 1px solid #f3f4f6; cursor: pointer; transition: transform 0.2s; }
       .article-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-      
-      .article-img {
-        width: 100%; height: 200px; background-color: #d1d5db;
-        background-size: cover; background-position: center;
-      }
+      .article-img { width: 100%; height: 200px; background-color: #e5e7eb; background-size: cover; background-position: center; }
       .article-content { padding: 25px; }
-      .article-category {
-        display: inline-block; padding: 4px 10px; background: #eff6ff; color: #2563eb;
-        border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 12px;
-      }
-      .article-category.vietnam { background: #f0fdf4; color: #16a34a; }
+      .category-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; }
+      .cat-vietnam { background: #f0fdf4; color: #16a34a; }
+      .cat-game { background: #fef2f2; color: #dc2626; }
+      .cat-tech { background: #eff6ff; color: #2563eb; }
+      .article-title { font-size: 1.25rem; font-weight: 700; margin: 0 0 10px 0; color: #1f2937; line-height: 1.4; }
+      .article-date { font-size: 0.85rem; color: #9ca3af; margin-bottom: 10px; }
+
+      /* 2. 글 읽기 상세 화면 스타일 */
+      .read-container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+      .read-title { font-size: 2.5rem; color: #111827; margin-bottom: 15px; font-weight: 700; line-height: 1.3; }
+      .read-meta { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; color: #6b7280; }
+      .read-cover { width: 100%; max-height: 400px; object-fit: cover; border-radius: 12px; margin-bottom: 30px; }
+      .read-body { font-size: 1.1rem; color: #374151; line-height: 1.8; white-space: pre-wrap; }
+      .btn-back { background: #f3f4f6; color: #374151; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 20px; display: inline-block; }
+
+      /* 3. 글쓰기 에디터 스타일 */
+      .editor-container { max-width: 800px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+      .input-field { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 1rem; box-sizing: border-box; font-family: inherit; }
+      .input-textarea { width: 100%; height: 400px; padding: 15px; margin-bottom: 20px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 1rem; resize: vertical; box-sizing: border-box; font-family: inherit; line-height: 1.6; }
+      .btn-submit { width: 100%; background: #2563eb; color: white; padding: 16px; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
       
-      .article-title { font-size: 1.25rem; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; color: #1f2937; }
-      .article-excerpt { font-size: 0.95rem; color: #6b7280; line-height: 1.6; margin: 0; }
-      
-      /* 쇼피 어필리에이트 전용 추천 상품 컴포넌트 */
-      .shopee-pick {
-        background: #fff5f5; border: 1px solid #fee2e2; border-radius: 16px;
-        padding: 25px; margin-top: 40px;
-      }
-      .shopee-title { color: #ef4444; font-weight: 700; font-size: 1.2rem; margin-top: 0; display: flex; align-items: center; gap: 8px; }
-      .shopee-item {
-        display: flex; align-items: center; justify-content: space-between;
-        background: #ffffff; padding: 15px; border-radius: 12px; margin-top: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.02); text-decoration: none; transition: 0.2s;
-      }
-      .shopee-item:hover { border-color: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1); }
-      .shopee-item-info { font-weight: 600; color: #374151; }
-      .shopee-item-btn { background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; }
+      /* 관리자 버튼 (가족 로그인 시에만 노출) */
+      #admin-write-btn { display: none; background: #111827; color: white; border: none; padding: 10px 24px; border-radius: 30px; font-weight: bold; cursor: pointer; margin-top: 15px; }
     </style>
   </head>
   <body class="dad-page">
@@ -83,76 +66,219 @@
         <a href="index.html" class="nav-logo" style="color: #2563eb;">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
-          <li><a href="dad.html" style="color: #2563eb !important; font-weight: 700;">아빠의 꿀팁</a></li>
-          <li><a href="mom.html">엄마</a></li>
-          <li><a href="baby.html">아기</a></li>
+          <li><a href="dad.html" style="color: #2563eb !important; font-weight: 700;">아빠 매거진</a></li>
           <li><a href="blog.html">가족 일기장</a></li>
           <li><a href="chat.html">🔒 비밀 대화</a></li>
         </ul>
       </div>
     </nav>
 
-    <div class="magazine-header">
+    <div class="magazine-header" id="main-header">
       <h1>베트남 N년차 아빠의 생생 라이프 & 테크</h1>
       <p>현지 교민이 직접 전하는 하이퐁 찐 맛집부터, 최신 AI 툴과 게임 공략까지</p>
+      <button id="admin-write-btn" onclick="switchView('write-view')">✍️ 새 글 발행하기</button>
     </div>
 
-    <div class="main-wrapper" style="max-width: 1100px; margin: 0 auto; padding: 20px;">
+    <div id="feed-view" class="view-section active">
+      <div class="ad-banner">[구글 애드센스 디스플레이 광고 영역]</div>
       
-      <div class="ad-banner">
-        [구글 애드센스 디스플레이 광고 삽입 영역]<br>
-        향후 &lt;ins class="adsbygoogle"&gt; 코드로 대체됩니다.
+      <div class="magazine-grid" id="post-list-container">
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #6b7280;">
+          클라우드에서 최신 매거진 글을 불러오는 중입니다...
+        </div>
       </div>
-
-      <div class="magazine-grid">
-        
-        <a href="#" class="article-card" onclick="alert('향후 블로그 상세 글로 연결됩니다.'); return false;">
-          <div class="article-img" style="background-image: url('https://images.unsplash.com/photo-1555921015-5532091f6026?auto=format&fit=crop&q=80&w=600');"></div>
-          <div class="article-content">
-            <span class="article-category vietnam">베트남 여행/맛집</span>
-            <h2 class="article-title">관광객은 절대 모르는 하이퐁 찐 로컬 맛집 BEST 5</h2>
-            <p class="article-excerpt">베트남 하이퐁 현지에서 가족들과 직접 발품 팔아 찾아낸, 한국인 입맛에 딱 맞는 숨은 로컬 맛집과 위생 좋은 식당을 총정리했습니다.</p>
-          </div>
-        </a>
-
-        <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+빌드" target="_blank" class="article-card">
-          <div class="article-img" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600');"></div>
-          <div class="article-content">
-            <span class="article-category">게임 공략</span>
-            <h2 class="article-title">디아블로 4 시즌 메타: 60레벨 (69스킬) 종결 빌드 가이드</h2>
-            <p class="article-excerpt">이번 시즌 엔드게임을 지배할 60레벨 최적화 스킬트리와 필수 위상, 그리고 가장 효율적인 아이템 파밍 루트를 분석합니다.</p>
-          </div>
-        </a>
-
-        <a href="#" class="article-card" onclick="alert('향후 블로그 상세 글로 연결됩니다.'); return false;">
-          <div class="article-img" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=600');"></div>
-          <div class="article-content">
-            <span class="article-category">AI 테크 리뷰</span>
-            <h2 class="article-title">ComfyUI와 ElevenLabs로 유튜브 숏폼 영상 10분 만에 자동화하기</h2>
-            <p class="article-excerpt">복잡한 파이썬 설치 없이 ComfyUI 로컬 환경을 세팅하고, ElevenLabs AI 성우를 결합하여 수익형 숏폼 영상을 찍어내는 파이프라인을 공개합니다.</p>
-          </div>
-        </a>
-
-      </div>
-
-      <div class="shopee-pick">
-        <h3 class="shopee-title">🛍️ 아빠의 베트남 필수 생활템 추천 (Shopee Picks)</h3>
-        <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 10px;">베트남 거주 시 삶의 질을 수직 상승시켜주는 꿀템들을 소개합니다.</p>
-        
-        <a href="#" class="shopee-item" onclick="alert('쇼피 어필리에이트 링크로 이동합니다.'); return false;">
-          <div class="shopee-item-info">💧 하이퐁 수질 필수 대비! 샤워기 녹물 필터 세트</div>
-          <div class="shopee-item-btn">최저가 확인하러 가기</div>
-        </a>
-        <a href="#" class="shopee-item" onclick="alert('쇼피 어필리에이트 링크로 이동합니다.'); return false;">
-          <div class="shopee-item-info">⌨️ [게이밍] 빠른 타격감의 자석축 래피드 트리거 키보드</div>
-          <div class="shopee-item-btn">최저가 확인하러 가기</div>
-        </a>
-      </div>
-
-      <div class="ad-banner" style="margin-top: 40px;">
-        [구글 애드센스 하단 디스플레이 / 멀티플렉스 광고 영역]
-      </div>
-
+      
+      <div class="ad-banner" style="margin-top: 40px;">[구글 애드센스 하단 멀티플렉스 광고 영역]</div>
     </div>
+
+    <div id="read-view" class="view-section">
+      <button class="btn-back" onclick="switchView('feed-view')">← 목록으로 돌아가기</button>
+      <div class="read-container" id="read-container-box">
+        </div>
+    </div>
+
+    <div id="write-view" class="view-section">
+      <button class="btn-back" onclick="switchView('feed-view')">← 작성을 취소하고 목록으로</button>
+      <div class="editor-container">
+        <h2 style="margin-top:0; color:#111827;">새 매거진 글 발행</h2>
+        
+        <select id="edit-category" class="input-field">
+          <option value="vietnam">베트남 여행/맛집</option>
+          <option value="game">최신 게임 공략</option>
+          <option value="tech">AI & 테크 리뷰</option>
+        </select>
+        
+        <input type="text" id="edit-title" class="input-field" placeholder="방문자를 사로잡을 제목을 입력하세요" />
+        
+        <label style="display:block; margin-bottom:10px; font-weight:bold; color:#374151;">대표 썸네일 이미지 (필수)</label>
+        <input type="file" id="edit-image" accept="image/*" class="input-field" />
+        <img id="edit-preview" src="" style="width:100%; max-height:200px; object-fit:cover; border-radius:10px; margin-bottom:20px; display:none;" />
+        
+        <textarea id="edit-content" class="input-textarea" placeholder="본문 내용을 자유롭게 작성하세요. 줄바꿈이 그대로 반영됩니다."></textarea>
+        
+        <button id="btn-publish" class="btn-submit">클라우드에 전 세계 공개 발행하기 🚀</button>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyASXXnU8bB6G641bY00V6MCRMLtdUgddpI",
+        authDomain: "familyspace-db.firebaseapp.com",
+        projectId: "familyspace-db",
+        storageBucket: "familyspace-db.firebasestorage.app",
+        messagingSenderId: "17439157934",
+        appId: "1:17439157934:web:d2e65b864fac46c1a6873f",
+        measurementId: "G-MJ449CTT88"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      
+      // 가족 로그인 여부 확인 및 글쓰기 버튼 노출 처리
+      const isAuth = sessionStorage.getItem('family_space_authenticated') === 'true';
+      if(isAuth) {
+        document.getElementById('admin-write-btn').style.display = 'inline-block';
+      }
+
+      // 화면 전환 라우팅 함수 글로벌 바인딩
+      window.switchView = function(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo(0, 0);
+        if(viewId === 'feed-view') fetchPosts(); // 목록으로 올 때 피드 새로고침
+      };
+
+      // 1. 전체 매거진 글 불러오기 (메인 피드)
+      async function fetchPosts() {
+        const listContainer = document.getElementById('post-list-container');
+        try {
+          const q = query(collection(db, "magazine_posts"), orderBy("timestamp", "desc"));
+          const snapshot = await getDocs(q);
+          
+          if(snapshot.empty) {
+            listContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px;">아직 발행된 글이 없습니다. 첫 글을 작성해 보세요!</div>';
+            return;
+          }
+
+          let htmlBuffer = '';
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const id = docSnap.id;
+            
+            let catClass = 'cat-tech';
+            let catName = 'AI 테크';
+            if(data.category === 'vietnam') { catClass = 'cat-vietnam'; catName = '베트남 라이프'; }
+            else if(data.category === 'game') { catClass = 'cat-game'; catName = '게임 공략'; }
+
+            htmlBuffer += `
+              <div class="article-card" onclick="openPost('${id}')">
+                <div class="article-img" style="background-image: url('${data.thumbnail || ''}');"></div>
+                <div class="article-content">
+                  <span class="category-badge ${catClass}">${catName}</span>
+                  <h2 class="article-title">${data.title}</h2>
+                  <div class="article-date">${data.date}</div>
+                </div>
+              </div>
+            `;
+          });
+          listContainer.innerHTML = htmlBuffer;
+        } catch(e) {
+          listContainer.innerHTML = '<div style="color:red; text-align:center; grid-column:1/-1;">글을 불러오는데 실패했습니다. 데이터베이스 상태를 확인하세요.</div>';
+        }
+      }
+
+      // 2. 개별 글 읽기 화면 렌더링
+      window.openPost = async function(docId) {
+        const readBox = document.getElementById('read-container-box');
+        readBox.innerHTML = '<div style="text-align:center; padding:50px;">데이터를 불러오는 중...</div>';
+        window.switchView('read-view');
+
+        try {
+          const docRef = doc(db, "magazine_posts", docId);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            let catName = data.category === 'vietnam' ? '베트남 라이프' : (data.category === 'game' ? '게임 공략' : 'AI 테크');
+            
+            readBox.innerHTML = `
+              <span class="category-badge cat-${data.category}" style="background:#eff6ff; color:#2563eb; margin-bottom:15px;">${catName}</span>
+              <h1 class="read-title">${data.title}</h1>
+              <div class="read-meta">
+                <span>By 아빠 (Author)</span>
+                <span>${data.date}</span>
+              </div>
+              ${data.thumbnail ? `<img src="${data.thumbnail}" class="read-cover">` : ''}
+              <div class="ad-banner" style="margin: 20px 0;">[구글 애드센스 본문 상단 광고]</div>
+              <div class="read-body">${data.content}</div>
+              <div class="ad-banner" style="margin: 40px 0 0 0;">[구글 애드센스 본문 하단 광고]</div>
+            `;
+          }
+        } catch(e) {
+          readBox.innerHTML = '글을 불러올 수 없습니다.';
+        }
+      };
+
+      // 3. 에디터 이미지 썸네일 프리뷰 처리
+      let currentThumbnail = "";
+      document.getElementById('edit-image').onchange = function(e) {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          currentThumbnail = evt.target.result;
+          document.getElementById('edit-preview').src = currentThumbnail;
+          document.getElementById('edit-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      };
+
+      // 4. 새 글 발행 트랜잭션
+      document.getElementById('btn-publish').onclick = async function() {
+        if(!isAuth) { alert("가족 로그인이 필요합니다!"); return; }
+        
+        const title = document.getElementById('edit-title').value;
+        const category = document.getElementById('edit-category').value;
+        const content = document.getElementById('edit-content').value;
+        
+        if(!title || !content || !currentThumbnail) {
+          alert('제목, 썸네일 이미지, 본문 내용을 모두 채워주세요!'); return;
+        }
+
+        const payload = {
+          title: title,
+          category: category,
+          thumbnail: currentThumbnail,
+          content: content,
+          date: new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' }),
+          timestamp: Date.now()
+        };
+
+        try {
+          this.innerText = "발행 중..."; this.disabled = true;
+          await addDoc(collection(db, "magazine_posts"), payload);
+          
+          // 폼 초기화
+          document.getElementById('edit-title').value = '';
+          document.getElementById('edit-content').value = '';
+          document.getElementById('edit-image').value = '';
+          document.getElementById('edit-preview').style.display = 'none';
+          currentThumbnail = '';
+          
+          alert('글이 성공적으로 전 세계에 발행되었습니다!');
+          window.switchView('feed-view'); // 목록으로 강제 귀환
+        } catch(e) {
+          alert('발행 실패: ' + e.message);
+        } finally {
+          this.innerText = "클라우드에 전 세계 공개 발행하기 🚀"; this.disabled = false;
+        }
+      };
+
+      // 페이지 최초 진입 시 메인 피드 로드
+      window.onload = function() { fetchPosts(); };
+    </script>
   </body>
 </html>
