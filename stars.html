@@ -10,7 +10,7 @@
             font-family: 'Malgun Gothic', sans-serif;
         }
         
-        /* 정보 팝업창 UI (기존과 동일) */
+        /* 정보 팝업창 UI */
         #info-modal {
             display: none; position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -44,7 +44,6 @@
         }
     </style>
     
-    <!-- Three.js ES Modules 로드를 위한 Import Map -->
     <script type="importmap">
         {
             "imports": {
@@ -66,7 +65,7 @@
 
 <div id="info-modal">
     <h2 id="star-name">별 이름</h2>
-    <iframe id="star-video" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <iframe id="star-video" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     <p id="star-desc">별 설명</p>
     <button class="close-btn" id="close-btn">우주로 돌아가기</button>
 </div>
@@ -89,24 +88,22 @@
     renderer.setPixelRatio(window.devicePixelRatio);
     document.body.appendChild(renderer.domElement);
 
-    // 2. OrbitControls (사용자 입력 제어 - 여기서 1줄로 처리됨)
+    // 2. OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true; // 부드러운 감속 효과
     controls.dampingFactor = 0.05;
     controls.maxDistance = 1000; // 최대 줌아웃 제한
 
-    // 3. 배경 별 생성 (Particles 시스템 - 최적화)
+    // 3. 배경 별 생성 (Particles 시스템)
     const starsGeometry = new THREE.BufferGeometry();
     const starsCount = 3000; // 3천개의 별
     const posArray = new Float32Array(starsCount * 3);
 
     for(let i = 0; i < starsCount * 3; i++) {
-        // -1000 ~ 1000 공간 안에 무작위 배치
         posArray[i] = (Math.random() - 0.5) * 2000; 
     }
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
 
-    // 배경 별의 재질
     const starsMaterial = new THREE.PointsMaterial({
         size: 1.5,
         color: 0xffffff,
@@ -117,7 +114,7 @@
     scene.add(starParticles);
 
     // 4. 클릭 가능한 특별한 학습용 별 생성
-    const specialStars = []; // Raycaster에서 검사할 배열
+    const specialStars = [];
 
     const starDataList = [
         { x: -100, y: 30, z: -50, color: 0xFFD700, name: '북극성 (Polaris)', desc: '안녕! 나는 북극성이야. 항상 북쪽을 가리키고 있어서 길 잃은 배들의 나침반이 되어준단다.', videoUrl: 'https://www.youtube.com/embed/1v0Wv1M5U4M?autoplay=1&mute=1' },
@@ -126,14 +123,12 @@
     ];
 
     starDataList.forEach(data => {
-        // 3D 구체 생성
         const geometry = new THREE.SphereGeometry(15, 32, 32);
         const material = new THREE.MeshBasicMaterial({ color: data.color });
         const sphere = new THREE.Mesh(geometry, material);
         
         sphere.position.set(data.x, data.y, data.z);
         
-        // 중요: Mesh 안에 별의 정보 데이터 보관
         sphere.userData = { 
             name: data.name, 
             desc: data.desc, 
@@ -141,7 +136,7 @@
         };
         
         scene.add(sphere);
-        specialStars.push(sphere); // 충돌 검사용 배열에 추가
+        specialStars.push(sphere);
     });
 
     // 5. 클릭(Raycaster) 충돌 감지
@@ -149,18 +144,13 @@
     const mouse = new THREE.Vector2();
 
     window.addEventListener('click', (event) => {
-        // 브라우저 화면 좌표를 WebGL의 정규화된 기기 좌표(NDC: -1 ~ +1)로 변환
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-        // 카메라 위치에서 마우스 클릭 방향으로 광선을 발사
         raycaster.setFromCamera(mouse, camera);
-
-        // 발사된 광선과 특별한 별들이 부딪혔는지 검사
         const intersects = raycaster.intersectObjects(specialStars);
 
         if (intersects.length > 0) {
-            // 부딪힌 첫 번째 객체(가장 가까운 별)의 데이터 추출
             const targetStarData = intersects[0].object.userData;
             openModal(targetStarData);
         }
@@ -179,11 +169,9 @@
         requestAnimationFrame(animate);
         
         const elapsedTime = clock.getElapsedTime();
-        
-        // 은하수(배경 별)가 천천히 자전하는 효과
         starParticles.rotation.y = elapsedTime * 0.02;
 
-        controls.update(); // Damping을 위해 매 프레임 업데이트 필요
+        controls.update();
         renderer.render(scene, camera);
     }
     animate();
@@ -198,13 +186,17 @@
     function openModal(starData) {
         vName.innerText = starData.name;
         vDesc.innerText = starData.desc;
-        vVideo.src = starData.videoUrl;
+        
+        // [도메인 인증 우회 강화] 현재 접속 주소를 origin 파라미터로 명시하여 차단율을 낮춤
+        const currentOrigin = window.location.origin;
+        vVideo.src = `${starData.videoUrl}&origin=${encodeURIComponent(currentOrigin)}`;
+        
         modal.style.display = 'block';
     }
 
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
-        vVideo.src = ''; // 영상 중지
+        vVideo.src = ''; // 영상 중지 및 메모리 해제
     });
 </script>
 
