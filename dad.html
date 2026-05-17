@@ -51,7 +51,7 @@
       .panel { background: #ffffff; border-radius: 28px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; }
       .panel-title { margin-top: 0; color: #111827; font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
       
-      /* 고품격 포토 카드 링크 */
+      /* 확실하게 작동하는 고품격 포토 카드 링크 */
       .visual-card {
         position: relative; height: 130px; border-radius: 20px; overflow: hidden; 
         display: flex; align-items: flex-end; padding: 20px; text-decoration: none; 
@@ -75,27 +75,7 @@
       .badge { padding: 6px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
       .badge.red { background: #ef4444; color: white; }
       .badge.blue { background: #3b82f6; color: white; }
-      .badge.play { background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); }
-
-      /* --- [핵심 추가] 팝업(모달) 동영상 플레이어 스타일 --- */
-      .video-modal-overlay {
-        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 9999;
-        justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
-      }
-      .video-modal-overlay.active { display: flex; animation: fadeInModal 0.3s ease; }
-      @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
-      .video-modal-content {
-        position: relative; width: 100%; max-width: 1000px; background: #000;
-        border-radius: 20px; overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-      }
-      .video-modal-close {
-        position: absolute; top: -40px; right: 0; color: white; font-size: 30px; 
-        font-weight: bold; cursor: pointer; transition: 0.2s;
-      }
-      .video-modal-close:hover { color: #ff4d4f; transform: scale(1.1); }
-      .video-container { position: relative; padding-bottom: 56.25%; height: 0; }
-      .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+      .badge.play { background: #10b981; color: white; }
 
       /* 매거진 블로그 피드 */
       .magazine-header h2 { font-size: 1.6rem; color: #111827; font-weight: 700; margin-bottom: 30px; padding-left: 16px; border-left: 5px solid #4a90e2; }
@@ -107,7 +87,7 @@
       .article-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 12px 0; color: #111827; line-height: 1.5; }
       .article-date { font-size: 0.9rem; color: #9ca3af; margin-top: auto; font-weight: 500; }
 
-      /* 광고 배너 자리 */
+      /* 고급스러운 광고 배너 자리 */
       .ad-banner { width: 100%; height: 100px; background: #f1f3f5; border: 1px dashed #ced4da; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.9rem; font-weight: 600; margin-bottom: 50px; }
 
       /* 상세 읽기 & 글쓰기 폼 UI */
@@ -124,17 +104,6 @@
   </head>
   <body class="dad-page">
     
-    <div id="videoModal" class="video-modal-overlay" onclick="closeModal()">
-      <div style="position: relative; width: 100%; max-width: 1000px;">
-        <span class="video-modal-close" onclick="closeModal()">&times;</span>
-        <div class="video-modal-content" onclick="event.stopPropagation()">
-          <div class="video-container">
-            <iframe id="modalIframe" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <nav class="navbar">
       <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;">
         <a href="index.html" class="nav-logo" style="color: #4a90e2; font-size: 1.6rem; font-weight: 700; text-decoration: none; letter-spacing: -0.5px;">FamilySpace</a>
@@ -170,31 +139,31 @@
       <div class="dashboard-grid">
         <div class="panel">
           <h3 class="panel-title">🎮 Game & Media</h3>
-          <p style="color: #868e96; font-size: 0.95rem; margin-bottom: 20px;">카드를 클릭하면 화면을 벗어나지 않고 그 자리에서 바로 영상이 재생됩니다.</p>
+          <p style="color: #868e96; font-size: 0.95rem; margin-bottom: 20px;">클릭하시면 에러 없이 쾌적한 <b>미니 팝업창</b>으로 재생됩니다.</p>
 
-          <div class="visual-card" onclick="openModal('b1KbLzGZsR0')">
-            <div class="bg-img" style="background-image: url('https://img.youtube.com/vi/b1KbLzGZsR0/maxresdefault.jpg');"></div>
+          <a href="#" class="visual-card" onclick="openMiniPopup('https://www.youtube.com/watch?v=b1KbLzGZsR0'); return false;">
+            <div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600');"></div>
             <div class="overlay"></div>
             <div class="content">
               <div class="text-box">
-                <span class="title">붉은사막 4K 트레일러</span>
-                <span class="desc">화면 안에서 즉시 재생</span>
+                <span class="title">붉은사막 게임플레이</span>
+                <span class="desc">작은 팝업창으로 바로 보기</span>
               </div>
-              <span class="badge play">▶ PLAY</span>
+              <span class="badge play">Popup</span>
             </div>
-          </div>
+          </a>
 
-          <div class="visual-card" onclick="openModal('XV4zVqb9vWc')">
-            <div class="bg-img" style="background-image: url('https://img.youtube.com/vi/XV4zVqb9vWc/maxresdefault.jpg');"></div>
+          <a href="#" class="visual-card" onclick="openMiniPopup('https://www.youtube.com/results?search_query=디아블로+4+60레벨+69포인트+빌드'); return false;">
+            <div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600');"></div>
             <div class="overlay"></div>
             <div class="content">
               <div class="text-box">
-                <span class="title">디아블로 4 공식 영상</span>
-                <span class="desc">화면 안에서 즉시 재생</span>
+                <span class="title">디아블로 4 종결 공략</span>
+                <span class="desc">60레벨 (69포인트) 최신 메타 검색</span>
               </div>
-              <span class="badge play">▶ PLAY</span>
+              <span class="badge play">Popup</span>
             </div>
-          </div>
+          </a>
         </div>
 
         <div class="panel">
@@ -270,20 +239,18 @@
     </div>
 
     <script>
-      // 팝업 모달창 제어 자바스크립트
-      function openModal(videoId) {
-        const modal = document.getElementById('videoModal');
-        const iframe = document.getElementById('modalIframe');
-        // 유튜브 자동재생 파라미터 추가
-        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-        modal.classList.add('active');
-      }
-
-      function closeModal() {
-        const modal = document.getElementById('videoModal');
-        const iframe = document.getElementById('modalIframe');
-        modal.classList.remove('active');
-        iframe.src = ''; // 영상 즉시 중지 (음성 안 겹치게)
+      // [핵심 기능] 질문자님 아이디어: 작은 독립 팝업창(Mini Window) 띄우기
+      function openMiniPopup(url) {
+        // 팝업창 가로, 세로 크기 지정
+        const width = 800;
+        const height = 500;
+        
+        // 화면 정중앙에 뜨도록 좌표 계산
+        const left = (window.innerWidth - width) / 2 + window.screenX;
+        const top = (window.innerHeight - height) / 2 + window.screenY;
+        
+        // 브라우저의 진짜 새 창(Popup)을 띄움 -> iframe 에러 원천 차단!
+        window.open(url, 'youtubeMiniPopup', `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=yes`);
       }
     </script>
 
