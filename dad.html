@@ -3,207 +3,310 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>아빠의 공간 - FamilySpace</title>
+    <title>아빠의 휴식처 & 테크 매거진 - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="login-modal.css" />
     <script src="auth.js"></script>
     <style>
-      /* 모던 미니멀리즘 다크 테마 */
-      body.dad-page { 
-        background-color: #111827 !important; 
-        color: #f9fafb !important;
-        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-        -webkit-font-smoothing: antialiased;
-        margin: 0;
-      }
+      /* 편안한 휴식을 위한 프리미엄 다크모드 베이스 */
+      body.dad-page { background-color: #111827; color: #f9fafb; font-family: 'Pretendard', sans-serif; margin: 0; }
       
-      .navbar {
-        background: rgba(17, 24, 39, 0.8) !important;
-        backdrop-filter: saturate(180%) blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        position: sticky; top: 0; z-index: 100;
-      }
+      .navbar { background: rgba(17, 24, 39, 0.9) !important; backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; }
       .nav-links { display: flex; align-items: center; list-style: none; gap: 20px; margin: 0; padding: 0; }
       .nav-links a { color: #9ca3af !important; font-weight: 500; text-decoration: none; transition: color 0.2s; }
-      .nav-links a:hover { color: #ffffff !important; }
+      .nav-links a:hover { color: #3b82f6 !important; }
       
-      /* --- [핵심 추가] 네비게이션 드롭다운 메뉴 (Hover) --- */
-      .nav-dropdown {
-        position: relative;
-        display: inline-block;
-        padding-bottom: 10px; /* 마우스가 아래로 이동할 때 호버가 풀리지 않도록 여백 확보 */
-        margin-bottom: -10px;
-      }
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #1f2937;
-        min-width: 160px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 12px;
-        z-index: 200;
-        overflow: hidden;
-        margin-top: 5px;
-      }
-      /* 마우스를 올렸을 때 드롭다운 보이기 */
-      .nav-dropdown:hover .dropdown-content {
-        display: block;
-        animation: dropFade 0.2s ease;
-      }
+      /* 마우스 오버 시 나타나는 비밀 글쓰기 드롭다운 */
+      .nav-dropdown { position: relative; display: inline-block; padding-bottom: 15px; margin-bottom: -15px; }
+      .dropdown-content { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #1f2937; min-width: 160px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; z-index: 200; overflow: hidden; margin-top: 5px; }
+      .nav-dropdown:hover .dropdown-content { display: block; animation: dropFade 0.2s ease; }
       @keyframes dropFade { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translate(-50%, 0); } }
-      
-      .dropdown-content a {
-        color: #d1d5db !important;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        font-size: 0.9rem;
-        text-align: center;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-      }
-      .dropdown-content a:last-child { border-bottom: none; }
+      .dropdown-content a { color: #d1d5db !important; padding: 12px 16px; display: block; font-size: 0.9rem; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
       .dropdown-content a:hover { background-color: #374151; color: #ffffff !important; }
 
-      /* SPA 뷰 전환 스타일 */
-      .view-section { display: none; max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+      /* SPA 뷰 전환 속성 */
+      .view-section { display: none; max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
       .view-section.active { display: block; animation: fadeIn 0.4s ease; }
       @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-      /* 애플 스타일 글래스 카드 레이아웃 (대시보드) */
-      .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 40px; }
-      .modern-card { background: #1f2937; border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 24px; padding: 32px; transition: transform 0.2s ease, box-shadow 0.2s ease; display: flex; flex-direction: column; }
-      .modern-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4); border-color: rgba(255, 255, 255, 0.1); }
-      .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
-      .card-icon { width: 40px; height: 40px; background: #374151; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-      .card-title { font-size: 1.25rem; font-weight: 700; color: #ffffff; margin: 0; }
-      .card-desc { color: #9ca3af; font-size: 0.9rem; margin-top: 4px; }
-      .link-list { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-      .action-link { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: rgba(0, 0, 0, 0.2); border-radius: 16px; color: #d1d5db; text-decoration: none; font-weight: 500; transition: background 0.2s; }
-      .action-link:hover { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
-      .action-link .sub-text { font-size: 0.8rem; color: #6b7280; font-weight: 400; }
-      .primary-btn { background: #3b82f6; color: #ffffff; padding: 16px; border-radius: 16px; text-align: center; text-decoration: none; font-weight: 700; display: block; transition: background 0.2s; margin-top: auto; cursor: pointer; border: none; width: 100%; font-family: inherit; font-size: 1rem; }
-      .primary-btn:hover { background: #2563eb; }
+      /* 광고 수익화 배너 (다크모드 톤앤매너 유지) */
+      .ad-banner { width: 100%; height: 100px; margin: 30px 0; background: #1f2937; border: 1px dashed #4b5563; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #6b7280; font-size: 0.9rem; font-weight: bold; }
 
-      /* 다크모드 글쓰기 에디터 스타일 */
-      .editor-container { max-width: 800px; margin: 0 auto; background: #1f2937; padding: 40px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-      .input-field { width: 100%; padding: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.2); border: 1px solid #374151; border-radius: 12px; font-size: 1rem; color: #f9fafb; box-sizing: border-box; font-family: inherit; }
-      .input-field:focus { outline: none; border-color: #3b82f6; }
-      .input-textarea { width: 100%; height: 400px; padding: 16px; margin-bottom: 20px; background: rgba(0,0,0,0.2); border: 1px solid #374151; border-radius: 12px; font-size: 1rem; color: #f9fafb; resize: vertical; box-sizing: border-box; font-family: inherit; line-height: 1.6; }
-      .input-textarea:focus { outline: none; border-color: #3b82f6; }
-      .btn-back { background: transparent; color: #9ca3af; border: 1px solid #374151; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 30px; display: inline-block; transition: 0.2s; }
+      /* 1. 휴식 & 볼거리 존 (비디오 플레이어) */
+      .lounge-container { background: #1f2937; border-radius: 20px; padding: 30px; margin-bottom: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+      .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 12px; overflow: hidden; margin-bottom: 20px; background: #000; }
+      .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+      /* 2. 쇼피 어필리에이트 존 (수익화) */
+      .shopee-picks { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 40px; }
+      .shopee-item { flex: 1; min-width: 280px; background: linear-gradient(145deg, #1f2937, #111827); border: 1px solid #374151; border-radius: 16px; padding: 20px; text-decoration: none; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+      .shopee-item:hover { border-color: #ef4444; transform: translateY(-3px); }
+      .shopee-info { color: #d1d5db; font-size: 0.95rem; font-weight: 500; }
+      .shopee-badge { background: #ef4444; color: white; padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: bold; }
+
+      /* 3. 매거진 글 피드 (수익형 블로그 리스트) */
+      .magazine-header h2 { font-size: 1.8rem; border-left: 4px solid #3b82f6; padding-left: 15px; margin-bottom: 20px; }
+      .magazine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+      .article-card { background: #1f2937; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; }
+      .article-card:hover { transform: translateY(-5px); border-color: #3b82f6; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+      .article-img { width: 100%; height: 200px; background-color: #374151; background-size: cover; background-position: center; }
+      .article-content { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+      .article-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 10px 0; color: #f9fafb; line-height: 1.4; }
+      .article-date { font-size: 0.85rem; color: #6b7280; margin-top: auto; }
+
+      /* 상세 읽기 & 글쓰기 에디터 폼 */
+      .form-container { background: #1f2937; padding: 40px; border-radius: 20px; border: 1px solid #374151; }
+      .input-field { width: 100%; padding: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); border: 1px solid #4b5563; border-radius: 10px; color: white; font-family: inherit; font-size: 1rem; box-sizing: border-box; }
+      .input-textarea { width: 100%; height: 400px; padding: 15px; margin-bottom: 20px; background: rgba(0,0,0,0.2); border: 1px solid #4b5563; border-radius: 10px; color: white; font-family: inherit; font-size: 1rem; resize: vertical; box-sizing: border-box; }
+      .btn-primary { width: 100%; background: #3b82f6; color: white; padding: 16px; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+      .btn-back { background: transparent; color: #9ca3af; border: 1px solid #4b5563; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
       .btn-back:hover { background: #374151; color: white; }
     </style>
   </head>
   <body class="dad-page">
     <nav class="navbar">
       <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
-        <a href="index.html" class="nav-logo" style="color: #ffffff; font-size: 1.5rem; font-weight: 700; text-decoration: none;">FamilySpace</a>
+        <a href="index.html" class="nav-logo" style="color: #3b82f6; font-size: 1.5rem; font-weight: 700; text-decoration: none;">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
           
           <li class="nav-dropdown">
-            <a href="#" onclick="switchView('dashboard-view')" style="color: #ffffff !important; font-weight: 700;">아빠</a>
+            <a href="#" onclick="switchView('main-view')" style="color: #3b82f6 !important; font-weight: 700;">아빠</a>
             <div class="dropdown-content" id="dad-admin-menu" style="display: none;">
-              <a href="#" onclick="switchView('write-view')">✍️ 새 글 발행하기</a>
-              <a href="blog.html">🔒 아빠의 비밀 일기</a>
+              <a href="#" onclick="switchView('write-view')">✍️ 매거진 새 글 발행</a>
+              <a href="blog.html">🔒 가족 비밀 일기장</a>
             </div>
           </li>
           
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
-          <li><a href="blog.html">가족 일기장</a></li>
           <li><a href="chat.html">🔒 비밀 대화</a></li>
         </ul>
       </div>
     </nav>
 
-    <div id="dashboard-view" class="view-section active">
-      <header style="margin-bottom: 20px;">
-        <h1 style="font-size: 3rem; font-weight: 700; color: #ffffff; margin-bottom: 12px; letter-spacing: -0.5px;">Bố's Workspace</h1>
-        <p style="color: #9ca3af; font-size: 1.1rem; max-width: 600px;">생산성 도구, 게임 정보, 현지 생활을 아우르는 미니멀 대시보드입니다.</p>
+    <div id="main-view" class="view-section active">
+      
+      <header style="margin-bottom: 40px; text-align: center;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px;">Bố's Lounge & Magazine</h1>
+        <p style="color: #9ca3af;">잠시 머리를 식히며 영상을 보고, 유용한 로컬 꿀팁도 얻어가는 아빠들의 공간</p>
       </header>
 
-      <div class="bento-grid">
-        <div class="modern-card">
-          <div class="card-header">
-            <div class="card-icon">🧠</div>
-            <div>
-              <h3 class="card-title">AI Content Pipeline</h3>
-              <p class="card-desc">쇼츠 영상 제작 및 자동화 툴킷</p>
-            </div>
-          </div>
-          <div class="link-list">
-            <a href="http://127.0.0.1:8188" target="_blank" class="action-link">
-              <div><span>ComfyUI Local</span><div class="sub-text">Flux / SD3.5 노드 워크스페이스</div></div><span>→</span>
-            </a>
-            <a href="https://elevenlabs.io" target="_blank" class="action-link">
-              <div><span>ElevenLabs</span><div class="sub-text">AI 보이스 제너레이터</div></div><span>→</span>
-            </a>
-            <a href="https://n8n.io" target="_blank" class="action-link">
-              <div><span>n8n Webhook</span><div class="sub-text">업로드 파이프라인 자동화</div></div><span>→</span>
-            </a>
-            <a href="https://studio.youtube.com" target="_blank" class="action-link" style="margin-top: 8px;">
-              <div><span style="color:#ffffff;">YouTube Studio</span></div><span>▶</span>
-            </a>
-          </div>
-        </div>
+      <div class="ad-banner">[구글 애드센스 상단 디스플레이 영역]</div>
 
-        <div class="modern-card">
-          <div class="card-header">
-            <div class="card-icon">⚔️</div>
-            <div>
-              <h3 class="card-title">Endgame Hub</h3>
-              <p class="card-desc">최신 액션 게임 메타 및 정보</p>
-            </div>
-          </div>
-          <div class="link-list">
-            <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+69스킬포인트+빌드" target="_blank" class="action-link">
-              <div><span>Diablo 4: Max Level Builds</span><div class="sub-text">60레벨 (69스킬) 최적화 메타 빌드</div></div><span>→</span>
-            </a>
-            <a href="https://www.youtube.com/results?search_query=크림슨+데저트+공식+게임플레이" target="_blank" class="action-link">
-              <div><span>Crimson Desert</span><div class="sub-text">붉은사막 최신 게임플레이 트레일러</div></div><span>→</span>
-            </a>
-            <a href="https://bbs.ruliweb.com/game/86662" target="_blank" class="action-link">
-              <div><span>Black Desert Mobile</span><div class="sub-text">검은사막 모바일 커뮤니티</div></div><span>→</span>
-            </a>
-          </div>
+      <div class="lounge-container">
+        <h3 style="margin-top:0; color:#60a5fa; display:flex; align-items:center; gap:10px;">🎮 Today's Break: 크림슨 데저트 플레이 영상</h3>
+        <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 20px;">커피 한 잔과 함께 압도적인 타격감의 최신 게임 트레일러를 감상하며 스트레스를 날려보세요.</p>
+        <div class="video-wrapper">
+          <iframe src="https://www.youtube.com/embed/s4gBChO6P4M?autoplay=0&mute=0" allowfullscreen></iframe>
         </div>
-
-        <div class="modern-card">
-          <div class="card-header">
-            <div class="card-icon">🌴</div>
-            <div>
-              <h3 class="card-title">Vietnam Life</h3>
-              <p class="card-desc">현지 생활 및 일정 관리</p>
-            </div>
-          </div>
-          <div class="link-list">
-            <a href="https://www.skyscanner.co.kr/transport/flights/hph/sela/" target="_blank" class="action-link">
-              <div><span>Flight Check (HPH ✈️ ICN)</span><div class="sub-text">하이퐁 출발 인천행 최저가 항공권</div></div><span>→</span>
-            </a>
-            <a href="https://www.google.com/maps/search/Phu+Quoc+family+resort" target="_blank" class="action-link">
-              <div><span>Local Services</span><div class="sub-text">하이퐁 현지 유지보수 및 맛집 검색</div></div><span>→</span>
-            </a>
-            <div style="margin-top: 20px;">
-              <a href="blog.html" class="primary-btn">🔒 아빠의 비밀 일기장 (모두보기)</a>
-            </div>
-          </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+빌드" target="_blank" style="background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 8px; color: white; text-decoration: none; font-size: 0.85rem;">🔥 디아블로 4 최신 60레벨 (69포인트) 공략 보기</a>
         </div>
       </div>
+
+      <div class="shopee-picks">
+        <a href="#" class="shopee-item" onclick="alert('쇼피 구매 링크로 이동합니다.'); return false;">
+          <div class="shopee-info">🇻🇳 베트남 필수템: 샤워기 녹물 필터 세트</div>
+          <div class="shopee-badge">Shopee Pick</div>
+        </a>
+        <a href="#" class="shopee-item" onclick="alert('쇼피 구매 링크로 이동합니다.'); return false;">
+          <div class="shopee-info">⌨️ 래피드 트리거 자석축 게이밍 키보드</div>
+          <div class="shopee-badge">Hot Deal</div>
+        </a>
+      </div>
+
+      <div class="magazine-header">
+        <h2>📚 아빠의 베트남 꿀팁 & 테크 노트</h2>
+      </div>
+      
+      <div class="magazine-grid" id="post-list-container">
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #6b7280;">
+          클라우드에서 최신 글을 불러오는 중입니다...
+        </div>
+      </div>
+      
+      <div class="ad-banner">[구글 애드센스 하단 멀티플렉스 영역]</div>
+
+    </div>
+
+    <div id="read-view" class="view-section">
+      <button class="btn-back" onclick="switchView('main-view')">← 라운지로 돌아가기</button>
+      <div class="form-container" id="read-container-box">
+        </div>
     </div>
 
     <div id="write-view" class="view-section">
-      <button class="btn-back" onclick="switchView('dashboard-view')">← 대시보드로 돌아가기</button>
-      <div class="editor-container">
-        <h2 style="margin-top:0; color:#ffffff; margin-bottom: 20px;">✍️ 블로그 새 글 작성</h2>
+      <button class="btn-back" onclick="switchView('main-view')">← 작성 취소</button>
+      <div class="form-container">
+        <h2 style="margin-top:0; color:#ffffff;">✍️ 라운지 매거진 새 글 발행</h2>
         
         <select id="edit-category" class="input-field">
-          <option value="vietnam">베트남 여행/맛집</option>
-          <option value="
+          <option value="vietnam">베트남 생활/맛집</option>
+          <option value="game">게임/테크 공략</option>
+        </select>
+        
+        <input type="text" id="edit-title" class="input-field" placeholder="방문자의 시선을 끌 제목을 입력하세요" />
+        
+        <label style="display:block; margin-bottom:10px; color:#9ca3af;">대표 이미지 (목록용)</label>
+        <input type="file" id="edit-image" accept="image/*" class="input-field" />
+        <img id="edit-preview" src="" style="width:100%; max-height:250px; object-fit:cover; border-radius:12px; margin-bottom:20px; display:none;" />
+        
+        <textarea id="edit-content" class="input-textarea" placeholder="여기에 본문 내용을 작성하세요. HTML 태그(<b>, <img> 등)를 사용할 수 있습니다."></textarea>
+        
+        <button id="btn-publish" class="btn-primary">클라우드 서버에 발행하기 🚀</button>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyASXXnU8bB6G641bY00V6MCRMLtdUgddpI",
+        authDomain: "familyspace-db.firebaseapp.com",
+        projectId: "familyspace-db",
+        storageBucket: "familyspace-db.firebasestorage.app",
+        messagingSenderId: "17439157934",
+        appId: "1:17439157934:web:d2e65b864fac46c1a6873f"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      
+      // 가족 로그인 체크 -> 마우스 오버 시 글쓰기 메뉴 렌더링 여부 결정
+      const isAuth = sessionStorage.getItem('family_space_authenticated') === 'true';
+      if(isAuth) {
+        document.getElementById('dad-admin-menu').style.display = 'block';
+      } else {
+        const dropdownMenu = document.getElementById('dad-admin-menu');
+        if(dropdownMenu) dropdownMenu.remove(); // 비로그인 시 메뉴 흔적 삭제
+      }
+
+      window.switchView = function(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo(0, 0);
+        if(viewId === 'main-view') fetchPosts(); 
+      };
+
+      // 1. 매거진 글 목록 불러오기
+      async function fetchPosts() {
+        const listContainer = document.getElementById('post-list-container');
+        try {
+          const q = query(collection(db, "magazine_posts"), orderBy("timestamp", "desc"));
+          const snapshot = await getDocs(q);
+          
+          if(snapshot.empty) {
+            listContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #6b7280;">아직 발행된 글이 없습니다.</div>';
+            return;
+          }
+
+          let htmlBuffer = '';
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            htmlBuffer += `
+              <div class="article-card" onclick="openPost('${docSnap.id}')">
+                <div class="article-img" style="background-image: url('${data.thumbnail || ''}');"></div>
+                <div class="article-content">
+                  <h2 class="article-title">${data.title}</h2>
+                  <div class="article-date">${data.date}</div>
+                </div>
+              </div>
+            `;
+          });
+          listContainer.innerHTML = htmlBuffer;
+        } catch(e) {
+          listContainer.innerHTML = '<div style="color:red; text-align:center; grid-column:1/-1;">데이터를 불러오지 못했습니다.</div>';
+        }
+      }
+
+      // 2. 개별 상세 글 열기
+      window.openPost = async function(docId) {
+        const readBox = document.getElementById('read-container-box');
+        readBox.innerHTML = '<div style="text-align:center;">데이터를 불러오는 중...</div>';
+        window.switchView('read-view');
+
+        try {
+          const docRef = doc(db, "magazine_posts", docId);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            readBox.innerHTML = `
+              <h1 style="font-size: 2.2rem; margin-bottom: 10px; color:#ffffff;">${data.title}</h1>
+              <div style="color: #9ca3af; border-bottom: 1px solid #374151; padding-bottom: 20px; margin-bottom: 30px;">
+                <span>작성자: 아빠</span> | <span>${data.date}</span>
+              </div>
+              ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:12px; margin-bottom:30px;">` : ''}
+              <div class="ad-banner" style="margin-bottom: 30px;">[구글 애드센스 본문 상단 광고]</div>
+              <div style="font-size: 1.1rem; line-height: 1.8; color: #d1d5db;">${data.content}</div>
+              <div class="ad-banner" style="margin-top: 40px;">[구글 애드센스 본문 하단 광고]</div>
+            `;
+          }
+        } catch(e) {
+          readBox.innerHTML = '글을 불러올 수 없습니다.';
+        }
+      };
+
+      // 3. 에디터 썸네일 처리
+      let currentThumbnail = "";
+      document.getElementById('edit-image').onchange = function(e) {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          currentThumbnail = evt.target.result;
+          document.getElementById('edit-preview').src = currentThumbnail;
+          document.getElementById('edit-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      };
+
+      // 4. 새 글 발행
+      document.getElementById('btn-publish').onclick = async function() {
+        if(!isAuth) { alert("로그인이 필요합니다!"); return; }
+        
+        const title = document.getElementById('edit-title').value;
+        const category = document.getElementById('edit-category').value;
+        const content = document.getElementById('edit-content').value;
+        
+        if(!title || !content || !currentThumbnail) {
+          alert('제목, 썸네일 이미지, 본문을 모두 채워주세요!'); return;
+        }
+
+        const payload = {
+          title: title,
+          category: category,
+          thumbnail: currentThumbnail,
+          content: content,
+          date: new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' }),
+          timestamp: Date.now()
+        };
+
+        try {
+          this.innerText = "발행 중..."; this.disabled = true;
+          await addDoc(collection(db, "magazine_posts"), payload);
+          
+          document.getElementById('edit-title').value = '';
+          document.getElementById('edit-content').value = '';
+          document.getElementById('edit-image').value = '';
+          document.getElementById('edit-preview').style.display = 'none';
+          currentThumbnail = '';
+          
+          alert('발행 성공!');
+          window.switchView('main-view');
+        } catch(e) {
+          alert('발행 실패: ' + e.message);
+        } finally {
+          this.innerText = "클라우드 서버에 발행하기 🚀"; this.disabled = false;
+        }
+      };
+
+      window.onload = function() { fetchPosts(); };
+    </script>
+  </body>
+</html>
