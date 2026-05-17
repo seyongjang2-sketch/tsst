@@ -22,7 +22,6 @@
 
         #info-modal h2 { margin: 0 0 15px 0; color: #00ffff; font-size: 30px; text-shadow: 0 0 10px rgba(0, 255, 255, 0.6); }
         
-        /* 외부 파일 에러 원천 차단: HTML5 마법 캔버스 */
         #star-canvas { 
             width: 100%; height: 260px; border-radius: 15px; border: 2px dashed #4488ff; 
             background: radial-gradient(circle, #0a1128 0%, #000005 100%); 
@@ -47,8 +46,8 @@
 </head>
 <body>
 
-<div id="loading">🌌 10,000개의 별을 생성하는 중...</div>
-<div id="guide">🚀 우주 회전: 드래그 | 확대: 휠<br>⭐ 밤하늘의 '모든 점(별)'을 클릭해 보세요!</div>
+<div id="loading">🌌 빛나는 10,000개의 별을 생성하는 중...</div>
+<div id="guide">🚀 우주 회전: 드래그 | 확대: 휠<br>⭐ 밤하늘의 '모든 반짝이는 별'을 클릭해 보세요!</div>
 
 <div id="info-modal">
     <h2 id="star-name">별 이름</h2>
@@ -63,7 +62,6 @@
 
     document.getElementById('loading').style.display = 'none';
 
-    // 1. 기본 씬 구성
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(0x020205, 0.0006);
 
@@ -79,7 +77,30 @@
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
 
-    // 2. 10,000개의 점(Particle)으로 구성된 은하수 생성
+    // ========================================================
+    // [핵심 1] 둥글고 빛나는 '별 텍스처'를 메모리 상에서 직접 그리기
+    // ========================================================
+    function createGlowingStarTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 64;
+        canvas.height = 64;
+        const context = canvas.getContext('2d');
+
+        // 중심에서 바깥으로 부드럽게 투명해지는 그라데이션
+        const gradient = context.createRadialGradient(32, 32, 0, 32, 32, 32);
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');      // 가장 밝은 중심 코어
+        gradient.addColorStop(0.2, 'rgba(255, 255, 255, 0.8)');  // 밝은 후광
+        gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.2)');  // 은은한 빛 번짐
+        gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');            // 투명한 외곽 (네모 테두리 제거)
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, 64, 64);
+
+        return new THREE.CanvasTexture(canvas);
+    }
+    const glowTexture = createGlowingStarTexture();
+
+    // 10,000개의 별 파티클 생성
     const PARTICLE_COUNT = 10000;
     const starsGeometry = new THREE.BufferGeometry();
     const posArray = new Float32Array(PARTICLE_COUNT * 3);
@@ -87,17 +108,15 @@
     const colorObj = new THREE.Color();
 
     for(let i = 0; i < PARTICLE_COUNT; i++) { 
-        // 우주 공간에 무작위 배치
         posArray[i*3] = (Math.random() - 0.5) * 3000;
         posArray[i*3+1] = (Math.random() - 0.5) * 3000;
         posArray[i*3+2] = (Math.random() - 0.5) * 3000;
 
-        // 별의 온도(색상) 무작위 지정 (푸른색, 붉은색, 노란색, 하얀색)
         const rand = Math.random();
-        if(rand < 0.2) colorObj.setHex(0x44aaff); // 아주 뜨거운 푸른 별
-        else if(rand < 0.4) colorObj.setHex(0xff5533); // 식어가는 붉은 거성
-        else if(rand < 0.7) colorObj.setHex(0xffdd55); // 태양 같은 노란 별
-        else colorObj.setHex(0xffffff); // 눈부신 백색 왜성
+        if(rand < 0.2) colorObj.setHex(0x66bbff); // 푸른 별
+        else if(rand < 0.4) colorObj.setHex(0xff7755); // 붉은 별
+        else if(rand < 0.7) colorObj.setHex(0xffee88); // 노란 별
+        else colorObj.setHex(0xffffff); // 하얀 별
 
         colorsArray[i*3] = colorObj.r;
         colorsArray[i*3+1] = colorObj.g;
@@ -107,15 +126,24 @@
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     starsGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
 
-    // 클릭 판정을 위해 PointMaterial의 크기를 살짝 키움
-    const starMaterial = new THREE.PointsMaterial({ size: 4.0, vertexColors: true, transparent: true, opacity: 0.9 });
+    // ========================================================
+    // [핵심 2] 텍스처와 가산 혼합(Additive Blending)을 적용한 머티리얼
+    // ========================================================
+    const starMaterial = new THREE.PointsMaterial({ 
+        size: 8.0,                     // 둥글게 보일 수 있도록 크기를 약간 키움
+        map: glowTexture,              // 방금 만든 빛나는 텍스처를 씌움
+        vertexColors: true, 
+        transparent: true, 
+        opacity: 0.9,
+        depthWrite: false,             // ★중요: 뒤에 있는 별이 가려져서 까만 네모가 생기는 현상 방지
+        blending: THREE.AdditiveBlending // ★중요: 별들이 겹칠 때 빛이 합쳐져서 더 눈부시게 빛나도록 처리
+    });
     const starParticles = new THREE.Points(starsGeometry, starMaterial);
     scene.add(starParticles);
 
-    // 3. 레이캐스터 (마우스 클릭 판정) 설정
+    // 레이캐스터 (마우스 클릭 판정) 설정
     const raycaster = new THREE.Raycaster();
-    // 점(Point) 클릭 판정 범위를 넓혀주어 아이들이 클릭하기 쉽게 만듦
-    raycaster.params.Points.threshold = 5.0; 
+    raycaster.params.Points.threshold = 8.0; // 둥근 텍스처 크기에 맞게 클릭 판정 범위 확장
     const mouse = new THREE.Vector2();
 
     window.addEventListener('click', (event) => {
@@ -125,57 +153,47 @@
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         raycaster.setFromCamera(mouse, camera);
         
-        // 메쉬가 아닌 1만개의 파티클 시스템 자체를 검사
         const intersects = raycaster.intersectObject(starParticles);
         
         if (intersects.length > 0) {
-            // 가장 가까운 별의 고유 인덱스(0 ~ 9999) 추출
             const starIndex = intersects[0].index;
             generateProceduralStarData(starIndex);
         }
     });
 
-    // 4. [핵심] 절차적 데이터 생성기 (1만 개의 고유한 이야기 창조)
+    // 절차적 데이터 생성기
     function generateProceduralStarData(index) {
-        // 인덱스 기반으로 고정된 난수 생성 (같은 별을 누르면 항상 같은 데이터가 나오도록)
         const pseudoRandom = (index * 137.5) % 1; 
-
-        // 1) 고유 이름 생성 (예: 행성 X-402, 알파 99)
-        const prefixes = ["알파", "케플러", "안드로메다", "오리온", "시그너스", "글리제", "노바"];
+        const prefixes = ["알파", "케플러", "안드로메다", "오리온", "시그너스", "글리제", "노바", "루미너스", "스타리아"];
         const namePrefix = prefixes[Math.floor(pseudoRandom * prefixes.length)];
-        const starName = `${namePrefix} 구역의 별 번호 ${index + 1}`;
+        const starName = `${namePrefix} 구역의 반짝이는 별 ${index + 1}`;
 
-        // 2) 색상 데이터 복구 (해당 파티클의 색상을 가져옴)
         const r = colorsArray[index * 3];
         const g = colorsArray[index * 3 + 1];
         const b = colorsArray[index * 3 + 2];
         const colorHex = (Math.floor(r * 255) << 16) + (Math.floor(g * 255) << 8) + Math.floor(b * 255);
 
-        // 3) 색상에 따른 맞춤형 동화책 설명 조합
         let colorDesc = "";
         let featureDesc = "";
 
-        if (r > 0.8 && b < 0.5) { // 붉은 계열
+        if (r > 0.8 && b < 0.5) {
             colorDesc = "수명이 다해가서 엄청나게 부풀어 오른 붉은색 할아버지 별이네!";
             featureDesc = ["이곳엔 용암이 끓어오르는 화산 행성이 숨어 있을지도 몰라.", "너무 커져서 언젠가 펑! 하고 우주 불꽃놀이를 할 거야."][index % 2];
-        } else if (b > 0.8 && r < 0.5) { // 푸른 계열
+        } else if (b > 0.8 && r < 0.5) {
             colorDesc = "우와! 태양보다 수십 배나 뜨거워서 파란 불꽃을 내뿜는 젊고 힘센 별이야.";
             featureDesc = ["우주 탐험가들이 여기서 빛의 에너지를 충전한대.", "주변에 푸른 얼음으로 덮인 얼음 왕국 행성이 돌고 있을지도 몰라."][index % 2];
-        } else if (r > 0.8 && g > 0.8 && b < 0.5) { // 노란 계열
+        } else if (r > 0.8 && g > 0.8 && b < 0.5) {
             colorDesc = "우리 지구를 비춰주는 태양과 아주 비슷한 따뜻한 노란색 별이구나.";
             featureDesc = ["이 별 주변에는 외계인 친구들이 살고 있는 제2의 지구가 있을 확률이 아주 높아!", "따스한 빛 덕분에 우주 식물들이 자라나고 있을지도 모르지."][index % 2];
-        } else { // 백색
+        } else {
             colorDesc = "다이아몬드처럼 하얗고 눈부시게 빛나는 작고 단단한 백색 왜성이야.";
             featureDesc = ["마법의 힘을 가진 우주 요정들이 이 빛을 타고 여행한다는 전설이 있어.", "별이 남긴 마지막 반짝임이라 더욱 소중하고 아름다워."][index % 2];
         }
 
         const finalDesc = `${colorDesc} ${featureDesc}`;
-
-        // 모달창 열기
         openModal(starName, finalDesc, colorHex);
     }
 
-    // 5. 모달 및 캔버스 렌더링
     const modal = document.getElementById('info-modal');
     const vName = document.getElementById('star-name');
     const vDesc = document.getElementById('star-desc');
@@ -191,13 +209,11 @@
 
         ctx.clearRect(0, 0, width, height);
 
-        // 배경 별가루
         for(let i = 0; i < 40; i++) {
             ctx.fillStyle = `rgba(255, 255, 255, ${Math.random()})`;
-            ctx.beginPath(); ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 1.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(Math.random() * width, Math.random() * height, Math.random() * 2.0, 0, Math.PI * 2); ctx.fill();
         }
 
-        // 선택된 별의 빛 번짐 렌더링
         const r = (hexColor >> 16) & 255;
         const g = (hexColor >> 8) & 255;
         const b = hexColor & 255;
@@ -230,9 +246,21 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
+    // 별들이 실시간으로 반짝이는 효과를 위한 시간 변수
+    const clock = new THREE.Clock();
+
     function animate() {
         requestAnimationFrame(animate);
-        starParticles.rotation.y += 0.0005;
+        
+        const elapsedTime = clock.getElapsedTime();
+        
+        // 은하수 전체의 부드러운 회전
+        starParticles.rotation.y += 0.0003;
+        
+        // [선택적] 별들이 천천히 숨을 쉬듯 커졌다 작아지는 반짝임(Twinkling) 효과
+        // 원치 않으시면 아래 1줄을 삭제하셔도 됩니다.
+        starMaterial.size = 8.0 + Math.sin(elapsedTime * 2.0) * 1.5; 
+
         controls.update();
         renderer.render(scene, camera);
     }
