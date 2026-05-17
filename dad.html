@@ -3,222 +3,156 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>아빠의 공간 - FamilySpace</title>
+    <title>아빠의 베트남 라이프 & 테크 - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="login-modal.css" />
     <script src="auth.js"></script>
     <style>
-      /* 모던 미니멀리즘 다크 테마 */
+      /* 수익형 매거진 스타일 오버라이드 */
       body.dad-page { 
-        background-color: #111827 !important; 
-        color: #f9fafb !important;
-        font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
-        -webkit-font-smoothing: antialiased;
+        background-color: #f8f9fa; 
+        color: #333333;
+        font-family: 'Pretendard', sans-serif;
       }
       
-      .navbar {
-        background: rgba(17, 24, 39, 0.8) !important;
-        backdrop-filter: saturate(180%) blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        box-shadow: none !important;
-      }
-      .nav-links a { color: #9ca3af !important; font-weight: 500; }
-      .nav-links a:hover { color: #ffffff !important; }
+      .navbar { background: #ffffff; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+      .nav-links a { color: #555555; font-weight: 600; }
+      .nav-links a:hover { color: #4a90e2; }
       
-      /* 애플 스타일 글래스 카드 레이아웃 */
-      .bento-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 24px;
-        margin-top: 40px;
-      }
-      
-      .modern-card {
-        background: #1f2937;
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-radius: 24px;
-        padding: 32px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        display: flex;
-        flex-direction: column;
-      }
-      .modern-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        border-color: rgba(255, 255, 255, 0.1);
-      }
-      
-      .card-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 24px;
-      }
-      .card-icon {
-        width: 40px; height: 40px;
-        background: #374151;
-        border-radius: 12px;
+      .magazine-header { text-align: center; padding: 40px 20px; background: #ffffff; border-bottom: 1px solid #eeeeee; }
+      .magazine-header h1 { font-size: 2.5rem; color: #111827; margin-bottom: 15px; font-weight: 700; }
+      .magazine-header p { color: #6b7280; font-size: 1.1rem; }
+
+      /* 광고 배너 플레이스홀더 (수익화 공간) */
+      .ad-banner {
+        width: 100%; max-width: 900px; height: 100px; margin: 30px auto;
+        background: #e5e7eb; border: 2px dashed #9ca3af; border-radius: 12px;
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem;
-      }
-      .card-title {
-        font-size: 1.25rem; font-weight: 700; color: #ffffff; margin: 0;
-      }
-      .card-desc {
-        color: #9ca3af; font-size: 0.9rem; margin-top: 4px;
+        color: #6b7280; font-weight: bold; font-size: 0.9rem; text-align: center;
       }
 
-      /* 실용적인 리스트 & 버튼 컴포넌트 */
-      .link-list { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-      .action-link {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 16px; background: rgba(0, 0, 0, 0.2);
-        border-radius: 16px; color: #d1d5db; text-decoration: none;
-        font-weight: 500; transition: background 0.2s;
+      /* 매거진 그리드 레이아웃 */
+      .magazine-grid {
+        display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px; margin-top: 40px;
       }
-      .action-link:hover { background: rgba(59, 130, 246, 0.1); color: #60a5fa; }
-      .action-link .sub-text { font-size: 0.8rem; color: #6b7280; font-weight: 400; }
+
+      .article-card {
+        background: #ffffff; border-radius: 16px; overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s;
+        border: 1px solid #f3f4f6; text-decoration: none; color: inherit; display: block;
+      }
+      .article-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
       
-      /* 강조형 프라이머리 버튼 */
-      .primary-btn {
-        background: #3b82f6; color: #ffffff;
-        padding: 16px; border-radius: 16px; text-align: center;
-        text-decoration: none; font-weight: 700; display: block;
-        transition: background 0.2s; margin-top: auto;
+      .article-img {
+        width: 100%; height: 200px; background-color: #d1d5db;
+        background-size: cover; background-position: center;
       }
-      .primary-btn:hover { background: #2563eb; }
+      .article-content { padding: 25px; }
+      .article-category {
+        display: inline-block; padding: 4px 10px; background: #eff6ff; color: #2563eb;
+        border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 12px;
+      }
+      .article-category.vietnam { background: #f0fdf4; color: #16a34a; }
+      
+      .article-title { font-size: 1.25rem; font-weight: 700; margin: 0 0 10px 0; line-height: 1.4; color: #1f2937; }
+      .article-excerpt { font-size: 0.95rem; color: #6b7280; line-height: 1.6; margin: 0; }
+      
+      /* 쇼피 어필리에이트 전용 추천 상품 컴포넌트 */
+      .shopee-pick {
+        background: #fff5f5; border: 1px solid #fee2e2; border-radius: 16px;
+        padding: 25px; margin-top: 40px;
+      }
+      .shopee-title { color: #ef4444; font-weight: 700; font-size: 1.2rem; margin-top: 0; display: flex; align-items: center; gap: 8px; }
+      .shopee-item {
+        display: flex; align-items: center; justify-content: space-between;
+        background: #ffffff; padding: 15px; border-radius: 12px; margin-top: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02); text-decoration: none; transition: 0.2s;
+      }
+      .shopee-item:hover { border-color: #ef4444; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.1); }
+      .shopee-item-info { font-weight: 600; color: #374151; }
+      .shopee-item-btn { background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: bold; }
     </style>
   </head>
   <body class="dad-page">
     <nav class="navbar">
       <div class="nav-container">
-        <a href="index.html" class="nav-logo" style="color: #ffffff;">FamilySpace</a>
+        <a href="index.html" class="nav-logo" style="color: #2563eb;">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
-          <li><a href="dad.html" style="color: #ffffff !important; font-weight: 700;">아빠</a></li>
+          <li><a href="dad.html" style="color: #2563eb !important; font-weight: 700;">아빠의 꿀팁</a></li>
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
           <li><a href="blog.html">가족 일기장</a></li>
           <li><a href="chat.html">🔒 비밀 대화</a></li>
-          <li><a href="#" onclick="logout()" class="logout-btn">로그아웃</a></li>
         </ul>
       </div>
     </nav>
 
-    <div class="main-wrapper" style="max-width: 1200px; margin: 0 auto; padding: 80px 20px;">
-      <header style="margin-bottom: 20px;">
-        <h1 style="font-size: 3rem; font-weight: 700; color: #ffffff; margin-bottom: 12px; letter-spacing: -0.5px;">Bố's Workspace</h1>
-        <p style="color: #9ca3af; font-size: 1.1rem; max-width: 600px;">생산성 도구, 게임 정보, 현지 생활을 아우르는 통합 대시보드입니다.</p>
-      </header>
+    <div class="magazine-header">
+      <h1>베트남 N년차 아빠의 생생 라이프 & 테크</h1>
+      <p>현지 교민이 직접 전하는 하이퐁 찐 맛집부터, 최신 AI 툴과 게임 공략까지</p>
+    </div>
 
-      <div class="bento-grid">
+    <div class="main-wrapper" style="max-width: 1100px; margin: 0 auto; padding: 20px;">
+      
+      <div class="ad-banner">
+        [구글 애드센스 디스플레이 광고 삽입 영역]<br>
+        향후 &lt;ins class="adsbygoogle"&gt; 코드로 대체됩니다.
+      </div>
+
+      <div class="magazine-grid">
         
-        <div class="modern-card">
-          <div class="card-header">
-            <div class="card-icon">🧠</div>
-            <div>
-              <h3 class="card-title">AI Content Pipeline</h3>
-              <p class="card-desc">쇼츠 영상 제작 및 자동화 툴킷</p>
-            </div>
+        <a href="#" class="article-card" onclick="alert('향후 블로그 상세 글로 연결됩니다.'); return false;">
+          <div class="article-img" style="background-image: url('https://images.unsplash.com/photo-1555921015-5532091f6026?auto=format&fit=crop&q=80&w=600');"></div>
+          <div class="article-content">
+            <span class="article-category vietnam">베트남 여행/맛집</span>
+            <h2 class="article-title">관광객은 절대 모르는 하이퐁 찐 로컬 맛집 BEST 5</h2>
+            <p class="article-excerpt">베트남 하이퐁 현지에서 가족들과 직접 발품 팔아 찾아낸, 한국인 입맛에 딱 맞는 숨은 로컬 맛집과 위생 좋은 식당을 총정리했습니다.</p>
           </div>
-          <div class="link-list">
-            <a href="http://127.0.0.1:8188" target="_blank" class="action-link">
-              <div>
-                <span>ComfyUI Local</span>
-                <div class="sub-text">Flux / SD3.5 노드 워크스페이스</div>
-              </div>
-              <span>→</span>
-            </a>
-            <a href="https://elevenlabs.io" target="_blank" class="action-link">
-              <div>
-                <span>ElevenLabs</span>
-                <div class="sub-text">AI 보이스 제너레이터</div>
-              </div>
-              <span>→</span>
-            </a>
-            <a href="https://n8n.io" target="_blank" class="action-link">
-              <div>
-                <span>n8n Webhook</span>
-                <div class="sub-text">업로드 파이프라인 자동화</div>
-              </div>
-              <span>→</span>
-            </a>
-            <a href="https://studio.youtube.com" target="_blank" class="action-link" style="margin-top: 8px;">
-              <div>
-                <span style="color:#ffffff;">YouTube Studio</span>
-              </div>
-              <span>▶</span>
-            </a>
-          </div>
-        </div>
+        </a>
 
-        <div class="modern-card">
-          <div class="card-header">
-            <div class="card-icon">⚔️</div>
-            <div>
-              <h3 class="card-title">Endgame Hub</h3>
-              <p class="card-desc">최신 액션 게임 메타 및 정보</p>
-            </div>
+        <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+빌드" target="_blank" class="article-card">
+          <div class="article-img" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600');"></div>
+          <div class="article-content">
+            <span class="article-category">게임 공략</span>
+            <h2 class="article-title">디아블로 4 시즌 메타: 60레벨 (69스킬) 종결 빌드 가이드</h2>
+            <p class="article-excerpt">이번 시즌 엔드게임을 지배할 60레벨 최적화 스킬트리와 필수 위상, 그리고 가장 효율적인 아이템 파밍 루트를 분석합니다.</p>
           </div>
-          <div class="link-list">
-            <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+69스킬포인트+빌드" target="_blank" class="action-link">
-              <div>
-                <span>Diablo 4: Max Level Builds</span>
-                <div class="sub-text">60레벨 (69스킬) 최적화 메타 빌드</div>
-              </div>
-              <span>→</span>
-            </a>
-            <a href="https://www.youtube.com/results?search_query=크림슨+데저트+공식+게임플레이" target="_blank" class="action-link">
-              <div>
-                <span>Crimson Desert</span>
-                <div class="sub-text">붉은사막 최신 게임플레이 트레일러</div>
-              </div>
-              <span>→</span>
-            </a>
-            <a href="https://bbs.ruliweb.com/game/86662" target="_blank" class="action-link">
-              <div>
-                <span>Black Desert Mobile</span>
-                <div class="sub-text">검은사막 모바일 커뮤니티</div>
-              </div>
-              <span>→</span>
-            </a>
-          </div>
-        </div>
+        </a>
 
-        <div class="modern-card">
-          <div class="card-header">
-            <div class="card-icon">🌴</div>
-            <div>
-              <h3 class="card-title">Vietnam Life</h3>
-              <p class="card-desc">현지 생활 및 일정 관리</p>
-            </div>
+        <a href="#" class="article-card" onclick="alert('향후 블로그 상세 글로 연결됩니다.'); return false;">
+          <div class="article-img" style="background-image: url('https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=600');"></div>
+          <div class="article-content">
+            <span class="article-category">AI 테크 리뷰</span>
+            <h2 class="article-title">ComfyUI와 ElevenLabs로 유튜브 숏폼 영상 10분 만에 자동화하기</h2>
+            <p class="article-excerpt">복잡한 파이썬 설치 없이 ComfyUI 로컬 환경을 세팅하고, ElevenLabs AI 성우를 결합하여 수익형 숏폼 영상을 찍어내는 파이프라인을 공개합니다.</p>
           </div>
-          <div class="link-list">
-            <a href="https://www.skyscanner.co.kr/transport/flights/hph/sela/" target="_blank" class="action-link">
-              <div>
-                <span>Flight Check (HPH ✈️ ICN)</span>
-                <div class="sub-text">하이퐁 출발 인천행 최저가 항공권</div>
-              </div>
-              <span>→</span>
-            </a>
-            <a href="https://www.google.com/maps/search/Phu+Quoc+family+resort" target="_blank" class="action-link">
-              <div>
-                <span>Local Services</span>
-                <div class="sub-text">하이퐁 현지 유지보수 및 맛집 검색</div>
-              </div>
-              <span>→</span>
-            </a>
-            
-            <div style="margin-top: 20px;">
-              <a href="blog.html" class="primary-btn">🔒 아빠의 비밀 일기장 열기</a>
-            </div>
-          </div>
-        </div>
+        </a>
 
       </div>
+
+      <div class="shopee-pick">
+        <h3 class="shopee-title">🛍️ 아빠의 베트남 필수 생활템 추천 (Shopee Picks)</h3>
+        <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 10px;">베트남 거주 시 삶의 질을 수직 상승시켜주는 꿀템들을 소개합니다.</p>
+        
+        <a href="#" class="shopee-item" onclick="alert('쇼피 어필리에이트 링크로 이동합니다.'); return false;">
+          <div class="shopee-item-info">💧 하이퐁 수질 필수 대비! 샤워기 녹물 필터 세트</div>
+          <div class="shopee-item-btn">최저가 확인하러 가기</div>
+        </a>
+        <a href="#" class="shopee-item" onclick="alert('쇼피 어필리에이트 링크로 이동합니다.'); return false;">
+          <div class="shopee-item-info">⌨️ [게이밍] 빠른 타격감의 자석축 래피드 트리거 키보드</div>
+          <div class="shopee-item-btn">최저가 확인하러 가기</div>
+        </a>
+      </div>
+
+      <div class="ad-banner" style="margin-top: 40px;">
+        [구글 애드센스 하단 디스플레이 / 멀티플렉스 광고 영역]
+      </div>
+
     </div>
   </body>
 </html>
