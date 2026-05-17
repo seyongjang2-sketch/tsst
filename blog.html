@@ -12,158 +12,201 @@
       .delete-post-btn { color: #ff4757; border: none; background: none; cursor: pointer; float: right; font-size: 1.2rem; display: none; }
       body.is-admin .delete-post-btn { display: block; }
       .login-alert-box { background: #f8f9fa; padding: 20px; border-radius: 16px; text-align: center; border: 2px dashed #ddd; }
+      .loading-indicator { text-align: center; color: #888; padding: 20px; font-weight: bold; }
     </style>
   </head>
-  <body class="blog-page">
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="index.html" class="nav-logo">FamilySpace</a>
-        <ul class="nav-links">
-          <li><a href="index.html">홈</a></li>
-          <li><a href="dad.html">아빠</a></li>
-          <li><a href="mom.html">엄마</a></li>
-          <li><a href="baby.html">아기</a></li>
-          <li><a href="blog.html">일기장</a></li>
-          <li id="nav-auth-link"></li>
+  <body class=\"blog-page\">
+    <nav class=\"navbar\">
+      <div class=\"nav-container\">
+        <a href=\"index.html\" class=\"nav-logo\">FamilySpace</a>\n        <ul class=\"nav-links\">
+          <li><a href=\"index.html\">홈</a></li>
+          <li><a href=\"dad.html\">아빠</a></li>
+          <li><a href=\"mom.html\">엄마</a></li>
+          <li><a href=\"baby.html\">아기</a></li>
+          <li><a href=\"stars.html\">🌠 별 보기</a></li>
+          <li><a href=\"blog.html\" class=\"active\">일기장</a></li>
         </ul>
       </div>
     </nav>
 
-    <div class="main-wrapper">
-      <header style="text-align: center; margin-bottom: 50px;">
-        <h1>우리 가족 일기장 📔</h1>
-        <p style="color: #666;">우리 가족의 추억은 누구나 볼 수 있지만, 기록은 가족만 가능합니다.</p>
+    <div class="main-wrapper" style="max-width: 700px; margin: 0 auto; padding: 20px;">
+      <header style="text-align: center; margin-bottom: 40px;">
+        <h1 style="font-size: 2.5rem; color: #2c3e50;">가족 일기장 (Nhật ký)</h1>
+        <p style="color: #7f8c8d;">우리 가족의 소중한 순간들을 실시간으로 클라우드에 공유합니다.</p>
       </header>
 
-      <div class="content-grid" style="display: grid; grid-template-columns: 1fr 2fr; gap: 40px; align-items: flex-start;">
-        <div class="content-card" style="position: sticky; top: 100px;">
-          <!-- Login Alert (Hidden when logged in) -->
-          <div id="blog-login-alert" class="login-alert-box">
-            <p style="margin-bottom: 15px;">기록을 남기려면 로그인이 필요합니다.</p>
-            <button onclick="showLoginModal()" class="btn-enter" style="background: var(--primary-color); color: white;">로그인 하기</button>
-          </div>
-
-          <!-- Write Form (Hidden when logged out) -->
-          <div id="blog-write-section" style="display: none;">
-            <h3>오늘의 기록 쓰기</h3>
-            <div style="margin-top: 20px;">
-              <select id="post-author" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd;">
-                <option value="dad">아빠 (Bố)</option>
-                <option value="mom">엄마 (Mẹ)</option>
-                <option value="baby">아기 (Bé)</option>
-              </select>
-              <input type="text" id="post-title" style="width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ddd;" placeholder="제목">
-              <textarea id="post-content" style="width: 100%; height: 150px; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; resize: none;" placeholder="내용을 입력하세요..."></textarea>
-              <div style="margin-bottom: 15px;">
-                <input type="file" id="post-file" accept="image/*" onchange="previewImage(this)">
-                <img id="image-preview" style="max-width: 100%; border-radius: 8px; display: none; margin-top: 10px;">
-              </div>
-              <button onclick="savePostWithFile()" class="btn-enter" style="background: var(--primary-color); color: white; border: none; width: 100%; cursor: pointer;">추억 저장하기</button>
-            </div>
-          </div>
+      <div class="content-card" style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px;">
+        <h3 style="margin-top: 0; margin-bottom: 20px; color: #34495e;">오늘의 추억 기록하기</h3>
+        <div style="margin-bottom: 15px;">
+          <select id="author-select" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+            <option value="dad">아빠 (Bố)</option>
+            <option value="mom">엄마 (Mẹ)</option>
+            <option value="baby">아기 (Bé)</option>
+          </select>
         </div>
-
-        <div>
-          <h3 style="margin-bottom: 20px;">최근 일기</h3>
-          <div id="blog-posts"></div>
+        <div style="margin-bottom: 15px;">
+          <input type="text" id="post-title" placeholder="제목을 입력하세요" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; box-sizing: border-box;" />
         </div>
+        <div style="margin-bottom: 15px;">
+          <textarea id="post-content" placeholder="오늘 어떤 일이 있었나요?" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; min-height: 120px; box-sizing: border-box; font-family: inherit; resize: vertical;"></textarea>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #7f8c8d;">사진 첨부 (선택)</label>
+          <input type="file" id="post-file" accept="image/*" style="width: 100%;" />
+          <img id="image-preview" src="" style="max-width: 200px; border-radius: 8px; margin-top: 10px; display: none;" />
+        </div>
+        <button id="btn-save-post" style="width: 100%; padding: 15px; background: #3498db; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: background 0.2s;">클라우드에 저장하기</button>
+      </div>
+
+      <div id="blog-feed">
+        <div class="loading-indicator">서버에서 일기장을 불러오는 중...</div>
       </div>
     </div>
 
-    <!-- Login Modal -->
-    <div id="login-modal-overlay" class="modal-overlay">
-      <div class="login-modal">
-        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
-        <h2>가족 로그인</h2>
-        <p>기록 권한을 활성화합니다.</p>
-        <div class="modal-input-group">
-          <input type="password" id="modal-p-input" class="modal-input" placeholder="비밀번호">
-          <span id="modal-toggle-btn" class="modal-toggle-view" onclick="toggleModalPassword()">👁️</span>
-        </div>
-        <button onclick="handleModalLogin()" class="modal-login-btn">권한 활성화</button>
-      </div>
-    </div>
+    <script type="module">
+      // Firebase 공식 라이브러리 로드
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    <script>
-      var currentImageData = "";
-      function previewImage(input) {
-        var preview = document.getElementById('image-preview');
-        if (input.files && input.files[0]) {
-          var reader = new FileReader();
-          reader.onload = function(e) {
-            currentImageData = e.target.result;
-            preview.src = currentImageData;
-            preview.style.display = 'block';
-          };
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
+      // [필수 변경] Step 1에서 복사한 본인의 Firebase 프로젝트 설정값으로 아래 객체를 교체하십시오.
+      const firebaseConfig = firebaseConfig = {
+  apiKey: "AIzaSyASXXnU8bB6G641bY00V6MCRMLtdUgddpI",
+  authDomain: "familyspace-db.firebaseapp.com",
+  projectId: "familyspace-db",
+  storageBucket: "familyspace-db.firebasestorage.app",
+  messagingSenderId: "17439157934",
+  appId: "1:17439157934:web:d2e65b864fac46c1a6873f",
+  measurementId: "G-MJ449CTT88"
+};
 
-      function renderAllPosts() {
-        var blogList = document.getElementById('blog-posts');
-        var isAuthenticated = sessionStorage.getItem('family_space_authenticated') === 'true';
-        if (isAuthenticated) document.body.classList.add('is-admin');
+      // 초기화 구동
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      let currentImageData = "";
+
+      // 이미지 파일 읽기 이벤트 바인딩
+      document.getElementById('post-file').onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+          currentImageData = evt.target.result;
+          var preview = document.getElementById('image-preview');
+          preview.src = currentImageData;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      };
+
+      // 데이터 피드 렌더링 함수 (클라우드에서 읽어오기)
+      async function renderAllPosts() {
+        const feedContainer = document.getElementById('blog-feed');
+        feedContainer.innerHTML = '<div class="loading-indicator">새로운 일기를 동기화 중...</div>';
         
-        var allPosts = [];
-        ['dad', 'mom', 'baby'].forEach(function(member) {
-          var posts = JSON.parse(localStorage.getItem('blog_' + member) || '[]');
-          allPosts = allPosts.concat(posts);
-        });
-        allPosts.sort(function(a, b) { return b.id - a.id; });
-
-        if (allPosts.length === 0) {
-          blogList.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">아직 작성된 일기가 없습니다.</p>';
-          return;
-        }
-
-        var html = '';
-        allPosts.forEach(function(post) {
-          var authorColor = post.author.indexOf('아빠') !== -1 ? '#2c3e50' : (post.author.indexOf('엄마') !== -1 ? '#d35400' : '#27ae60');
-          html += '<div class="content-card" style="margin-bottom: 25px; border-left: 5px solid ' + authorColor + ';">';
-          if (isAuthenticated) {
-            html += '<button onclick="deletePost(' + post.id + ', '' + post.authorKey + '')" class="delete-post-btn">&times;</button>';
+        try {
+          // Firestore의 'posts' 컬렉션에서 작성일자 내림차순(최신순)으로 정렬하여 쿼리
+          const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+          const querySnapshot = await getDocs(q);
+          
+          if (querySnapshot.empty) {
+            feedContainer.innerHTML = '<div class="login-alert-box">아직 등록된 일기가 없습니다. 첫 추억을 클라우드에 기록해 보세요!</div>';
+            return;
           }
-          html += '<h4 style="color: ' + authorColor + ';">' + post.title + '</h4>';
-          html += '<p style="font-size: 0.8rem; color: #777; margin-bottom: 15px;">' + post.date + ' | 작성자: ' + post.author + '</p>';
-          html += '<div style="white-space: pre-wrap;">' + post.content + '</div>';
-          if (post.image) html += '<img src="' + post.image + '" class="post-image">';
-          html += '</div>';
-        });
-        blogList.innerHTML = html;
+
+          let htmlBuffer = "";
+          querySnapshot.forEach((docSnap) => {
+            const post = docSnap.data();
+            const id = docSnap.id; // Firestore 도큐먼트 고유 ID
+            
+            htmlBuffer += `
+              <div class="content-card" style="background: white; padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 20px; position: relative;">
+                <button class="delete-post-btn" data-id="${id}" style="position: absolute; top: 20px; right: 20px; color: #ff4757; border:none; background:none; font-size:1.2rem; cursor:pointer;">&times;</button>
+                <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                  <span style="font-weight: bold; font-size: 1.1rem; color: #2c3e50; margin-right: 10px;">${post.author}</span>
+                  <span style="font-size: 0.85rem; color: #95a5a6;">${post.date}</span>
+                </div>
+                <h2 style="margin-top: 0; margin-bottom: 10px; font-size: 1.4rem; color: #2c3e50;">${post.title}</h2>
+                <p style="color: #34495e; line-height: 1.6; white-space: pre-wrap; margin-bottom: 0;">${post.content}</p>
+                ${post.image ? `<img src="${post.image}" class="post-image" alt="첨부 이미지"/>` : ''}
+              </div>
+            `;
+          });
+          
+          feedContainer.innerHTML = htmlBuffer;
+
+          // 삭제 버튼 이벤트 동적 바인딩
+          document.querySelectorAll('.delete-post-btn').forEach(btn => {
+            btn.onclick = async function() {
+              if (confirm('이 일기를 클라우드 서버에서 영구히 삭제하시겠습니까?')) {
+                const docId = this.getAttribute('data-id');
+                try {
+                  await deleteDoc(doc(db, "posts", docId));
+                  renderAllPosts(); // 삭제 후 새로고침
+                } catch (err) {
+                  alert('삭제 중 오류가 발생했습니다: ' + err.message);
+                }
+              }
+            };
+          });
+
+        } catch (error) {
+          feedContainer.innerHTML = `<div class="login-alert-box" style="color:red;">데이터 로드 실패: ${error.message}<br>Firebase 설정을 확인하세요.</div>`;
+        }
       }
 
-      window.savePostWithFile = function() {
-        var authorKey = document.getElementById('post-author').value;
+      // 일기 저장 이벤트 핸들러
+      document.getElementById('btn-save-post').onclick = async function() {
+        var authorKey = document.getElementById('author-select').value;
         var title = document.getElementById('post-title').value;
         var content = document.getElementById('post-content').value;
-        if (!title || !content) { alert('제목과 내용을 입력해주세요!'); return; }
+        
+        if (!title || !content) { 
+          alert('제목과 내용을 입력해주세요!'); 
+          return; 
+        }
 
         var authorName = authorKey === 'dad' ? '아빠 (Bố)' : (authorKey === 'mom' ? '엄마 (Mẹ)' : '아기 (Bé)');
-        var newPost = { id: Date.now(), authorKey: authorKey, title: title, content: content, image: currentImageData,
-          date: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }), author: authorName };
+        
+        // Firestore 전송용 도큐먼트 구조 생성
+        var newPost = {
+          authorKey: authorKey,
+          author: authorName,
+          title: title,
+          content: content,
+          image: currentImageData, // Base64 이미지 스트링 데이터
+          date: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
+          timestamp: Date.now() // 정렬 정확도를 위한 타임스탬프 고유값
+        };
 
-        var posts = JSON.parse(localStorage.getItem('blog_' + authorKey) || '[]');
-        posts.unshift(newPost);
-        localStorage.setItem('blog_' + authorKey, JSON.stringify(posts));
+        try {
+          document.getElementById('btn-save-post').innerText = "서버 전송 중...";
+          document.getElementById('btn-save-post').disabled = true;
 
-        document.getElementById('post-title').value = '';
-        document.getElementById('post-content').value = '';
-        document.getElementById('post-file').value = '';
-        document.getElementById('image-preview').style.display = 'none';
-        currentImageData = "";
-        renderAllPosts();
-      };
+          // Firestore 'posts' 컬렉션에 새 문서 추가
+          await addDoc(collection(db, "posts"), newPost);
 
-      window.deletePost = function(postId, authorKey) {
-        if (confirm('삭제하시겠습니까?')) {
-          var posts = JSON.parse(localStorage.getItem('blog_' + authorKey) || '[]');
-          var filtered = posts.filter(function(p) { return p.id !== postId; });
-          localStorage.setItem('blog_' + authorKey, JSON.stringify(filtered));
-          renderAllPosts();
+          // 폼 리셋
+          document.getElementById('post-title').value = '';
+          document.getElementById('post-content').value = '';
+          document.getElementById('post-file').value = '';
+          document.getElementById('image-preview').style.display = 'none';
+          currentImageData = "";
+          
+          alert('일기가 가족 클라우드 서버에 안전하게 동기화되었습니다!');
+          await renderAllPosts();
+        } catch (error) {
+          alert('서버 저장 실패: ' + error.message);
+        } finally {
+          document.getElementById('btn-save-post').innerText = "클라우드에 저장하기";
+          document.getElementById('btn-save-post').disabled = false;
         }
       };
 
-      document.addEventListener('DOMContentLoaded', renderAllPosts);
+      // 페이지 로드 시 즉시 데이터 가져오기 실행
+      window.onload = function() {
+        renderAllPosts();
+      };
     </script>
   </body>
 </html>
