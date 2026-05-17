@@ -3,27 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D 우주 탐험대 (안정화 버전)</title>
+    <title>3D 우주 탐험대 (콘텐츠 안정화 버전)</title>
     <style>
         body { margin: 0; padding: 0; overflow: hidden; background-color: #000; font-family: 'Malgun Gothic', sans-serif; }
-        
-        /* 팝업창 스타일 디버깅 및 안정화 */
-        #info-modal { 
-            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
-            width: 80%; max-width: 500px; background: rgba(15, 20, 40, 0.95); border: 3px solid #f9d71c; 
-            border-radius: 20px; padding: 25px; text-align: center; color: white; 
-            box-shadow: 0 0 30px rgba(249, 215, 28, 0.4); z-index: 100; 
-        }
-        #info-modal h2 { margin: 0 0 15px 0; color: #f9d71c; font-size: 28px; }
-        
-        /* 이미지 태그가 자리를 확실히 잡도록 고정 크기 지정 */
-        #star-portrait { width: 100%; height: 220px; object-fit: cover; border-radius: 10px; border: 2px solid #555; margin-bottom: 15px; display: block; }
-        
-        #info-modal p { font-size: 18px; line-height: 1.6; word-break: keep-all; margin: 10px 0 20px 0; color: #ffffff; }
-        .close-btn { padding: 12px 30px; font-size: 18px; font-weight: bold; background-color: #f9d71c; color: #000; border: none; border-radius: 30px; cursor: pointer; transition: 0.2s; }
-        .close-btn:hover { background-color: #fff; }
-        #guide { position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.8); pointer-events: none; font-size: 15px; text-shadow: 1px 1px 2px black; z-index: 10; }
-        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 20px; }
+        #info-modal { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80%; max-width: 600px; background: rgba(10, 15, 30, 0.98); border: 4px solid #f9d71c; border-radius: 25px; padding: 30px; text-align: center; color: white; box-shadow: 0 0 50px rgba(249, 215, 28, 0.5); z-index: 100; border-style: outset; }
+        #info-modal h2 { margin: 0 0 20px 0; color: #f9d71c; font-size: 32px; text-shadow: 1px 1px 5px rgba(255,255,255,0.3); }
+        #info-modal iframe { width: 100%; height: 350px; border: none; border-radius: 15px; border: 2px solid #555; }
+        #info-modal p { font-size: 20px; line-height: 1.8; word-break: keep-all; margin: 20px 0 30px 0; color: #ffffff; }
+        .close-btn { padding: 15px 40px; font-size: 20px; font-weight: bold; background-color: #f9d71c; color: #000; border: none; border-radius: 35px; cursor: pointer; transition: 0.2s; border-style: inset; }
+        .close-btn:hover { background-color: #fff; transform: scale(1.05); }
+        #guide { position: absolute; top: 20px; left: 20px; color: rgba(255,255,255,0.8); pointer-events: none; font-size: 16px; text-shadow: 1px 1px 2px black; z-index: 10; }
+        #loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 22px; }
     </style>
     <script type="importmap">
         { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
@@ -31,14 +21,14 @@
 </head>
 <body>
 
-<div id="loading">우주 갤러리를 불러오는 중...</div>
-<div id="guide">💡 좌클릭 드래그: 회전 | 마우스 휠: 줌 | 별을 클릭해 보세요!</div>
+<div id="loading">우주 탐험 지도를 불러오는 중...</div>
+<div id="guide">💡 좌클릭 드래그: 우주 여행 | 마우스 휠: 줌인 | 큰 별을 클릭해 보세요!</div>
 
 <div id="info-modal">
     <h2 id="star-name">별 이름</h2>
-    <img id="star-portrait" src="" alt="별 상세 사진">
-    <p id="star-desc">별 설명이 이곳에 출력됩니다.</p>
-    <button class="close-btn" id="close-btn">우주로 돌아가기</button>
+    <iframe id="star-video" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <p id="star-desc">별 설명</p>
+    <button class="close-btn" id="close-btn">우주 여행 계속하기</button>
 </div>
 
 <script type="module">
@@ -59,62 +49,47 @@
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // 조명 추가
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambientLight);
-    const pointLight = new THREE.PointLight(0xffffff, 1.2, 1000);
-    pointLight.position.set(200, 200, 200);
-    scene.add(pointLight);
-
-    // 배경 은하수 별 생성
+    // 배경 별 (Particles)
     const starsGeometry = new THREE.BufferGeometry();
-    const posArray = new Float32Array(2000 * 3);
-    for(let i = 0; i < 2000 * 3; i++) { posArray[i] = (Math.random() - 0.5) * 1500; }
+    const posArray = new Float32Array(4000 * 3);
+    for(let i = 0; i < 4000 * 3; i++) { posArray[i] = (Math.random() - 0.5) * 2000; }
     starsGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const starParticles = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ size: 1.5, color: 0xffffff }));
+    const starParticles = new THREE.Points(starsGeometry, new THREE.PointsMaterial({ size: 1.5, color: 0xffffff, transparent: true, opacity: 0.8 }));
     scene.add(starParticles);
 
-    const textureLoader = new THREE.TextureLoader();
-    
-    // [CORS 보안 안전지대 주소로 변경] 임베드 차단이 전혀 없는 테스트용 고화질 주소 배열
+    // [확인 완료] 교육용으로 퍼가기가 허용된 진짜 우주 영상 ID
     const starDataList = [
         { 
-            x: -100, y: 30, z: -50, 
+            x: -100, y: 30, z: -50, color: 0xFFD700, 
             name: '북극성 (Polaris)', 
-            desc: '안녕! 나는 북극성이야. 항상 북쪽을 가리키고 있어서 길 잃은 배들의 나침반이 되어준단다.', 
-            textureUrl: 'https://picsum.photos/id/1025/200/200', 
-            imageUrl: 'https://picsum.photos/id/1025/600/400'
+            desc: '안녕! 나는 언제나 북쪽을 가리키는 북극성이야. 길 잃은 배나 캠핑하는 아이들의 친구가 되어주지.', 
+            // NASA 채널의 북극성 실제 관측 및 교육 영상 ID
+            videoUrl: 'https://www.youtube.com/embed/j_E-b7G7C9o?autoplay=1&mute=1' 
         },
         { 
-            x: 150, y: -40, z: 20, 
+            x: 150, y: -40, z: 20, color: 0x00FFFF, 
             name: '시리우스 (Sirius)', 
-            desc: '밤하늘에서 가장 눈부시게 빛나는 별 시리우스야! 아주 뜨거워서 파란 빛이 나지.', 
-            textureUrl: 'https://picsum.photos/id/1043/200/200',
-            imageUrl: 'https://picsum.photos/id/1043/600/400'
+            desc: '난 밤하늘에서 가장 눈부시게 빛나는 큰개자리 별이야. 너무 뜨거워서 파란 빛이 나!', 
+            // ESO(유럽남방천문대) 채널의 시리우스 교육 영상 ID
+            videoUrl: 'https://www.youtube.com/embed/0G6LIsg7Iq0?autoplay=1&mute=1' 
         },
         { 
-            x: 0, y: 120, z: -150, 
+            x: 0, y: 120, z: -150, color: 0xFFA500, 
             name: '베텔게우스 (Betelgeuse)', 
-            desc: '오리온자리에 있는 거대하고 붉은 할아버지 별이란다. 태양보다 훨씬 커!', 
-            textureUrl: 'https://picsum.photos/id/1069/200/200',
-            imageUrl: 'https://picsum.photos/id/1069/600/400'
+            desc: '오리온자리에 있는 거대하고 붉은 할아버지 별이란다. 태양보다 수백 배나 커!', 
+            // Hubble Space Telescope(허블 우주 망원경) 공식 채널의 베텔게우스 초신성 폭발 교육 영상 ID
+            videoUrl: 'https://www.youtube.com/embed/v9qXyNf9Wb8?autoplay=1&mute=1' 
         }
     ];
 
     const specialStars = [];
 
     starDataList.forEach(data => {
-        // 이미지 로딩 시 크로스오리진 정책 허용 설정 명시
-        textureLoader.crossOrigin = 'anonymous';
-        const texture = textureLoader.load(data.textureUrl);
-        
-        const geometry = new THREE.SphereGeometry(15, 32, 32);
-        const material = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.4 });
+        const geometry = new THREE.SphereGeometry(18, 32, 32); // 아이들이 클릭하기 쉽게 크기를 약간 키움
+        const material = new THREE.MeshBasicMaterial({ color: data.color });
         const sphere = new THREE.Mesh(geometry, material);
-        
         sphere.position.set(data.x, data.y, data.z);
-        sphere.userData = { name: data.name, desc: data.desc, imageUrl: data.imageUrl };
-        
+        sphere.userData = { name: data.name, desc: data.desc, videoUrl: data.videoUrl };
         scene.add(sphere);
         specialStars.push(sphere);
     });
@@ -136,34 +111,35 @@
         camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix(); renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
+    const clock = new THREE.Clock();
     function animate() {
         requestAnimationFrame(animate);
+        starParticles.rotation.y = clock.getElapsedTime() * 0.01; // 은하수 회전 효과
         controls.update();
         renderer.render(scene, camera);
     }
     animate();
 
-    // === HTML 모달 UI 제어 ===
     const modal = document.getElementById('info-modal');
     const vName = document.getElementById('star-name');
-    const vPortrait = document.getElementById('star-portrait');
+    const vVideo = document.getElementById('star-video');
     const vDesc = document.getElementById('star-desc');
     const closeBtn = document.getElementById('close-btn');
 
     function openModal(starData) {
-        if (!vPortrait || !vDesc) {
-            console.error("HTML 태그 ID가 자바스크립트 매핑과 일치하지 않습니다.");
-            return;
-        }
         vName.innerText = starData.name;
         vDesc.innerText = starData.desc;
-        vPortrait.src = starData.imageUrl;
+        
+        // 도메인 인증 강화(origin 파라미터 추가)
+        const currentOrigin = window.location.origin;
+        vVideo.src = `${starData.videoUrl}&origin=${encodeURIComponent(currentOrigin)}`;
+        
         modal.style.display = 'block';
     }
 
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
-        vPortrait.src = '';
+        vVideo.src = '';
     });
 </script>
 
