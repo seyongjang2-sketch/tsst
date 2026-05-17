@@ -18,7 +18,6 @@
         font-family: 'Noto Sans KR', 'Montserrat', sans-serif;
       }
       
-      /* 내비게이션 바 다크 스타일 적용 */
       .navbar {
         background: rgba(15, 23, 42, 0.9) !important;
         backdrop-filter: blur(12px);
@@ -27,7 +26,6 @@
       .nav-links a { color: #94a3b8 !important; }
       .nav-links a:hover { color: #38bdf8 !important; }
       
-      /* 프리미엄 가상 카드 레이아웃 */
       .premium-card {
         background: rgba(30, 41, 59, 0.7);
         border: 1px solid rgba(56, 189, 248, 0.1);
@@ -52,7 +50,6 @@
         gap: 10px;
       }
       
-      /* 퀵 링크 버튼 컴포넌트 */
       .shortcut-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 15px; }
       .shortcut-btn {
         background: rgba(15, 23, 42, 0.5);
@@ -65,6 +62,10 @@
         font-weight: bold;
         text-align: center;
         transition: all 0.2s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
       }
       .shortcut-btn:hover {
         background: #38bdf8;
@@ -72,18 +73,29 @@
         transform: scale(1.03);
       }
 
-      /* 푸드 & 힐링 가이드 리스트 정돈 */
-      .healing-list { list-style: none; padding: 0; margin: 0; }
-      .healing-list li {
-        padding: 12px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-        font-size: 0.95rem;
-        color: #e2e8f0;
+      /* 실전용 다이렉트 링크 버튼 스타일 */
+      .travel-link {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 12px;
+        color: #e2e8f0;
+        text-decoration: none;
+        margin-bottom: 12px;
+        border: 1px solid rgba(255,255,255,0.05);
+        transition: all 0.2s;
       }
-      .healing-list li:last-child { border-bottom: none; }
-      .healing-list span { color: #38bdf8; font-weight: bold; }
+      .travel-link:last-child { margin-bottom: 0; }
+      .travel-link:hover {
+        background: rgba(56, 189, 248, 0.1);
+        border-color: rgba(56, 189, 248, 0.4);
+        transform: translateX(8px);
+      }
+      .travel-link span { color: #38bdf8; font-weight: bold; display: block; font-size: 1.05rem; margin-bottom: 3px; }
+      .travel-desc { font-size: 0.85rem; color: #94a3b8; }
+      .travel-icon { font-size: 1.5rem; }
     </style>
   </head>
   <body class="dad-page">
@@ -96,6 +108,7 @@
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
           <li><a href="blog.html">가족 일기장</a></li>
+          <li><a href="chat.html">🔒 비밀 대화</a></li>
           <li><a href="#" onclick="logout()" class="logout-btn">로그아웃</a></li>
         </ul>
       </div>
@@ -104,51 +117,65 @@
     <div class="main-wrapper" style="max-width: 1200px; margin: 0 auto; padding: 60px 20px;">
       <header style="text-align: center; margin-bottom: 50px;">
         <h1 style="font-size: 3.5rem; color: #38bdf8; font-family: 'Montserrat', sans-serif; font-weight: 700; margin-bottom: 10px; letter-spacing: -1px;">Bố (아빠의 아지트)</h1>
-        <p style="color: #94a3b8; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">오늘 하루도 수고 많으셨습니다. 이곳에서 짜릿한 게임 하이라이트와 테크 뉴스를 보며 편안히 휴식을 취하세요.</p>
+        <p style="color: #94a3b8; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">오늘 하루도 수고 많으셨습니다. 버튼을 눌러 바로 목적지로 이동하세요.</p>
       </header>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
         
         <div class="premium-card" style="grid-column: span 2;">
-          <h3>🎮 액션 게임 & 스트레스 해소 스트리밍</h3>
+          <h3>🎮 액션 게임 & 스트리밍 보드</h3>
           <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <iframe src="https://www.youtube.com/embed/videoseries?list=PLsiP_uYmId_7KqW1LhT4Xb_zF1X-9FjQv" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/s4gBChO6P4M?autoplay=0&mute=0" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allowfullscreen title="Action Game Trailer"></iframe>
           </div>
-          <p style="color: #94a3b8; line-height: 1.7; margin-bottom: 0;">📺 <b>실시간 롤링 플레이어:</b> 타격감 넘치는 최신 액션 게임 및 글로벌 테크 트렌드 영상이 자동으로 이어집니다. 대화면으로 시청하며 오늘 쌓인 피로를 날려보세요.</p>
+          
+          <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 10px;">👇 화면이 작다면 아래 버튼을 눌러 유튜브 앱에서 최신 엔드게임 빌드를 바로 검색하세요.</p>
+          <div class="shortcut-grid">
+            <a href="https://www.youtube.com/results?search_query=디아블로+4+시즌+빌드+추천" target="_blank" class="shortcut-btn">🔥 디아블로 4 최신 빌드</a>
+            <a href="https://www.youtube.com/results?search_query=붉은사막+게임플레이+트레일러" target="_blank" class="shortcut-btn">⚔️ 크림슨 데저트 플레이</a>
+          </div>
         </div>
 
         <div class="premium-card">
-          <h3>🌴 베트남 주거 가족 힐링 플레이스</h3>
-          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">현지 거주 아빠들을 위해 엄선된 가족 주말 리프레시 코스</p>
-          <ul class="healing-list">
-            <li><span>푸꾸옥 (Phú Quốc)</span> 가족 풀빌라 및 해변 휴양지 추천</li>
-            <li><span>달랏 (Đà Lạt)</span> 사계절 선선한 소나무 숲 힐링 가이드</li>
-            <li><span>사파 (Sa Pa)</span> 구름 위를 걷는 판시판 마운틴 투어</li>
-            <li><span>현지 한식 맛집</span> 내 주변 가장 평점 높은 고깃집 정보</li>
-          </ul>
+          <h3>🌴 주말 힐링 & 로컬 맛집 내비게이터</h3>
+          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">클릭 시 구글 지도 및 여행 상세 리뷰 페이지로 즉시 이동합니다.</p>
+          
+          <div style="display: flex; flex-direction: column;">
+            <a href="https://www.google.com/maps/search/Phu+Quoc+family+resort" target="_blank" class="travel-link">
+              <div>
+                <span>푸꾸옥 (Phú Quốc)</span>
+                <div class="travel-desc">가족 풀빌라 및 해변 휴양지 검색</div>
+              </div>
+              <div class="travel-icon">✈️</div>
+            </a>
+            <a href="https://www.google.com/maps/search/Da+Lat+attractions" target="_blank" class="travel-link">
+              <div>
+                <span>달랏 (Đà Lạt)</span>
+                <div class="travel-desc">사계절 선선한 소나무 숲 명소</div>
+              </div>
+              <div class="travel-icon">🌲</div>
+            </a>
+            <a href="https://www.google.com/maps/search/Hai+Phong+Korean+Restaurant" target="_blank" class="travel-link">
+              <div>
+                <span>하이퐁 한식당</span>
+                <div class="travel-desc">내 주변 가장 가까운 K-BBQ 찾기</div>
+              </div>
+              <div class="travel-icon">🥩</div>
+            </a>
+          </div>
         </div>
 
         <div class="premium-card">
-          <h3>⚙️ 아빠 전용 테크 툴킷 & 대시보드</h3>
-          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">콘텐츠 제작 및 자동화 파이프라인 관리를 위한 퀵 바로가기 버튼 세트</p>
+          <h3>⚙️ 테크 툴킷 & 대시보드</h3>
+          <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">콘텐츠 제작 및 자동화 파이프라인 제어</p>
           <div class="shortcut-grid">
             <a href="https://github.com" target="_blank" class="shortcut-btn">GitHub 원격 서버</a>
-            <a href="https://youtube.com" target="_blank" class="shortcut-btn">유튜브 스튜디오</a>
-            <a href="#" onclick="alert('로컬 ComfyUI 서버가 백엔드 파이프라인과 연동 대기 중입니다.'); return false;" class="shortcut-btn">ComfyUI 로컬 워크</a>
-            <a href="#" onclick="alert('ElevenLabs 음성 모델 팩 생성이 완료되었습니다.'); return false;" class="shortcut-btn">ElevenLabs 보이스</a>
-          </div>
-        </div>
-
-        <div class="premium-card" style="grid-column: span 2;">
-          <h3>🔒 비밀 보장 아빠의 생각 정리 공간</h3>
-          <p style="color: #cbd5e1; margin-bottom: 20px;">오늘 블로그 일기장에 새로 추가한 <b>'나만보기(Private)'</b> 기능을 활용해 보세요. 아빠가 작성한 비밀 생각들은 가족 로그인을 거쳐 작성자를 '아빠'로 선택했을 때만 안전하게 클라우드에 노출됩니다.</p>
-          <div style="text-align: left;">
-            <a href="blog.html" class="btn-enter" style="background: #38bdf8; color: #0f172a; font-weight: bold; padding: 14px 35px; border-radius: 50px; text-decoration: none; display: inline-block; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);">비밀 일기 쓰러 가기 📔</a>
+            <a href="https://studio.youtube.com" target="_blank" class="shortcut-btn">유튜브 스튜디오</a>
+            <a href="https://elevenlabs.io/" target="_blank" class="shortcut-btn">ElevenLabs AI</a>
+            <a href="blog.html" class="shortcut-btn" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">🔒 아빠의 비밀 일기장</a>
           </div>
         </div>
 
       </div>
-      
     </div>
   </body>
 </html>
