@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>아빠의 공간 - FamilySpace</title>
+    <title>아빠의 휴식처 & 테크 매거진 - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&display=swap" rel="stylesheet">
@@ -11,90 +11,111 @@
     <link rel="stylesheet" href="login-modal.css" />
     <script src="auth.js"></script>
     <style>
-      /* 인트로 페이지와 완벽하게 일치하는 화이트/라이트톤 베이스 */
-      body.dad-page { background-color: #f8f9fc; color: #333333; font-family: 'Pretendard', sans-serif; margin: 0; }
+      /* 프리미엄 화이트/라이트 그레이 베이스 */
+      body.dad-page { background-color: #f8f9fc; color: #333333; font-family: 'Pretendard', sans-serif; margin: 0; -webkit-font-smoothing: antialiased; }
       
-      /* 메인 화면과 동일한 네비게이션 바 디자인 */
-      .navbar { background: #ffffff; box-shadow: 0 2px 15px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f1f3f5; }
-      .nav-links { display: flex; align-items: center; list-style: none; gap: 24px; margin: 0; padding: 0; }
-      .nav-links a { color: #555555 !important; font-weight: 600; text-decoration: none; font-size: 0.95rem; transition: color 0.2s; }
+      /* 네비게이션 바 (인트로와 동일한 화이트 글래스모피즘) */
+      .navbar { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0,0,0,0.04); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #f1f3f5; }
+      .nav-links { display: flex; align-items: center; list-style: none; gap: 28px; margin: 0; padding: 0; }
+      .nav-links a { color: #495057 !important; font-weight: 600; text-decoration: none; font-size: 0.95rem; transition: color 0.2s ease; }
       .nav-links a:hover { color: #4a90e2 !important; }
-      
-      /* 빨간색 라운드 로그아웃 버튼 (인트로 화면과 동일) */
-      .nav-logout-btn { background: #ff4d4f; color: white !important; padding: 6px 18px; border-radius: 20px; font-weight: 700; transition: background 0.2s; }
-      .nav-logout-btn:hover { background: #ff7875; color: white !important; }
+      .nav-logout-btn { background: #ff4d4f; color: white !important; padding: 8px 20px; border-radius: 24px; font-weight: 700; transition: background 0.2s, transform 0.2s; box-shadow: 0 4px 10px rgba(255, 77, 79, 0.2); }
+      .nav-logout-btn:hover { background: #ff7875; transform: translateY(-2px); }
 
-      /* 아빠 메뉴 호버 시 나타나는 글쓰기 드롭다운 (화이트 테마) */
-      .nav-dropdown { position: relative; display: inline-block; padding-bottom: 15px; margin-bottom: -15px; }
-      .dropdown-content { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: #ffffff; min-width: 170px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #eeeeee; border-radius: 12px; z-index: 200; overflow: hidden; margin-top: 5px; }
-      .nav-dropdown:hover .dropdown-content { display: block; animation: dropFade 0.2s ease; }
-      @keyframes dropFade { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translate(-50%, 0); } }
-      .dropdown-content a { color: #555555 !important; padding: 14px 16px; display: block; font-size: 0.9rem; text-align: center; border-bottom: 1px solid #f1f3f5; font-weight: 600; }
+      /* 완벽하게 제어된 호버 드롭다운 메뉴 */
+      .nav-dropdown { position: relative; display: flex; align-items: center; height: 100%; padding: 20px 0; cursor: pointer; }
+      .dropdown-content { 
+        visibility: hidden; opacity: 0; position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px); 
+        background-color: #ffffff; min-width: 180px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+        border: 1px solid #f1f3f5; border-radius: 16px; z-index: 200; overflow: hidden; 
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      }
+      .nav-dropdown:hover .dropdown-content { visibility: visible; opacity: 1; transform: translateX(-50%) translateY(0); }
+      .dropdown-content a { color: #495057 !important; padding: 15px 20px; display: block; font-size: 0.9rem; text-align: center; border-bottom: 1px solid #f8f9fa; font-weight: 600; transition: 0.2s; }
       .dropdown-content a:hover { background-color: #f8f9fa; color: #4a90e2 !important; }
 
-      /* SPA 뷰 컨테이너 */
-      .view-section { display: none; max-width: 1100px; margin: 0 auto; padding: 50px 20px; }
-      .view-section.active { display: block; animation: fadeIn 0.4s ease; }
-      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      /* 부드러운 화면 전환 (SPA) */
+      .view-section { display: none; max-width: 1100px; margin: 0 auto; padding: 40px 20px; }
+      .view-section.active { display: block; animation: fadeInUp 0.5s ease forwards; }
+      @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-      /* 페이지 헤더 (인트로 화면의 폰트 느낌 유지) */
-      .page-header { text-align: center; margin-bottom: 50px; }
-      .page-header h1 { font-size: 2.2rem; font-weight: 700; color: #212529; margin-bottom: 12px; }
-      .page-header p { color: #868e96; font-size: 1.05rem; }
+      /* 세련된 페이지 헤더 */
+      .page-header { text-align: center; margin-bottom: 50px; padding: 20px 0; }
+      .page-header h1 { font-size: 2.5rem; font-weight: 700; color: #111827; margin-bottom: 12px; letter-spacing: -0.5px; }
+      .page-header p { color: #6b7280; font-size: 1.1rem; }
 
-      /* 2단 메인 레이아웃 (둥근 모서리와 부드러운 그림자) */
-      .dashboard-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 30px; margin-bottom: 50px; }
+      /* 2단 메인 대시보드 레이아웃 */
+      .dashboard-grid { display: grid; grid-template-columns: 1.7fr 1.3fr; gap: 30px; margin-bottom: 60px; }
       @media (max-width: 900px) { .dashboard-grid { grid-template-columns: 1fr; } }
       
-      .panel { background: #ffffff; border-radius: 24px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #f1f3f5; }
-      .panel-title { margin-top: 0; color: #212529; font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+      .panel { background: #ffffff; border-radius: 28px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); border: 1px solid #f1f3f5; }
+      .panel-title { margin-top: 0; color: #111827; font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
       
       /* 영상 플레이어 존 */
-      .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 16px; overflow: hidden; background: #e9ecef; margin-bottom: 15px; }
-      .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+      .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 20px; overflow: hidden; background: #e9ecef; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+      .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
 
-      /* 꿀팁 및 수익화 퀵링크 리스트 */
-      .quick-link-item { display: flex; align-items: center; justify-content: space-between; background: #f8f9fa; padding: 18px; border-radius: 16px; margin-bottom: 15px; text-decoration: none; color: #333; border: 1px solid #eeeeee; transition: 0.2s; }
-      .quick-link-item:last-child { margin-bottom: 0; }
-      .quick-link-item:hover { background: #ffffff; border-color: #4a90e2; box-shadow: 0 5px 15px rgba(74, 144, 226, 0.1); transform: translateY(-2px); }
-      .badge-red { background: #ffe3e3; color: #e03131; padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
-      .badge-blue { background: #e7f5ff; color: #1c7ed6; padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; }
+      /* 고품격 포토 카드 링크 (우측 꿀팁존) */
+      .visual-card {
+        position: relative; height: 120px; border-radius: 20px; overflow: hidden; 
+        display: flex; align-items: flex-end; padding: 20px; text-decoration: none; 
+        margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.06); transition: all 0.3s ease;
+      }
+      .visual-card:last-child { margin-bottom: 0; }
+      .visual-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.12); }
+      
+      .visual-card .bg-img {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+        background-size: cover; background-position: center; z-index: 1; transition: transform 0.5s ease;
+      }
+      .visual-card:hover .bg-img { transform: scale(1.05); }
+      
+      .visual-card .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(17,24,39,0.9) 0%, rgba(17,24,39,0.1) 100%); z-index: 2; }
+      .visual-card .content { position: relative; z-index: 3; width: 100%; display: flex; justify-content: space-between; align-items: flex-end; }
+      .visual-card .text-box { color: #ffffff; }
+      .visual-card .title { font-size: 1.15rem; font-weight: 700; margin-bottom: 6px; display: block; letter-spacing: -0.3px; }
+      .visual-card .desc { font-size: 0.85rem; color: #d1d5db; font-weight: 400; }
+      
+      .badge { padding: 6px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+      .badge.red { background: #ef4444; color: white; }
+      .badge.blue { background: #3b82f6; color: white; }
 
-      /* 매거진 피드 영역 (화이트톤 카드) */
-      .magazine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
-      .article-card { background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #f1f3f5; box-shadow: 0 5px 20px rgba(0,0,0,0.02); cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; }
-      .article-card:hover { transform: translateY(-6px); box-shadow: 0 15px 30px rgba(0,0,0,0.06); border-color: #e9ecef; }
-      .article-img { width: 100%; height: 180px; background-color: #e9ecef; background-size: cover; background-position: center; }
-      .article-content { padding: 24px; flex: 1; display: flex; flex-direction: column; }
-      .article-title { font-size: 1.15rem; font-weight: 700; margin: 0 0 12px 0; color: #212529; line-height: 1.4; }
-      .article-date { font-size: 0.85rem; color: #adb5bd; margin-top: auto; }
+      /* 매거진 블로그 피드 (그리드 정렬) */
+      .magazine-header h2 { font-size: 1.6rem; color: #111827; font-weight: 700; margin-bottom: 30px; padding-left: 16px; border-left: 5px solid #4a90e2; }
+      .magazine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+      .article-card { background: #ffffff; border-radius: 24px; overflow: hidden; border: 1px solid #f1f3f5; box-shadow: 0 5px 25px rgba(0,0,0,0.03); cursor: pointer; transition: all 0.3s ease; display: flex; flex-direction: column; }
+      .article-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: #e9ecef; }
+      .article-img { width: 100%; height: 200px; background-color: #e9ecef; background-size: cover; background-position: center; }
+      .article-content { padding: 28px; flex: 1; display: flex; flex-direction: column; }
+      .article-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 12px 0; color: #111827; line-height: 1.5; }
+      .article-date { font-size: 0.9rem; color: #9ca3af; margin-top: auto; font-weight: 500; }
 
-      /* 광고 영역 (거부감 없도록 깔끔하게 처리) */
-      .ad-banner { width: 100%; height: 90px; background: #f1f3f5; border: 1px dashed #ced4da; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.85rem; font-weight: 600; margin-bottom: 40px; }
+      /* 고급스러운 광고 배너 자리 */
+      .ad-banner { width: 100%; height: 100px; background: #f1f3f5; border: 1px dashed #ced4da; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.9rem; font-weight: 600; margin-bottom: 50px; }
 
-      /* 상세 읽기 & 글쓰기 폼 */
-      .form-container { background: #ffffff; padding: 40px; border-radius: 24px; border: 1px solid #f1f3f5; box-shadow: 0 10px 40px rgba(0,0,0,0.03); max-width: 800px; margin: 0 auto; }
-      .input-field { width: 100%; padding: 16px; margin-bottom: 20px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; color: #333; font-family: inherit; font-size: 1rem; box-sizing: border-box; }
-      .input-field:focus { outline: none; border-color: #4a90e2; background: #ffffff; }
-      .input-textarea { width: 100%; height: 400px; padding: 16px; margin-bottom: 20px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 12px; color: #333; font-family: inherit; font-size: 1rem; resize: vertical; box-sizing: border-box; line-height: 1.6; }
-      .input-textarea:focus { outline: none; border-color: #4a90e2; background: #ffffff; }
-      .btn-primary { width: 100%; background: #4a90e2; color: white; padding: 16px; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
-      .btn-primary:hover { background: #357abd; }
-      .btn-back { background: #f8f9fa; color: #495057; border: 1px solid #e9ecef; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-bottom: 25px; transition: 0.2s; }
-      .btn-back:hover { background: #e9ecef; color: #212529; }
+      /* 상세 읽기 & 글쓰기 폼 UI */
+      .form-container { background: #ffffff; padding: 50px; border-radius: 28px; border: 1px solid #f1f3f5; box-shadow: 0 15px 50px rgba(0,0,0,0.04); max-width: 850px; margin: 0 auto; }
+      .input-field { width: 100%; padding: 18px; margin-bottom: 24px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 16px; color: #333; font-family: inherit; font-size: 1.05rem; box-sizing: border-box; transition: 0.2s; }
+      .input-field:focus { outline: none; border-color: #4a90e2; background: #ffffff; box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1); }
+      .input-textarea { width: 100%; height: 450px; padding: 18px; margin-bottom: 24px; background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 16px; color: #333; font-family: inherit; font-size: 1.05rem; resize: vertical; box-sizing: border-box; line-height: 1.7; transition: 0.2s; }
+      .input-textarea:focus { outline: none; border-color: #4a90e2; background: #ffffff; box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.1); }
+      .btn-primary { width: 100%; background: #4a90e2; color: white; padding: 18px; border: none; border-radius: 16px; font-size: 1.15rem; font-weight: 700; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3); }
+      .btn-primary:hover { background: #357abd; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4); }
+      .btn-back { background: #f8f9fa; color: #495057; border: 1px solid #e9ecef; padding: 12px 24px; border-radius: 12px; cursor: pointer; font-weight: 600; margin-bottom: 30px; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+      .btn-back:hover { background: #e9ecef; color: #111827; }
     </style>
   </head>
   <body class="dad-page">
     
     <nav class="navbar">
-      <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;">
-        <a href="index.html" class="nav-logo" style="color: #4a90e2; font-size: 1.5rem; font-weight: 700; text-decoration: none;">FamilySpace</a>
+      <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;">
+        <a href="index.html" class="nav-logo" style="color: #4a90e2; font-size: 1.6rem; font-weight: 700; text-decoration: none; letter-spacing: -0.5px;">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
           
           <li class="nav-dropdown">
             <a href="#" onclick="switchView('main-view')" style="color: #4a90e2 !important; font-weight: 700;">아빠</a>
-            <div class="dropdown-content" id="dad-admin-menu" style="display: none;">
+            <div class="dropdown-content" id="dad-admin-menu">
               <a href="#" onclick="switchView('write-view')">✍️ 매거진 새 글 발행</a>
               <a href="blog.html">🔒 가족 비밀 일기장</a>
             </div>
@@ -112,91 +133,103 @@
     <div id="main-view" class="view-section active">
       
       <div class="page-header">
-        <h1>아빠의 라운지 & 꿀팁</h1>
-        <p>잠시 쉬어가며 게임 트레일러를 감상하고, 유용한 베트남 로컬 꿀팁도 확인하세요.</p>
+        <h1>아빠의 라운지 & 라이프 매거진</h1>
+        <p>현지 교민 아빠가 전하는 하이퐁 꿀팁과 취미 생활, 편안하게 쉬어가세요.</p>
       </div>
 
       <div class="ad-banner">[구글 애드센스 상단 디스플레이 영역]</div>
 
       <div class="dashboard-grid">
-        
         <div class="panel">
-          <h3 class="panel-title">🎮 Today's Lounge</h3>
+          <h3 class="panel-title">🎬 Today's Lounge</h3>
           <div class="video-wrapper">
-            <iframe src="https://www.youtube.com/embed/XV4zVqb9vWc?autoplay=0&mute=0" allowfullscreen></iframe>
+            <iframe src="https://www.youtube.com/embed/b1KbLzGZsR0?autoplay=0&mute=0&rel=0" allowfullscreen></iframe>
           </div>
           <div style="text-align: right;">
-            <a href="https://www.youtube.com/watch?v=XV4zVqb9vWc" target="_blank" style="background: #f1f3f5; padding: 8px 14px; border-radius: 8px; color: #495057; text-decoration: none; font-size: 0.85rem; font-weight: 600;">📱 유튜브 앱으로 쾌적하게 보기</a>
+            <a href="https://www.youtube.com/watch?v=b1KbLzGZsR0" target="_blank" style="background: #f8f9fa; padding: 10px 18px; border-radius: 12px; color: #495057; text-decoration: none; font-size: 0.9rem; font-weight: 600; border: 1px solid #e9ecef; display: inline-block; transition: 0.2s;">📱 유튜브 앱으로 쾌적하게 시청하기</a>
           </div>
         </div>
 
         <div class="panel">
           <h3 class="panel-title">⚡ Quick Info & Deals</h3>
           
-          <a href="#" class="quick-link-item" onclick="alert('쇼피 구매 링크로 이동합니다.'); return false;">
-            <div>
-              <div style="font-size: 1rem; font-weight: 700; margin-bottom: 4px;">베트남 샤워기 녹물 필터 세트</div>
-              <div style="font-size: 0.85rem; color: #868e96;">하이퐁 교민 필수 생활템</div>
+          <a href="#" class="visual-card" onclick="alert('쇼피 구매 링크로 이동합니다.'); return false;">
+            <div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1584947936171-8bc6b2cbf3a4?auto=format&fit=crop&q=80&w=600');"></div>
+            <div class="overlay"></div>
+            <div class="content">
+              <div class="text-box">
+                <span class="title">샤워기 녹물 필터 팩</span>
+                <span class="desc">하이퐁 교민 필수 수질 대비템</span>
+              </div>
+              <span class="badge red">Shopee</span>
             </div>
-            <span class="badge-red">Shopee</span>
           </a>
 
-          <a href="#" class="quick-link-item" onclick="alert('쇼피 구매 링크로 이동합니다.'); return false;">
-            <div>
-              <div style="font-size: 1rem; font-weight: 700; margin-bottom: 4px;">자석축 래피드 트리거 키보드</div>
-              <div style="font-size: 0.85rem; color: #868e96;">액션 게임 장비 세팅 추천</div>
+          <a href="#" class="visual-card" onclick="alert('쇼피 구매 링크로 이동합니다.'); return false;">
+            <div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=600');"></div>
+            <div class="overlay"></div>
+            <div class="content">
+              <div class="text-box">
+                <span class="title">래피드 트리거 자석축</span>
+                <span class="desc">초격차 타격감 게이밍 키보드</span>
+              </div>
+              <span class="badge red">Hot Deal</span>
             </div>
-            <span class="badge-red">Hot Deal</span>
           </a>
 
-          <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+빌드" target="_blank" class="quick-link-item">
-            <div>
-              <div style="font-size: 1rem; font-weight: 700; margin-bottom: 4px;">디아블로 4 최신 60레벨 빌드</div>
-              <div style="font-size: 0.85rem; color: #868e96;">유튜브 공략 바로가기</div>
+          <a href="https://www.youtube.com/results?search_query=디아블로+4+60레벨+69포인트+빌드" target="_blank" class="visual-card">
+            <div class="bg-img" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600');"></div>
+            <div class="overlay"></div>
+            <div class="content">
+              <div class="text-box">
+                <span class="title">디아블로 4 종결 공략</span>
+                <span class="desc">60레벨 (69포인트) 최신 메타</span>
+              </div>
+              <span class="badge blue">Search</span>
             </div>
-            <span class="badge-blue">Search</span>
           </a>
         </div>
       </div>
 
-      <h2 style="font-size: 1.5rem; color: #212529; font-weight: 700; margin-bottom: 24px; padding-left: 12px; border-left: 4px solid #4a90e2;">📚 아빠의 베트남 꿀팁 노트</h2>
+      <div class="magazine-header">
+        <h2>📚 아빠의 베트남 생생 정보 노트</h2>
+      </div>
       
       <div class="magazine-grid" id="post-list-container">
-        <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: #adb5bd;">
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #adb5bd; font-size: 1.1rem;">
           클라우드에서 최신 글을 불러오는 중입니다...
         </div>
       </div>
 
-      <div class="ad-banner" style="margin-top: 40px;">[구글 애드센스 하단 멀티플렉스 영역]</div>
+      <div class="ad-banner" style="margin-top: 60px;">[구글 애드센스 하단 멀티플렉스 영역]</div>
     </div>
 
     <div id="read-view" class="view-section">
       <div class="form-container">
         <button class="btn-back" onclick="switchView('main-view')">← 라운지로 돌아가기</button>
-        <div id="read-container-box">
-          </div>
+        <div id="read-container-box"></div>
       </div>
     </div>
 
     <div id="write-view" class="view-section">
       <div class="form-container">
         <button class="btn-back" onclick="switchView('main-view')">← 작성 취소</button>
-        <h2 style="margin-top:0; color:#212529; margin-bottom: 25px;">✍️ 매거진 새 글 발행</h2>
+        <h2 style="margin-top:0; color:#111827; margin-bottom: 30px; font-size: 1.8rem;">✍️ 매거진 새 글 발행</h2>
         
         <select id="edit-category" class="input-field">
           <option value="vietnam">베트남 생활/맛집</option>
           <option value="game">게임/테크 공략</option>
         </select>
         
-        <input type="text" id="edit-title" class="input-field" placeholder="제목을 입력하세요" />
+        <input type="text" id="edit-title" class="input-field" placeholder="시선을 끄는 제목을 입력하세요" />
         
-        <label style="display:block; margin-bottom:10px; font-weight: 600; color:#495057;">대표 이미지 (목록용)</label>
-        <input type="file" id="edit-image" accept="image/*" class="input-field" style="padding: 12px;" />
-        <img id="edit-preview" src="" style="width:100%; max-height:250px; object-fit:cover; border-radius:12px; margin-bottom:20px; display:none;" />
+        <label style="display:block; margin-bottom:12px; font-weight: 600; color:#495057;">대표 이미지 (목록 썸네일)</label>
+        <input type="file" id="edit-image" accept="image/*" class="input-field" style="padding: 14px;" />
+        <img id="edit-preview" src="" style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-bottom:24px; display:none; box-shadow:0 5px 15px rgba(0,0,0,0.05);" />
         
-        <textarea id="edit-content" class="input-textarea" placeholder="여기에 본문 내용을 작성하세요. HTML 태그(<b>, <img> 등)를 사용할 수 있습니다."></textarea>
+        <textarea id="edit-content" class="input-textarea" placeholder="본문 내용을 자유롭게 작성하세요. 줄바꿈과 간단한 HTML 태그 적용이 가능합니다."></textarea>
         
-        <button id="btn-publish" class="btn-primary">클라우드 서버에 발행하기 🚀</button>
+        <button id="btn-publish" class="btn-primary">클라우드 서버에 전 세계 발행하기 🚀</button>
       </div>
     </div>
 
@@ -227,7 +260,7 @@
       window.switchView = function(viewId) {
         document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
         document.getElementById(viewId).classList.add('active');
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         if(viewId === 'main-view') fetchPosts(); 
       };
 
@@ -238,7 +271,7 @@
           const snapshot = await getDocs(q);
           
           if(snapshot.empty) {
-            listContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #adb5bd; padding: 40px;">아직 발행된 글이 없습니다. 위 메뉴에서 새 글을 작성해 보세요!</div>';
+            listContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #adb5bd; padding: 40px; border: 1px dashed #ced4da; border-radius: 20px;">아직 발행된 글이 없습니다. 위 메뉴에서 새 글을 작성해 보세요!</div>';
             return;
           }
 
@@ -257,13 +290,13 @@
           });
           listContainer.innerHTML = htmlBuffer;
         } catch(e) {
-          listContainer.innerHTML = '<div style="color:#e03131; text-align:center; grid-column:1/-1;">데이터를 불러오지 못했습니다.</div>';
+          listContainer.innerHTML = '<div style="color:#e03131; text-align:center; grid-column:1/-1;">서버 통신 지연. 새로고침을 해주세요.</div>';
         }
       }
 
       window.openPost = async function(docId) {
         const readBox = document.getElementById('read-container-box');
-        readBox.innerHTML = '<div style="text-align:center; color:#868e96;">데이터를 불러오는 중...</div>';
+        readBox.innerHTML = '<div style="text-align:center; padding: 50px; color:#868e96;">안전하게 데이터를 불러오는 중...</div>';
         window.switchView('read-view');
 
         try {
@@ -273,18 +306,18 @@
           if (docSnap.exists()) {
             const data = docSnap.data();
             readBox.innerHTML = `
-              <h1 style="font-size: 2.2rem; margin-top: 0; margin-bottom: 15px; color:#212529;">${data.title}</h1>
-              <div style="color: #868e96; border-bottom: 1px solid #f1f3f5; padding-bottom: 15px; margin-bottom: 30px; font-size:0.95rem;">
-                <span style="font-weight:600;">작성자: 아빠</span> &nbsp;|&nbsp; <span>${data.date}</span>
+              <h1 style="font-size: 2.4rem; margin-top: 0; margin-bottom: 20px; color:#111827; letter-spacing: -0.5px;">${data.title}</h1>
+              <div style="color: #6b7280; border-bottom: 1px solid #f1f3f5; padding-bottom: 20px; margin-bottom: 35px; font-size:1rem; display: flex; gap: 15px;">
+                <span style="font-weight:700; color:#4a90e2;">By 아빠</span> <span>|</span> <span>${data.date}</span>
               </div>
-              ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:16px; margin-bottom:30px; box-shadow:0 5px 15px rgba(0,0,0,0.05);">` : ''}
-              <div class="ad-banner" style="margin-bottom: 30px;">[구글 애드센스 본문 상단 광고]</div>
-              <div style="font-size: 1.1rem; line-height: 1.8; color: #495057;">${data.content}</div>
-              <div class="ad-banner" style="margin-top: 50px;">[구글 애드센스 본문 하단 광고]</div>
+              ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:20px; margin-bottom:40px; box-shadow:0 10px 30px rgba(0,0,0,0.08);">` : ''}
+              <div class="ad-banner" style="margin-bottom: 40px; border-radius: 16px;">[구글 애드센스 본문 상단 광고]</div>
+              <div style="font-size: 1.15rem; line-height: 1.9; color: #374151; white-space: pre-wrap;">${data.content}</div>
+              <div class="ad-banner" style="margin-top: 60px; border-radius: 16px;">[구글 애드센스 본문 하단 광고]</div>
             `;
           }
         } catch(e) {
-          readBox.innerHTML = '글을 불러올 수 없습니다.';
+          readBox.innerHTML = '글을 불러올 수 없습니다. 네트워크를 확인해주세요.';
         }
       };
 
@@ -336,7 +369,7 @@
         } catch(e) {
           alert('발행 실패: ' + e.message);
         } finally {
-          this.innerText = "클라우드 서버에 발행하기 🚀"; this.disabled = false;
+          this.innerText = "클라우드 서버에 전 세계 발행하기 🚀"; this.disabled = false;
         }
       };
 
