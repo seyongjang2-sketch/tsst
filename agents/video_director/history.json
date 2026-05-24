@@ -1,0 +1,22 @@
+[
+  {
+    "task": "A gorgeous cinematic close-up of a white kitten sitting on a green velvet cushion in warm sunlight",
+    "mode": "t2i",
+    "prompt": "Cinematic close-up, highly detailed, photorealistic shot of a fluffy white kitten sitting gracefully on an emerald green velvet cushion. The kitten is looking directly at the camera with wide, curious eyes. The setting is bathed in warm, golden hour sunlight, creating strong rim lighting and soft shadows. Focus on the intricate texture of the velvet and the soft, perfect fur of the kitten. Composition uses a shallow depth of field (bokeh effect) to blur the background, making the kitten and cushion pop. Shot on a prime lens (85mm), hyper-detailed, volumetric lighting, film grain, cinematic grade, award-winning nature photography.",
+    "seed": 74830573,
+    "image": null,
+    "audio": null,
+    "output_file": "D:\\가족\\output\\z-image-turbo_00002_.png",
+    "evaluation": "**의도 부합성:** 10/10\n**모션/화질 자연스러움:** 9.5/10\n**연출:** 10/10\n\n**총평:** 프롬프트가 요구한 골든아워의 분위기와 벨벳의 질감 표현, 아웃포커싱 처리가 극도로 훌륭하게 구현된 최고 수준의 결과물입니다."
+  },
+  {
+    "task": "A cinematic slow tracking shot of a steaming hot coffee cup on a rainy cafe table",
+    "mode": "t2v",
+    "prompt": "A slow, cinematic dolly shot tracks across a rustic cafe table on a rainy day, focusing on a steaming, dark coffee cup. The warm steam rises softly, catching the diffused, cool window light. As the camera glides past, raindrops streak across the condensation-covered window behind the cup, making subtle, distorting patterns of light. The steam gently dissipates into the cool, damp air, and the shot holds steady on the vibrant contrast between the cozy warmth of the coffee and the melancholic motion of the downpour outside.",
+    "seed": 33066754,
+    "image": null,
+    "audio": null,
+    "output_file": "D:\\가족\\output\\LTX-2.3_00015_.mp4",
+    "evaluation": "**의도 부합성:** 9/10\n**모션/화질 자연스러움:** 8/10\n**연출:** 9/10\n\n**총평:** 전반적으로 높은 수준의 시네마틱 분위기를 성공적으로 구현했으며, 따뜻함과 차가움의 대비를 통해 요청한 우울하면서도 아늑한 무드를 훌륭하게 잡아냈습니다. 트래킹 샷 자체는 안정적이나, 증기(steam)의 물리적 움직임 표현에서 미세한 부자연함이 느껴지는 부분이 다음 작업 시 보완되면 완벽할 것입니다."
+  }
+]
