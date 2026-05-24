@@ -604,7 +604,13 @@
         <a href="index.html" class="nav-logo">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
-          <li><a href="dad.html">아빠</a></li>
+          <li class="nav-dropdown">
+            <a href="dad.html">아빠</a>
+            <div class="dropdown-content">
+              <a href="dad.html#write-view">✍️ 매거진 새 글 발행</a>
+              <a href="blog.html">🔒 가족 비밀 일기장</a>
+            </div>
+          </li>
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
           <li><a href="stars.html">🌠 별 보기</a></li>
@@ -730,22 +736,6 @@
       <h3>🎉 축하합니다!</h3>
       <p>오늘의 모든 힐링 루틴을 달성하셨어요! 스스로를 위해 활짝 핀 꽃 한 다발을 드려요. 🌸</p>
       <button class="congrats-close-btn" onclick="closeCongrats()">참 잘했어요 💗</button>
-    </div>
-
-
-
-    <!-- 로그인 모달 (index.html과 100% 동일하여 auth.js 정상 연동) -->
-    <div id="login-modal-overlay" class="modal-overlay">
-      <div class="login-modal">
-        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
-        <h2>가족 로그인</h2>
-        <p>우리 가족 시크릿 아지트 입장</p>
-        <div class="modal-input-group">
-          <input type="password" id="modal-p-input" class="modal-input" placeholder="비밀번호" onkeypress="if(event.key==='Enter') handleModalLogin()">
-          <span id="modal-toggle-btn" class="modal-toggle-view" onclick="toggleModalPassword()">👁️</span>
-        </div>
-        <button onclick="handleModalLogin()" class="modal-login-btn">입장하기</button>
-      </div>
     </div>
 
     <!-- javascript 로직 작성 -->

@@ -1266,20 +1266,18 @@
         <a href="index.html" class="nav-logo">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
-          
           <li class="nav-dropdown">
-            <a href="#" onclick="switchView('main-view')" style="color: var(--primary-color) !important; font-weight: 800;">아빠</a>
-            <div class="dropdown-content" id="dad-admin-menu">
-              <a href="#" onclick="switchView('write-view')">✍️ 매거진 새 글 발행</a>
+            <a href="dad.html">아빠</a>
+            <div class="dropdown-content">
+              <a href="dad.html#write-view">✍️ 매거진 새 글 발행</a>
               <a href="blog.html">🔒 가족 비밀 일기장</a>
             </div>
           </li>
-          
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
           <li><a href="stars.html">🌠 별 보기</a></li>
           <li><a href="blog.html">일기장</a></li>
-          <li><a href="#" onclick="logout()" class="logout-btn">로그아웃</a></li>
+          <li id="nav-auth-link"></li>
         </ul>
       </div>
     </nav>
@@ -2314,8 +2312,33 @@
         }
       };
 
+      function initNavbarSPA() {
+        document.querySelectorAll('.navbar a').forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === 'dad.html') {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              window.switchView('main-view');
+              window.location.hash = '';
+            });
+          } else if (href === 'dad.html#write-view') {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              window.switchView('write-view');
+              window.location.hash = 'write-view';
+            });
+          }
+        });
+        
+        // Initial view check on load based on hash
+        if (window.location.hash === '#write-view') {
+          window.switchView('write-view');
+        }
+      }
+
       window.onload = function() {
         fetchPosts();
+        initNavbarSPA();
         if (typeof switchCategory === 'function') {
           switchCategory('finance');
         }
@@ -2330,6 +2353,7 @@
       // Immediate initialization in case onload has already fired
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
         fetchPosts();
+        initNavbarSPA();
         if (typeof switchCategory === 'function') {
           switchCategory('finance');
         }

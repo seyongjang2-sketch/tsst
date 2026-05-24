@@ -169,6 +169,8 @@
         .hud-btn:hover { background: rgba(0, 255, 255, 0.35); box-shadow: 0 0 12px rgba(0,255,255,0.5); color: #fff; }
         .hud-btn.active { background: rgba(255, 0, 127, 0.25); border-color: #ff007f; color: #ff007f; box-shadow: 0 0 12px rgba(255,0,127,0.4); }
     </style>
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
     <script type="importmap">
         { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
     </script>
@@ -180,11 +182,18 @@
         <a href="index.html" class="nav-logo">FamilySpace</a>
         <ul class="nav-links">
           <li><a href="index.html">홈</a></li>
-          <li><a href="dad.html">아빠</a></li>
+          <li class="nav-dropdown">
+            <a href="dad.html">아빠</a>
+            <div class="dropdown-content">
+              <a href="dad.html#write-view">✍️ 매거진 새 글 발행</a>
+              <a href="blog.html">🔒 가족 비밀 일기장</a>
+            </div>
+          </li>
           <li><a href="mom.html">엄마</a></li>
           <li><a href="baby.html">아기</a></li>
-          <li><a href="stars.html" style="color: #00ffff !important; font-weight: 800; text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);">🌠 별 보기</a></li>
+          <li><a href="stars.html">🌠 별 보기</a></li>
           <li><a href="blog.html">일기장</a></li>
+          <li id="nav-auth-link"></li>
         </ul>
       </div>
     </nav>

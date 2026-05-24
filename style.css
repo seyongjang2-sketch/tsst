@@ -102,6 +102,25 @@ body.blog-page { background: #ffffff; }
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
+/* Active Nav Links */
+.nav-links a.active {
+  color: var(--primary-color) !important;
+  font-weight: 700 !important;
+}
+.stars-page .nav-links a.active {
+  color: #00ffff !important;
+  text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+}
+.mom-page .nav-links a.active {
+  color: var(--mom-color) !important;
+}
+.dad-page .nav-links a.active {
+  color: #4a90e2 !important;
+}
+.baby-page .nav-links a.active {
+  color: var(--baby-color) !important;
+}
+
 /* Main Wrapper */
 .main-wrapper { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
 
