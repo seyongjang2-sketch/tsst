@@ -156,7 +156,7 @@
           #main-view {
               max-width: 1380px !important;
               padding-left: 0 !important;
-              padding-right: 210px !important;
+              padding-right: 0 !important; /* Removed right padding to allow ads and content to center */
               padding-top: 80px !important; /* Raised cards and content further by double amount */
               position: relative !important;
           }
@@ -213,7 +213,10 @@
               margin: 0 !important;
           }
           .card-stack-container {
-              padding-left: 210px !important; /* Balanced with padding-right of #main-view */
+              padding-left: 0 !important; /* Removed padding-left to center-align the cards */
+          }
+          .dad-dashboard-container {
+              padding-right: 210px !important; /* Shuffled to avoid overlapping with right widgets */
           }
           .category-header-wrapper {
               position: fixed;
