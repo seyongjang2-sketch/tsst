@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>우리 가족 놀이터 - FamilySpace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+  </head>
+  <body class="home-page">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="dad.html">아빠</a></li>
+          <li><a href="mom.html">엄마</a></li>
+          <li><a href="baby.html">아기</a></li>
+          <li><a href="stars.html">🌠 별 보기</a></li>
+          <li><a href="blog.html">일기장</a></li>
+          <li id="nav-auth-link"></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <header style="text-align: center; margin-bottom: 50px;">
+        <h1>우리 가족 놀이터</h1>
+        <p style="color: #666;">베트남에서 피어나는 행복한 우리 가족만의 공간</p>
+      </header>
+
+      <div class="gateway-container">
+        <a href="dad.html" class="gateway-card">
+          <div class="card-image-bg" style="background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=800');"></div>
+          <div class="card-overlay"></div>
+          <div class="card-content">
+            <h2>아빠의 공간</h2>
+            <div class="btn-enter">입장하기</div>
+          </div>
+        </a>
+
+        <a href="mom.html" class="gateway-card">
+          <div class="card-image-bg" style="background-image: url('https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800');"></div>
+          <div class="card-overlay"></div>
+          <div class="card-content">
+            <h2>엄마의 공간</h2>
+            <div class="btn-enter">입장하기</div>
+          </div>
+        </a>
+
+        <a href="baby.html" class="gateway-card">
+          <div class="card-image-bg" style="background-image: url('https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&q=80&w=800');"></div>
+          <div class="card-overlay"></div>
+          <div class="card-content">
+            <h2>아기의 공간</h2>
+            <div class="btn-enter">입장하기</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
+      </div>
+    </footer>
+    <script src="main.js"></script>
+    <div id="login-modal-overlay" class="modal-overlay">
+      <div class="login-modal">
+        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+        <h2>가족 로그인</h2>
+        <p>우리 가족 시크릿 아지트 입장</p>
+        <div class="modal-input-group">
+          <input type="password" id="modal-p-input" class="modal-input" placeholder="비밀번호" onkeypress="if(event.key==='Enter') handleModalLogin()">
+          <span id="modal-toggle-btn" class="modal-toggle-view" onclick="toggleModalPassword()">👁️</span>
+        </div>
+        <button onclick="handleModalLogin()" class="modal-login-btn">입장하기</button>
+      </div>
+    </div>
+  </body>
+</html>

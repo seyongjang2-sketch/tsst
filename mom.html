@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>엄마의 힐링 공간 - FamilySpace</title>
+    <!-- Google Fonts 탑재 (인덱스 페이지와 동일한 폰트 우선 적용 및 감성 폰트 매치) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+    <style>
+      /* --- 프리미엄 엄마 대시보드 테마 변수 --- */
+      :root {
+        --peach-glow: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+        --rose-gold-gradient: linear-gradient(135deg, #e5a99e 0%, #c88e82 100%);
+        --glass-bg: rgba(255, 255, 255, 0.75);
+        --glass-border: rgba(255, 255, 255, 0.6);
+        --text-rose: #8a5a50;
+        --text-charcoal: #2f3542;
+        --shadow-soft: 0 10px 30px rgba(229, 169, 158, 0.15);
+        --shadow-strong: 0 15px 35px rgba(229, 169, 158, 0.25);
+      }
+
+      body.mom-page {
+        background: linear-gradient(135deg, #fff3f3 0%, #ffe8d6 50%, #fff0e6 100%);
+        background-attachment: fixed;
+        font-family: 'Noto Sans KR', 'Montserrat', sans-serif;
+        color: var(--text-charcoal);
+        padding-top: 90px;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* --- 네비게이터 정렬 및 스타일 보정 --- */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      /* --- 헤더 스타일 --- */
+      .mom-header {
+        text-align: center;
+        margin-bottom: 45px;
+        position: relative;
+      }
+      .mom-header h1 {
+        font-family: 'Playfair Display', 'Noto Sans KR', serif;
+        font-size: 2.8rem;
+        font-weight: 700;
+        background: linear-gradient(120deg, #d35400, #ff7a60, #d35400);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+        display: inline-block;
+        position: relative;
+      }
+      .mom-header p {
+        font-size: 1.1rem;
+        color: var(--text-rose);
+        font-weight: 300;
+        letter-spacing: 0.5px;
+      }
+
+      /* --- 글래스모피즘 컨테이너 --- */
+      .mom-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 30px;
+        margin-bottom: 50px;
+      }
+
+      @media (max-width: 992px) {
+        .dashboard-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* --- 공통 글래스모피즘 카드 --- */
+      .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 30px;
+        box-shadow: var(--shadow-soft);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-strong);
+      }
+      .card-title {
+        font-size: 1.4rem;
+        color: var(--text-rose);
+        margin-bottom: 20px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px dashed rgba(229, 169, 158, 0.3);
+        padding-bottom: 10px;
+      }
+
+      /* --- 1. 요리 추천 룰렛 스타일 --- */
+      .roulette-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        margin: 20px 0;
+      }
+      .roulette-wrapper {
+        position: relative;
+        width: 290px;
+        height: 290px;
+      }
+      #roulette-canvas {
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        box-shadow: 0 10px 25px rgba(229, 169, 158, 0.2);
+        background-color: #fff;
+      }
+      /* 지시 화살표 */
+      .roulette-arrow {
+        position: absolute;
+        top: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 35px;
+        z-index: 10;
+        filter: drop-shadow(0 3px 5px rgba(0,0,0,0.15));
+      }
+      .roulette-arrow::before {
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 25px solid #ff7a60;
+      }
+
+      .spin-btn {
+        margin-top: 25px;
+        padding: 12px 35px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(135deg, #ff7a60 0%, #ff9a9e 100%);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(255, 122, 96, 0.4);
+        transition: all 0.3s ease;
+      }
+      .spin-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(255, 122, 96, 0.6);
+      }
+      .spin-btn:active {
+        transform: scale(0.98);
+      }
+
+      /* 룰렛 당첨 결과 카드 */
+      .roulette-result-card {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        width: 100%;
+        text-align: center;
+        border: 1px solid rgba(229, 169, 158, 0.2);
+        display: none;
+        animation: fadeIn 0.5s ease forwards;
+      }
+      .result-food-name {
+        font-size: 1.3rem;
+        color: #d35400;
+        font-weight: 700;
+        margin: 5px 0;
+      }
+      .recipe-link-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 25px;
+        font-size: 0.95rem;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(135deg, #ff7a60 0%, #d35400 100%);
+        border: none;
+        border-radius: 30px;
+        text-decoration: none;
+        box-shadow: 0 4px 10px rgba(211, 84, 0, 0.25);
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .recipe-link-btn:hover {
+        transform: scale(1.03);
+        box-shadow: 0 6px 15px rgba(211, 84, 0, 0.4);
+      }
+
+
+
+      /* --- 힐링 사운드 검색 스타일 --- */
+      .music-search-container {
+        display: flex;
+        flex-direction: column;
+      }
+      .recommend-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 5px;
+      }
+      .recommend-tag {
+        font-size: 0.85rem;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(229, 169, 158, 0.3);
+        border-radius: 12px;
+        padding: 5px 12px;
+        color: var(--text-rose);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .recommend-tag:hover {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        color: white;
+        border-color: transparent;
+        transform: translateY(-2px);
+      }
+
+      /* --- 2. 데일리 루틴 트래커 스타일 --- */
+      .tracker-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        margin-bottom: 25px;
+        background: rgba(255, 255, 255, 0.4);
+        padding: 15px;
+        border-radius: 20px;
+      }
+      .circle-progress-container {
+        position: relative;
+        width: 110px;
+        height: 110px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .circle-svg {
+        transform: rotate(-90deg);
+        width: 110px;
+        height: 110px;
+      }
+      .circle-text {
+        position: absolute;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-rose);
+        font-family: 'Montserrat', sans-serif;
+      }
+      .tracker-stats-text {
+        text-align: left;
+      }
+      .tracker-stats-text h4 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        color: var(--text-rose);
+      }
+      .tracker-stats-text p {
+        font-size: 0.85rem;
+        color: #7f8c8d;
+      }
+
+      .routine-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .routine-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 18px;
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255,255,255,0.7);
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      .routine-item:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateX(3px);
+      }
+      .routine-item.completed {
+        background: rgba(254, 207, 239, 0.2);
+        border-color: rgba(255, 154, 158, 0.2);
+      }
+      .routine-checkbox {
+        width: 22px;
+        height: 22px;
+        border: 2px solid #e5a99e;
+        border-radius: 50%;
+        margin-right: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s;
+        background: white;
+      }
+      .routine-item.completed .routine-checkbox {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        border-color: transparent;
+      }
+      .routine-checkbox::after {
+        content: '✓';
+        color: white;
+        font-size: 0.85rem;
+        display: none;
+      }
+      .routine-item.completed .routine-checkbox::after {
+        display: block;
+      }
+      .routine-label {
+        font-size: 0.95rem;
+        color: var(--text-charcoal);
+        transition: all 0.3s;
+        flex-grow: 1;
+      }
+      .routine-item.completed .routine-label {
+        text-decoration: line-through;
+        color: #a4b0be;
+      }
+      .routine-badge {
+        font-size: 0.75rem;
+        background: rgba(229, 169, 158, 0.25);
+        color: var(--text-rose);
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      /* --- 3. 마트 장보기 리스트 스타일 --- */
+      .mart-tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 15px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+      }
+      .tab-btn {
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        color: var(--text-charcoal);
+        transition: all 0.3s;
+        white-space: nowrap;
+        font-weight: 500;
+      }
+      .tab-btn.active {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 4px 10px rgba(255, 154, 158, 0.3);
+      }
+
+      .todo-input-group {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 20px;
+      }
+      .todo-input {
+        flex: 1;
+        padding: 12px 18px;
+        border: 1px solid rgba(229, 169, 158, 0.3);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 0.95rem;
+        outline: none;
+        transition: border 0.3s;
+      }
+      .todo-input:focus {
+        border-color: #ff9a9e;
+      }
+      .todo-add-btn {
+        background: linear-gradient(135deg, #ff9a9e 0%, #e5a99e 100%);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        width: 48px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.2s;
+      }
+      .todo-add-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .todo-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 280px;
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+      .todo-list::-webkit-scrollbar {
+        width: 5px;
+      }
+      .todo-list::-webkit-scrollbar-thumb {
+        background: rgba(229, 169, 158, 0.4);
+        border-radius: 10px;
+      }
+      .todo-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(229,169,158,0.1);
+        animation: slideIn 0.3s ease forwards;
+      }
+      .todo-item-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        flex: 1;
+      }
+      .todo-checkbox {
+        width: 18px;
+        height: 18px;
+        border: 2px solid #e5a99e;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+      }
+      .todo-item.completed .todo-checkbox {
+        background: #e5a99e;
+        border-color: transparent;
+      }
+      .todo-checkbox::after {
+        content: '✓';
+        color: white;
+        font-size: 0.75rem;
+        display: none;
+      }
+      .todo-item.completed .todo-checkbox::after {
+        display: block;
+      }
+      .todo-text {
+        font-size: 0.95rem;
+        color: var(--text-charcoal);
+        transition: all 0.3s;
+      }
+      .todo-item.completed .todo-text {
+        text-decoration: line-through;
+        color: #a4b0be;
+      }
+      .todo-mart-tag {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        border-radius: 6px;
+        color: white;
+        background: #c88e82;
+        margin-left: 8px;
+        font-weight: 500;
+      }
+      .todo-delete-btn {
+        background: none;
+        border: none;
+        color: #ff4757;
+        font-size: 1.1rem;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.2s;
+        padding: 0 5px;
+      }
+      .todo-delete-btn:hover {
+        opacity: 1;
+      }
+
+      /* --- 감사 모달 / 달성 팝업 --- */
+      .congrats-popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        background: rgba(255, 255, 255, 0.95);
+        border: 2px solid #e5a99e;
+        border-radius: 24px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        z-index: 10001;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        backdrop-filter: blur(10px);
+        max-width: 320px;
+      }
+      .congrats-popup.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      .congrats-popup h3 {
+        font-size: 1.5rem;
+        color: #d35400;
+        margin-bottom: 10px;
+      }
+      .congrats-popup p {
+        font-size: 0.95rem;
+        color: var(--text-rose);
+        margin-bottom: 20px;
+      }
+      .congrats-close-btn {
+        background: linear-gradient(135deg, #ff9a9e 0%, #e5a99e 100%);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 8px 25px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      /* --- 하단 일기 버튼 --- */
+      .bottom-action-container {
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 50px;
+      }
+      .btn-write-diary {
+        display: inline-block;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: white;
+        background: linear-gradient(135deg, #ff7a60 0%, #d35400 100%);
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 0 8px 20px rgba(211, 84, 0, 0.3);
+        transition: all 0.3s;
+      }
+      .btn-write-diary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 25px rgba(211, 84, 0, 0.5);
+      }
+
+      /* --- 벚꽃 파티클 스타일 --- */
+      .petal {
+        position: fixed;
+        top: -20px;
+        border-radius: 150% 0 150% 50% / 150% 0 150% 50%;
+        pointer-events: none;
+        z-index: 9999;
+        animation: fall linear forwards;
+      }
+
+      @keyframes fall {
+        0% {
+          transform: translateY(0) rotate(0deg) translateX(0);
+          opacity: 1;
+        }
+        50% {
+          transform: translateY(50vh) rotate(180deg) translateX(50px);
+          opacity: 0.8;
+        }
+        100% {
+          transform: translateY(105vh) rotate(360deg) translateX(-50px);
+          opacity: 0;
+        }
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-10px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+    </style>
+  </head>
+  <body class="mom-page">
+    <!-- 네비게이터 바 (index.html과 100% 일치시킴) -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="index.html">홈</a></li>
+          <li><a href="dad.html">아빠</a></li>
+          <li><a href="mom.html">엄마</a></li>
+          <li><a href="baby.html">아기</a></li>
+          <li><a href="stars.html">🌠 별 보기</a></li>
+          <li><a href="blog.html">일기장</a></li>
+          <li id="nav-auth-link"></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-wrapper mom-container">
+      <!-- 감성 대시보드 헤더 -->
+      <header class="mom-header">
+        <h1>엄마의 힐링 공간 🌸</h1>
+        <p>오늘 하루 나만을 위한 시간과 온가족 사랑 채우기 (Góc của Mẹ)</p>
+      </header>
+
+      <!-- 2단 그리드 대시보드 구조 -->
+      <div class="dashboard-grid">
+        <!-- 왼쪽 열: 룰렛과 힐링 비디오 검색 -->
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+          <!-- 요리 추천 룰렛 카드 -->
+          <div class="glass-card">
+            <h3 class="card-title">🍽️ 오늘 뭐 먹지? 요리 룰렛</h3>
+            <p style="font-size: 0.9rem; color: var(--text-rose); text-align: center; margin-bottom: 10px;">
+              한베 가족의 입맛에 딱 맞춘 요리를 추천합니다!
+              <button onclick="refreshRouletteMenu()" style="background: none; border: none; color: #ff7a60; cursor: pointer; font-size: 0.85rem; text-decoration: underline; margin-left: 8px; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#d35400'" onmouseout="this.style.color='#ff7a60'">새로운 라인업 🔄</button>
+            </p>
+            <div class="roulette-container">
+              <div class="roulette-wrapper">
+                <div class="roulette-arrow"></div>
+                <canvas id="roulette-canvas" width="280" height="280"></canvas>
+              </div>
+              <button class="spin-btn" onclick="spinWheel()">추천받기 ✨</button>
+              
+              <!-- 룰렛 결과 노출부 -->
+              <div id="roulette-result" class="roulette-result-card">
+                <div>오늘의 당첨 메뉴는...</div>
+                <div id="result-food" class="result-food-name">음식명</div>
+                <div id="result-desc" style="font-size: 0.85rem; color: #7f8c8d;">한베 가족 추천 코멘트</div>
+                <button id="result-recipe-btn" class="recipe-link-btn" onclick="openRecipeSearchPopup()">레시피 검색 결과 보기 🎥</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 나만의 힐링 사운드 검색 카드 -->
+          <div class="glass-card">
+            <h3 class="card-title">🎵 나만의 힐링 사운드 검색</h3>
+            <p style="font-size: 0.95rem; margin-bottom: 15px; color: var(--text-rose);">원하는 음악이나 자연 소리를 키워드로 검색하여 미니 창 안에서 편안하게 감상해보세요.</p>
+            <div class="music-search-container">
+              <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                <input type="text" id="music-search-input" class="todo-input" placeholder="예: 조용한 피아노, 빗소리 ASMR..." onkeypress="if(event.key==='Enter') searchMusic()">
+                <button class="spin-btn" style="margin-top: 0; padding: 0 20px; border-radius: 15px; background: linear-gradient(135deg, #ff9a9e 0%, #e5a99e 100%);" onclick="searchMusic()">검색 🔍</button>
+              </div>
+              <div class="recommend-tags">
+                <span class="recommend-tag" onclick="searchMusic('베트남 카페 음악')">#베트남 카페 음악 ☕</span>
+                <span class="recommend-tag" onclick="searchMusic('잔잔한 피아노 음악')">#잔잔한 피아노 🎹</span>
+                <span class="recommend-tag" onclick="searchMusic('빗소리 ASMR 공부 수면')">#자연의 빗소리 🌧️</span>
+                <span class="recommend-tag" onclick="searchMusic('재즈 보사노바')">#재즈 보사노바 🎷</span>
+                <span class="recommend-tag" onclick="searchMusic('감성 클래식 음악')">#감성 클래식 🎻</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 오른쪽 열: 데일리 트래커와 마트 리스트 -->
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+          <!-- 데일리 루틴 트래커 카드 -->
+          <div class="glass-card">
+            <h3 class="card-title">🌸 오늘의 힐링 루틴</h3>
+            
+            <div class="tracker-header">
+              <div class="circle-progress-container">
+                <svg class="circle-svg">
+                  <circle class="circle-bg" cx="55" cy="55" r="45" stroke="#fcebe6" stroke-width="8" fill="transparent"/>
+                  <circle id="routine-progress-bar" cx="55" cy="55" r="45" stroke="#ff9a9e" stroke-width="8" fill="transparent"
+                          stroke-linecap="round" style="transition: stroke-dashoffset 0.5s ease;"/>
+                </svg>
+                <div class="circle-text"><span id="progress-percent">0</span>%</div>
+              </div>
+              <div class="tracker-stats-text">
+                <h4 id="tracker-status-title">포근한 시작 🌱</h4>
+                <p>남은 루틴: <span id="remaining-count">5</span>개</p>
+              </div>
+            </div>
+
+            <ul class="routine-list" id="routine-list-container">
+              <!-- JS에서 생성 -->
+            </ul>
+          </div>
+
+          <!-- 마트 장보기 메모장 카드 -->
+          <div class="glass-card">
+            <h3 class="card-title">🛒 마트 장보기 메모장</h3>
+            
+            <div class="mart-tabs">
+              <button class="tab-btn active" onclick="filterMart('all')">전체</button>
+              <button class="tab-btn" onclick="filterMart('WinMart')">WinMart</button>
+              <button class="tab-btn" onclick="filterMart('Lotte Mart')">Lotte Mart</button>
+              <button class="tab-btn" onclick="filterMart('K-Market')">K-Market</button>
+              <button class="tab-btn" onclick="filterMart('기타')">기타</button>
+            </div>
+
+            <div class="todo-input-group">
+              <input type="text" id="todo-input" class="todo-input" placeholder="필요한 품목을 적어보세요..." onkeypress="if(event.key==='Enter') addTodo()">
+              <button class="todo-add-btn" onclick="addTodo()">+</button>
+            </div>
+
+            <ul id="todo-list" class="todo-list">
+              <!-- 장보기 리스트 동적 렌더링 -->
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 하단 일기장 작성 바로가기 -->
+      <div class="bottom-action-container">
+        <a href="blog.html" class="btn-write-diary">✍️ 오늘 하루, 감사 일기 남기기</a>
+      </div>
+    </div>
+
+    <!-- 100% 달성 축하 팝업 -->
+    <div id="congrats-popup" class="congrats-popup">
+      <h3>🎉 축하합니다!</h3>
+      <p>오늘의 모든 힐링 루틴을 달성하셨어요! 스스로를 위해 활짝 핀 꽃 한 다발을 드려요. 🌸</p>
+      <button class="congrats-close-btn" onclick="closeCongrats()">참 잘했어요 💗</button>
+    </div>
+
+
+
+    <!-- 로그인 모달 (index.html과 100% 동일하여 auth.js 정상 연동) -->
+    <div id="login-modal-overlay" class="modal-overlay">
+      <div class="login-modal">
+        <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+        <h2>가족 로그인</h2>
+        <p>우리 가족 시크릿 아지트 입장</p>
+        <div class="modal-input-group">
+          <input type="password" id="modal-p-input" class="modal-input" placeholder="비밀번호" onkeypress="if(event.key==='Enter') handleModalLogin()">
+          <span id="modal-toggle-btn" class="modal-toggle-view" onclick="toggleModalPassword()">👁️</span>
+        </div>
+        <button onclick="handleModalLogin()" class="modal-login-btn">입장하기</button>
+      </div>
+    </div>
+
+    <!-- javascript 로직 작성 -->
+    <script>
+      // ==========================================
+      // 1. 요리 추천 룰렛 로직
+      // ==========================================
+      const canvas = document.getElementById('roulette-canvas');
+      const ctx = canvas.getContext('2d');
+      
+      const ALL_FOOD_POOL = [
+        // 베트남 요리
+        { name: '쌀국수', sub: 'Phở', desc: '따뜻한 국물로 몸과 마음을 사르르 녹여주는 베트남 대표 요리 🍲' },
+        { name: '분짜', sub: 'Bún chả', desc: '새콤달콤 느억맘 소스에 숯불 돼지고기와 생면을 적셔 먹는 별미 🥓' },
+        { name: '반미', sub: 'Bánh mì', desc: '바삭한 바게트 빵에 신선한 야채와 고기를 가득 담은 간편 별미 🥖' },
+        { name: '월남쌈', sub: 'Gỏi cuốn', desc: '시원하고 신선한 라이스페이퍼 쌈에 알록달록 채소를 한 가득 🌯' },
+        { name: '반쎄오', sub: 'Bánh xèo', desc: '바삭한 쌀가루 반죽에 숙주와 고기, 해산물을 얹어 싸 먹는 베트남식 부침개 🍳' },
+        { name: '분보후에', sub: 'Bún bò Huế', desc: '매콤하고 진한 소고기 육수에 굵은 면을 넣어 먹는 후에 지방의 쌀국수 🍜' },
+        { name: '껌떵', sub: 'Cơm tấm', desc: '숯불 양념 돼지갈비를 얹은 베트남식 대중적인 덮밥 🍛' },
+        { name: '짜조', sub: 'Chả giò', desc: '바삭하게 튀겨내어 겉바속촉의 정석을 보여주는 베트남식 만두 🥟' },
+        { name: '보루락', sub: 'Bò lúc lắc', desc: '달콤 짭조름하게 볶아낸 베트남식 소고기 찹스테이크 🥩' },
+        { name: '반꾸온', sub: 'Bánh cuốn', desc: '얇고 부드러운 쌀피 안에 고기와 버섯을 넣어 쪄낸 아침 별미 🍥' },
+        
+        // 한국 요리
+        { name: '김치찌개', sub: 'Canh Kimchi', desc: '한국인의 소울푸드, 푹 익은 김치와 돼지고기가 어우러진 깊은 맛 🍲' },
+        { name: '비빔밥', sub: 'Cơm trộn', desc: '알록달록 다채로운 고명을 얹어 영양도 맛도 으뜸인 한국식 비빔밥 🍳' },
+        { name: '불고기', sub: 'Thịt nướng', desc: '달콤 짭조름한 양념으로 호불호 없이 온가족이 좋아하는 영양 만점 고기 요리 🥩' },
+        { name: '떡볶이', sub: 'Bánh gạo cay', desc: '매콤달콤한 소스로 스트레스를 싹 날려주는 추억의 국민 간식 🌶️' },
+        { name: '된장찌개', sub: 'Canh tương đậu', desc: '구수한 된장찌개에 두부와 호박을 듬뿍 넣어 한 끼 뚝딱 🍲' },
+        { name: '닭갈비', sub: 'Gà xào cay', desc: '매콤달콤 닭고기와 고구마, 양배추의 쫄깃한 조화 🍗' },
+        { name: '제육볶음', sub: 'Thịt xào cay', desc: '매콤하고 불향 가득히 볶아낸 한국식 매콤 제육볶음 🐖' },
+        { name: '삼겹살', sub: 'Ba chỉ nướng', desc: '가족이 함께 둘러앉아 구워 먹는 최고의 겹살이 파티 🥓' },
+        { name: '갈비탕', sub: 'Canh sườn bò', desc: '진한 갈비 육수로 몸보신 제대로 하는 한국식 갈비탕 🥣' },
+        { name: '잡채', sub: 'Miến trộn', desc: '쫄깃한 당면과 색색깔 채소, 소고기가 어우러진 잔치 맛 🍝' },
+        { name: '부대찌개', sub: 'Lẩu quân đội', desc: '햄과 소시지, 라면사리 듬뿍 얼큰 칼칼한 부대찌개 🥘' },
+        { name: '해물파전', sub: 'Bánh xèo HQ', desc: '해물과 파가 듬뿍 들어간 고소하고 바삭한 한국식 파전 🥞' }
+      ];
+
+      let foods = [];
+
+      function initializeRouletteMenu() {
+        // ALL_FOOD_POOL에서 무작위로 8개 무작위 셔플 후 선택
+        const shuffled = [...ALL_FOOD_POOL].sort(() => 0.5 - Math.random());
+        foods = shuffled.slice(0, 8);
+      }
+
+      function refreshRouletteMenu() {
+        if (isSpinning) return;
+        document.getElementById('roulette-result').style.display = 'none';
+        initializeRouletteMenu();
+        drawRoulette();
+        
+        canvas.style.transition = 'none';
+        canvas.style.transform = 'rotate(0deg)';
+        currentRotation = 0;
+      }
+
+      const colors = [
+        '#fff0f5', // 라벤더블러쉬
+        '#ffe5d9', // 소프트피치
+        '#ffd6ff', // 파우더핑크
+        '#ffeedd', // 크림베이지
+        '#ffcad4', // 살몬핑크
+        '#f4acb7', // 블러쉬핑크
+        '#ffc3a0', // 로즈골드골드
+        '#ffafbd'  // 피치핑크
+      ];
+
+      function drawRoulette() {
+        const numSections = foods.length;
+        const arcSize = (2 * Math.PI) / numSections;
+        const radius = canvas.width / 2;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < numSections; i++) {
+          const angle = i * arcSize;
+          ctx.fillStyle = colors[i % colors.length];
+          
+          ctx.beginPath();
+          ctx.moveTo(radius, radius);
+          ctx.arc(radius, radius, radius - 8, angle, angle + arcSize);
+          ctx.closePath();
+          ctx.fill();
+
+          // 구분선 그리기
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          // 텍스트 회전하여 그리기
+          ctx.save();
+          ctx.fillStyle = '#5c4d44';
+          ctx.font = 'bold 12px "Noto Sans KR"';
+          ctx.textAlign = 'right';
+          ctx.textBaseline = 'middle';
+          
+          ctx.translate(radius, radius);
+          ctx.rotate(angle + arcSize / 2);
+          
+          ctx.fillText(foods[i].name, radius - 25, -7);
+          
+          ctx.font = '9px "Montserrat"';
+          ctx.fillStyle = '#8a766a';
+          ctx.fillText(foods[i].sub, radius - 25, 9);
+          
+          ctx.restore();
+        }
+
+        // 중앙 로즈골드 장식 원
+        ctx.beginPath();
+        ctx.arc(radius, radius, 22, 0, 2 * Math.PI);
+        const grad = ctx.createRadialGradient(radius, radius, 2, radius, radius, 22);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.3, '#ffe5d9');
+        grad.addColorStop(1, '#e5a99e');
+        ctx.fillStyle = grad;
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        
+        // 바깥 테두리 금장 효과
+        ctx.beginPath();
+        ctx.arc(radius, radius, radius - 4, 0, 2 * Math.PI);
+        ctx.strokeStyle = '#e5a99e';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+      }
+
+      let currentRotation = 0;
+      let isSpinning = false;
+      let selectedFoodIndex = 0;
+
+      function spinWheel() {
+        if (isSpinning) return;
+        isSpinning = true;
+
+        document.getElementById('roulette-result').style.display = 'none';
+
+        selectedFoodIndex = Math.floor(Math.random() * foods.length);
+        const targetAngle = 270 - (selectedFoodIndex * 45 + 22.5); // 0~360도 사이
+        
+        const currentNormalized = currentRotation % 360;
+        let diff = targetAngle - currentNormalized;
+        if (diff <= 0) {
+          diff += 360;
+        }
+        
+        const additionalRotation = diff + (360 * 6); // 6바퀴 회전 연출
+        currentRotation += additionalRotation;
+
+        canvas.style.transition = 'transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1)';
+        canvas.style.transform = `rotate(${currentRotation}deg)`;
+
+        setTimeout(() => {
+          isSpinning = false;
+          showRouletteResult(selectedFoodIndex);
+        }, 4500);
+      }
+
+      function showRouletteResult(idx) {
+        const item = foods[idx];
+        document.getElementById('result-food').innerText = `${item.name} (${item.sub})`;
+        document.getElementById('result-desc').innerText = item.desc;
+        
+        const resultCard = document.getElementById('roulette-result');
+        resultCard.style.display = 'block';
+      }
+
+      // 레시피 검색 결과 미니 팝업창 연동 (window.open 방식)
+      function openRecipeSearchPopup() {
+        const item = foods[selectedFoodIndex];
+        const query = item.name + ' 레시피';
+        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+        window.open(url, '_blank', 'width=950,height=750,location=no,status=no,scrollbars=yes');
+      }
+
+      // 힐링 사운드 검색 및 미니 팝업창 연동 (window.open 방식)
+      function searchMusic(keyword) {
+        let query = keyword;
+        if (!query) {
+          query = document.getElementById('music-search-input').value.trim();
+        }
+        if (!query) return;
+        
+        const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+        window.open(url, '_blank', 'width=950,height=750,location=no,status=no,scrollbars=yes');
+      }
+
+      // ==========================================
+      // 2. 데일리 루틴 트래커 로직
+      // ==========================================
+      const routinesConfig = [
+        { key: 'tea', label: '☕ 아침을 여는 따뜻한 차 한 잔', badge: '힐링' },
+        { key: 'stretch', label: '🧘 굳은 몸을 깨우는 10분 스트레칭', badge: '건강' },
+        { key: 'study', label: '📖 하루 베트남어 표현 한 문장', badge: '자기계발' },
+        { key: 'hug', label: '🤗 가족들에게 먼저 따뜻한 포옹 건네기', badge: '가족사랑' },
+        { key: 'diary', label: '📝 하루 끝에 3가지 감사 감사 일기', badge: '정신건강' }
+      ];
+
+      let routineState = {
+        date: '',
+        routines: { tea: false, stretch: false, study: false, hug: false, diary: false }
+      };
+
+      function loadRoutines() {
+        const stored = localStorage.getItem('mom_routine_state');
+        const todayStr = new Date().toLocaleDateString();
+
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (parsed.date === todayStr) {
+              routineState = parsed;
+            } else {
+              routineState.date = todayStr;
+              routineState.routines = { tea: false, stretch: false, study: false, hug: false, diary: false };
+              saveRoutines();
+            }
+          } catch(e) {
+            routineState.date = todayStr;
+            saveRoutines();
+          }
+        } else {
+          routineState.date = todayStr;
+          saveRoutines();
+        }
+        renderRoutines();
+      }
+
+      function saveRoutines() {
+        localStorage.setItem('mom_routine_state', JSON.stringify(routineState));
+      }
+
+      function toggleRoutine(key) {
+        routineState.routines[key] = !routineState.routines[key];
+        saveRoutines();
+        renderRoutines();
+      }
+
+      function renderRoutines() {
+        const container = document.getElementById('routine-list-container');
+        container.innerHTML = '';
+
+        let completedCount = 0;
+        const total = routinesConfig.length;
+
+        routinesConfig.forEach(item => {
+          const isDone = routineState.routines[item.key];
+          if (isDone) completedCount++;
+
+          const li = document.createElement('li');
+          li.className = `routine-item ${isDone ? 'completed' : ''}`;
+          li.onclick = () => toggleRoutine(item.key);
+
+          li.innerHTML = `
+            <div class="routine-checkbox"></div>
+            <div class="routine-label">${item.label}</div>
+            <span class="routine-badge">${item.badge}</span>
+          `;
+          container.appendChild(li);
+        });
+
+        // 프로그레스 바 갱신
+        const percent = Math.round((completedCount / total) * 100);
+        document.getElementById('progress-percent').innerText = percent;
+        
+        const circleRadius = 45;
+        const circumference = 2 * Math.PI * circleRadius; // 약 282.74
+        const progressBar = document.getElementById('routine-progress-bar');
+        progressBar.style.strokeDasharray = circumference;
+        progressBar.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+
+        // 남은 루틴 갯수 및 헤더 텍스트 갱신
+        const remaining = total - completedCount;
+        document.getElementById('remaining-count').innerText = remaining;
+
+        const titleEl = document.getElementById('tracker-status-title');
+        if (percent === 0) {
+          titleEl.innerText = '포근한 시작 🌱';
+        } else if (percent < 50) {
+          titleEl.innerText = '첫걸음을 내디뎠어요 🌿';
+        } else if (percent < 100) {
+          titleEl.innerText = '아름답게 채우는 중 💕';
+        } else {
+          titleEl.innerText = '완벽한 힐링 달성! 🌸';
+          if (localStorage.getItem('mom_routine_alert_shown') !== routineState.date) {
+            triggerFlowerEffect();
+            document.getElementById('congrats-popup').classList.add('active');
+            localStorage.setItem('mom_routine_alert_shown', routineState.date);
+          }
+        }
+      }
+
+      function closeCongrats() {
+        document.getElementById('congrats-popup').classList.remove('active');
+      }
+
+      function triggerFlowerEffect() {
+        const colors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff', '#ffd1dc'];
+        for (let i = 0; i < 40; i++) {
+          const petal = document.createElement('div');
+          petal.classList.add('petal');
+          
+          const startX = Math.random() * window.innerWidth;
+          const size = Math.random() * 12 + 8;
+          const delay = Math.random() * 2;
+          const duration = Math.random() * 3 + 3;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          
+          petal.style.left = `${startX}px`;
+          petal.style.width = `${size}px`;
+          petal.style.height = `${size}px`;
+          petal.style.backgroundColor = color;
+          petal.style.animationDelay = `${delay}s`;
+          petal.style.animationDuration = `${duration}s`;
+          
+          document.body.appendChild(petal);
+          
+          petal.addEventListener('animationend', () => {
+            petal.remove();
+          });
+        }
+      }
+
+      // ==========================================
+      // 3. 마트 장보기 리스트 로직
+      // ==========================================
+      let todoItems = [];
+      let currentMartFilter = 'all';
+
+      function loadTodo() {
+        const stored = localStorage.getItem('mom_shopping_items');
+        if (stored) {
+          try {
+            todoItems = JSON.parse(stored);
+          } catch(e) {
+            todoItems = [];
+          }
+        }
+        renderTodo();
+      }
+
+      function saveTodo() {
+        localStorage.setItem('mom_shopping_items', JSON.stringify(todoItems));
+      }
+
+      function addTodo() {
+        const input = document.getElementById('todo-input');
+        const text = input.value.trim();
+        if (!text) return;
+
+        const activeFilter = currentMartFilter === 'all' ? '기타' : currentMartFilter;
+
+        const newItem = {
+          id: Date.now(),
+          text: text,
+          mart: activeFilter,
+          completed: false
+        };
+
+        todoItems.push(newItem);
+        saveTodo();
+        renderTodo();
+        input.value = '';
+      }
+
+      function toggleTodo(id) {
+        const idx = todoItems.findIndex(i => i.id === id);
+        if (idx !== -1) {
+          todoItems[idx].completed = !todoItems[idx].completed;
+          saveTodo();
+          renderTodo();
+        }
+      }
+
+      function deleteTodo(id) {
+        todoItems = todoItems.filter(i => i.id !== id);
+        saveTodo();
+        renderTodo();
+      }
+
+      function filterMart(mart) {
+        currentMartFilter = mart;
+        
+        // 탭 버튼 active 클래스 전환
+        const btns = document.querySelectorAll('.mart-tabs .tab-btn');
+        btns.forEach(btn => {
+          if (btn.innerText === mart || (mart === 'all' && btn.innerText === '전체')) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+        
+        renderTodo();
+      }
+
+      function renderTodo() {
+        const list = document.getElementById('todo-list');
+        list.innerHTML = '';
+
+        const filtered = todoItems.filter(item => {
+          if (currentMartFilter === 'all') return true;
+          return item.mart === currentMartFilter;
+        });
+
+        if (filtered.length === 0) {
+          list.innerHTML = `<li style="text-align: center; color: #95a5a6; padding: 20px; font-size: 0.9rem;">메모가 비어 있습니다. 품목을 적어보세요 🛒</li>`;
+          return;
+        }
+
+        filtered.forEach(item => {
+          const li = document.createElement('li');
+          li.className = `todo-item ${item.completed ? 'completed' : ''}`;
+          
+          li.innerHTML = `
+            <div class="todo-item-left" onclick="toggleTodo(${item.id})">
+              <div class="todo-checkbox"></div>
+              <span class="todo-text">${item.text}</span>
+              <span class="todo-mart-tag">${item.mart}</span>
+            </div>
+            <button class="todo-delete-btn" onclick="deleteTodo(${item.id})">&times;</button>
+          `;
+          list.appendChild(li);
+        });
+      }
+
+      // 페이지 로드 초기화
+      window.addEventListener('DOMContentLoaded', () => {
+        initializeRouletteMenu();
+        drawRoulette();
+        loadRoutines();
+        loadTodo();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아빠의 휴식처 & 테크 매거진 - FamilySpace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+    <style>
+      /* --- Reset & Core Variables --- */
+      :root {
+          --bg-color: #08090f;
+          --card-bg: rgba(18, 22, 38, 0.7);
+          --border-color: rgba(255, 255, 255, 0.08);
+          --text-primary: #e5e9f0;
+          --text-secondary: #9aa5b5;
+          --neon-cyan: #00f2fe;
+          --neon-pink: #ff007f;
+          --neon-blue: #4facfe;
+          --neon-green: #39ff14;
+          --accent-glow: rgba(0, 242, 254, 0.15);
+      }
+
+      body.dad-page {
+          background-color: var(--bg-color);
+          background-image: 
+              radial-gradient(circle at 10% 20%, rgba(26, 20, 52, 0.4) 0%, transparent 45%),
+              radial-gradient(circle at 90% 80%, rgba(12, 36, 56, 0.4) 0%, transparent 45%);
+          color: var(--text-primary);
+          font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
+          margin: 0;
+          padding: 0;
+          min-height: 100vh;
+          -webkit-font-smoothing: antialiased;
+          overflow-x: hidden;
+      }
+      
+      /* --- Navigation Bar --- */
+      .navbar {
+          background: rgba(11, 12, 20, 0.95);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+          position: sticky;
+          top: 0;
+          z-index: 100;
+          border-bottom: 1px solid var(--border-color);
+      }
+      .nav-links {
+          display: flex;
+          align-items: center;
+          list-style: none;
+          gap: 28px;
+          margin: 0;
+          padding: 0;
+      }
+      .nav-links a {
+          color: var(--text-secondary) !important;
+          font-weight: 600;
+          text-decoration: none;
+          font-size: 0.95rem;
+          transition: color 0.2s ease;
+      }
+      .nav-links a:hover {
+          color: var(--neon-cyan) !important;
+          text-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
+      }
+      .nav-logout-btn {
+          background: var(--neon-pink);
+          color: white !important;
+          padding: 8px 20px;
+          border-radius: 24px;
+          font-weight: 700;
+          transition: background 0.2s, transform 0.2s;
+          box-shadow: 0 4px 10px rgba(255, 0, 127, 0.3);
+      }
+      .nav-logout-btn:hover {
+          background: #ff3b93;
+          transform: translateY(-2px);
+      }
+
+      /* Hover Dropdown Menu */
+      .nav-dropdown {
+          position: relative;
+          display: flex;
+          align-items: center;
+          height: 100%;
+          padding: 20px 0;
+          cursor: pointer;
+      }
+      .dropdown-content { 
+          visibility: hidden;
+          opacity: 0;
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%) translateY(10px); 
+          background-color: rgba(18, 22, 38, 0.95);
+          min-width: 180px;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          z-index: 200;
+          overflow: hidden; 
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      }
+      .nav-dropdown:hover .dropdown-content {
+          visibility: visible;
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+      }
+      .dropdown-content a {
+          color: var(--text-primary) !important;
+          padding: 15px 20px;
+          display: block;
+          font-size: 0.9rem;
+          text-align: center;
+          border-bottom: 1px solid var(--border-color);
+          font-weight: 600;
+          transition: 0.2s;
+      }
+      .dropdown-content a:hover {
+          background-color: rgba(255, 255, 255, 0.05);
+          color: var(--neon-cyan) !important;
+      }
+
+      /* --- Views Container & SPA Transition --- */
+      .view-section {
+          display: none;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+      }
+      .view-section.active {
+          display: block;
+          animation: fadeInUp 0.5s ease forwards;
+      }
+      @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(15px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Page Header */
+      .page-header {
+          text-align: center;
+          margin-bottom: 50px;
+          padding: 20px 0;
+      }
+      .page-header h1 {
+          font-size: 2.6rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 12px;
+          letter-spacing: -0.5px;
+          filter: drop-shadow(0 2px 10px rgba(0, 242, 254, 0.2));
+      }
+      .page-header p {
+          color: var(--text-secondary);
+          font-size: 1.1rem;
+      }
+
+      /* --- Interactive Info --- */
+      .interactive-info {
+          text-align: center;
+          color: var(--neon-cyan);
+          font-size: 0.9rem;
+          margin-bottom: 40px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          animation: blink 2s infinite;
+      }
+
+      /* --- Dashboard Grid Layout --- */
+      .dashboard-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 80px 40px; /* Space for card unfolding */
+          margin-bottom: 80px;
+      }
+      @media (max-width: 900px) {
+          .dashboard-grid {
+              grid-template-columns: 1fr;
+              gap: 60px 20px;
+          }
+      }
+
+      /* --- Card Stack Styling --- */
+      .card-stack {
+          position: relative;
+          height: 340px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          perspective: 1000px;
+      }
+
+      .card {
+          position: absolute;
+          width: 290px;
+          height: 330px;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+          padding: 24px;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+          transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+      }
+
+      /* Stacked State */
+      .card-left {
+          transform: translateX(-15px) rotate(-4deg) scale(0.95);
+          opacity: 0.6;
+          z-index: 1;
+      }
+      .card-right {
+          transform: translateX(15px) rotate(4deg) scale(0.95);
+          opacity: 0.6;
+          z-index: 1;
+      }
+      .card-cover {
+          transform: translateX(0) rotate(0deg) scale(1);
+          z-index: 3;
+          border-color: rgba(255, 255, 255, 0.15);
+          background: rgba(24, 30, 51, 0.8);
+      }
+
+      /* Hover Unfolding State (Desktop) */
+      .card-stack:hover .card-left {
+          transform: translateX(-180px) rotate(-8deg) scale(0.98);
+          opacity: 1;
+          z-index: 4;
+          border-color: var(--neon-cyan);
+          box-shadow: 0 20px 40px rgba(0, 242, 254, 0.15);
+      }
+      .card-stack:hover .card-right {
+          transform: translateX(180px) rotate(8deg) scale(0.98);
+          opacity: 1;
+          z-index: 4;
+          border-color: var(--neon-pink);
+          box-shadow: 0 20px 40px rgba(255, 0, 127, 0.15);
+      }
+      .card-stack:hover .card-cover {
+          transform: scale(1.03);
+          z-index: 5;
+          border-color: var(--neon-blue);
+          box-shadow: 0 20px 45px rgba(79, 172, 254, 0.25);
+      }
+
+      /* Individual Card Hover Detail Popups */
+      .card-stack:hover .card-left:hover {
+          transform: translateX(-195px) translateY(-15px) rotate(0deg) scale(1.08) !important;
+          z-index: 10 !important;
+          box-shadow: 0 25px 50px rgba(0, 242, 254, 0.35) !important;
+          background: rgba(26, 36, 61, 0.95);
+      }
+      .card-stack:hover .card-right:hover {
+          transform: translateX(195px) translateY(-15px) rotate(0deg) scale(1.08) !important;
+          z-index: 10 !important;
+          box-shadow: 0 25px 50px rgba(255, 0, 127, 0.35) !important;
+          background: rgba(38, 24, 48, 0.95);
+      }
+      .card-stack:hover .card-cover:hover {
+          transform: translateY(-15px) scale(1.08) !important;
+          z-index: 10 !important;
+          box-shadow: 0 25px 50px rgba(79, 172, 254, 0.45) !important;
+          background: rgba(28, 38, 69, 0.95);
+      }
+
+      /* Typography Inside Cards */
+      .card-header {
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 12px;
+          margin-bottom: 12px;
+      }
+      .card-header h2 {
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: 0.5px;
+      }
+      .card-header h3 {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin-bottom: 4px;
+      }
+      .card-body p {
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          line-height: 1.6;
+      }
+
+      /* Spacing & Badges inside cards */
+      .indicator {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(255, 0, 127, 0.12);
+          border: 1px solid rgba(255, 0, 127, 0.25);
+          padding: 4px 10px;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: #ff3b93;
+          margin-bottom: 8px;
+      }
+      .indicator::before {
+          content: '';
+          width: 6px;
+          height: 6px;
+          background-color: var(--neon-pink);
+          border-radius: 50%;
+          display: inline-block;
+          box-shadow: 0 0 8px var(--neon-pink);
+          animation: blink 1.2s infinite;
+      }
+      .card-footer {
+          margin-top: auto;
+          padding-top: 12px;
+      }
+      .card-footer a, .cta-text {
+          color: var(--neon-cyan);
+          text-decoration: none;
+          font-weight: 700;
+          font-size: 0.85rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          transition: color 0.3s ease;
+      }
+      .card-footer a:hover {
+          color: var(--neon-blue);
+      }
+      .movie-card-footer a {
+          color: var(--neon-pink);
+      }
+      .movie-card-footer a:hover {
+          color: #ff3b93;
+      }
+      .cta-btn {
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          color: #0b0c10;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          font-weight: 700;
+          font-size: 0.85rem;
+          cursor: pointer;
+          width: 100%;
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0, 242, 254, 0.2);
+          transition: all 0.3s ease;
+      }
+      .cta-btn:hover {
+          box-shadow: 0 6px 18px rgba(0, 242, 254, 0.4);
+          transform: scale(1.02);
+      }
+
+      /* --- Magazine Blog Feed --- */
+      .magazine-header h2 {
+          font-size: 1.6rem;
+          color: #ffffff;
+          font-weight: 700;
+          margin: 60px 0 30px 0;
+          padding-left: 16px;
+          border-left: 5px solid var(--neon-blue);
+      }
+      .magazine-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 30px;
+      }
+      .article-card {
+          background: var(--card-bg);
+          border-radius: 24px;
+          overflow: hidden;
+          border: 1px solid var(--border-color);
+          box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+      }
+      .article-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0, 242, 254, 0.15);
+          border-color: var(--neon-cyan);
+      }
+      .article-img {
+          width: 100%;
+          height: 200px;
+          background-color: #12131e;
+          background-size: cover;
+          background-position: center;
+      }
+      .article-content {
+          padding: 28px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+      }
+      .article-title {
+          font-size: 1.25rem;
+          font-weight: 700;
+          margin: 0 0 12px 0;
+          color: #ffffff;
+          line-height: 1.5;
+      }
+      .article-date {
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+          margin-top: auto;
+          font-weight: 500;
+      }
+
+      /* Ad Banner Styling */
+      .ad-banner {
+          width: 100%;
+          height: 100px;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px dashed var(--border-color);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          font-weight: 600;
+          margin-bottom: 50px;
+          backdrop-filter: blur(5px);
+      }
+
+      /* --- Form Containers (Read/Write Views) --- */
+      .form-container {
+          background: var(--card-bg);
+          padding: 50px;
+          border-radius: 28px;
+          border: 1px solid var(--border-color);
+          box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+          max-width: 850px;
+          margin: 0 auto;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+      }
+      .input-field {
+          width: 100%;
+          padding: 18px;
+          margin-bottom: 24px;
+          background: rgba(8, 9, 15, 0.6);
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          color: var(--text-primary);
+          font-family: inherit;
+          font-size: 1.05rem;
+          box-sizing: border-box;
+          transition: 0.2s;
+      }
+      .input-field:focus {
+          outline: none;
+          border-color: var(--neon-cyan);
+          background: rgba(18, 22, 38, 0.8);
+          box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.15);
+      }
+      .input-textarea {
+          width: 100%;
+          height: 450px;
+          padding: 18px;
+          margin-bottom: 24px;
+          background: rgba(8, 9, 15, 0.6);
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          color: var(--text-primary);
+          font-family: inherit;
+          font-size: 1.05rem;
+          resize: vertical;
+          box-sizing: border-box;
+          line-height: 1.7;
+          transition: 0.2s;
+      }
+      .input-textarea:focus {
+          outline: none;
+          border-color: var(--neon-cyan);
+          background: rgba(18, 22, 38, 0.8);
+          box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.15);
+      }
+      .btn-primary {
+          width: 100%;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          color: #0b0c10;
+          padding: 18px;
+          border: none;
+          border-radius: 16px;
+          font-size: 1.15rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.3s;
+          box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+      }
+      .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+      }
+      .btn-back {
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--text-primary);
+          border: 1px solid var(--border-color);
+          padding: 12px 24px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: 600;
+          margin-bottom: 30px;
+          transition: 0.2s;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+      }
+      .btn-back:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+      }
+
+      /* --- Footer --- */
+      .footer {
+          text-align: center;
+          max-width: 1200px;
+          margin: 80px auto 0 auto;
+          padding: 30px 20px;
+          border-top: 1px solid var(--border-color);
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+      }
+      .footer-links a {
+          color: var(--text-secondary);
+          text-decoration: none;
+          margin: 0 10px;
+          transition: color 0.2s;
+      }
+      .footer-links a:hover {
+          color: var(--neon-cyan);
+      }
+
+      /* --- Animations & Responsive Mobile Split (Vertical Unfold) --- */
+      @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+      }
+
+      @media (max-width: 600px) {
+          .dashboard-grid {
+              grid-template-columns: 1fr;
+              gap: 180px 20px; /* Gap for vertical unfolding on mobile */
+              padding: 40px 10px;
+          }
+          .card-stack {
+              height: 300px;
+          }
+          .card {
+              width: 260px;
+              height: 280px;
+          }
+          .card-left {
+              transform: translateY(-8px) scale(0.95);
+          }
+          .card-right {
+              transform: translateY(8px) scale(0.95);
+          }
+          .card-stack:hover .card-left {
+              transform: translateY(-140px) rotate(-2deg) scale(0.96);
+          }
+          .card-stack:hover .card-right {
+              transform: translateY(140px) rotate(2deg) scale(0.96);
+          }
+          .card-stack:hover .card-cover {
+              transform: scale(1.02);
+          }
+          .card-stack:hover .card-left:hover {
+              transform: translateY(-160px) scale(1.05) !important;
+          }
+          .card-stack:hover .card-right:hover {
+              transform: translateY(160px) scale(1.05) !important;
+          }
+      }
+    </style>
+  </head>
+  <body class="dad-page">
+    
+    <nav class="navbar">
+      <div class="nav-container" style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px;">
+        <a href="index.html" class="nav-logo" style="color: var(--neon-cyan); font-size: 1.6rem; font-weight: 800; text-decoration: none; letter-spacing: -0.5px; text-shadow: 0 0 10px rgba(0, 242, 254, 0.35);">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="index.html">홈</a></li>
+          
+          <li class="nav-dropdown">
+            <a href="#" onclick="switchView('main-view')" style="color: var(--neon-cyan) !important; font-weight: 800;">아빠</a>
+            <div class="dropdown-content" id="dad-admin-menu">
+              <a href="#" onclick="switchView('write-view')">✍️ 매거진 새 글 발행</a>
+              <a href="blog.html">🔒 가족 비밀 일기장</a>
+            </div>
+          </li>
+          
+          <li><a href="mom.html">엄마</a></li>
+          <li><a href="baby.html">아기</a></li>
+          <li><a href="stars.html">🌠 별 보기</a></li>
+          <li><a href="blog.html">일기장</a></li>
+          <li><a href="#" onclick="logout()" class="nav-logout-btn">로그아웃</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="main-view" class="view-section active">
+      
+      <div class="page-header">
+        <h1>아빠의 라운지 & 라이프 매거진</h1>
+        <p>현지 교민 아빠가 전하는 하이퐁 꿀팁과 취미 생활, 편안하게 쉬어가세요.</p>
+      </div>
+
+      <div class="interactive-info">⚡ 카드를 올려두면 여러 장의 카드로 펼쳐집니다 ⚡</div>
+
+      <!-- Neon Card Stack Grid Dashboard -->
+      <div class="dashboard-grid">
+        
+        <!-- 1. 금융 & 주식 분석 모듈 스택 -->
+        <div class="card-stack">
+            <!-- Left Card (Sub 1) -->
+            <div class="card card-left">
+                <div class="card-header">
+                    <span class="indicator">ALERT!</span>
+                    <h2>🔴 반도체 섹터 과열</h2>
+                </div>
+                <div class="card-body">
+                    <p>반도체 공급망 리스크와 단기 주가 과열 우려가 포착되었습니다. 추가 매수보다는 리스크 관리가 추천됩니다.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">상세 리포트 보기 →</a>
+                </div>
+            </div>
+            <!-- Right Card (Sub 2) -->
+            <div class="card card-right">
+                <div class="card-header">
+                    <h3>AI Value Chain</h3>
+                    <h2>💰 AI 수혜주 3선</h2>
+                </div>
+                <div class="card-body">
+                    <p>AI 인프라 확장으로 높은 실적 성장이 기대되는 저평가 수혜주 3종 팩트시트가 업데이트되었습니다.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">종목 분석 보기 →</a>
+                </div>
+            </div>
+            <!-- Center Cover Card -->
+            <div class="card card-cover">
+                <div class="card-header">
+                    <h3>Finance</h3>
+                    <h2>📈 MARKET ANALYSIS</h2>
+                </div>
+                <div class="card-body">
+                    <p>아빠의 눈으로 분석하는 실시간 투자 트렌드와 마켓 시그널. 이곳에서 시장을 주도할 유망주들을 발견해 보세요.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="cta-btn">리포트 허브 열기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 스포츠 & 취미 모듈 스택 -->
+        <div class="card-stack">
+            <!-- Left Card (Sub 1) -->
+            <div class="card card-left">
+                <div class="card-header">
+                    <h3>Swing Form</h3>
+                    <h2>🏌️‍♂️ 드라이버 200m 공식</h2>
+                </div>
+                <div class="card-body">
+                    <p>비거리를 단숨에 늘릴 수 있는 상체 회전 타이밍과 드라이버 어드레스 최적화 스윙 비책 가이드입니다.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">스윙 가이드 읽기 →</a>
+                </div>
+            </div>
+            <!-- Right Card (Sub 2) -->
+            <div class="card card-right">
+                <div class="card-header">
+                    <h3>Field Gear</h3>
+                    <h2>🍂 가을 필수 아이템</h2>
+                </div>
+                <div class="card-body">
+                    <p>쌀쌀해지는 계절별 필드용 기능성 웨어와 타수를 극적으로 줄여주는 쿠션 어프로치 추천 장비 정보입니다.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">추천 장비 확인 →</a>
+                </div>
+            </div>
+            <!-- Center Cover Card -->
+            <div class="card card-cover">
+                <div class="card-header">
+                    <h3>Sports</h3>
+                    <h2>⛳ GOLF STRATEGY</h2>
+                </div>
+                <div class="card-body">
+                    <p>필드 위에서 흔들리지 않는 멘탈 관리법과 스윙 최적화. 이번 주 연습 목표와 타수 공략법을 확인하세요.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="cta-btn">골프 허브 열기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. 엔터테인먼트 & 게임 모듈 스택 -->
+        <div class="card-stack">
+            <!-- Left Card (Sub 1) -->
+            <div class="card card-left">
+                <div class="card-header">
+                    <h3>Console Game</h3>
+                    <h2>🎮 PS5/PC 추천 RPG</h2>
+                </div>
+                <div class="card-body">
+                    <p>가족들과 거실에서 함께 부담 없이 즐길 수 있는 콘솔 명작 RPG 및 초반 레벨업 가이드를 모았습니다.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">미션 가이드 보기 →</a>
+                </div>
+            </div>
+            <!-- Right Card (Sub 2) -->
+            <div class="card card-right">
+                <div class="card-header">
+                    <h3>OTT Spotlight</h3>
+                    <h2>🎬 주말 영화 추천</h2>
+                </div>
+                <div class="card-body">
+                    <p>아빠들의 주말 힐링을 책임질 넷플릭스/디즈니+ 숨겨진 명작 SF 및 액션 장르 영화 목록입니다.</p>
+                </div>
+                <div class="card-footer movie-card-footer">
+                    <a href="#">필름 리스트 점검 →</a>
+                </div>
+            </div>
+            <!-- Center Cover Card -->
+            <div class="card card-cover">
+                <div class="card-header">
+                    <h3>Entertainment</h3>
+                    <h2>🕹️ MISSION SELECT</h2>
+                </div>
+                <div class="card-body">
+                    <p>휴식을 위한 최고의 선택. 엄선된 추천 게임과 영화 리스트로 이번 주말의 힐링 플랜을 세워보세요.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="cta-btn">미션 허브 열기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 가족 & 라이프스타일 모듈 스택 -->
+        <div class="card-stack">
+            <!-- Left Card (Sub 1) -->
+            <div class="card card-left">
+                <div class="card-header">
+                    <h3>Parenting</h3>
+                    <h2>🍼 육아 생존 꿀템</h2>
+                </div>
+                <div class="card-body">
+                    <p>실제 사용해 보고 입증된, 아빠의 손을 덜어주는 필수 가전기기와 장난감 TOP 5 실사용 솔직 리뷰입니다.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">생존 꿀템 리뷰 →</a>
+                </div>
+            </div>
+            <!-- Right Card (Sub 2) -->
+            <div class="card card-right">
+                <div class="card-header">
+                    <h3>Lifestyle</h3>
+                    <h2>💬 남편 vs 아빠 고민</h2>
+                </div>
+                <div class="card-body">
+                    <p>가정의 평화를 지키는 소통 비법. 남편으로서의 배려와 아빠로서의 훈육 역할 조율 고민을 나눕니다.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#">고민 상담소 입장 →</a>
+                </div>
+            </div>
+            <!-- Center Cover Card -->
+            <div class="card card-cover">
+                <div class="card-header">
+                    <h3>Family Log</h3>
+                    <h2>👨‍👩‍👧‍👦 LIFE & PARENTING</h2>
+                </div>
+                <div class="card-body">
+                    <p>가족과의 조화로운 일상. 육아 정보 공유와 삶의 밸런스 유지 등 훌륭한 아빠가 되기 위한 기록 공간입니다.</p>
+                </div>
+                <div class="card-footer">
+                    <button class="cta-btn">패밀리 로그 열기</button>
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="ad-banner">[구글 애드센스 상단 디스플레이 영역]</div>
+
+      <div class="magazine-header">
+        <h2>📚 아빠의 베트남 생생 정보 노트</h2>
+      </div>
+      
+      <div class="magazine-grid" id="post-list-container">
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-secondary); font-size: 1.1rem;">
+          클라우드에서 최신 글을 불러오는 중입니다...
+        </div>
+      </div>
+
+      <div class="ad-banner" style="margin-top: 60px;">[구글 애드센스 하단 멀티플렉스 영역]</div>
+    </div>
+
+    <div id="read-view" class="view-section">
+      <div class="form-container">
+        <button class="btn-back" onclick="switchView('main-view')">← 라운지로 돌아가기</button>
+        <div id="read-container-box"></div>
+      </div>
+    </div>
+
+    <div id="write-view" class="view-section">
+      <div class="form-container">
+        <button class="btn-back" onclick="switchView('main-view')">← 작성 취소</button>
+        <h2 style="margin-top:0; color:#ffffff; margin-bottom: 30px; font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">✍️ 매거진 새 글 발행</h2>
+        
+        <select id="edit-category" class="input-field">
+          <option value="vietnam">베트남 생활/맛집</option>
+          <option value="game">게임/테크 공략</option>
+        </select>
+        
+        <input type="text" id="edit-title" class="input-field" placeholder="시선을 끄는 제목을 입력하세요" />
+        
+        <label style="display:block; margin-bottom:12px; font-weight: 600; color:var(--text-secondary);">대표 이미지 (목록 썸네일)</label>
+        <input type="file" id="edit-image" accept="image/*" class="input-field" style="padding: 14px;" />
+        <img id="edit-preview" src="" style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-bottom:24px; display:none; box-shadow:0 5px 15px rgba(0,0,0,0.5);" />
+        
+        <textarea id="edit-content" class="input-textarea" placeholder="본문 내용을 자유롭게 작성하세요. 줄바꿈과 간단한 HTML 태그 적용이 가능합니다."></textarea>
+        
+        <button id="btn-publish" class="btn-primary">클라우드 서버에 전 세계 발행하기 🚀</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
+      </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyASXXnU8bB6G641bY00V6MCRMLtdUgddpI",
+        authDomain: "familyspace-db.firebaseapp.com",
+        projectId: "familyspace-db",
+        storageBucket: "familyspace-db.firebasestorage.app",
+        messagingSenderId: "17439157934",
+        appId: "1:17439157934:web:d2e65b864fac46c1a6873f"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      
+      const isAuth = sessionStorage.getItem('family_space_authenticated') === 'true';
+      if(isAuth) {
+        document.getElementById('dad-admin-menu').style.display = 'block';
+      } else {
+        const dropdownMenu = document.getElementById('dad-admin-menu');
+        if(dropdownMenu) dropdownMenu.remove();
+      }
+
+      window.switchView = function(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if(viewId === 'main-view') fetchPosts(); 
+      };
+
+      async function fetchPosts() {
+        const listContainer = document.getElementById('post-list-container');
+        try {
+          const q = query(collection(db, "magazine_posts"), orderBy("timestamp", "desc"));
+          const snapshot = await getDocs(q);
+          
+          if(snapshot.empty) {
+            listContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px; border: 1px dashed var(--border-color); border-radius: 20px; background: var(--card-bg);">아직 발행된 글이 없습니다. 위 메뉴에서 새 글을 작성해 보세요!</div>';
+            return;
+          }
+
+          let htmlBuffer = '';
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            htmlBuffer += `
+              <div class="article-card" onclick="openPost('${docSnap.id}')">
+                <div class="article-img" style="background-image: url('${data.thumbnail || ''}');"></div>
+                <div class="article-content">
+                  <h2 class="article-title">${data.title}</h2>
+                  <div class="article-date">${data.date}</div>
+                </div>
+              </div>
+            `;
+          });
+          listContainer.innerHTML = htmlBuffer;
+        } catch(e) {
+          listContainer.innerHTML = '<div style="color:var(--neon-pink); text-align:center; grid-column:1/-1;">서버 통신 지연. 새로고침을 해주세요.</div>';
+        }
+      }
+
+      window.openPost = async function(docId) {
+        const readBox = document.getElementById('read-container-box');
+        readBox.innerHTML = '<div style="text-align:center; padding: 50px; color:var(--text-secondary);">안전하게 데이터를 불러오는 중...</div>';
+        window.switchView('read-view');
+
+        try {
+          const docRef = doc(db, "magazine_posts", docId);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            readBox.innerHTML = `
+              <h1 style="font-size: 2.4rem; margin-top: 0; margin-bottom: 20px; color:#ffffff; letter-spacing: -0.5px; filter: drop-shadow(0 2px 8px rgba(0,242,254,0.15));">${data.title}</h1>
+              <div style="color: var(--text-secondary); border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 35px; font-size:1rem; display: flex; gap: 15px;">
+                <span style="font-weight:700; color:var(--neon-cyan);">By 아빠</span> <span>|</span> <span>${data.date}</span>
+              </div>
+              ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:20px; margin-bottom:40px; box-shadow:0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-color);">` : ''}
+              <div class="ad-banner" style="margin-bottom: 40px; border-radius: 16px;">[구글 애드센스 본문 상단 광고]</div>
+              <div style="font-size: 1.15rem; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap;">${data.content}</div>
+              <div class="ad-banner" style="margin-top: 60px; border-radius: 16px;">[구글 애드센스 본문 하단 광고]</div>
+            `;
+          }
+        } catch(e) {
+          readBox.innerHTML = '글을 불러올 수 없습니다. 네트워크를 확인해주세요.';
+        }
+      };
+
+      let currentThumbnail = "";
+      document.getElementById('edit-image').onchange = function(e) {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          currentThumbnail = evt.target.result;
+          document.getElementById('edit-preview').src = currentThumbnail;
+          document.getElementById('edit-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      };
+
+      document.getElementById('btn-publish').onclick = async function() {
+        if(!isAuth) { alert("로그인이 필요합니다!"); return; }
+        
+        const title = document.getElementById('edit-title').value;
+        const category = document.getElementById('edit-category').value;
+        const content = document.getElementById('edit-content').value;
+        
+        if(!title || !content || !currentThumbnail) {
+          alert('제목, 썸네일 이미지, 본문을 모두 채워주세요!'); return;
+        }
+
+        const payload = {
+          title: title,
+          category: category,
+          thumbnail: currentThumbnail,
+          content: content,
+          date: new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' }),
+          timestamp: Date.now()
+        };
+
+        try {
+          this.innerText = "발행 중..."; this.disabled = true;
+          await addDoc(collection(db, "magazine_posts"), payload);
+          
+          document.getElementById('edit-title').value = '';
+          document.getElementById('edit-content').value = '';
+          document.getElementById('edit-image').value = '';
+          document.getElementById('edit-preview').style.display = 'none';
+          currentThumbnail = '';
+          
+          alert('성공적으로 발행되었습니다!');
+          window.switchView('main-view');
+        } catch(e) {
+          alert('발행 실패: ' + e.message);
+        } finally {
+          this.innerText = "클라우드 서버에 전 세계 발행하기 🚀"; this.disabled = false;
+        }
+      };
+
+      window.onload = function() { fetchPosts(); };
+    </script>
+  </body>
+</html>

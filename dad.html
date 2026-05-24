@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아빠의 휴식처 & 테크 매거진 - FamilySpace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+    <style>
+      /* --- Reset & Core Variables (밝고 세련된 라이트 글래스모피즘 테마) --- */
+      :root {
+          --bg-color: url('images/dad_bg.png');
+          --card-bg: rgba(255, 255, 255, 0.85);
+          --border-color: rgba(0, 0, 0, 0.08);
+          --text-primary: #1e272e;
+          --text-secondary: #57606f;
+          --neon-cyan: #0984e3;
+          --neon-pink: #d63031;
+          --neon-blue: #00cec9;
+          --neon-green: #2ecc71;
+          --accent-glow: rgba(9, 132, 227, 0.08);
+      }
+
+      body.dad-page {
+          background: var(--bg-color) no-repeat center center fixed;
+          background-size: cover;
+          color: var(--text-primary);
+          font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
+          margin: 0;
+          padding: 0;
+          padding-top: 80px;
+          min-height: 100vh;
+          -webkit-font-smoothing: antialiased;
+          overflow-x: hidden;
+      }
+      
+      /* --- Navigation Bar (style.css 공통 규격을 사용하므로, fixed 위치 및 z-index만 보정) --- */
+      .navbar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 1000;
+      }
+
+      /* Hover Dropdown Menu - 흰색 테마에 맞추어 배경 및 보더 조정 */
+      .nav-dropdown {
+          position: relative;
+          display: flex;
+          align-items: center;
+          height: 100%;
+          cursor: pointer;
+      }
+      .dropdown-content { 
+          visibility: hidden;
+          opacity: 0;
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%) translateY(10px); 
+          background-color: rgba(255, 255, 255, 0.98);
+          min-width: 180px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 16px;
+          z-index: 200;
+          overflow: hidden; 
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      }
+      .nav-dropdown:hover .dropdown-content {
+          visibility: visible;
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+      }
+      .dropdown-content a {
+          color: var(--text-main) !important;
+          padding: 15px 20px;
+          display: block;
+          font-size: 0.9rem;
+          text-align: center;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          font-weight: 600;
+          transition: 0.2s;
+      }
+      .dropdown-content a:hover {
+          background-color: rgba(0, 0, 0, 0.03);
+          color: var(--primary-color) !important;
+      }
+
+      /* --- Views Container & SPA Transition --- */
+      .view-section {
+          display: none;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+      }
+      .view-section.active {
+          display: block;
+          animation: fadeIn 0.5s ease forwards;
+      }
+      @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+      }
+
+      /* Page Header */
+      .page-header {
+          text-align: center;
+          margin-bottom: 50px;
+          padding: 20px 0;
+      }
+      .page-header h1 {
+          font-size: 2.6rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 12px;
+          letter-spacing: -0.5px;
+          filter: drop-shadow(0 2px 10px rgba(0, 242, 254, 0.2));
+      }
+      .page-header p {
+          color: var(--text-secondary);
+          font-size: 1.1rem;
+      }
+
+      /* --- Interactive Info --- */
+      .interactive-info {
+          text-align: center;
+          color: var(--neon-cyan);
+          font-size: 0.9rem;
+          margin-bottom: 40px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          animation: blink 2s infinite;
+      }
+
+      /* --- Dashboard Grid Layout & Sidebar --- */
+      .dad-top-dashboard {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 30px;
+          max-width: 1200px;
+          margin: 0 auto 15px auto;
+          box-sizing: border-box;
+          transition: all 0.3s ease;
+      }
+      
+      @media (min-width: 993px) {
+          #main-view {
+              max-width: 1380px !important;
+              padding-left: 0 !important;
+              padding-right: 210px !important;
+              padding-top: 80px !important; /* Raised cards and content further by double amount */
+              position: relative !important;
+          }
+          .dad-top-dashboard {
+              position: static;
+              background: transparent;
+              border: none;
+              box-shadow: none;
+              backdrop-filter: none;
+              -webkit-backdrop-filter: none;
+              padding: 0;
+              margin: 0;
+          }
+          .dad-header-left {
+              position: fixed;
+              left: max(20px, calc((100vw - 1380px) / 2 + 20px)) !important;
+              right: auto !important;
+              top: 82px;
+              z-index: 1001;
+          }
+          .dad-widgets-right {
+              position: absolute !important;
+              right: 15px !important;
+              left: auto !important;
+              top: 115px;
+              z-index: 998;
+              width: 180px;
+          }
+          .unified-monitor-widget {
+              flex-direction: column !important;
+              width: 100% !important;
+              gap: 6px !important; /* Reduced gap */
+              padding: 8px !important; /* Reduced padding */
+              background: rgba(255, 255, 255, 0.45) !important; /* Highly transparent */
+              border: 1px solid rgba(255, 255, 255, 0.25) !important; /* Clean glass border */
+              box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03) !important; /* Soft shadow */
+              backdrop-filter: blur(10px) !important;
+              -webkit-backdrop-filter: blur(10px) !important;
+              border-radius: 12px !important;
+          }
+          .monitor-divider {
+              width: 100% !important;
+              height: 1px !important;
+              background: rgba(0, 0, 0, 0.08) !important;
+              align-self: auto !important;
+              margin: 5px 0;
+          }
+          .tab-menu-horizontal {
+              position: fixed;
+              left: 50%;
+              transform: translateX(-50%);
+              top: 76px;
+              z-index: 999;
+              margin: 0 !important;
+          }
+          .card-stack-container {
+              padding-left: 210px !important; /* Balanced with padding-right of #main-view */
+          }
+          .category-header-wrapper {
+              position: fixed;
+              left: max(20px, calc((100vw - 1380px) / 2 + 20px)) !important;
+              top: 50%;
+              transform: translateY(-50%);
+              z-index: 997;
+              width: 250px;
+              margin: 0 !important;
+              padding-left: 14px;
+              border-left: 4px solid var(--neon-cyan);
+              background: transparent;
+              text-align: left;
+          }
+          .category-header-wrapper h2 {
+              font-size: 1.2rem !important;
+              line-height: 1.35 !important;
+              margin-bottom: 4px !important;
+          }
+      }
+
+      .dad-header-left {
+          flex: 1;
+          text-align: left;
+      }
+      .dad-header-left .logo {
+          font-size: 1.55rem;
+          font-weight: 800;
+          letter-spacing: 2px;
+          color: var(--neon-cyan) !important;
+          -webkit-text-fill-color: var(--neon-cyan) !important;
+          background: rgba(255, 255, 255, 0.85) !important;
+          -webkit-background-clip: border-box !important;
+          background-clip: border-box !important;
+          border: 1px solid rgba(9, 132, 227, 0.15) !important;
+          padding: 8px 20px;
+          border-radius: 12px;
+          text-transform: uppercase;
+          display: inline-block;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 8px 32px 0 rgba(9, 132, 227, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+          font-family: 'Montserrat', sans-serif;
+          transition: all 0.3s ease;
+      }
+      .dad-header-left .logo:hover {
+          background: rgba(255, 255, 255, 0.95) !important;
+          -webkit-background-clip: border-box !important;
+          background-clip: border-box !important;
+          -webkit-text-fill-color: var(--neon-cyan) !important;
+          box-shadow: 0 8px 32px 0 rgba(9, 132, 227, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+          transform: translateY(-1px);
+      }
+      .dad-header-left .slogan {
+          font-size: 0.72rem;
+          color: var(--text-secondary);
+          font-weight: 500;
+          margin: 0;
+          display: block;
+      }
+      .dad-widgets-right {
+          display: flex;
+          align-items: center;
+      }
+      .unified-monitor-widget {
+          display: flex;
+          gap: 15px;
+          padding: 10px 15px !important;
+          width: 440px;
+          box-sizing: border-box;
+          align-items: center;
+          justify-content: space-between;
+      }
+      .monitor-column {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+      }
+      .monitor-column h3 {
+          font-size: 0.6rem !important;
+          margin-top: 0;
+          margin-bottom: 4px !important;
+          padding-bottom: 3px !important;
+          letter-spacing: 0.5px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          font-weight: 700;
+          color: var(--text-secondary);
+          opacity: 0.8;
+      }
+      .monitor-divider {
+          width: 1px;
+          background: var(--border-color);
+          align-self: stretch;
+      }
+
+      .dad-dashboard-container {
+          max-width: 1200px;
+          margin: 0 auto 30px auto;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+      }
+
+      .tab-menu-horizontal {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 6px;
+          background: rgba(0, 0, 0, 0.04);
+          border: 1px solid rgba(0, 0, 0, 0.05);
+          border-radius: 20px;
+          padding: 4px;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+          width: fit-content;
+          margin: 0 auto 20px auto;
+          box-sizing: border-box;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      .tab-menu-horizontal .tab-btn {
+          background: transparent;
+          border: none;
+          padding: 8px 18px;
+          text-align: center;
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: #747d8c;
+          cursor: pointer;
+          border-radius: 16px;
+          transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 3px;
+          line-height: 1.25;
+          font-family: inherit;
+          position: relative;
+      }
+      .tab-menu-horizontal .tab-btn:hover:not(.active) {
+          color: var(--text-primary);
+          background: rgba(255, 255, 255, 0.5); /* Semi-transparent white card background */
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+          transform: translateY(-1px); /* Gentle lift on hover */
+      }
+      .tab-menu-horizontal .tab-btn.active {
+          background: #ffffff !important;
+          color: #1e272e !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+      }
+      .tab-menu-horizontal .tab-btn::after {
+          content: '';
+          position: absolute;
+          bottom: 2px;
+          left: 50%;
+          transform: translateX(-50%) translateY(4px);
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          opacity: 0;
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+      .tab-menu-horizontal .tab-btn.active::after {
+          bottom: 4px;
+          transform: translateX(-50%) translateY(0);
+          opacity: 1;
+      }
+      .tab-menu-horizontal .tab-btn:hover:not(.active)::after {
+          bottom: 4px;
+          transform: translateX(-50%) translateY(0);
+          opacity: 0.5; /* Soft preview of the category dot indicator on hover */
+      }
+      .tab-menu-horizontal .tab-btn.tab-finance::after {
+          background-color: var(--neon-cyan);
+          box-shadow: 0 0 6px var(--neon-cyan);
+      }
+      .tab-menu-horizontal .tab-btn.tab-golf::after {
+          background-color: var(--neon-green);
+          box-shadow: 0 0 6px var(--neon-green);
+      }
+      .tab-menu-horizontal .tab-btn.tab-ent::after {
+          background-color: var(--neon-pink);
+          box-shadow: 0 0 6px var(--neon-pink);
+      }
+      .tab-menu-horizontal .tab-btn.tab-family::after {
+          background-color: var(--neon-blue);
+          box-shadow: 0 0 6px var(--neon-blue);
+      }
+      .tab-menu-horizontal .tab-btn.tab-beauty::after {
+          background-color: #6c5ce7;
+          box-shadow: 0 0 6px #6c5ce7;
+      }
+
+      .widget-card {
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+          padding: 12px;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 10px 30px rgba(9, 132, 227, 0.04);
+      }
+      /* --- Today's Mission Checklist --- */
+      .todo-list {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 2px 0;
+      }
+      .todo-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.68rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          cursor: pointer;
+          user-select: none;
+      }
+      .todo-item input[type="checkbox"] {
+          margin: 0;
+          width: 12px;
+          height: 12px;
+          cursor: pointer;
+          accent-color: var(--neon-cyan);
+      }
+      .todo-text {
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 145px;
+      }
+      .todo-item input:checked + .todo-text {
+          text-decoration: line-through;
+          opacity: 0.5;
+          color: var(--text-secondary);
+      }
+
+      /* --- Family Events D-Day --- */
+      .dday-list {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 2px 0;
+      }
+      .dday-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.68rem;
+          font-weight: 600;
+      }
+      .dday-text {
+          color: var(--text-primary);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 110px;
+      }
+      .dday-badge {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.58rem;
+          font-weight: 800;
+          padding: 2px 6px;
+          border-radius: 6px;
+          text-align: center;
+          min-width: 32px;
+          font-variant-numeric: tabular-nums;
+          font-feature-settings: "tnum" 1;
+      }
+      .dday-urgent {
+          background-color: rgba(255, 59, 48, 0.12);
+          color: #ff3b30;
+      }
+      .dday-soon {
+          background-color: rgba(255, 149, 0, 0.12);
+          color: #ff9500;
+      }
+      .dday-normal {
+          background-color: rgba(0, 122, 255, 0.12);
+          color: #007aff;
+      }
+
+      /* --- Vietnam Signal Styling --- */
+      .vietnam-signal-box {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 2px 0;
+          width: 100%;
+          box-sizing: border-box;
+      }
+      .vn-time-display {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 800;
+          color: var(--neon-cyan);
+          text-align: center;
+          font-variant-numeric: tabular-nums;
+          font-feature-settings: "tnum" 1;
+          letter-spacing: 0.5px;
+          line-height: 1;
+          margin-bottom: 2px;
+      }
+      .vn-date-display {
+          font-size: 0.6rem;
+          color: var(--text-secondary);
+          text-align: center;
+          font-weight: 600;
+          margin-bottom: 4px;
+      }
+      .vn-weather-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          background: rgba(0, 0, 0, 0.02);
+          border-radius: 8px;
+          padding: 6px 8px;
+          border: 1px solid rgba(0, 0, 0, 0.03);
+          box-sizing: border-box;
+          width: 100%;
+      }
+      .vn-weather-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.62rem;
+          font-weight: 600;
+      }
+      .vn-weather-label {
+          color: var(--text-secondary);
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+      }
+      .vn-weather-value {
+          color: var(--text-primary);
+          font-weight: 700;
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+          font-feature-settings: "tnum" 1;
+      }
+      .vn-weather-value.temp {
+          color: var(--text-primary);
+      }
+      .vn-weather-value.condition {
+          color: var(--neon-cyan);
+      }
+
+      .category-header-wrapper {
+          margin-bottom: 12px;
+          padding-left: 12px;
+          border-left: 4px solid var(--neon-cyan);
+          transition: border-color 0.3s ease;
+      }
+      .category-header-wrapper h2 {
+          font-size: 1.35rem;
+          color: var(--text-primary);
+          font-weight: 700;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .card-stack-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          padding: 20px 0;
+          box-sizing: border-box;
+      }
+      .card-stack {
+          position: relative;
+          width: 320px;
+          height: 390px;
+          perspective: 1200px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+      .card-stack .card {
+          position: absolute;
+          width: 320px;
+          height: 380px;
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 10px 30px rgba(9, 132, 227, 0.04);
+          transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          overflow: hidden;
+          cursor: pointer;
+      }
+
+      /* Stacked State */
+      .card-left {
+          transform: translateX(-20px) rotate(-4deg) scale(0.95);
+          opacity: 0.8;
+          z-index: 1;
+      }
+      .card-right {
+          transform: translateX(20px) rotate(4deg) scale(0.95);
+          opacity: 0.8;
+          z-index: 1;
+      }
+      .card-cover {
+          transform: translateX(0) rotate(0deg) scale(1);
+          z-index: 3;
+          opacity: 1;
+      }
+
+      /* Sequential Delay logic for closing cards (mouse leaves) */
+      .card-cover {
+          transition-delay: 0.4s;
+      }
+      .card-left {
+          transition-delay: 0.2s;
+      }
+      .card-right {
+          transition-delay: 0s;
+      }
+
+      /* Sequential Delay logic for opening cards (mouse hovers stack) */
+      .card-stack:hover .card-cover {
+          transform: scale(1.03);
+          z-index: 5;
+          transition-delay: 0s;
+      }
+      .card-stack:hover .card-left {
+          transform: translateX(-280px) rotate(-8deg) scale(0.98);
+          opacity: 1;
+          z-index: 4;
+          transition-delay: 0.2s;
+      }
+      .card-stack:hover .card-right {
+          transform: translateX(280px) rotate(8deg) scale(0.98);
+          opacity: 1;
+          z-index: 4;
+          transition-delay: 0.4s;
+      }
+
+      /* Glowing hover border and shadows per category on stack hover */
+      #dad-dashboard[data-category="finance"] .card-stack:hover .card-cover { border-color: var(--neon-cyan); box-shadow: 0 20px 45px rgba(9, 132, 227, 0.25); }
+      #dad-dashboard[data-category="finance"] .card-stack:hover .card-left { border-color: var(--neon-cyan); box-shadow: 0 20px 40px rgba(9, 132, 227, 0.15); }
+      #dad-dashboard[data-category="finance"] .card-stack:hover .card-right { border-color: var(--neon-cyan); box-shadow: 0 20px 40px rgba(9, 132, 227, 0.15); }
+
+      #dad-dashboard[data-category="golf"] .card-stack:hover .card-cover { border-color: var(--neon-green); box-shadow: 0 20px 45px rgba(46, 204, 113, 0.25); }
+      #dad-dashboard[data-category="golf"] .card-stack:hover .card-left { border-color: var(--neon-green); box-shadow: 0 20px 40px rgba(46, 204, 113, 0.15); }
+      #dad-dashboard[data-category="golf"] .card-stack:hover .card-right { border-color: var(--neon-green); box-shadow: 0 20px 40px rgba(46, 204, 113, 0.15); }
+
+      #dad-dashboard[data-category="ent"] .card-stack:hover .card-cover { border-color: var(--neon-pink); box-shadow: 0 20px 45px rgba(214, 48, 49, 0.25); }
+      #dad-dashboard[data-category="ent"] .card-stack:hover .card-left { border-color: var(--neon-pink); box-shadow: 0 20px 40px rgba(214, 48, 49, 0.15); }
+      #dad-dashboard[data-category="ent"] .card-stack:hover .card-right { border-color: var(--neon-pink); box-shadow: 0 20px 40px rgba(214, 48, 49, 0.15); }
+
+      #dad-dashboard[data-category="family"] .card-stack:hover .card-cover { border-color: var(--neon-blue); box-shadow: 0 20px 45px rgba(0, 206, 203, 0.25); }
+      #dad-dashboard[data-category="family"] .card-stack:hover .card-left { border-color: var(--neon-blue); box-shadow: 0 20px 40px rgba(0, 206, 203, 0.15); }
+      #dad-dashboard[data-category="family"] .card-stack:hover .card-right { border-color: var(--neon-blue); box-shadow: 0 20px 40px rgba(0, 206, 203, 0.15); }
+
+      /* Individual Card Hover Popups */
+      .card-stack:hover .card:hover {
+          transition-delay: 0s !important;
+          transition-duration: 0.3s !important;
+          z-index: 10 !important;
+          background: rgba(255, 255, 255, 0.98);
+      }
+      .card-stack:hover .card-left:hover {
+          transform: translateX(-295px) translateY(-15px) rotate(0deg) scale(1.08) !important;
+      }
+      .card-stack:hover .card-right:hover {
+          transform: translateX(295px) translateY(-15px) rotate(0deg) scale(1.08) !important;
+      }
+      .card-stack:hover .card-cover:hover {
+          transform: translateY(-15px) scale(1.08) !important;
+      }
+
+      /* 카드 상단 배너 이미지 */
+      .card-banner {
+          height: 120px;
+          background-size: cover;
+          background-position: center;
+          width: 100%;
+          border-bottom: 1px solid var(--border-color);
+          position: relative;
+      }
+
+      /* 배너 위의 뱃지 배치 */
+      .card-banner .indicator {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          margin-bottom: 0;
+          z-index: 2;
+      }
+
+      /* 카드 내용 구획 */
+      .card-content {
+          padding: 18px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          flex-grow: 1;
+          height: calc(100% - 120px);
+      }
+
+      /* Typography Inside Cards */
+      .card-header {
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 12px;
+          margin-bottom: 12px;
+      }
+      .card-header h2 {
+          font-size: 1.15rem;
+          font-weight: 700;
+          color: var(--text-primary);
+          letter-spacing: 0.5px;
+      }
+      .card-header h3 {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin-bottom: 4px;
+      }
+      .card-body p {
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          line-height: 1.6;
+      }
+
+      /* Spacing & Badges inside cards */
+      .indicator {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(255, 0, 127, 0.12);
+          border: 1px solid rgba(255, 0, 127, 0.25);
+          padding: 4px 10px;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: #ff3b93;
+          margin-bottom: 8px;
+      }
+      .indicator::before {
+          display: none;
+      }
+      .card-footer {
+          margin-top: auto;
+          padding-top: 12px;
+      }
+      .card-footer a, .cta-text {
+          color: var(--neon-cyan);
+          text-decoration: none;
+          font-weight: 700;
+          font-size: 0.85rem;
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          transition: color 0.3s ease;
+      }
+      .card-footer a:hover {
+          color: var(--neon-blue);
+      }
+      .movie-card-footer a {
+          color: var(--neon-pink);
+      }
+      .movie-card-footer a:hover {
+          color: #ff3b93;
+      }
+      .cta-btn {
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          color: #0b0c10;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          font-weight: 700;
+          font-size: 0.85rem;
+          cursor: pointer;
+          width: 100%;
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0, 242, 254, 0.2);
+          transition: all 0.3s ease;
+      }
+      .cta-btn:hover {
+          box-shadow: 0 6px 18px rgba(0, 242, 254, 0.4);
+          transform: scale(1.02);
+      }
+
+      /* --- Magazine Blog Feed --- */
+      .magazine-header h2 {
+          font-size: 1.6rem;
+          color: var(--text-primary);
+          font-weight: 700;
+          margin: 60px 0 30px 0;
+          padding-left: 16px;
+          border-left: 5px solid var(--neon-blue);
+      }
+      .magazine-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 30px;
+      }
+      .article-card {
+          background: var(--card-bg);
+          border-radius: 24px;
+          overflow: hidden;
+          border: 1px solid var(--border-color);
+          box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+      }
+      .article-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0, 242, 254, 0.15);
+          border-color: var(--neon-cyan);
+      }
+      .article-img {
+          width: 100%;
+          height: 200px;
+          background-color: #12131e;
+          background-size: cover;
+          background-position: center;
+      }
+      .article-content {
+          padding: 28px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+      }
+      .article-title {
+          font-size: 1.25rem;
+          font-weight: 700;
+          margin: 0 0 12px 0;
+          color: var(--text-primary);
+          line-height: 1.5;
+      }
+      .article-date {
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+          margin-top: auto;
+          font-weight: 500;
+      }
+
+      /* Ad Banner Styling */
+      .ad-banner {
+          width: 100%;
+          height: 100px;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px dashed var(--border-color);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          font-weight: 600;
+          margin-bottom: 50px;
+          backdrop-filter: blur(5px);
+      }
+
+      /* --- Form Containers (Read/Write Views) --- */
+      .form-container {
+          background: var(--card-bg);
+          padding: 50px;
+          border-radius: 28px;
+          border: 1px solid var(--border-color);
+          box-shadow: 0 15px 50px rgba(9, 132, 227, 0.08);
+          max-width: 850px;
+          margin: 0 auto;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+      }
+      .input-field {
+          width: 100%;
+          padding: 18px;
+          margin-bottom: 24px;
+          background: rgba(255, 255, 255, 0.8);
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          color: var(--text-primary);
+          font-family: inherit;
+          font-size: 1.05rem;
+          box-sizing: border-box;
+          transition: 0.2s;
+      }
+      .input-field:focus {
+          outline: none;
+          border-color: var(--neon-cyan);
+          background: rgba(255, 255, 255, 0.95);
+          box-shadow: 0 0 0 4px rgba(9, 132, 227, 0.15);
+      }
+      .input-textarea {
+          width: 100%;
+          height: 450px;
+          padding: 18px;
+          margin-bottom: 24px;
+          background: rgba(255, 255, 255, 0.8);
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          color: var(--text-primary);
+          font-family: inherit;
+          font-size: 1.05rem;
+          resize: vertical;
+          box-sizing: border-box;
+          line-height: 1.7;
+          transition: 0.2s;
+      }
+      .input-textarea:focus {
+          outline: none;
+          border-color: var(--neon-cyan);
+          background: rgba(18, 22, 38, 0.8);
+          box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.15);
+      }
+      .btn-primary {
+          width: 100%;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          color: #0b0c10;
+          padding: 18px;
+          border: none;
+          border-radius: 16px;
+          font-size: 1.15rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.3s;
+          box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+      }
+      .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+      }
+      .btn-back {
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--text-primary);
+          border: 1px solid var(--border-color);
+          padding: 12px 24px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: 600;
+          margin-bottom: 30px;
+          transition: 0.2s;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+      }
+      .btn-back:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+      }
+
+      /* --- Footer --- */
+      .footer {
+          text-align: center;
+          max-width: 1200px;
+          margin: 80px auto 0 auto;
+          padding: 30px 20px;
+          border-top: 1px solid var(--border-color);
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+      }
+      .footer-links a {
+          color: var(--text-secondary);
+          text-decoration: none;
+          margin: 0 10px;
+          transition: color 0.2s;
+      }
+      .footer-links a:hover {
+          color: var(--neon-cyan);
+      }
+
+      /* --- Animations & Responsive Mobile Split (Vertical Unfold) --- */
+      @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+      }
+
+      @media (max-width: 992px) {
+          .dad-top-dashboard {
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+              gap: 20px;
+          }
+          .dad-header-left {
+              text-align: center;
+          }
+          .dad-widgets-right {
+              width: 100%;
+              justify-content: center;
+          }
+          .tab-menu-horizontal {
+              flex-wrap: wrap;
+              justify-content: center;
+              padding: 10px;
+          }
+          .tab-menu-horizontal .tab-btn {
+              padding: 8px 12px;
+              font-size: 0.85rem;
+          }
+          /* On screens under 992px but above 600px, keep card-stack but with smaller horizontal spreads */
+          .card-stack:hover .card-left {
+              transform: translateX(-160px) rotate(-5deg) scale(0.98);
+          }
+          .card-stack:hover .card-right {
+              transform: translateX(160px) rotate(5deg) scale(0.98);
+          }
+          .card-stack:hover .card-left:hover {
+              transform: translateX(-170px) translateY(-10px) rotate(0deg) scale(1.05) !important;
+          }
+          .card-stack:hover .card-right:hover {
+              transform: translateX(170px) translateY(-10px) rotate(0deg) scale(1.05) !important;
+          }
+      }
+      @media (max-width: 600px) {
+          .dad-widgets-right {
+              width: 100%;
+              justify-content: center;
+          }
+          .unified-monitor-widget {
+              width: 100%;
+              max-width: 320px;
+              flex-direction: column;
+              gap: 12px;
+              padding: 12px !important;
+          }
+          .monitor-divider {
+              width: 100%;
+              height: 1px;
+              background: var(--border-color);
+              align-self: auto;
+          }
+          .card-stack-container {
+              padding: 150px 0; /* plenty of space for vertical expansion! */
+          }
+          .card-stack {
+              height: 300px;
+          }
+          .card-stack .card {
+              width: 270px;
+              height: 290px;
+          }
+          .card-left {
+              transform: translateY(-8px) scale(0.95);
+          }
+          .card-right {
+              transform: translateY(8px) scale(0.95);
+          }
+          .card-stack:hover .card-left {
+              transform: translateY(-140px) rotate(-2deg) scale(0.96);
+          }
+          .card-stack:hover .card-right {
+              transform: translateY(140px) rotate(2deg) scale(0.96);
+          }
+          .card-stack:hover .card-cover {
+              transform: scale(1.02);
+          }
+          .card-stack:hover .card-left:hover {
+              transform: translateY(-160px) scale(1.05) !important;
+          }
+          .card-stack:hover .card-right:hover {
+              transform: translateY(160px) scale(1.05) !important;
+          }
+      }
+
+      /* --- Custom Modal for Card Details --- */
+      .dad-modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          z-index: 2000;
+          justify-content: center;
+          align-items: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+      }
+      .dad-modal.active {
+          display: flex;
+          opacity: 1;
+      }
+      .dad-modal-content {
+          background: rgba(255, 255, 255, 0.95);
+          border: 1px solid var(--border-color);
+          border-radius: 24px;
+          max-width: 600px;
+          width: 90%;
+          max-height: 80vh;
+          overflow-y: auto;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+          position: relative;
+          padding: 30px;
+          transform: translateY(20px);
+          transition: transform 0.3s ease;
+      }
+      .dad-modal.active .dad-modal-content {
+          transform: translateY(0);
+      }
+      .dad-modal-close {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: color 0.2s;
+          line-height: 1;
+      }
+      .dad-modal-close:hover {
+          color: var(--text-primary);
+      }
+      .modal-detail-banner {
+          height: 180px;
+          background-size: cover;
+          background-position: center;
+          border-radius: 16px;
+          margin-bottom: 24px;
+          border: 1px solid var(--border-color);
+      }
+      .modal-detail-title {
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin-top: 0;
+          margin-bottom: 8px;
+      }
+      .modal-detail-category {
+          font-size: 0.85rem;
+          color: var(--neon-cyan);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 700;
+          margin-bottom: 16px;
+      }
+      .modal-detail-body {
+          font-size: 1.05rem;
+          line-height: 1.7;
+          color: var(--text-primary);
+          margin-bottom: 30px;
+          white-space: pre-line;
+      }
+      .modal-detail-links {
+          border-top: 1px solid var(--border-color);
+          padding-top: 20px;
+      }
+      .modal-detail-links h4 {
+          margin-top: 0;
+          margin-bottom: 12px;
+          color: var(--text-secondary);
+          font-size: 0.95rem;
+      }
+      .modal-link-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+      .modal-link-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--neon-cyan);
+          text-decoration: none;
+          font-weight: 700;
+          transition: color 0.2s;
+      }
+      .modal-link-item:hover {
+          color: var(--neon-blue);
+          text-decoration: underline;
+      }
+
+      /* --- 데스크톱 index.html에서 이식된 헤더 & 푸터 CSS --- */
+      .dad-header {
+          text-align: center;
+          max-width: 1200px;
+          margin: 0 auto 60px auto;
+          padding: 20px;
+      }
+
+      .logo {
+          font-size: 2.8rem;
+          font-weight: 800;
+          letter-spacing: 5px;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+          filter: drop-shadow(0 2px 15px rgba(0, 242, 254, 0.3));
+          animation: glowPulse 3s infinite alternate;
+      }
+
+      .slogan {
+          font-size: 1.05rem;
+          color: var(--text-secondary);
+          font-weight: 400;
+          position: relative;
+          display: inline-block;
+          padding-bottom: 8px;
+      }
+
+      .slogan::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 20%;
+          width: 60%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      }
+
+      .lounge-footer {
+          text-align: center;
+          max-width: 1200px;
+          margin: 80px auto 0 auto;
+          padding: 20px;
+          border-top: 1px solid var(--border-color);
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+      }
+
+      @keyframes glowPulse {
+          0% {
+              filter: drop-shadow(0 2px 8px rgba(0, 242, 254, 0.25));
+          }
+          100% {
+              filter: drop-shadow(0 2px 18px rgba(0, 242, 254, 0.5));
+          }
+      }
+
+      /* --- Widget Settings Styles --- */
+      .unified-monitor-widget {
+          position: relative !important;
+      }
+      .widget-settings-toggle {
+          position: absolute;
+          top: 6px;
+          right: 8px;
+          cursor: pointer;
+          font-size: 0.65rem;
+          opacity: 0.5;
+          z-index: 100;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+          width: 14px;
+          height: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--text-primary);
+      }
+      .widget-settings-toggle:hover {
+          opacity: 1;
+          transform: rotate(45deg);
+      }
+      .setting-input {
+          width: 100%;
+          padding: 8px 12px;
+          border: 1px solid var(--border-color);
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.8);
+          font-family: inherit;
+          font-size: 0.78rem;
+          color: var(--text-primary);
+          box-sizing: border-box;
+          outline: none;
+          transition: all 0.2s ease;
+      }
+      .setting-input:focus {
+          border-color: var(--neon-cyan);
+          box-shadow: 0 0 8px rgba(9, 132, 227, 0.15);
+          background: #ffffff;
+      }
+      .setting-dday-row {
+          display: flex;
+          gap: 8px;
+          width: 100%;
+      }
+    </style>
+  </head>
+  <body class="dad-page">
+    
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="index.html">홈</a></li>
+          
+          <li class="nav-dropdown">
+            <a href="#" onclick="switchView('main-view')" style="color: var(--primary-color) !important; font-weight: 800;">아빠</a>
+            <div class="dropdown-content" id="dad-admin-menu">
+              <a href="#" onclick="switchView('write-view')">✍️ 매거진 새 글 발행</a>
+              <a href="blog.html">🔒 가족 비밀 일기장</a>
+            </div>
+          </li>
+          
+          <li><a href="mom.html">엄마</a></li>
+          <li><a href="baby.html">아기</a></li>
+          <li><a href="stars.html">🌠 별 보기</a></li>
+          <li><a href="blog.html">일기장</a></li>
+          <li><a href="#" onclick="logout()" class="logout-btn">로그아웃</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="main-view" class="view-section active">
+      
+      <!-- 상단 헤더 & 실시간 위젯 대시보드 (수평 배치) -->
+      <div class="dad-top-dashboard">
+        <div class="dad-header-left">
+          <div class="logo">DAD LOUNGE</div>
+        </div>
+        
+        <div class="dad-widgets-right">
+          <!-- 통합 대시보드 모니터 위젯 -->
+          <div class="widget-card unified-monitor-widget">
+            <!-- 설정 톱니바퀴 아이콘 -->
+            <div class="widget-settings-toggle" onclick="openWidgetSettingsModal()">⚙️</div>
+            
+            <!-- 오늘의 미션 (Checklist) -->
+            <div class="monitor-column mission-column">
+              <h3>📋 TODAY'S MISSION</h3>
+              <div class="todo-list" id="todo-list-container">
+                <!-- JS로 동적 렌더링 -->
+              </div>
+            </div>
+            <div class="monitor-divider"></div>
+            <!-- 가족 행사 (D-Day) -->
+            <div class="monitor-column family-column">
+              <h3>📅 FAMILY EVENTS</h3>
+              <div class="dday-list" id="dday-list-container">
+                <!-- JS로 동적 렌더링 -->
+              </div>
+            </div>
+            <div class="monitor-divider"></div>
+            <div class="monitor-column vietnam-column">
+              <h3>🇻🇳 VIETNAM SIGNAL</h3>
+              <div id="vietnam-time-weather">
+                <!-- JS로 주입됨 -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dad-dashboard-container" id="dad-dashboard" data-category="finance">
+        <!-- 상단 가로형 카테고리 탭 메뉴 -->
+        <div class="tab-menu-horizontal">
+          <button class="tab-btn tab-finance active" onclick="switchCategory('finance')">📈 금융<br>& 주식 분석</button>
+          <button class="tab-btn tab-golf" onclick="switchCategory('golf')">⛳ 스포츠<br>& 취미</button>
+          <button class="tab-btn tab-ent" onclick="switchCategory('ent')">🕹️ 엔터테인먼트<br>& 문화</button>
+          <button class="tab-btn tab-family" onclick="switchCategory('family')">👨‍👩‍👧‍👦 가족<br>& 라이프스타일</button>
+          <button class="tab-btn tab-beauty" onclick="switchCategory('beauty')">💈 그루밍<br>& 미용</button>
+        </div>
+
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="dad-dashboard-main">
+          <div class="category-header-wrapper" id="active-category-header">
+            <h2 id="active-category-title">📈 금융 & 주식 분석</h2>
+            <span class="category-subtitle" id="active-category-subtitle" style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Finance & Market Analysis</span>
+          </div>
+          
+          <div class="card-stack-container">
+            <div class="card-stack" id="dad-cards-grid">
+              <!-- JS로 현재 탭의 3개 카드가 동적으로 주입됨 -->
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div class="ad-banner">[구글 애드센스 상단 디스플레이 영역]</div>
+
+      <div class="magazine-header">
+        <h2>📚 아빠의 베트남 생생 정보 노트</h2>
+      </div>
+      
+      <div class="magazine-grid" id="post-list-container">
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-secondary); font-size: 1.1rem;">
+          클라우드에서 최신 글을 불러오는 중입니다...
+        </div>
+      </div>
+
+      <div class="ad-banner" style="margin-top: 60px;">[구글 애드센스 하단 멀티플렉스 영역]</div>
+      <footer class="lounge-footer">
+          <p>THE DAD LOUNGE v1.0 | 접속 기록: 아빠의 아지트</p>
+      </footer>
+    </div>
+
+    <div id="read-view" class="view-section">
+      <div class="form-container">
+        <button class="btn-back" onclick="switchView('main-view')">← 라운지로 돌아가기</button>
+        <div id="read-container-box"></div>
+      </div>
+    </div>
+
+    <div id="write-view" class="view-section">
+      <div class="form-container">
+        <button class="btn-back" onclick="switchView('main-view')">← 작성 취소</button>
+        <h2 style="margin-top:0; color:var(--text-primary); margin-bottom: 30px; font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">✍️ 매거진 새 글 발행</h2>
+        
+        <select id="edit-category" class="input-field">
+          <option value="vietnam">베트남 생활/맛집</option>
+          <option value="game">게임/테크 공략</option>
+        </select>
+        
+        <input type="text" id="edit-title" class="input-field" placeholder="시선을 끄는 제목을 입력하세요" />
+        
+        <label style="display:block; margin-bottom:12px; font-weight: 600; color:var(--text-secondary);">대표 이미지 (목록 썸네일)</label>
+        <input type="file" id="edit-image" accept="image/*" class="input-field" style="padding: 14px;" />
+        <img id="edit-preview" src="" style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-bottom:24px; display:none; box-shadow:0 5px 15px rgba(0,0,0,0.5);" />
+        
+        <textarea id="edit-content" class="input-textarea" placeholder="본문 내용을 자유롭게 작성하세요. 줄바꿈과 간단한 HTML 태그 적용이 가능합니다."></textarea>
+        
+        <button id="btn-publish" class="btn-primary">클라우드 서버에 전 세계 발행하기 🚀</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
+      </div>
+    </footer>
+
+    <!-- 5. 상세정보 팝업 모달 구조 -->
+    <div id="dad-card-modal" class="dad-modal" onclick="closeDetailModalOnOutside(event)">
+      <div class="dad-modal-content">
+        <span class="dad-modal-close" onclick="closeDetailModal()">&times;</span>
+        <div id="dad-modal-body">
+          <!-- 스크립트로 내용 동적 생성 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 위젯 대시보드 설정 팝업 모달 구조 -->
+    <div id="dad-widget-settings-modal" class="dad-modal" onclick="closeWidgetSettingsModalOnOutside(event)">
+      <div class="dad-modal-content" style="max-width: 420px; padding: 25px; border-radius: 20px;">
+        <span class="dad-modal-close" onclick="closeWidgetSettingsModal()">&times;</span>
+        <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 700;">⚙️ 위젯 대시보드 설정</h3>
+        
+        <form id="widget-settings-form" onsubmit="saveWidgetSettings(event)">
+          <!-- 오늘의 미션 설정 -->
+          <div style="margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; font-size: 0.8rem; color: var(--neon-cyan); font-weight: 700;">📋 오늘의 미션 설정</h4>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <input type="text" id="setting-todo-1" class="setting-input" placeholder="미션 1 (예: 🥛 영양제 챙겨먹기)" required>
+              <input type="text" id="setting-todo-2" class="setting-input" placeholder="미션 2 (예: 🚶‍♂️ 1만 보 걷기)" required>
+              <input type="text" id="setting-todo-3" class="setting-input" placeholder="미션 3 (예: 📞 가족에게 안부 전화)" required>
+            </div>
+          </div>
+          
+          <!-- 가족 행사 D-Day 설정 -->
+          <div style="margin-bottom: 25px;">
+            <h4 style="margin: 0 0 10px 0; font-size: 0.8rem; color: var(--neon-cyan); font-weight: 700;">📅 가족 D-Day 일정 설정</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div class="setting-dday-row">
+                <input type="text" id="setting-dday-title-1" class="setting-input" style="flex: 1.3;" placeholder="일정 1 (예: 🎂 아내 생일)" required>
+                <input type="date" id="setting-dday-date-1" class="setting-input" style="flex: 1;" required>
+              </div>
+              <div class="setting-dday-row">
+                <input type="text" id="setting-dday-title-2" class="setting-input" style="flex: 1.3;" placeholder="일정 2 (예: 👨‍👩‍👧‍👦 가족 저녁 식사)" required>
+                <input type="date" id="setting-dday-date-2" class="setting-input" style="flex: 1;" required>
+              </div>
+              <div class="setting-dday-row">
+                <input type="text" id="setting-dday-title-3" class="setting-input" style="flex: 1.3;" placeholder="일정 3 (예: 💌 결혼기념일)" required>
+                <input type="date" id="setting-dday-date-3" class="setting-input" style="flex: 1;" required>
+              </div>
+            </div>
+          </div>
+          
+          <button type="submit" class="write-submit-btn" style="width: 100%; border-radius: 12px; padding: 12px; font-weight: 700; background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%); color: white; border: none; cursor: pointer; transition: 0.2s;">설정 저장하기 💾</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const cardDetailsDB = {
+        'finance-cover': {
+          category: 'Finance & Market Analysis',
+          title: '📈 실시간 글로벌 마켓 분석 리포트 허브',
+          image: 'images/dad_finance.png',
+          body: `글로벌 거시경제 지표 및 증시 현황 요약입니다.\n금리 전망과 환율 변동성에 대비하는 아빠의 자산 배분 전략 및 포트폴리오 제안:\n\n1. 미국 빅테크 및 반도체 섹터의 지배력 확인\n2. 고금리 장기화에 따른 배당성장주 비중 확대 전략\n3. 글로벌 경기침체 우려에 대응하는 안전자산(달러, 금) 분할 적립 비책\n\n이 리포트 허브에서는 아빠만의 통찰력이 담긴 심도 깊은 마켓 시그널과 정밀한 분석을 매주 실시간으로 업데이트합니다.`,
+          links: [
+            { text: '네이버 금융 (증권 뉴스 및 국내 주식)', url: 'https://finance.naver.com/' },
+            { text: 'Yahoo Finance (미국 증시 및 글로벌 지표)', url: 'https://finance.yahoo.com/' },
+            { text: 'Investing.com (실시간 원자재/환율/지수)', url: 'https://kr.investing.com/' }
+          ]
+        },
+        'finance-left': {
+          category: 'Sector Alert',
+          title: '🔴 반도체 섹터 과열 분석 및 리스크 관리',
+          image: 'images/dad_finance.png',
+          body: `최근 AI 열풍으로 급격하게 급등한 글로벌 반도체 섹터의 밸류에이션 리스크를 점검합니다.\n\n[주요 리스크 지표]\n- 반도체 장비 및 칩 생산 리드타임 지연 우려\n- 주요 빅테크 기업들의 인프라 투자 속도 조절 가능성\n- 단기 차익 실현 매물 출회에 따른 높은 변동성\n\n[투자 행동 요령]\n무리한 고점 추격 매수보다는 포트폴리오 리밸런싱을 권장하며, 현금 비중을 일정 유지한 채 분할 매수 타이밍을 도모하는 리스크 중심의 가이드라인을 제공합니다.`,
+          links: [
+            { text: '삼성전자 주가 및 종목 정보 (네이버 금융)', url: 'https://finance.naver.com/item/main.naver?code=005930' },
+            { text: 'SK하이닉스 주가 및 종목 정보 (네이버 금융)', url: 'https://finance.naver.com/item/main.naver?code=000660' }
+          ]
+        },
+        'finance-right': {
+          category: 'AI Value Chain',
+          title: '💰 AI 인프라 핵심 수혜주 탑픽 3선',
+          image: 'images/dad_finance.png',
+          body: `글로벌 인공지능(AI) 혁신 속에서 가장 높은 실적 성장이 기대되는 저평가 및 독과점 지위의 핵심 수혜주 3선을 선정하였습니다.\n\n1. 엔비디아 (NVIDIA / NVDA)\n- 설명: AI 가속기 칩셋(GPU) 분야에서 90% 이상의 압도적인 독점력을 보유하여 탄탄한 현금 흐름을 창출하는 AI 대장주.\n\n2. TSMC (TSM)\n- 설명: 전 세계 미세공정 파운드리의 최정점. 엔비디아, 애플 등 글로벌 테크 기업들의 최첨단 AI 칩을 유일하게 위탁 생산.\n\n3. 브로드컴 (Broadcom / AVGO)\n- 설명: 고속 네트워크 반도체 및 맞춤형 실리콘(ASIC) 설계 부문 글로벌 선두주자로 AI 인프라 확장에 필연적인 수혜.\n\n위 기업들의 분기별 실적 분석 및 장기 목표 주가 전망을 확인하세요.`,
+          links: [
+            { text: 'NVIDIA 주가 및 실시간 트렌드 (Yahoo Finance)', url: 'https://finance.yahoo.com/quote/NVDA' },
+            { text: 'TSMC 주가 및 시장 동향 (Yahoo Finance)', url: 'https://finance.yahoo.com/quote/TSM' },
+            { text: 'Broadcom 주가 및 목표 지표 (Yahoo Finance)', url: 'https://finance.yahoo.com/quote/AVGO' }
+          ]
+        },
+        'golf-cover': {
+          category: 'Sports & Golf',
+          title: '⛳ 골프 싱글 골퍼로 가는 전략 허브',
+          image: 'images/dad_golf.png',
+          body: `필드에서 안정적으로 싱글 스코어를 기록하기 위한 코스 매니지먼트와 일관성 있는 샷 메이킹 전략입니다.\n\n[핵심 연습 가이드]\n- 숏게임 감각 강화: 어프로치 거리 조절 및 퍼팅 그린 스피드 적응 훈련\n- 티샷 공략: 드라이버 생존율을 높이기 위한 스탠스 정렬 및 멘탈 셋팅\n- 코스 매니지먼트: 위험 해저드 회피 및 타협 없는 레이업 판단력 훈련\n\n체계적인 연습 목표 설정 및 당일 컨디션 조절 루틴을 설계하여 매 라운드 최상의 기록을 완성해 보세요.`,
+          links: [
+            { text: '골프존 공식 웹사이트 (스코어 카드 및 매장 찾기)', url: 'https://www.golfzon.com/' },
+            { text: 'SBS 골프 공식 유튜브 (유용한 프로 레슨 영상)', url: 'https://www.youtube.com/@sbsgolf' }
+          ]
+        },
+        'golf-left': {
+          category: 'Swing Form',
+          title: '🏌️‍♂️ 드라이버 비거리 200m 공식',
+          image: 'images/dad_golf.png',
+          body: `아마추어 골퍼가 드라이버 비거리 200m를 일정하게 넘길 수 있도록 도와주는 신체 매커니즘과 연습 노하우입니다.\n\n[3대 핵심 체크포인트]\n1. 꼬임(Coiling) 극대화: 테이크백 시 하체를 단단히 고정하고 어깨 회전을 90도 이상 충분히 확보하여 코어 에너지를 축적합니다.\n2. 다운스윙 래깅(Lagging): 힘으로만 휘두르지 않고, 다운스윙 시작 시 코킹을 부드럽게 유지하여 헤드 스피드를 가속시킵니다.\n3. 척추각 유지(Posture): 임팩트 시 상체가 덤비거나 일어서는 얼리 익스텐션(배치기)을 막아 정타율을 획기적으로 상승시킵니다.`,
+          links: [
+            { text: '유튜브: 드라이버 비거리 200m 달성 비결 검색', url: 'https://www.youtube.com/results?search_query=골프+드라이버+비거리+늘리기' }
+          ]
+        },
+        'golf-right': {
+          category: 'Field Gear',
+          title: '🍂 가을/겨울 라운딩 필수 기어 및 팁',
+          image: 'images/dad_golf.png',
+          body: `쌀쌀해지는 환절기 및 겨울철 필드에서 타수를 잃지 않고 안전하게 라운딩을 즐기기 위한 필수 아이템과 행동 요령입니다.\n\n[환절기 기어 추천 리스트]\n- 체온 유지용 기능성 방풍 의류 및 넥워머\n- 장비 작동 신뢰도를 지켜줄 핫팩 및 휴대용 전기 손난로\n- 카트 대기 시간 체온 보충을 위한 보온병과 따뜻한 물\n\n[겨울 라운딩 팁]\n겨울철 차가운 날씨에는 볼의 고무 압축률이 변화하여 평소보다 비거리가 약 10% 감소합니다. 한 클럽 더 길게 잡고 편안하게 스윙하는 매니지먼트를 추천합니다. 또한 부드러운 타구감의 저압축(Low Compression) 공을 사용하시는 것이 유리합니다.`,
+          links: [
+            { text: '골프존 마켓 쇼핑몰 (필드용 골프 기어 최저가 구매)', url: 'https://www.golfzonmarket.com/' }
+          ]
+        },
+        'ent-cover': {
+          category: 'Entertainment',
+          title: '🕹️ 아빠의 주말 힐링 콘텐츠 허브',
+          image: 'images/dad_entertainment.png',
+          body: `한 주간의 직장 스트레스와 피로를 깔끔하게 해소할 엄선된 엔터테인먼트 콘텐츠 셀렉션입니다.\n가족들과 거실에서 즐거운 시간도 공유하고, 때로는 혼자만의 시간 속에서 에너지를 재충전할 수 있는 힐링 가이드를 구축합니다.\n\n- 추천 콘솔 타이틀 및 게임기별 필수 액서서리 안내\n- 넷플릭스, 디즈니 플러스 인기 순위 반영 명작 아카이브\n- 주말 밤, 감성적인 음악과 영화를 조화롭게 매칭하는 아빠만의 힐링 플랜`,
+          links: [
+            { text: '넷플릭스 홈 바로가기', url: 'https://www.netflix.com/' },
+            { text: '디즈니 플러스 홈 바로가기', url: 'https://www.disneyplus.com/' }
+          ]
+        },
+        'ent-left': {
+          category: 'Console Game',
+          title: '🎮 아빠들을 위한 콘솔/PC 명작 RPG 추천',
+          image: 'images/dad_entertainment.png',
+          body: `복잡한 조작이나 끝없는 경쟁에 지친 아빠들에게 깊이 있는 스토리와 높은 자유도로 힐링을 주는 웰메이드 패키지 RPG 3선입니다.\n\n1. 더 위쳐 3: 와일드 헌트 (The Witcher 3)\n- 명작 소설 원작의 탄탄한 성인 판타지 스토리. 딸을 찾아 모험을 떠나는 아버지 게롤트의 여정이 큰 감동을 줍니다.\n\n2. 젤다의 전설: 티어스 오브 더 킹덤 (Tears of the Kingdom)\n- 닌텐도 스위치 최고의 명작. 기발한 조립 매커니즘과 오픈월드 탐험이 잃어버렸던 상상력과 흥미를 일깨워 줍니다.\n\n3. 엘든 링 (Elden Ring)\n- 조금 어렵지만, 엄청난 스케일의 다크 판타지 세계를 탐험하며 보스를 처치했을 때 최고의 성취감을 맛볼 수 있습니다.`,
+          links: [
+            { text: 'Steam (스팀 PC 게임 플랫폼 상점)', url: 'https://store.steampowered.com/' },
+            { text: 'PlayStation 공식 스토어 (콘솔 타이틀 확인)', url: 'https://store.playstation.com/' }
+          ]
+        },
+        'ent-right': {
+          category: 'OTT Spotlight',
+          title: '🎬 몰입도 극상! 아빠 취향 주말 추천 영화',
+          image: 'images/dad_entertainment.png',
+          body: `주말 밤, 조용히 혼자 또는 가족과 거실에서 감상하기에 완벽한 묵직한 감동과 시각적 쾌감을 주는 영화 목록입니다.\n\n1. 인터스텔라 (Interstellar)\n- 평점: 4.9/5.0\n- 추천사: 지구의 위기 속에서 가족을 구하기 위해 블랙홀을 탐사하는 전직 파일럿의 숭고한 우주 모험과 뭉클한 부성애.\n\n2. 탑건: 매버릭 (Top Gun: Maverick)\n- 평점: 4.8/5.0\n- 추천사: 톰 크루즈의 시원한 전투기 액션과 레트로 아날로그 감성이 살아 숨 쉬는, 아빠 세대를 위한 완벽한 헌사.\n\n3. 어바웃 타임 (About Time)\n- 평점: 4.7/5.0\n- 추천사: 시간을 되돌릴 수 있는 능력을 가진 주인공이 평범한 하루하루와 가족의 가치를 깨달아 가는 따뜻한 인생 로맨스 영화.`,
+          links: [
+            { text: '왓챠피디아 (실시간 영화 상세 평점 및 리뷰 분석)', url: 'https://pedia.watcha.com/' }
+          ]
+        },
+        'family-cover': {
+          category: 'Family Log',
+          title: '👨‍👩‍👧‍👦 육아와 라이프스타일 밸런스 허브',
+          image: 'images/dad_family.png',
+          body: `화목한 가정을 일구는 훌륭한 가장이자, 아내에게는 든든한 동반자, 아이에게는 존경받는 아빠가 되기 위한 일상 균형 허브입니다.\n\n[실천 가이드라인]\n- 육아 스트레스 해소를 위한 부부 간의 솔직한 대화 및 소통법\n- 직장 생활의 스트레스가 가정으로 이어지지 않도록 하는 마인드 웰니스 컨트롤\n- 아빠와 함께 떠나는 주말 가족 여행지 추천 및 레크리에이션 계획\n\n가정의 핵심 주축인 아빠의 지혜롭고 사랑 넘치는 일지들을 이 공간에 기록하고 실천해 갑니다.`,
+          links: [
+            { text: '가족 비밀 일기장 (패밀리 블로그 페이지)', url: 'blog.html' }
+          ]
+        },
+        'family-left': {
+          category: 'Parenting Tech',
+          title: '🍼 아빠의 손을 가볍게! 육아 생존 꿀템 TOP 3',
+          image: 'images/dad_family.png',
+          body: `바쁜 일상 속 가사 부담을 절반 이하로 확 줄여주어 삶의 질을 수직 상승시킨 내돈내산 가전 및 육아 제품 TOP 3입니다.\n\n1. 브레짜 자동 분유 제조기\n- 리뷰: 새벽 비몽사몽한 상태에서 버튼 터치 한 번으로 10초 만에 정확한 온도와 농도의 분유를 타줍니다. 필수 필수 꿀템.\n\n2. 프리미엄 대용량 식기세척기\n- 리뷰: 젖병 세척부터 식사 후 설거지까지 완벽 세정 및 건조. 싱크대 앞에서 보낼 하루 평균 1시간의 육아 황금 시간을 되돌려줍니다.\n\n3. 휴대용 무소음 노즈 스위퍼 (콧물 흡입기)\n- 리뷰: 환절기나 감기 걸렸을 때 아기 콧물을 부드럽고 강하게 빼주어 밤잠을 편안하게 유도해주는 의료급 꿀기기.`,
+          links: [
+            { text: '네이버 쇼핑 (인기 육아용품 및 최저가 리뷰)', url: 'https://shopping.naver.com/home' }
+          ]
+        },
+        'family-right': {
+          category: 'Parenting Guide',
+          title: '💬 남편의 배려와 아빠의 올바른 훈육 사이',
+          image: 'images/dad_family.png',
+          body: `아내의 육아 고충을 깊이 공감하는 좋은 남편이자, 아이의 긍정적인 행동 변화를 이끌어내는 좋은 아빠의 역할 조율 꿀팁입니다.\n\n[행동 약속 리스트]\n1. 아내를 위한 10분의 배려: 퇴근 후 지친 아내에게 물 한 잔을 건네며 하루 동안 수고했음을 진심으로 칭찬해주고 공감해 줍니다.\n2. 일관적인 훈육 태도: 훈육할 때는 감정적으로 흥분하거나 버럭 화내지 않으며, 차분하고 일관성 있게 옳고 그름의 규칙을 아기에게 알려 줍니다.\n3. 아빠만의 재충전 시간: 주 1회 부부간의 상호 동의 하에 온전한 개인 시간(운동, 독서 등)을 확보하여 육아 번아웃을 사전에 예방합니다.`,
+          links: [
+            { text: '한국 건강가정진흥원 (부모 교육 및 가족 상담 포털)', url: 'https://www.kihf.or.kr/' }
+          ]
+        },
+        'beauty-cover': {
+          category: 'Grooming & Skincare',
+          title: '💈 아빠의 프리미엄 그루밍 & 피부 관리 허브',
+          image: 'images/dad_family.png',
+          body: `아빠들의 세련된 외모 관리를 위한 기초 스킨케어, 스타일링, 모발 관리 가이드라인입니다.\n\n가장으로서 중후함과 단정함을 겸비할 수 있도록 심플하지만 확실한 데일리 그루밍 루틴을 실천해 보세요.\n\n1. 피부 톤 보정을 위한 기초 자외선 차단제 및 비비크림 활용법\n2. 주름 예방을 위한 영양 공급 및 취침 전 스킨케어 루틴\n3. 풍성한 모발을 유지하기 위한 두피 건강 샴푸법 및 탈모 예방 가이드`,
+          links: [
+            { text: '올리브영 맨즈 케어 공식몰 바로가기', url: 'https://www.oliveyoung.co.kr/' }
+          ]
+        },
+        'beauty-left': {
+          category: 'Anti-Aging',
+          title: '🧴 주름 없는 아빠! 3단계 초간단 피부 홈케어',
+          image: 'images/dad_family.png',
+          body: `피부 관리가 귀찮은 아빠들을 위한 단 3분 만에 끝내는 데일리 안티에이징 루틴입니다.\n\n[3단계 코스]\n1. 약산성 폼클렌징 세안: 피부 장벽을 무너뜨리지 않는 순한 세안으로 노폐물만 선택적으로 제거합니다.\n2. 올인원 에센스 도포: 복잡한 단계를 하나로 해결하여 풍부한 수분을 피부 속에 빠르게 공급해 줍니다.\n3. 자외선 차단제(선크림) 필수 도포: 노화와 주름의 주원인인 자외선을 차단해 피부 탄력을 지켜줍니다.\n\n귀찮더라도 선크림 하나만 제대로 발라도 5년은 젊어 보입니다. 지금 시작해 보세요.`,
+          links: [
+            { text: '화해 (피부 타입별 스킨케어 성분 분석 어플)', url: 'https://www.hwahae.co.kr/' }
+          ]
+        },
+        'beauty-right': {
+          category: 'Hair Care',
+          title: '💇‍♂️ 깔끔한 인상을 주는 아빠의 헤어 & 모발 공략',
+          image: 'images/dad_family.png',
+          body: `풍성한 머리숱과 단정한 스타일로 세련된 분위기를 연출하는 모발 관리 핵심 포인트입니다.\n\n[탈모 예방 및 두피 관리 팁]\n- 뜨거운 바람 대신 찬 바람으로 두피를 구석구석 말려 습한 환경을 방지합니다.\n- 낮 동안 쌓인 미세먼지와 피지를 제거하기 위해 저녁 취침 전에 머리를 감아주는 것이 좋습니다.\n\n[헤어스타일링 공략]\n- 이마를 깔끔하게 드러내는 댄디컷이나 다운펌 스타일로 정돈된 이미지를 줍니다.\n- 끈적임이 적고 세정력이 우수한 매트 왁스나 수성 포마드를 소량 덜어 볼륨감을 완성하세요.`,
+          links: [
+            { text: '유튜브: 아빠들을 위한 올바른 샴푸 및 두피 마사지 꿀팁', url: 'https://www.youtube.com/results?search_query=탈모+예방+두피+마사지' }
+          ]
+        }
+      };
+
+
+      const cardsSummaryDB = {
+        finance: [
+          {
+            id: 'finance-cover',
+            badge: 'MARKET',
+            title: '글로벌 마켓 분석 리포트',
+            subtitle: '아빠의 자산 배분 전략 및 포트폴리오 제안',
+            desc: '미국 빅테크 주식 및 고금리 시대의 배당성장주, 안전자산 분할 적립 비책 등 거시경제 마켓 시그널을 확인하세요.',
+            image: 'images/dad_finance.png',
+            cta: '리포트 분석 보기'
+          },
+          {
+            id: 'finance-left',
+            badge: 'ALERT',
+            title: '반도체 섹터 과열 리스크 관리',
+            subtitle: '단기 과열 신호와 투자 행동 요령',
+            desc: '최근 AI 반도체 밸류에이션 리스크를 정밀 분석하고 현명하게 대응하는 가이드라인을 제공합니다.',
+            image: 'images/dad_finance.png',
+            cta: '리스크 분석 보기'
+          },
+          {
+            id: 'finance-right',
+            badge: 'TOP PICK',
+            title: 'AI 인프라 핵심 수혜주 3선',
+            subtitle: '엔비디아, TSMC, 브로드컴 집중 분석',
+            desc: '인공지능 혁신 속에서 가장 높은 실적 성장이 기대되는 저평가 및 독점적 핵심 수혜주들의 지표를 공유합니다.',
+            image: 'images/dad_finance.png',
+            cta: '추천 종목 보기'
+          }
+        ],
+        golf: [
+          {
+            id: 'golf-cover',
+            badge: 'SINGLE',
+            title: '골프 싱글 골퍼 코스 공략',
+            subtitle: '일관성 있는 샷 메이킹과 숏게임 전략',
+            desc: '필드에서 흔들리지 않고 안정적으로 싱글 스코어를 달성하기 위한 코스 매니지먼트 및 멘탈 셋업 노하우.',
+            image: 'images/dad_golf.png',
+            cta: '공략법 보기'
+          },
+          {
+            id: 'golf-left',
+            badge: 'DRIVING',
+            title: '드라이버 비거리 200m 공식',
+            subtitle: '꼬임 극대화와 다운스윙 래깅 매커니즘',
+            desc: '아마추어 골퍼가 드라이버 비거리 200m를 안정적으로 유지하기 위한 3대 핵심 신체 자세 체크포인트.',
+            image: 'images/dad_golf.png',
+            cta: '비거리 비결 보기'
+          },
+          {
+            id: 'golf-right',
+            badge: 'GEAR',
+            title: '가을/겨울 라운딩 필수 기어',
+            subtitle: '환절기 보온 팁 및 겨울 필드 타수 매니지먼트',
+            desc: '쌀쌀해지는 날씨 속 부상을 방지하고 비거리를 지키기 위한 필수 아이템과 행동 요령 가이드.',
+            image: 'images/dad_golf.png',
+            cta: '필수 기어 보기'
+          }
+        ],
+        ent: [
+          {
+            id: 'ent-cover',
+            badge: 'HEALING',
+            title: '아빠의 주말 힐링 콘텐츠',
+            subtitle: '피로를 날릴 엄선 엔터테인먼트 셀렉션',
+            desc: '한 주간의 직장 스트레스를 해소할 혼자만의 힐링 플랜 및 가족과 거실에서 함께 나누는 미디어 아카이브.',
+            image: 'images/dad_entertainment.png',
+            cta: '콘텐츠 셀렉션 보기'
+          },
+          {
+            id: 'ent-left',
+            badge: 'CONSOLE',
+            title: '아빠를 위한 콘솔/PC 명작 RPG',
+            subtitle: '위쳐3, 젤다의 전설, 엘든 링 추천',
+            desc: '복잡한 경쟁 없이 깊은 서사와 성취감을 선사하는 웰메이드 패키지 게임 3선 추천 가이드.',
+            image: 'images/dad_entertainment.png',
+            cta: '추천 타이틀 보기'
+          },
+          {
+            id: 'ent-right',
+            badge: 'MOVIE',
+            title: '몰입도 극상! 주말 추천 영화',
+            subtitle: '인터스텔라, 탑건 매버릭, 어바웃 타임',
+            desc: '주말 밤 혼자 또는 가족과 맥주 한잔하며 감상하기 좋은 묵직한 감동과 뛰어난 작품성의 영화 3선.',
+            image: 'images/dad_entertainment.png',
+            cta: '영화 리스트 보기'
+          }
+        ],
+        family: [
+          {
+            id: 'family-cover',
+            badge: 'BALANCE',
+            title: '육아와 라이프스타일 밸런스',
+            subtitle: '화목한 가정을 위한 마인드 컨트롤',
+            desc: '직장 스트레스를 다스리는 웰니스 컨트롤과 아빠와 떠나는 주말 가족 여행 계획 실천 가이드.',
+            image: 'images/dad_family.png',
+            cta: '밸런스 일지 보기'
+          },
+          {
+            id: 'family-left',
+            badge: 'ITEMS',
+            title: '육아 생존 꿀템 TOP 3',
+            subtitle: '자동분유 제조기, 식기세척기, 콧물흡입기',
+            desc: '바쁜 일상 속 가사 부담을 획기적으로 줄여주어 아빠들의 삶의 질을 올려주는 필수 육아 가전 리뷰.',
+            image: 'images/dad_family.png',
+            cta: '리뷰 정보 보기'
+          },
+          {
+            id: 'family-right',
+            badge: 'GUIDE',
+            title: '배려하는 남편 & 현명한 아빠',
+            subtitle: '아내 공감 소통법과 일관된 아기 훈육 태도',
+            desc: '퇴근 후 아내를 위한 대화 매너부터 감정적이지 않은 일관적인 아기 훈육 및 개인 재충전 루틴.',
+            image: 'images/dad_family.png',
+            cta: '행동 지침 보기'
+          }
+        ],
+        beauty: [
+          {
+            id: 'beauty-cover',
+            badge: 'GROOMING',
+            title: '아빠의 프리미엄 그루밍 & 피부 관리',
+            subtitle: '단정하고 품격 있는 중년의 외모 가꾸기',
+            desc: '기초 안티에이징 스킨케어, 왁싱, 모발 관리 등 심플하지만 확실하게 5년 젊어지는 그루밍 루틴.',
+            image: 'images/dad_family.png',
+            cta: '그루밍 가이드 보기'
+          },
+          {
+            id: 'beauty-left',
+            badge: 'SKIN CARE',
+            title: '주름 없는 아빠! 3단계 피부 홈케어',
+            subtitle: '세안, 올인원, 선크림 3분 공략',
+            desc: '피부 노화와 주름의 주원인인 자외선을 효과적으로 차단하고 손상된 장벽을 지켜주는 초간단 데일리 안티에이징.',
+            image: 'images/dad_family.png',
+            cta: '피부 홈케어 보기'
+          },
+          {
+            id: 'beauty-right',
+            badge: 'HAIR STYLE',
+            title: '깔끔한 인상을 주는 헤어 & 모발 공략',
+            subtitle: '탈모 예방 두피 샴푸법 및 포마드 스타일링',
+            desc: '풍성한 머리숱을 가꾸는 두피 건조 팁부터 차분한 다운펌 및 다운 헤어 연출 가이드라인.',
+            image: 'images/dad_family.png',
+            cta: '모발 관리 보기'
+          }
+        ]
+      };
+
+      const categoryMeta = {
+        finance: {
+          title: '📈 금융 & 주식 분석',
+          subtitle: 'Finance & Market Analysis',
+          border: 'var(--neon-cyan)'
+        },
+        golf: {
+          title: '⛳ 스포츠 & 취미',
+          subtitle: 'Sports & Hobby Club',
+          border: 'var(--neon-green)'
+        },
+        ent: {
+          title: '🕹️ 엔터테인먼트 & 문화',
+          subtitle: 'Entertainment & Culture Lounge',
+          border: 'var(--neon-pink)'
+        },
+        family: {
+          title: '👨‍👩‍👧‍👦 가족 & 라이프스타일',
+          subtitle: 'Family & Lifestyle Log',
+          border: 'var(--neon-blue)'
+        },
+        beauty: {
+          title: '💈 그루밍 & 미용',
+          subtitle: 'Grooming & Skincare',
+          border: '#6c5ce7'
+        }
+      };
+
+
+      let vietnamWeather = {
+        temp: 31.5,
+        condition: '맑음 ☀️',
+        humidity: 72
+      };
+
+      function renderCards(catId) {
+        const grid = document.getElementById('dad-cards-grid');
+        if (!grid) return;
+        const cards = cardsSummaryDB[catId] || [];
+        const meta = categoryMeta[catId];
+        
+        let indicatorBg, indicatorBorder, indicatorColor, blinkerBg;
+        if (catId === 'finance') {
+          indicatorBg = 'rgba(9, 132, 227, 0.12)';
+          indicatorBorder = 'rgba(9, 132, 227, 0.25)';
+          indicatorColor = 'var(--neon-cyan)';
+          blinkerBg = 'var(--neon-cyan)';
+        } else if (catId === 'golf') {
+          indicatorBg = 'rgba(46, 204, 113, 0.12)';
+          indicatorBorder = 'rgba(46, 204, 113, 0.25)';
+          indicatorColor = 'var(--neon-green)';
+          blinkerBg = 'var(--neon-green)';
+        } else if (catId === 'ent') {
+          indicatorBg = 'rgba(214, 48, 49, 0.12)';
+          indicatorBorder = 'rgba(214, 48, 49, 0.25)';
+          indicatorColor = 'var(--neon-pink)';
+          blinkerBg = 'var(--neon-pink)';
+        } else if (catId === 'family') {
+          indicatorBg = 'rgba(0, 206, 203, 0.12)';
+          indicatorBorder = 'rgba(0, 206, 203, 0.25)';
+          indicatorColor = 'var(--neon-blue)';
+          blinkerBg = 'var(--neon-blue)';
+        }
+
+        grid.innerHTML = cards.map(c => {
+          let stackClass = 'card-cover';
+          if (c.id.endsWith('-left')) {
+            stackClass = 'card-left';
+          } else if (c.id.endsWith('-right')) {
+            stackClass = 'card-right';
+          }
+          return `
+            <div class="card ${stackClass}" onclick="openDetailModal('${c.id}')">
+              <div class="card-banner" style="background-image: url('${c.image}');">
+                <span class="indicator" style="background: ${indicatorBg}; border-color: ${indicatorBorder}; color: ${indicatorColor};">
+                  <span class="indicator-dot" style="width: 6px; height: 6px; background-color: ${blinkerBg}; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px ${blinkerBg}; animation: blink 1.2s infinite; margin-right: 6px;"></span>
+                  ${c.badge}
+                </span>
+              </div>
+              <div class="card-content">
+                <div class="card-header">
+                  <h3>${c.subtitle}</h3>
+                  <h2 style="margin-top: 5px; margin-bottom: 0;">${c.title}</h2>
+                </div>
+                <div class="card-body">
+                  <p style="margin: 0;">${c.desc}</p>
+                </div>
+                <div class="card-footer">
+                  <span class="cta-text" style="color: ${meta.border}">${c.cta} &rarr;</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function switchCategory(catId) {
+        const container = document.getElementById('dad-dashboard');
+        if (container) {
+          container.setAttribute('data-category', catId);
+        }
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        const activeBtn = document.querySelector(`.tab-btn.tab-${catId}`);
+        if (activeBtn) {
+          activeBtn.classList.add('active');
+        }
+
+        const meta = categoryMeta[catId];
+        if (meta) {
+          document.getElementById('active-category-title').innerHTML = meta.title;
+          document.getElementById('active-category-subtitle').innerHTML = meta.subtitle;
+          document.getElementById('active-category-header').style.borderColor = meta.border;
+        }
+
+        renderCards(catId);
+      }
+
+      // Helper function to calculate target dates relative to today for dynamic defaults
+      function getOffsetDateString(daysOffset) {
+        const d = new Date();
+        d.setDate(d.getDate() + daysOffset);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      // Calculate D-Day string and return classification for style classes
+      function calculateDDay(dateString) {
+        if (!dateString) return { text: '', styleClass: '' };
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(dateString);
+        target.setHours(0, 0, 0, 0);
+        
+        const diffTime = target - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) {
+          return { text: 'D-Day', styleClass: 'dday-urgent' };
+        } else if (diffDays === 1) {
+          return { text: 'D-1', styleClass: 'dday-urgent' };
+        } else if (diffDays > 1 && diffDays <= 7) {
+          return { text: `D-${diffDays}`, styleClass: 'dday-soon' };
+        } else if (diffDays > 7) {
+          return { text: `D-${diffDays}`, styleClass: 'dday-normal' };
+        } else {
+          // Passed events
+          return { text: `D+${Math.abs(diffDays)}`, styleClass: 'dday-normal' };
+        }
+      }
+
+      // Default configurations
+      const WIDGET_DEFAULT_CONFIG = {
+        missions: [
+          { id: 'todo-vitamin', text: '🥛 영양제 챙겨먹기' },
+          { id: 'todo-walk', text: '🚶‍♂️ 1만 보 걷기' },
+          { id: 'todo-call', text: '📞 가족에게 안부 전화' }
+        ],
+        events: [
+          { id: 'dday-wife', title: '🎂 아내 생일', date: getOffsetDateString(5) },
+          { id: 'dday-dinner', title: '👨‍👩‍👧‍👦 가족 저녁 식사', date: getOffsetDateString(2) },
+          { id: 'dday-anniversary', title: '💌 결혼기념일', date: getOffsetDateString(14) }
+        ]
+      };
+
+      // Load config from localStorage
+      function getWidgetConfig() {
+        const saved = localStorage.getItem('dad-widget-config');
+        if (saved) {
+          try {
+            return JSON.parse(saved);
+          } catch(e) {
+            console.error('Failed to parse widget config, loading defaults');
+          }
+        }
+        return WIDGET_DEFAULT_CONFIG;
+      }
+
+      // Save config to localStorage
+      function saveWidgetConfig(config) {
+        localStorage.setItem('dad-widget-config', JSON.stringify(config));
+      }
+
+      // Render the widget elements
+      function renderWidgetDashboard() {
+        const config = getWidgetConfig();
+        
+        // 1. Render Missions
+        const todoContainer = document.getElementById('todo-list-container');
+        if (todoContainer) {
+          todoContainer.innerHTML = config.missions.map(m => {
+            const isChecked = localStorage.getItem(m.id) === 'true';
+            return `
+              <label class="todo-item">
+                <input type="checkbox" id="${m.id}" ${isChecked ? 'checked' : ''}>
+                <span class="todo-text">${m.text}</span>
+              </label>
+            `;
+          }).join('');
+          
+          // Add change listeners to checkboxes to save their checked state
+          todoContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+              localStorage.setItem(cb.id, cb.checked);
+            });
+          });
+        }
+        
+        // 2. Render Family Events (D-Day)
+        const ddayContainer = document.getElementById('dday-list-container');
+        if (ddayContainer) {
+          ddayContainer.innerHTML = config.events.map(ev => {
+            const ddayInfo = calculateDDay(ev.date);
+            return `
+              <div class="dday-item">
+                <span class="dday-text">${ev.title}</span>
+                <span class="dday-badge ${ddayInfo.styleClass}">${ddayInfo.text}</span>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      function initMissionChecklist() {
+        renderWidgetDashboard();
+      }
+
+      /* Modal UI Actions */
+      function openWidgetSettingsModal() {
+        const modal = document.getElementById('dad-widget-settings-modal');
+        if (!modal) return;
+        
+        // Populate inputs with current config
+        const config = getWidgetConfig();
+        
+        // Populate missions
+        config.missions.forEach((m, idx) => {
+          const input = document.getElementById(`setting-todo-${idx + 1}`);
+          if (input) input.value = m.text;
+        });
+        
+        // Populate events
+        config.events.forEach((ev, idx) => {
+          const titleInput = document.getElementById(`setting-dday-title-${idx + 1}`);
+          const dateInput = document.getElementById(`setting-dday-date-${idx + 1}`);
+          if (titleInput) titleInput.value = ev.title;
+          if (dateInput) dateInput.value = ev.date;
+        });
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeWidgetSettingsModal() {
+        const modal = document.getElementById('dad-widget-settings-modal');
+        if (!modal) return;
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function closeWidgetSettingsModalOnOutside(event) {
+        if (event.target === event.currentTarget) {
+          closeWidgetSettingsModal();
+        }
+      }
+
+      function saveWidgetSettings(event) {
+        event.preventDefault();
+        
+        const config = {
+          missions: [
+            { id: 'todo-vitamin', text: document.getElementById('setting-todo-1').value },
+            { id: 'todo-walk', text: document.getElementById('setting-todo-2').value },
+            { id: 'todo-call', text: document.getElementById('setting-todo-3').value }
+          ],
+          events: [
+            { id: 'dday-wife', title: document.getElementById('setting-dday-title-1').value, date: document.getElementById('setting-dday-date-1').value },
+            { id: 'dday-dinner', title: document.getElementById('setting-dday-title-2').value, date: document.getElementById('setting-dday-date-2').value },
+            { id: 'dday-anniversary', title: document.getElementById('setting-dday-title-3').value, date: document.getElementById('setting-dday-date-3').value }
+          ]
+        };
+        
+        saveWidgetConfig(config);
+        renderWidgetDashboard();
+        closeWidgetSettingsModal();
+      }
+
+      function getVietnamTime() {
+        const options = {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        return formatter.format(new Date());
+      }
+
+      function getVietnamDate() {
+        const options = {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          weekday: 'short'
+        };
+        const formatter = new Intl.DateTimeFormat('ko-KR', options);
+        return formatter.format(new Date());
+      }
+
+      function renderVietnamWidget() {
+        const container = document.getElementById('vietnam-time-weather');
+        if (!container) return;
+        
+        const timeStr = getVietnamTime();
+        const dateStr = getVietnamDate();
+        
+        container.innerHTML = `
+          <div class="vietnam-signal-box">
+            <div class="vn-time-display">${timeStr}</div>
+            <div class="vn-date-display">${dateStr} (ICT)</div>
+            <div class="vn-weather-grid">
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">📍 도시</span>
+                <span class="vn-weather-value">하노이/호치민</span>
+              </div>
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">🌡️ 기온</span>
+                <span class="vn-weather-value temp">${vietnamWeather.temp.toFixed(1)}°C</span>
+              </div>
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">🌦️ 날씨</span>
+                <span class="vn-weather-value condition">${vietnamWeather.condition}</span>
+              </div>
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">💧 습도</span>
+                <span class="vn-weather-value">${vietnamWeather.humidity}%</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function initVietnamWidget() {
+        renderVietnamWidget();
+        
+        setInterval(() => {
+          renderVietnamWidget();
+        }, 1000);
+        
+        setInterval(() => {
+          const diff = (Math.random() * 0.4 - 0.2);
+          vietnamWeather.temp = Math.max(28, Math.min(36, vietnamWeather.temp + diff));
+          const rand = Math.random();
+          if (rand < 0.6) {
+            vietnamWeather.condition = '맑음 ☀️';
+            vietnamWeather.humidity = Math.max(60, Math.min(80, vietnamWeather.humidity + Math.floor(Math.random() * 3 - 1)));
+          } else if (rand < 0.9) {
+            vietnamWeather.condition = '구름 조금 ⛅';
+            vietnamWeather.humidity = Math.max(65, Math.min(85, vietnamWeather.humidity + Math.floor(Math.random() * 3 - 1)));
+          } else {
+            vietnamWeather.condition = '소나기 🌧️';
+            vietnamWeather.humidity = Math.max(80, Math.min(95, vietnamWeather.humidity + Math.floor(Math.random() * 4 - 1)));
+          }
+        }, 10000);
+      }
+
+      function openDetailModal(cardId) {
+        const data = cardDetailsDB[cardId];
+        if (!data) return;
+
+        const bodyEl = document.getElementById('dad-modal-body');
+        
+        let linksHtml = '';
+        if (data.links && data.links.length > 0) {
+          linksHtml = `
+            <div class="modal-detail-links">
+              <h4>🔗 추천 바로가기 링크</h4>
+              <div class="modal-link-list">
+                ${data.links.map(link => `
+                  <a href="${link.url}" class="modal-link-item" target="_blank" rel="noopener noreferrer">
+                    📁 ${link.text} ↗
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        bodyEl.innerHTML = `
+          <div class="modal-detail-banner" style="background-image: url('${data.image}');"></div>
+          <div class="modal-detail-category">${data.category}</div>
+          <h3 class="modal-detail-title">${data.title}</h3>
+          <div class="modal-detail-body">${data.body}</div>
+          ${linksHtml}
+        `;
+
+        const modal = document.getElementById('dad-card-modal');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 부모 스크롤 방지
+      }
+
+      function closeDetailModal() {
+        const modal = document.getElementById('dad-card-modal');
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // 부모 스크롤 복구
+      }
+
+      function closeDetailModalOnOutside(event) {
+        const modalContent = document.querySelector('.dad-modal-content');
+        if (event.target === event.currentTarget) {
+          closeDetailModal();
+        }
+      }
+    </script>
+
+    <script src="main.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyASXXnU8bB6G641bY00V6MCRMLtdUgddpI",
+        authDomain: "familyspace-db.firebaseapp.com",
+        projectId: "familyspace-db",
+        storageBucket: "familyspace-db.firebasestorage.app",
+        messagingSenderId: "17439157934",
+        appId: "1:17439157934:web:d2e65b864fac46c1a6873f"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      
+      const isAuth = sessionStorage.getItem('family_space_authenticated') === 'true';
+      if(isAuth) {
+        document.getElementById('dad-admin-menu').style.display = 'block';
+      } else {
+        const dropdownMenu = document.getElementById('dad-admin-menu');
+        if(dropdownMenu) dropdownMenu.remove();
+      }
+
+      window.switchView = function(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if(viewId === 'main-view') fetchPosts(); 
+      };
+
+      async function fetchPosts() {
+        const listContainer = document.getElementById('post-list-container');
+        try {
+          const q = query(collection(db, "magazine_posts"), orderBy("timestamp", "desc"));
+          const snapshot = await getDocs(q);
+          
+          if(snapshot.empty) {
+            listContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px; border: 1px dashed var(--border-color); border-radius: 20px; background: var(--card-bg);">아직 발행된 글이 없습니다. 위 메뉴에서 새 글을 작성해 보세요!</div>';
+            return;
+          }
+
+          let htmlBuffer = '';
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            htmlBuffer += `
+              <div class="article-card" onclick="openPost('${docSnap.id}')">
+                <div class="article-img" style="background-image: url('${data.thumbnail || ''}');"></div>
+                <div class="article-content">
+                  <h2 class="article-title">${data.title}</h2>
+                  <div class="article-date">${data.date}</div>
+                </div>
+              </div>
+            `;
+          });
+          listContainer.innerHTML = htmlBuffer;
+        } catch(e) {
+          listContainer.innerHTML = '<div style="color:var(--neon-pink); text-align:center; grid-column:1/-1;">서버 통신 지연. 새로고침을 해주세요.</div>';
+        }
+      }
+
+      window.openPost = async function(docId) {
+        const readBox = document.getElementById('read-container-box');
+        readBox.innerHTML = '<div style="text-align:center; padding: 50px; color:var(--text-secondary);">안전하게 데이터를 불러오는 중...</div>';
+        window.switchView('read-view');
+
+        try {
+          const docRef = doc(db, "magazine_posts", docId);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            readBox.innerHTML = `
+              <h1 style="font-size: 2.4rem; margin-top: 0; margin-bottom: 20px; color:var(--text-primary); letter-spacing: -0.5px; filter: drop-shadow(0 2px 8px rgba(9, 132, 227, 0.12));">${data.title}</h1>
+              <div style="color: var(--text-secondary); border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 35px; font-size:1rem; display: flex; gap: 15px;">
+                <span style="font-weight:700; color:var(--neon-cyan);">By 아빠</span> <span>|</span> <span>${data.date}</span>
+              </div>
+              ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:20px; margin-bottom:40px; box-shadow:0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-color);">` : ''}
+              <div class="ad-banner" style="margin-bottom: 40px; border-radius: 16px;">[구글 애드센스 본문 상단 광고]</div>
+              <div style="font-size: 1.15rem; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap;">${data.content}</div>
+              <div class="ad-banner" style="margin-top: 60px; border-radius: 16px;">[구글 애드센스 본문 하단 광고]</div>
+            `;
+          }
+        } catch(e) {
+          readBox.innerHTML = '글을 불러올 수 없습니다. 네트워크를 확인해주세요.';
+        }
+      };
+
+      let currentThumbnail = "";
+      document.getElementById('edit-image').onchange = function(e) {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          currentThumbnail = evt.target.result;
+          document.getElementById('edit-preview').src = currentThumbnail;
+          document.getElementById('edit-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      };
+
+      document.getElementById('btn-publish').onclick = async function() {
+        if(!isAuth) { alert("로그인이 필요합니다!"); return; }
+        
+        const title = document.getElementById('edit-title').value;
+        const category = document.getElementById('edit-category').value;
+        const content = document.getElementById('edit-content').value;
+        
+        if(!title || !content || !currentThumbnail) {
+          alert('제목, 썸네일 이미지, 본문을 모두 채워주세요!'); return;
+        }
+
+        const payload = {
+          title: title,
+          category: category,
+          thumbnail: currentThumbnail,
+          content: content,
+          date: new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' }),
+          timestamp: Date.now()
+        };
+
+        try {
+          this.innerText = "발행 중..."; this.disabled = true;
+          await addDoc(collection(db, "magazine_posts"), payload);
+          
+          document.getElementById('edit-title').value = '';
+          document.getElementById('edit-content').value = '';
+          document.getElementById('edit-image').value = '';
+          document.getElementById('edit-preview').style.display = 'none';
+          currentThumbnail = '';
+          
+          alert('성공적으로 발행되었습니다!');
+          window.switchView('main-view');
+        } catch(e) {
+          alert('발행 실패: ' + e.message);
+        } finally {
+          this.innerText = "클라우드 서버에 전 세계 발행하기 🚀"; this.disabled = false;
+        }
+      };
+
+      window.onload = function() {
+        fetchPosts();
+        if (typeof switchCategory === 'function') {
+          switchCategory('finance');
+        }
+        if (typeof initMissionChecklist === 'function') {
+          initMissionChecklist();
+        }
+        if (typeof initVietnamWidget === 'function') {
+          initVietnamWidget();
+        }
+      };
+
+      // Immediate initialization in case onload has already fired
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        fetchPosts();
+        if (typeof switchCategory === 'function') {
+          switchCategory('finance');
+        }
+        if (typeof initMissionChecklist === 'function') {
+          initMissionChecklist();
+        }
+        if (typeof initVietnamWidget === 'function') {
+          initVietnamWidget();
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Góc của Mẹ - FamilySpace</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+  </head>
+  <body class="mom-page">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="dad.html">Bố</a></li>
+          <li><a href="mom.html">Mẹ</a></li>
+          <li><a href="baby.html">Bé</a></li>
+          <li><a href="blog.html">Nhật ký</a></li>
+          <li><a href="#" onclick="logout()" class="logout-btn">Đăng xuất</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <header style="text-align: center; margin-bottom: 40px;">
+        <h1 style="font-size: 3rem; color: #d35400;">Mẹ (엄마)</h1>
+        <p>Không gian nấu ăn và chăm sóc gia đình</p>
+      </header>
+
+      <div class="content-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+        <div class="content-card">
+          <h3>Món ngon mỗi ngày</h3>
+          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; margin-bottom: 15px;">
+            <iframe src="https://www.youtube.com/embed/videoseries?list=PLm_pY2A9nE6v6-L701ZkI0zT1T_lP8h8h" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allowfullscreen></iframe>
+          </div>
+          <p>Học cách nấu các món Hàn - Việt chuẩn vị cho cả nhà.</p>
+        </div>
+
+        <div class="content-card">
+          <h3>Làm đẹp & Sức khỏe</h3>
+          <p>Mẹo vặt hữu ích tại Việt Nam</p>
+          <ul style="margin-top: 15px;">
+            <li>Bí quyết dưỡng da K-Beauty</li>
+            <li>Thông tin y tế cho bé tại VN</li>
+            <li>Siêu thị WinMart & Lotte Mart</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="blog.html" class="btn-enter" style="background: #d35400; color: white;">Viết nhật ký của Mẹ</a>
+      </div>
+    </div>
+  </body>
+</html>
