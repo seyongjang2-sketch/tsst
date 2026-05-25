@@ -1,0 +1,31 @@
+<svg width="900" height="600" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradFinance" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b9ed9" />
+      <stop offset="50%" stop-color="#3feee6" />
+      <stop offset="100%" stop-color="#123252" />
+    </linearGradient>
+    <linearGradient id="pulse" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" rx="42" fill="url(#gradFinance)" />
+  <g opacity="0.15">
+    <circle cx="150" cy="160" r="120" fill="#ffffff" />
+    <circle cx="780" cy="80" r="90" fill="#ffffff" />
+    <circle cx="700" cy="480" r="160" fill="#ffffff" />
+  </g>
+  <g stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none">
+    <polyline points="120,420 200,360 300,400 420,300 560,340 640,220 760,260" />
+    <polyline points="120,470 220,430 320,460 450,380 560,420 700,360 780,380" opacity="0.6" />
+  </g>
+  <g fill="#ffffff">
+    <rect x="150" y="200" width="80" height="150" rx="14" fill="#ffffff" opacity="0.25" />
+    <rect x="260" y="160" width="90" height="190" rx="14" fill="#ffffff" opacity="0.35" />
+    <rect x="380" y="110" width="90" height="240" rx="14" fill="#ffffff" opacity="0.5" />
+    <rect x="500" y="180" width="90" height="170" rx="14" fill="#ffffff" opacity="0.35" />
+    <rect x="620" y="140" width="90" height="210" rx="14" fill="#ffffff" opacity="0.45" />
+  </g>
+  <rect x="0" y="0" width="900" height="600" rx="42" fill="url(#pulse)" opacity="0.25" />
+</svg>

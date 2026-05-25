@@ -1,0 +1,27 @@
+<svg width="900" height="600" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#060b2f" />
+      <stop offset="60%" stop-color="#162f6a" />
+      <stop offset="100%" stop-color="#0e8040" />
+    </linearGradient>
+    <radialGradient id="moon" cx="0.2" cy="0.15" r="0.2">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="900" height="600" fill="url(#gradSky)" />
+  <rect y="430" width="900" height="170" fill="#0d4f26" />
+  <circle cx="160" cy="120" r="90" fill="url(#moon)" />
+  <g stroke="#72ffb4" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.8">
+    <path d="M120 420 Q200 360 280 420 Q360 480 440 420 Q520 360 600 420 Q680 480 760 430" />
+    <path d="M120 470 Q240 410 360 470 Q480 530 600 470 Q720 410 840 470" opacity="0.45" />
+  </g>
+  <circle cx="300" cy="380" r="30" fill="#f0ffe1" opacity="0.8" />
+  <rect x="295" y="250" width="10" height="150" fill="#d7f7ff" rx="5" />
+  <circle cx="295" cy="260" r="12" fill="#d7f7ff" />
+  <circle cx="305" cy="240" r="12" fill="#d7f7ff" />
+  <circle cx="600" cy="320" r="12" fill="#c8ffdd" />
+  <circle cx="650" cy="290" r="8" fill="#c8ffdd" />
+  <circle cx="700" cy="330" r="10" fill="#c8ffdd" />
+</svg>

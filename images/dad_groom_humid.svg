@@ -1,0 +1,25 @@
+<svg width="900" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradGroom" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8ffae" />
+      <stop offset="100%" stop-color="#43c6ac" />
+    </linearGradient>
+  </defs>
+  <rect width="900" height="600" rx="40" fill="url(#gradGroom)" />
+  <g opacity="0.2" fill="#ffffff">
+    <circle cx="220" cy="140" r="120" />
+    <circle cx="720" cy="120" r="140" />
+    <circle cx="620" cy="460" r="200" />
+  </g>
+  <g stroke="#ffffff" stroke-width="4" stroke-linecap="round" fill="none">
+    <path d="M200 260 C260 200, 360 200, 420 260" />
+    <path d="M480 260 C540 200, 640 200, 700 260" />
+  </g>
+  <g fill="#ffffff">
+    <rect x="260" y="300" width="380" height="40" rx="20" opacity="0.7" />
+    <rect x="260" y="360" width="380" height="40" rx="20" opacity="0.5" />
+    <rect x="260" y="420" width="380" height="40" rx="20" opacity="0.35" />
+    <circle cx="260" cy="300" r="20" opacity="0.9" />
+    <circle cx="640" cy="300" r="20" opacity="0.9" />
+  </g>
+</svg>
