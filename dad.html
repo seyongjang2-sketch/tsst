@@ -167,16 +167,17 @@
               padding-right: 210px !important; /* Shuffled to avoid overlapping with right widgets */
           }
           .category-header-wrapper {
-              position: fixed;
-              left: max(20px, calc((100vw - 1380px) / 2 + 20px)) !important;
-              top: 50%;
-              transform: translateY(-50%);
-              z-index: 997;
-              width: 250px;
-              margin: 0 !important;
+              position: static !important;
+              transform: none !important;
+              z-index: auto;
+              width: auto;
+              margin: 0 0 18px 0 !important;
               padding-left: 14px;
               border-left: 4px solid var(--neon-cyan);
-              background: transparent;
+              background: rgba(255, 255, 255, 0.72);
+              border-radius: 0 16px 16px 0;
+              padding-top: 10px;
+              padding-bottom: 10px;
               text-align: left;
           }
           .category-header-wrapper h2 {
@@ -1341,6 +1342,18 @@
           padding: 32px;
           box-shadow: 0 25px 40px rgba(10, 10, 20, 0.4);
       }
+      .dad-hero-visual {
+          margin: 22px 0 0;
+          border-radius: 22px;
+          overflow: hidden;
+          border: 1px solid rgba(255,255,255,0.35);
+          background: rgba(255,255,255,0.08);
+      }
+      .dad-hero-visual img {
+          display: block;
+          width: 100%;
+          height: auto;
+      }
       .hero-card h3 {
           margin-top: 0;
           font-size: 1.35rem;
@@ -1486,6 +1499,9 @@
             <li>🏖️ 아기랑 갈 만한 주말 코스 3선</li>
           </ul>
           <p style="margin:0; font-size:0.9rem; color:rgba(255,255,255,0.75);">무료 리드 구독으로 맛보기 콘텐츠를 먼저 받아보고, 괜찮으면 프리미엄 라운지에 합류하세요.</p>
+          <figure class="dad-hero-visual" aria-label="한-베 가족 생활 가이드 일러스트">
+            <img src="images/familyspace-dad-guide.svg" alt="한-베 가족의 재무, 비자, 주말 계획을 정리하는 일러스트" loading="lazy" />
+          </figure>
         </div>
       </section>
 
