@@ -537,208 +537,172 @@
       }
 
       .card-stack-container {
-          display: flex;
-          justify-content: center;
-          align-items: center;
           width: 100%;
-          padding: 20px 0;
-          box-sizing: border-box;
+          margin: 0 auto;
+          padding: 10px 5px 30px;
       }
       .card-stack {
-          position: relative;
-          width: 320px;
-          height: 390px;
-          perspective: 1200px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          position: static;
+          width: 100%;
+          min-height: 0;
+          perspective: none;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 24px;
       }
       .card-stack .card {
-          position: absolute;
-          width: 320px;
-          height: 380px;
-          background: var(--card-bg);
-          border: 1px solid var(--border-color);
-          border-radius: 20px;
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          box-shadow: 0 10px 30px rgba(9, 132, 227, 0.04);
-          transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+          position: relative;
+          width: 100%;
+          min-height: 320px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.82) 100%);
+          border-radius: 28px;
+          border: 1px solid rgba(255, 255, 255, 0.45);
+          padding: 18px;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
+          gap: 16px;
           overflow: hidden;
-          cursor: pointer;
+          box-shadow: 0 25px 45px rgba(6, 12, 34, 0.15);
+          transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+          isolation: isolate;
       }
-
-      /* Stacked State */
-      .card-left {
-          transform: translateX(-20px) rotate(-4deg) scale(0.95);
-          opacity: 0.8;
-          z-index: 1;
+      .card-stack .card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          opacity: 0.6;
+          pointer-events: none;
       }
-      .card-right {
-          transform: translateX(20px) rotate(4deg) scale(0.95);
-          opacity: 0.8;
-          z-index: 1;
+      .card-stack .card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.65), transparent 55%);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          pointer-events: none;
       }
-      .card-cover {
-          transform: translateX(0) rotate(0deg) scale(1);
-          z-index: 3;
+      .card-stack .card:hover {
+          transform: translateY(-10px) scale(1.01);
+          box-shadow: 0 40px 70px rgba(6, 12, 34, 0.25);
+          border-color: var(--card-accent, rgba(255, 255, 255, 0.65));
+      }
+      .card-stack .card:hover::after {
           opacity: 1;
       }
 
-      /* Sequential Delay logic for closing cards (mouse leaves) */
-      .card-cover {
-          transition-delay: 0.4s;
-      }
-      .card-left {
-          transition-delay: 0.2s;
-      }
-      .card-right {
-          transition-delay: 0s;
+      #dad-dashboard[data-category="finance"] .card-stack .card { --card-accent: var(--neon-cyan); --card-glow: rgba(9, 132, 227, 0.25); }
+      #dad-dashboard[data-category="golf"] .card-stack .card { --card-accent: var(--neon-green); --card-glow: rgba(46, 204, 113, 0.25); }
+      #dad-dashboard[data-category="ent"] .card-stack .card { --card-accent: var(--neon-pink); --card-glow: rgba(214, 48, 49, 0.25); }
+      #dad-dashboard[data-category="family"] .card-stack .card { --card-accent: var(--neon-blue); --card-glow: rgba(0, 206, 203, 0.25); }
+      #dad-dashboard[data-category="beauty"] .card-stack .card { --card-accent: #6c5ce7; --card-glow: rgba(108, 92, 231, 0.25); }
+
+      .card-stack .card .card-glow-ring {
+          position: absolute;
+          inset: 12px;
+          border-radius: inherit;
+          border: 1px solid rgba(255,255,255,0.15);
+          box-shadow: 0 0 40px var(--card-glow, rgba(0,0,0,0.15));
+          opacity: 0.35;
+          pointer-events: none;
       }
 
-      /* Sequential Delay logic for opening cards (mouse hovers stack) */
-      .card-stack:hover .card-cover {
-          transform: scale(1.03);
-          z-index: 5;
-          transition-delay: 0s;
-      }
-      .card-stack:hover .card-left {
-          transform: translateX(-280px) rotate(-8deg) scale(0.98);
-          opacity: 1;
-          z-index: 4;
-          transition-delay: 0.2s;
-      }
-      .card-stack:hover .card-right {
-          transform: translateX(280px) rotate(8deg) scale(0.98);
-          opacity: 1;
-          z-index: 4;
-          transition-delay: 0.4s;
-      }
-
-      /* Glowing hover border and shadows per category on stack hover */
-      #dad-dashboard[data-category="finance"] .card-stack:hover .card-cover { border-color: var(--neon-cyan); box-shadow: 0 20px 45px rgba(9, 132, 227, 0.25); }
-      #dad-dashboard[data-category="finance"] .card-stack:hover .card-left { border-color: var(--neon-cyan); box-shadow: 0 20px 40px rgba(9, 132, 227, 0.15); }
-      #dad-dashboard[data-category="finance"] .card-stack:hover .card-right { border-color: var(--neon-cyan); box-shadow: 0 20px 40px rgba(9, 132, 227, 0.15); }
-
-      #dad-dashboard[data-category="golf"] .card-stack:hover .card-cover { border-color: var(--neon-green); box-shadow: 0 20px 45px rgba(46, 204, 113, 0.25); }
-      #dad-dashboard[data-category="golf"] .card-stack:hover .card-left { border-color: var(--neon-green); box-shadow: 0 20px 40px rgba(46, 204, 113, 0.15); }
-      #dad-dashboard[data-category="golf"] .card-stack:hover .card-right { border-color: var(--neon-green); box-shadow: 0 20px 40px rgba(46, 204, 113, 0.15); }
-
-      #dad-dashboard[data-category="ent"] .card-stack:hover .card-cover { border-color: var(--neon-pink); box-shadow: 0 20px 45px rgba(214, 48, 49, 0.25); }
-      #dad-dashboard[data-category="ent"] .card-stack:hover .card-left { border-color: var(--neon-pink); box-shadow: 0 20px 40px rgba(214, 48, 49, 0.15); }
-      #dad-dashboard[data-category="ent"] .card-stack:hover .card-right { border-color: var(--neon-pink); box-shadow: 0 20px 40px rgba(214, 48, 49, 0.15); }
-
-      #dad-dashboard[data-category="family"] .card-stack:hover .card-cover { border-color: var(--neon-blue); box-shadow: 0 20px 45px rgba(0, 206, 203, 0.25); }
-      #dad-dashboard[data-category="family"] .card-stack:hover .card-left { border-color: var(--neon-blue); box-shadow: 0 20px 40px rgba(0, 206, 203, 0.15); }
-      #dad-dashboard[data-category="family"] .card-stack:hover .card-right { border-color: var(--neon-blue); box-shadow: 0 20px 40px rgba(0, 206, 203, 0.15); }
-
-      /* Individual Card Hover Popups */
-      .card-stack:hover .card:hover {
-          transition-delay: 0s !important;
-          transition-duration: 0.3s !important;
-          z-index: 10 !important;
-          background: rgba(255, 255, 255, 0.98);
-      }
-      .card-stack:hover .card-left:hover {
-          transform: translateX(-295px) translateY(-15px) rotate(0deg) scale(1.08) !important;
-      }
-      .card-stack:hover .card-right:hover {
-          transform: translateX(295px) translateY(-15px) rotate(0deg) scale(1.08) !important;
-      }
-      .card-stack:hover .card-cover:hover {
-          transform: translateY(-15px) scale(1.08) !important;
-      }
-
-      /* 카드 상단 배너 이미지 */
       .card-banner {
-          height: 120px;
+          height: 150px;
+          width: 100%;
+          border-radius: 20px;
           background-size: cover;
           background-position: center;
-          width: 100%;
-          border-bottom: 1px solid var(--border-color);
           position: relative;
+          overflow: hidden;
       }
-
-      /* 배너 위의 뱃지 배치 */
+      .card-banner::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(12, 13, 25, 0.5) 100%);
+      }
       .card-banner .indicator {
           position: absolute;
-          top: 10px;
-          left: 10px;
+          left: 14px;
+          bottom: 14px;
           margin-bottom: 0;
           z-index: 2;
       }
 
-      /* 카드 내용 구획 */
       .card-content {
-          padding: 18px;
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          flex-grow: 1;
-          height: calc(100% - 120px);
+          gap: 14px;
+          flex: 1;
       }
 
-      /* Typography Inside Cards */
       .card-header {
-          border-bottom: 1px solid var(--border-color);
-          padding-bottom: 12px;
-          margin-bottom: 12px;
-      }
-      .card-header h2 {
-          font-size: 1.15rem;
-          font-weight: 700;
-          color: var(--text-primary);
-          letter-spacing: 0.5px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
       }
       .card-header h3 {
-          font-size: 0.85rem;
+          font-size: 0.78rem;
           color: var(--text-secondary);
           text-transform: uppercase;
-          letter-spacing: 1px;
-          margin-bottom: 4px;
+          letter-spacing: 1.6px;
+          margin: 0;
+      }
+      .card-header h2 {
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin: 0;
       }
       .card-body p {
+          margin: 0;
           color: var(--text-secondary);
-          font-size: 0.9rem;
-          line-height: 1.6;
+          font-size: 0.95rem;
+          line-height: 1.65;
       }
 
-      /* Spacing & Badges inside cards */
       .indicator {
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          background: rgba(255, 0, 127, 0.12);
-          border: 1px solid rgba(255, 0, 127, 0.25);
-          padding: 4px 10px;
-          border-radius: 12px;
+          border-radius: 999px;
+          padding: 5px 12px;
           font-size: 0.75rem;
           font-weight: 700;
-          color: #ff3b93;
-          margin-bottom: 8px;
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          color: var(--card-accent, #ff3b93);
+          backdrop-filter: blur(6px);
       }
-      .indicator::before {
-          display: none;
+      .indicator .indicator-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: currentColor;
+          box-shadow: 0 0 8px currentColor;
       }
       .card-footer {
           margin-top: auto;
-          padding-top: 12px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
+          padding-top: 14px;
       }
-      .card-footer a, .cta-text {
-          color: var(--neon-cyan);
-          text-decoration: none;
+      .card-footer .cta-text {
+          color: var(--card-accent, var(--neon-cyan));
           font-weight: 700;
-          font-size: 0.85rem;
           display: inline-flex;
           align-items: center;
-          gap: 4px;
-          transition: color 0.3s ease;
+          gap: 6px;
+          transition: gap 0.2s ease;
       }
-      .card-footer a:hover {
-          color: var(--neon-blue);
+      .card-footer .cta-text:hover {
+          gap: 10px;
       }
       .movie-card-footer a {
           color: var(--neon-pink);
@@ -807,6 +771,19 @@
           flex: 1;
           display: flex;
           flex-direction: column;
+          gap: 12px;
+      }
+      .article-chip {
+          display: inline-flex;
+          width: fit-content;
+          padding: 4px 12px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          color: var(--neon-blue);
       }
       .article-title {
           font-size: 1.25rem;
@@ -814,6 +791,13 @@
           margin: 0 0 12px 0;
           color: var(--text-primary);
           line-height: 1.5;
+      }
+      .article-excerpt {
+          font-size: 0.98rem;
+          margin: 0;
+          color: var(--text-secondary);
+          line-height: 1.7;
+          flex: 1;
       }
       .article-date {
           font-size: 0.9rem;
@@ -1731,6 +1715,7 @@
             { text: 'Broadcom 주가 및 목표 지표 (Yahoo Finance)', url: 'https://finance.yahoo.com/quote/AVGO' }
           ]
         },
+
         'golf-cover': {
           category: 'Sports & Golf',
           title: '⛳ 골프 싱글 골퍼로 가는 전략 허브',
@@ -2072,6 +2057,7 @@
                   ${c.badge}
                 </span>
               </div>
+              <span class="card-glow-ring" aria-hidden="true"></span>
               <div class="card-content">
                 <div class="card-header">
                   <h3>${c.subtitle}</h3>
@@ -2431,6 +2417,48 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      const fallbackPosts = [
+        {
+          id: 'saigon-weekend-reset',
+          title: '호치민 주말 리커버리 루틴 3가지',
+          category: 'Weekend',
+          date: '2026.05.21',
+          thumbnail: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '아이와 함께 체력·멍타임·부부 대화를 모두 챙기는 48시간 루틴을 지도와 함께 정리했습니다.',
+          content: `25개월 아이와 함께 호치민에서 주말을 보낼 때 가장 만족도가 높았던 3단계 루틴입니다.\n\n1) 토요일 오전: 타오디엔 미니 카페 투어\n- 아이가 좋아하는 수영장이 있는 Lullaby Cafe → 한산한 시간대(오전 10시 이전)에 가면 아빠/엄마가 번갈아 노트북으로 일 처리도 가능\n- 근처 Annam Gourmet에서 다음 주 도시락 재료까지 픽업\n\n2) 토요일 밤: 부부 리커버리 타임\n- 아내 휴식: 홈 스파 + 넷플릭스, 아빠는 밤 9시 이후 Q2 골프 연습장(1시간)으로 가볍게 땀 빼기\n- 귀가 후 15분 커플 회고 미팅: 아이 컨디션/이번 주 감사한 점 3가지 공유\n\n3) 일요일 오전: Kidzania 대신 미니 리조트 호캉스\n- 시내 4성급 호텔 조식 패키지를 당일 예약(Grab 초특가) → 수영장 + 낮잠 루틴까지 한 번에 해결\n- 오후에는 빈컴 메가몰 내 대형 슈퍼에서 장보기 후 일찍 귀가해 월요일 준비.\n\n핵심은 “아이-부부-나”에게 모두 90분씩의 명확한 힐링 슬롯을 주는 것입니다.`
+        },
+        {
+          id: 'visa-checklist-2026',
+          title: '2026년 베트남 TRC/비자 갱신 체크리스트',
+          category: 'Docs',
+          date: '2026.05.02',
+          thumbnail: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '아빠 입장에서 놓치기 쉬운 가족 비자·TRC 갱신 서류를 주차별로 나눠 정리한 표입니다.',
+          content: `✔ 8주 전 (D-60)\n- 여권 만료 시점 확인: 최소 12개월 이상 남아야 TRC 갱신 진행 가능\n- 회사 인감증명서 업데이트 + 노동허가서(Work Permit) 스캔본 정리\n\n✔ 6주 전 (D-45)\n- 아내/아이 출생증명서 공증본 준비, 한-베 번역본 업데이트\n- 거주지 증명(임대차 계약서 + 임대인 신분증) 스캔 후 Google Drive 공유\n\n✔ 4주 전 (D-30)\n- 건강검진 예약: Thu Duc 병원 기준 가족 패키지 3명 2시간 소요\n- 회사 HR에 e-visa extension letter 요청, PDF 서명본 확보\n\n✔ 2주 전 (D-15)\n- 사진관에서 4x6cm 배경 흰색 증명사진 새로 촬영 (USB/카톡 전송)\n- 아빠 서류 + 가족 서류 각각 투명 파일에 분류, 체크리스트 출력\n\n✔ 1주 전 (D-7)\n- 담당 에이전트와 픽업 일정 확정, 영수증/현금 분리 보관\n- 만약을 대비해 여권/서류 사본을 Cloud + iPad에 동기화.\n\n위 순서를 따르면 촉박함 없이 TRC를 갱신할 수 있습니다.`
+        },
+        {
+          id: 'dad-golf-night',
+          title: '밤 9시 이후 골프 연습장 집중 루틴',
+          category: 'Hobby',
+          date: '2026.04.28',
+          thumbnail: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '아이 재우고 나간 뒤 70분 안에 스윙·체력·멘탈을 모두 챙기는 체크리스트.',
+          content: `1) 이동 & 세팅 (10분)\n- Grab Bike로 Q2 연습장 이동 → 헬멧 안쪽에 즉시 땀 흡수 가능한 미니 타월 필수\n- 타석 선택 시 밝기/에어컨/거울 유무를 먼저 확인\n\n2) 워밍업 (10분)\n- 그립 프레셔/견갑 수축 체크\n- 52도 웨지 어프로치 20구로 리듬 잡기\n\n3) 본 세션 (35분)\n- 드라이버: 3구씩 루틴 반복 → 루틴(정렬-테이크백-탑)마다 핸드폰으로 슬로모 녹화\n- 하이브리드 & 7번 아이언: 탄도 + 페이스 컨트롤 연습\n- 마지막 10구는 필드 이미지 트레이닝(타겟 시각화)\n\n4) 쿨다운 (15분)\n- 폼롤러 스트레칭 + 노트 앱에 당일 체크포인트 3줄 기록\n- 집에 오는 길에 이온음료/프로틴 주스 한 병으로 회복.\n\n“짧고 집중된 루틴”이 다음날 피로 누적을 막아줍니다.`
+        },
+        {
+          id: 'krw-vnd-automation',
+          title: 'KRW→VND 자동이체 파이프라인 구축기',
+          category: 'Finance',
+          date: '2026.04.10',
+          thumbnail: 'https://images.unsplash.com/photo-1508387021433-30e5f5d0d1d2?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '한국 주식 계좌를 유지하면서도 호치민 생활비를 자동 배분하는 4단계 세팅.',
+          content: `① 한국 내 KB증권 CMA → 토스뱅크\n- 매달 월급일 +1일에 생활비만큼 자동이체 스케줄러 등록\n\n② 토스 해외송금 → HSBC Vietnam\n- 낮은 환율 스프레드 구간(한국 시간 11:00~13:00)로 고정\n- 수수료 절약을 위해 월 2회(1일/15일)로 나눠서 송금\n\n③ HSBC → VPBank 패밀리 계좌\n- 생활비, 교육비, 주말 여행비 3개의 서브어카운트 사용\n- Monite 앱으로 자동 예산 리포트 받아보기\n\n④ 비상금/투자금 분리\n- 미사용 VND는 다시 Wise Multi-currency로 역송금→미국 ETF 적립식\n\n모든 흐름을 Notion DB에 연결해주면, 환율 변동에도 감정 기복 없이 생활비를 관리할 수 있습니다.`
+        }
+      ];
+      const fallbackPostMap = fallbackPosts.reduce((acc, post) => {
+        acc[post.id] = { ...post, isFallback: true };
+        return acc;
+      }, {});
       
       const isAuth = sessionStorage.getItem('family_space_authenticated') === 'true';
       if(isAuth) {
