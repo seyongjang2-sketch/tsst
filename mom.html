@@ -587,13 +587,161 @@
         }
       }
 
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
+      .floating-flower:nth-child(4) { animation-delay: 3s; }
+      .floating-flower:nth-child(5) { animation-delay: 4s; }
+
+      .mom-identity-hero {
+        margin: 120px auto 40px;
+        max-width: 1100px;
+        padding: 40px;
+        border-radius: 34px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 30px 70px rgba(229, 169, 158, 0.35);
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 30px;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
       }
-      @keyframes slideIn {
-        from { opacity: 0; transform: translateX(-10px); }
-        to { opacity: 1; transform: translateX(0); }
+      .mom-identity-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top right, rgba(254, 207, 239, 0.5), transparent 45%);
+        pointer-events: none;
+      }
+      .mom-identity-hero h1 {
+        font-family: 'Playfair Display', 'Noto Sans KR', serif;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        color: var(--text-rose);
+      }
+      .mom-identity-hero p.lead {
+        font-size: 1rem;
+        color: #8a5a50;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+      .mom-hero-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .mom-hero-pill {
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: rgba(255, 154, 158, 0.15);
+        color: #d35400;
+        font-weight: 600;
+        font-size: 0.9rem;
+      }
+      .mom-hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .mom-hero-actions button {
+        border: none;
+        border-radius: 30px;
+        padding: 12px 22px;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 0.95rem;
+        box-shadow: 0 10px 25px rgba(229, 169, 158, 0.25);
+      }
+      .btn-rose {
+        background: linear-gradient(120deg, #ff9a9e, #fecfef);
+        color: white;
+      }
+      .btn-outline {
+        background: rgba(255, 255, 255, 0.7);
+        color: #d35400;
+        border: 1px solid rgba(211, 84, 0, 0.4);
+      }
+      .mom-hero-card {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 26px;
+        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        position: relative;
+      }
+      .mom-hero-card h3 {
+        margin-top: 0;
+        color: #d35400;
+        font-size: 1.3rem;
+      }
+      .mom-hero-card ul {
+        list-style: none;
+        margin: 20px 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        color: #6d4c41;
+      }
+      .mom-resource-grid {
+        max-width: 1100px;
+        margin: 0 auto 35px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 20px;
+      }
+      .mom-resource-card {
+        background: rgba(255, 255, 255, 0.92);
+        border-radius: 20px;
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        box-shadow: 0 12px 30px rgba(229, 169, 158, 0.2);
+      }
+      .mom-resource-card h4 {
+        margin-top: 0;
+        color: #d35400;
+      }
+      .mom-resource-card p {
+        color: #7f8c8d;
+        font-size: 0.92rem;
+        line-height: 1.6;
+      }
+      .mom-resource-card a {
+        font-weight: 600;
+        color: #d35400;
+        text-decoration: none;
+      }
+      .mom-community-strip {
+        max-width: 1100px;
+        margin: 0 auto 50px;
+        padding: 18px 24px;
+        border-radius: 18px;
+        background: rgba(255, 154, 158, 0.15);
+        border: 1px dashed rgba(255, 154, 158, 0.6);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+        color: #8a5a50;
+        font-weight: 600;
+      }
+      .mom-community-strip button {
+        border: none;
+        border-radius: 999px;
+        padding: 10px 20px;
+        background: #ff9a9e;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      @media (max-width: 768px) {
+        .mom-identity-hero {
+          padding: 26px;
+        }
+        .mom-identity-hero h1 {
+          font-size: 2rem;
+        }
       }
     </style>
   </head>
@@ -621,6 +769,56 @@
     </nav>
 
     <div class="main-wrapper mom-container">
+
+      <section class="mom-identity-hero">
+        <div class="mom-hero-copy">
+          <div style="font-size:0.78rem; letter-spacing:0.2rem; text-transform:uppercase; color:#d35400; font-weight:800; margin-bottom:10px;">Vietnamese Mom · Korean-Vietnam Family</div>
+          <h1>베트남 엄마의 따뜻한 루틴을
+한-베 가족의 생활 가이드로 나눕니다.</h1>
+          <p class="lead">요리, 장보기, 육아 루틴, 한국 가족과 베트남 가족 사이의 작은 문화 차이까지. 매일 직접 부딪히며 배운 내용을 다른 다문화 가족도 바로 따라 할 수 있게 정리합니다.</p>
+          <div class="mom-hero-pills">
+            <span class="mom-hero-pill">🍲 한식+베트남식 식단</span>
+            <span class="mom-hero-pill">👶 25개월 육아 루틴</span>
+            <span class="mom-hero-pill">🌸 엄마 회복 시간</span>
+          </div>
+          <div class="mom-hero-actions">
+            <button class="btn-rose" onclick="window.location.href='blog.html#mom-routine'">엄마 루틴표 무료 받기</button>
+            <button class="btn-outline" onclick="window.location.href='contact.html'">브랜드·공동구매 문의</button>
+          </div>
+        </div>
+        <aside class="mom-hero-card">
+          <h3>이번 주 무료 나눔</h3>
+          <ul>
+            <li>✓ WinMart / Lotte / K-Market 장보기 비교표</li>
+            <li>✓ 아이가 잘 먹는 한-베 7일 식단표</li>
+            <li>✓ 엄마 혼자 쉬는 20분 힐링 루틴</li>
+          </ul>
+          <p style="margin:0; color:#8a5a50; line-height:1.6;">처음에는 무료 자료와 커뮤니티로 사람을 모으고, 반응이 좋은 주제만 작은 유료 템플릿으로 확장합니다.</p>
+        </aside>
+      </section>
+
+      <div class="mom-resource-grid">
+        <article class="mom-resource-card">
+          <h4>한-베 식탁 캘린더</h4>
+          <p>한국 음식과 베트남 음식을 번갈아 준비할 수 있게 장보기 목록까지 연결한 7일 식단 아이디어입니다.</p>
+          <a href="blog.html#meal-plan">식단 아이디어 보기 →</a>
+        </article>
+        <article class="mom-resource-card">
+          <h4>육아·가족 소통 노트</h4>
+          <p>한국어/베트남어가 섞이는 집에서 아이 말문, 조부모 소통, 하루 루틴을 부드럽게 맞추는 팁을 모았습니다.</p>
+          <a href="baby.html">육아 노트 보기 →</a>
+        </article>
+        <article class="mom-resource-card">
+          <h4>엄마의 작은 회복</h4>
+          <p>음악, 짧은 스트레칭, 감사 일기처럼 돈 들이지 않고 바로 회복감을 만드는 루틴을 제공합니다.</p>
+          <a href="blog.html#healing">힐링 루틴 보기 →</a>
+        </article>
+      </div>
+
+      <div class="mom-community-strip">
+        <span>한-베 엄마들의 장보기·식단·육아 팁을 모으는 무료 커뮤니티를 준비 중입니다.</span>
+        <button onclick="window.location.href='contact.html'">먼저 소식 받기</button>
+      </div>
       <!-- 감성 대시보드 헤더 -->
       <header class="mom-header">
         <h1>엄마의 힐링 공간 🌸</h1>
