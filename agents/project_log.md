@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 18:45 - Cloudflare public deploy blocked after GitHub push
+- Type: technical
+- Owner: web_admin
+- Status: blocked
+- Summary: Pushed latest FamilySpace source to origin/main at e4a05ce, but https://tsst-csa.pages.dev/ still serves the previous HTML with 1F labels and without the daily meal card. Direct wrangler Pages deploy failed because CLOUDFLARE_API_TOKEN is not configured in this non-interactive environment.
+- Files: index.html,style.css,mom.html,agents/project_log.md
+- Validation: git push origin main succeeded; local HTTP/link checks passed; public URL checks still return old HTML; wrangler pages deploy reports missing CLOUDFLARE_API_TOKEN
+- Decisions: none
+- Risks: none
+- Next: Provide a Cloudflare API token/account access or fix the Pages Git source/build setting, then run: npx wrangler@3 pages deploy . --project-name tsst-csa --commit-dirty=true
+
 ## 2026-05-30 18:43 - Deploy floor navigation and daily meal update
 - Type: technical
 - Owner: web_admin
