@@ -279,6 +279,29 @@ body.blog-page { background: #ffffff; }
   font-weight: 800;
   text-decoration: none;
 }
+.room-brief-link-stack {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+.room-brief-link-stack a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 34px;
+  margin-top: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(74,144,226,0.08);
+  border: 1px solid rgba(74,144,226,0.14);
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+.room-brief-link-stack a::after {
+  content: "↗";
+  margin-left: 8px;
+  font-size: 0.78rem;
+}
 .room-brief.dark .room-brief-card a {
   color: #00ffff;
 }

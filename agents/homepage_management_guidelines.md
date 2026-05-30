@@ -2,13 +2,15 @@
 
 ## Canonical deployment rule
 
-- Production target is Cloudflare Pages: `https://tsst-csa.pages.dev/`.
+- Current status is private operating test, not approved public production.
+- Cloudflare Pages may be used as a technical preview target: `https://tsst-csa.pages.dev/`.
 - Deployment canon file: `DEPLOYMENT.md`.
-- GitHub Pages and `test.tsst-csa.pages.dev` are not production proof in the current operating state.
-- A task is complete only after the changed content is verified on the Cloudflare public URL and the result is logged in `agents/project_log.md` plus Telegram.
+- GitHub Pages, Cloudflare Pages, and `test.tsst-csa.pages.dev` are not public operation proof in the current operating state.
+- A task is complete only after the changed content is verified on the intended test surface and the result is logged in `agents/project_log.md` plus Telegram.
+- Completion reports must say "test update/verification", not "production", "public launch", or "approved public operation", unless the owner explicitly approves that status later.
 
-적용 대상: FamilySpace 홈페이지의 HTML, CSS, JS, 이미지, 가이드 문서, 배포 작업  
-최종 기준: 사용자가 보는 공개 사이트가 정상이어야 완료다.
+적용 대상: FamilySpace 홈페이지의 HTML, CSS, JS, 이미지, 가이드 문서, 테스트 배포 작업
+최종 기준: 지정된 테스트 표면에서 변경이 정상이고, 공개 운영으로 오해되지 않게 보고되어야 완료다.
 
 ## 1. 작업 시작 전
 

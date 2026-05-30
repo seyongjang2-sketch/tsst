@@ -1,41 +1,56 @@
-# FamilySpace Deployment Canon
+# FamilySpace Deployment / Test Operation Canon
 
-Last updated: 2026-05-30
+Last updated: 2026-05-30 22:18 Asia/Bangkok
 
-## Canonical Production Target
+## Current Operating Status
 
-- Production URL: `https://tsst-csa.pages.dev/`
-- Mom page public route: `https://tsst-csa.pages.dev/mom`
-- Repository used for production source: `https://github.com/seyongjang2-sketch/woori-company.git`
-- Production branch: `main`
+- Status: private operating test page.
+- Public production status: not approved.
+- Reason: the site is being used to test operating discipline, update procedures, QA, and reporting. It must not be treated as a public service until the owner explicitly approves public operation.
 
-Cloudflare Pages is the only production deployment target for this project unless a later dated entry in this file explicitly replaces it.
+Any existing Cloudflare or GitHub Pages URL is only a technical preview/check target. It is not production evidence and must not be reported as public launch approval.
 
-## Not Production
+## Known Technical Preview Targets
 
-These routes must not be used as proof of production deployment:
+These routes can be checked only to confirm what a remote static host currently serves:
+
+- `https://tsst-csa.pages.dev/`
+- `https://tsst-csa.pages.dev/mom`
+- `https://seyongjang2-sketch.github.io/tsst/`
+- `https://test.tsst-csa.pages.dev/`
+
+They must not be described as approved public production unless a later dated owner decision explicitly changes this file.
+
+## Not Public Operation
+
+These are not proof of public operation:
 
 - `https://seyongjang2-sketch.github.io/tsst/`
-  - This has shown an old version and is not the operating site.
+  - This has shown an old version and is not an approved operating site.
 - `https://test.tsst-csa.pages.dev/`
   - This currently returns 404 and is not a working preview target.
+- `https://tsst-csa.pages.dev/`
+  - This may serve current files, but it is still only a test/preview endpoint until public operation is approved.
 - Localhost or opened HTML files
   - These are development checks only.
 
-## Deployment Rule
+## Completion Rule
 
-A task is not complete until the production Cloudflare URL is checked after push/deploy.
+A homepage task is not complete until the requested change is checked in the intended test surface and the result is logged. Completion means "test update completed", not "public operation approved".
 
 Required completion evidence:
 
 1. `git status --short` is clean, or any remaining changes are explicitly explained.
 2. `origin/main` points to the intended commit.
-3. If the `tsst` remote is still maintained, `tsst/main` points to the same intended commit.
-4. `https://tsst-csa.pages.dev/` or the changed page route returns the latest content.
+3. If the `tsst` remote is still maintained, its intended branch state is explicitly stated.
+4. Local and/or remote test URL verification is recorded with the exact route checked.
 5. The verification result is written to `agents/project_log.md`.
-6. A Telegram result report is sent with the public URL and verified commit.
+6. A Telegram result report is sent with the verified commit and the test status.
+7. The report must not call the site "production", "public launch", or "approved public operation" without explicit owner approval.
 
 ## Current Verification
+
+The following entries are historical technical checks. They are retained for traceability but are superseded by the private-test operating status above.
 
 Checked on 2026-05-30 20:56 Asia/Bangkok, before publishing this deployment-canon document:
 
@@ -54,12 +69,12 @@ Checked again on 2026-05-30 20:58 Asia/Bangkok:
 - `DEPLOYMENT.md` includes `FamilySpace Deployment Canon` on the public Cloudflare URL.
 - `README.md` includes `Production Deployment` on the public Cloudflare URL.
 
-## If Deployment Is Blocked
+## If Test Deployment Is Blocked
 
 Do not report the task as complete. Report it as blocked and include:
 
 - intended commit
-- target URL
+- target test URL
 - failing command or HTTP response
 - missing permission or token
 - next required action

@@ -1,10 +1,10 @@
 # FamilySpace
 
-## Production Deployment
+## Private Test Operation
 
-Canonical production is Cloudflare Pages: `https://tsst-csa.pages.dev/`.
+This homepage is a private operating-test page, not a public production site.
 
-Deployment and completion rules are fixed in `DEPLOYMENT.md`. GitHub Pages and `test.tsst-csa.pages.dev` are not production evidence unless a later dated deployment record explicitly changes that.
+Deployment and completion rules are fixed in `DEPLOYMENT.md`. Public URLs may be used only as technical preview evidence, not as proof that the service is approved for public operation.
 
 FamilySpace는 베트남에서 살아가는 한국-베트남 가족을 위한 생활형 정적 웹사이트입니다. 가족 생활비, 육아, 비자/TRC, 예방접종, 주말 루트, 가족 이야기를 한곳에 정리하는 것을 목표로 합니다.
 

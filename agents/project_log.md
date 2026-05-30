@@ -2,6 +2,39 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 06:00 - stars mobile stargazing usability
+- Type: design
+- Owner: web_admin
+- Status: done
+- Summary: Adjusted stars.html mobile layout so the 3D stargazing area is usable: mobile mission panel starts collapsed at the bottom, search sits below the compact nav, mobile auth link is hidden, and star info modal is resized for small screens.
+- Files: stars.html,reports/screenshots/stars-mobile-usability-20260531.png,reports/screenshots/stars-desktop-usability-20260531.png
+- Validation: Local HTTP 200; Playwright desktop/mobile screenshots captured after change.
+- Decisions: Keep desktop cockpit layout unchanged; on mobile prioritize direct star tapping and make the rooftop mission expandable instead of always covering the canvas.
+- Risks: External Three.js CDN is still required for the 3D scene; no production deploy was run in this task.
+- Next: Deploy updated stars.html when ready.
+
+## 2026-05-30 22:42 - Shopping quick compare links filled
+- Type: content
+- Owner: web_admin
+- Status: done
+- Summary: Expanded Mom room shopping quick compare with official WinMart, Lotte Mart Vietnam, and K-Market links, and filled the blog shopping memo with link-specific purchase guidance.
+- Files: mom.html,blog.html,style.css
+- Validation: External GET checks returned HTTP 200 for all three official links; mom.html and blog.html parsed with Python html.parser; blog.html#shopping anchor exists.
+- Decisions: none
+- Risks: none
+- Next: Review mobile visual spacing during the next full page QA pass.
+
+## 2026-05-30 22:21 - Homepage private operating-test policy
+- Type: decision
+- Owner: general_manager
+- Status: done
+- Summary: Reclassified the homepage as a private operating-test page rather than an approved public production site, following the owner correction.
+- Files: README.md,DEPLOYMENT.md,agents/homepage_management_guidelines.md
+- Validation: rg Production README.md DEPLOYMENT.md agents/homepage_management_guidelines.md; git diff --check
+- Decisions: Cloudflare/GitHub Pages URLs are technical preview/check targets only. Completion reports must say test update/verification, not production or public launch, unless the owner explicitly approves public operation later.
+- Risks: Existing historical reports still contain older public-production language and should be treated as superseded by this later dated policy.
+- Next: Use private-test wording for future homepage work and require explicit owner approval before any public operation claim.
+
 ## 2026-05-30 21:59 - daily update proof expanded to remaining pages
 - Type: qa
 - Owner: web_admin
