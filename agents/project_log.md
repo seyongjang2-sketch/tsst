@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 20:55 - Public deployment visibility fix
+- Type: deployment
+- Owner: web_admin
+- Status: done
+- Summary: Committed and pushed the missing homepage changes so the public Cloudflare URL now serves the updated Mom recipe section with the new bulgogi rice-paper-roll image.
+- Files: mom.html,images/recipe-bulgogi-rice-paper-rolls.png,agents/homepage_management_guidelines.md,reports/homepage-management-audit-20260530.md,reports/homepage-party-meeting-20260530.md,reports/recipe-main-desktop.png,reports/recipe-main-desktop-anchor.png,reports/recipe-main-mobile-anchor.png,agents/project_log.md
+- Validation: local mom.html HTTP 200; local recipe image HTTP 200; internal href/src audit passed; pushed commit 61606a5 to origin/main, origin/test, and tsst/main; Cloudflare public URL `https://tsst-csa.pages.dev/mom.html?check=61606a5` contains `recipe-bulgogi-rice-paper-rolls.png` and `daily-meal-table`; Cloudflare image URL returns HTTP 200 image/png length 2329198.
+- Decisions: Treat `https://tsst-csa.pages.dev/` as the currently working public URL for this deployment confirmation.
+- Risks: `https://test.tsst-csa.pages.dev/` still returns 404, and GitHub Pages `https://seyongjang2-sketch.github.io/tsst/` still serves an older page without the recipe image. Do not use those URLs as completion proof until fixed.
+- Next: Fix or retire the stale GitHub Pages path and Cloudflare test preview path so there is only one accepted public deployment target.
+
 ## 2026-05-30 20:37 - Homepage management audit and operating guideline
 - Type: qa
 - Owner: general_manager
