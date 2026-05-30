@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 20:14 - Test branch deploy path correction
+- Type: technical
+- Owner: web_admin
+- Status: blocked
+- Summary: Corrected deployment source path to C:\\Users\\Admin\\Documents\\우리회사, not C:\\Users\\Admin\\tsst. Pushed current commit ccd0054 to origin/test for test deployment trigger. Cloudflare branch preview https://test.tsst-csa.pages.dev/ still returns 404 and direct wrangler Pages deploy with --branch test is blocked by missing CLOUDFLARE_API_TOKEN.
+- Files: agents/project_log.md
+- Validation: static href/src audit passed; git ls-remote shows main/test at ccd0054; wrangler pages deploy blocked by missing token
+- Decisions: none
+- Risks: none
+- Next: Provide CLOUDFLARE_API_TOKEN or enable Cloudflare Pages branch deployment for origin/test, then rerun npx wrangler@3 pages deploy . --project-name tsst-csa --branch test --commit-dirty=true
+
 ## 2026-05-30 18:45 - Cloudflare public deploy blocked after GitHub push
 - Type: technical
 - Owner: web_admin
