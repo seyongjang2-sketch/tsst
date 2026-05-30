@@ -103,47 +103,7 @@
         padding-bottom: 10px;
       }
 
-      /* --- 1. 요리 추천 룰렛 스타일 --- */
-      .roulette-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        position: relative;
-        margin: 20px 0;
-      }
-      .roulette-wrapper {
-        position: relative;
-        width: 290px;
-        height: 290px;
-      }
-      #roulette-canvas {
-        width: 280px;
-        height: 280px;
-        border-radius: 50%;
-        box-shadow: 0 10px 25px rgba(229, 169, 158, 0.2);
-        background-color: #fff;
-      }
-      /* 지시 화살표 */
-      .roulette-arrow {
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 30px;
-        height: 35px;
-        z-index: 10;
-        filter: drop-shadow(0 3px 5px rgba(0,0,0,0.15));
-      }
-      .roulette-arrow::before {
-        content: '';
-        display: block;
-        width: 0;
-        height: 0;
-        border-left: 15px solid transparent;
-        border-right: 15px solid transparent;
-        border-top: 25px solid #ff7a60;
-      }
-
+      /* --- 1. 냉장고 레시피 생성 스타일 --- */
       .spin-btn {
         margin-top: 25px;
         padding: 12px 35px;
@@ -165,24 +125,6 @@
         transform: scale(0.98);
       }
 
-      /* 룰렛 당첨 결과 카드 */
-      .roulette-result-card {
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.9);
-        width: 100%;
-        text-align: center;
-        border: 1px solid rgba(229, 169, 158, 0.2);
-        display: none;
-        animation: fadeIn 0.5s ease forwards;
-      }
-      .result-food-name {
-        font-size: 1.3rem;
-        color: #d35400;
-        font-weight: 700;
-        margin: 5px 0;
-      }
       .recipe-link-btn {
         display: inline-block;
         margin-top: 10px;
@@ -201,6 +143,138 @@
       .recipe-link-btn:hover {
         transform: scale(1.03);
         box-shadow: 0 6px 15px rgba(211, 84, 0, 0.4);
+      }
+
+      .fridge-chef-card {
+        text-align: left;
+      }
+      .fridge-chef-card .card-title {
+        text-align: center;
+      }
+      .fridge-chef-copy {
+        margin: 0 0 16px;
+        color: var(--text-rose);
+        text-align: center;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+      .ingredient-input-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .ingredient-input-row .todo-input {
+        flex: 1;
+      }
+      .ingredient-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 6px 0 14px;
+      }
+      .ingredient-chip {
+        border: 1px solid rgba(211, 84, 0, 0.18);
+        background: rgba(255, 255, 255, 0.72);
+        color: #8a5a50;
+        border-radius: 999px;
+        padding: 7px 11px;
+        font-size: 0.84rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      }
+      .ingredient-chip:hover {
+        background: #fff0e8;
+        color: #d35400;
+        transform: translateY(-1px);
+      }
+      .selected-ingredients {
+        min-height: 42px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 14px;
+        padding: 10px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.58);
+        border: 1px dashed rgba(211, 84, 0, 0.22);
+      }
+      .selected-ingredient {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border-radius: 999px;
+        padding: 7px 10px;
+        background: #fff7f0;
+        color: #6f4b42;
+        font-size: 0.84rem;
+        font-weight: 800;
+      }
+      .selected-ingredient button {
+        border: none;
+        background: transparent;
+        color: #d35400;
+        cursor: pointer;
+        font-weight: 900;
+        line-height: 1;
+      }
+      .fridge-empty {
+        color: #9b8178;
+        font-size: 0.86rem;
+      }
+      .recipe-output-card {
+        display: none;
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(211, 84, 0, 0.16);
+        box-shadow: 0 10px 22px rgba(211, 84, 0, 0.08);
+        animation: fadeIn 0.35s ease forwards;
+      }
+      .recipe-output-card h4 {
+        margin: 0 0 8px;
+        color: #d35400;
+        font-size: 1.08rem;
+      }
+      .recipe-output-card p {
+        margin: 0 0 10px;
+        color: #7b655c;
+        line-height: 1.55;
+        font-size: 0.9rem;
+      }
+      .recipe-output-card ol {
+        margin: 0 0 12px 20px;
+        padding: 0;
+        color: #5f514c;
+        line-height: 1.55;
+        font-size: 0.9rem;
+      }
+      .recipe-output-meta {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .recipe-output-meta span {
+        padding: 8px 10px;
+        border-radius: 12px;
+        background: #fff6ef;
+        color: #7a574c;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+      @media (max-width: 560px) {
+        .ingredient-input-row {
+          flex-direction: column;
+        }
+        .ingredient-input-row .spin-btn {
+          width: 100%;
+        }
+        .recipe-output-meta {
+          grid-template-columns: 1fr;
+        }
       }
 
 
@@ -1323,29 +1397,38 @@
 
       <!-- 2단 그리드 대시보드 구조 -->
       <div class="dashboard-grid">
-        <!-- 왼쪽 열: 룰렛과 힐링 비디오 검색 -->
+        <!-- 왼쪽 열: 냉장고 레시피와 힐링 비디오 검색 -->
         <div style="display: flex; flex-direction: column; gap: 30px;">
-          <!-- 요리 추천 룰렛 카드 -->
-          <div class="glass-card">
-            <h3 class="card-title">🍽️ 오늘 뭐 먹지? 요리 룰렛</h3>
-            <p style="font-size: 0.9rem; color: var(--text-rose); text-align: center; margin-bottom: 10px;">
-              한베 가족의 입맛에 딱 맞춘 요리를 추천합니다!
-              <button onclick="refreshRouletteMenu()" style="background: none; border: none; color: #ff7a60; cursor: pointer; font-size: 0.85rem; text-decoration: underline; margin-left: 8px; font-weight: 500; transition: color 0.2s;" onmouseover="this.style.color='#d35400'" onmouseout="this.style.color='#ff7a60'">새로운 라인업 🔄</button>
-            </p>
-            <div class="roulette-container">
-              <div class="roulette-wrapper">
-                <div class="roulette-arrow"></div>
-                <canvas id="roulette-canvas" width="280" height="280"></canvas>
+          <!-- 재료 기반 레시피 생성 카드 -->
+          <div class="glass-card fridge-chef-card">
+            <h3 class="card-title">🍳 냉장고를 부탁해</h3>
+            <p class="fridge-chef-copy">냉장고에 남은 재료를 넣으면 한-베 가족이 바로 먹기 좋은 음식 레시피를 만들어줍니다.</p>
+            <div class="ingredient-input-row">
+              <input type="text" id="ingredient-input" class="todo-input" placeholder="예: 계란, 두부, 양파, 라이스페이퍼" onkeypress="if(event.key==='Enter') addIngredientFromInput()">
+              <button class="spin-btn" style="margin-top:0; padding:0 20px; border-radius:15px;" onclick="addIngredientFromInput()">재료 넣기</button>
+            </div>
+            <div class="ingredient-chips" aria-label="빠른 재료 선택">
+              <button class="ingredient-chip" onclick="addIngredient('계란')">계란</button>
+              <button class="ingredient-chip" onclick="addIngredient('두부')">두부</button>
+              <button class="ingredient-chip" onclick="addIngredient('양파')">양파</button>
+              <button class="ingredient-chip" onclick="addIngredient('돼지고기')">돼지고기</button>
+              <button class="ingredient-chip" onclick="addIngredient('라이스페이퍼')">라이스페이퍼</button>
+              <button class="ingredient-chip" onclick="addIngredient('쌀국수면')">쌀국수면</button>
+            </div>
+            <div id="selected-ingredients" class="selected-ingredients" aria-live="polite">
+              <span class="fridge-empty">아직 넣은 재료가 없습니다.</span>
+            </div>
+            <button class="spin-btn" style="width:100%; margin-top:0;" onclick="generateFridgeRecipe()">레시피 만들기 ✨</button>
+
+            <div id="fridge-recipe-result" class="recipe-output-card">
+              <h4 id="fridge-recipe-title">오늘의 냉장고 레시피</h4>
+              <div class="recipe-output-meta">
+                <span id="fridge-recipe-time">조리 15분</span>
+                <span id="fridge-recipe-style">한-베 집밥</span>
               </div>
-              <button class="spin-btn" onclick="spinWheel()">추천받기 ✨</button>
-              
-              <!-- 룰렛 결과 노출부 -->
-              <div id="roulette-result" class="roulette-result-card">
-                <div>오늘의 당첨 메뉴는...</div>
-                <div id="result-food" class="result-food-name">음식명</div>
-                <div id="result-desc" style="font-size: 0.85rem; color: #7f8c8d;">한베 가족 추천 코멘트</div>
-                <button id="result-recipe-btn" class="recipe-link-btn" onclick="openRecipeSearchPopup()">레시피 검색 결과 보기 🎥</button>
-              </div>
+              <p id="fridge-recipe-summary"></p>
+              <ol id="fridge-recipe-steps"></ol>
+              <button id="result-recipe-btn" class="recipe-link-btn" onclick="openRecipeSearchPopup()">영상 레시피 더 보기 🎥</button>
             </div>
           </div>
 
@@ -1435,175 +1518,132 @@
     <!-- javascript 로직 작성 -->
     <script>
       // ==========================================
-      // 1. 요리 추천 룰렛 로직
+      // 1. 냉장고를 부탁해 레시피 생성 로직
       // ==========================================
-      const canvas = document.getElementById('roulette-canvas');
-      const ctx = canvas.getContext('2d');
-      
-      const ALL_FOOD_POOL = [
-        // 베트남 요리
-        { name: '쌀국수', sub: 'Phở', desc: '따뜻한 국물로 몸과 마음을 사르르 녹여주는 베트남 대표 요리 🍲' },
-        { name: '분짜', sub: 'Bún chả', desc: '새콤달콤 느억맘 소스에 숯불 돼지고기와 생면을 적셔 먹는 별미 🥓' },
-        { name: '반미', sub: 'Bánh mì', desc: '바삭한 바게트 빵에 신선한 야채와 고기를 가득 담은 간편 별미 🥖' },
-        { name: '월남쌈', sub: 'Gỏi cuốn', desc: '시원하고 신선한 라이스페이퍼 쌈에 알록달록 채소를 한 가득 🌯' },
-        { name: '반쎄오', sub: 'Bánh xèo', desc: '바삭한 쌀가루 반죽에 숙주와 고기, 해산물을 얹어 싸 먹는 베트남식 부침개 🍳' },
-        { name: '분보후에', sub: 'Bún bò Huế', desc: '매콤하고 진한 소고기 육수에 굵은 면을 넣어 먹는 후에 지방의 쌀국수 🍜' },
-        { name: '껌떵', sub: 'Cơm tấm', desc: '숯불 양념 돼지갈비를 얹은 베트남식 대중적인 덮밥 🍛' },
-        { name: '짜조', sub: 'Chả giò', desc: '바삭하게 튀겨내어 겉바속촉의 정석을 보여주는 베트남식 만두 🥟' },
-        { name: '보루락', sub: 'Bò lúc lắc', desc: '달콤 짭조름하게 볶아낸 베트남식 소고기 찹스테이크 🥩' },
-        { name: '반꾸온', sub: 'Bánh cuốn', desc: '얇고 부드러운 쌀피 안에 고기와 버섯을 넣어 쪄낸 아침 별미 🍥' },
-        
-        // 한국 요리
-        { name: '김치찌개', sub: 'Canh Kimchi', desc: '한국인의 소울푸드, 푹 익은 김치와 돼지고기가 어우러진 깊은 맛 🍲' },
-        { name: '비빔밥', sub: 'Cơm trộn', desc: '알록달록 다채로운 고명을 얹어 영양도 맛도 으뜸인 한국식 비빔밥 🍳' },
-        { name: '불고기', sub: 'Thịt nướng', desc: '달콤 짭조름한 양념으로 호불호 없이 온가족이 좋아하는 영양 만점 고기 요리 🥩' },
-        { name: '떡볶이', sub: 'Bánh gạo cay', desc: '매콤달콤한 소스로 스트레스를 싹 날려주는 추억의 국민 간식 🌶️' },
-        { name: '된장찌개', sub: 'Canh tương đậu', desc: '구수한 된장찌개에 두부와 호박을 듬뿍 넣어 한 끼 뚝딱 🍲' },
-        { name: '닭갈비', sub: 'Gà xào cay', desc: '매콤달콤 닭고기와 고구마, 양배추의 쫄깃한 조화 🍗' },
-        { name: '제육볶음', sub: 'Thịt xào cay', desc: '매콤하고 불향 가득히 볶아낸 한국식 매콤 제육볶음 🐖' },
-        { name: '삼겹살', sub: 'Ba chỉ nướng', desc: '가족이 함께 둘러앉아 구워 먹는 최고의 겹살이 파티 🥓' },
-        { name: '갈비탕', sub: 'Canh sườn bò', desc: '진한 갈비 육수로 몸보신 제대로 하는 한국식 갈비탕 🥣' },
-        { name: '잡채', sub: 'Miến trộn', desc: '쫄깃한 당면과 색색깔 채소, 소고기가 어우러진 잔치 맛 🍝' },
-        { name: '부대찌개', sub: 'Lẩu quân đội', desc: '햄과 소시지, 라면사리 듬뿍 얼큰 칼칼한 부대찌개 🥘' },
-        { name: '해물파전', sub: 'Bánh xèo HQ', desc: '해물과 파가 듬뿍 들어간 고소하고 바삭한 한국식 파전 🥞' }
+      let selectedIngredients = [];
+      let generatedRecipeTitle = '냉장고 재료 레시피';
+
+      const recipeTemplates = [
+        {
+          keywords: ['계란', '두부'],
+          title: '두부 계란 간장덮밥',
+          time: '조리 12분',
+          style: '아이도 먹기 쉬운 집밥',
+          summary: '두부와 계란을 부드럽게 익혀 밥 위에 올리는 냉장고 기본 레시피입니다. 어른 접시에는 고추기름이나 라임을 조금 더해도 좋습니다.',
+          steps: [
+            '두부는 키친타월로 물기를 빼고 한입 크기로 자릅니다.',
+            '팬에 양파나 대파가 있으면 먼저 볶고 두부를 넣어 겉면만 살짝 익힙니다.',
+            '간장 1큰술, 물 3큰술, 설탕 조금을 섞어 붓고 계란을 풀어 넣습니다.',
+            '아이 접시는 먼저 덜고, 어른 접시는 후추나 고추기름을 더해 마무리합니다.'
+          ]
+        },
+        {
+          keywords: ['라이스페이퍼', '돼지고기'],
+          title: '돼지고기 라이스페이퍼 월남쌈',
+          time: '조리 18분',
+          style: '한-베 가족 메뉴',
+          summary: '돼지고기를 간장 양념으로 빠르게 볶고 냉장고 채소를 곁들여 싸 먹는 메뉴입니다. 상추, 오이, 당근이 조금만 있어도 충분합니다.',
+          steps: [
+            '돼지고기는 간장, 설탕, 다진 마늘, 참기름으로 10분만 재웁니다.',
+            '센 불에서 고기를 볶고 물기가 많으면 조금 더 졸입니다.',
+            '라이스페이퍼를 미지근한 물에 적셔 고기와 냉장고 채소를 올립니다.',
+            '아이용은 소스 없이 말고, 어른용은 느억맘 라임 소스를 따로 곁들입니다.'
+          ]
+        },
+        {
+          keywords: ['쌀국수면'],
+          title: '냉장고 채소 쌀국수 볶음',
+          time: '조리 15분',
+          style: '베트남식 빠른 한 끼',
+          summary: '남은 채소와 단백질을 쌀국수면과 함께 볶는 간단한 한 그릇입니다. 매운 양념은 마지막에 어른 접시에만 더합니다.',
+          steps: [
+            '쌀국수면은 뜨거운 물에 불린 뒤 찬물에 헹궈 둡니다.',
+            '팬에 양파, 당근, 양배추 등 남은 채소를 먼저 볶습니다.',
+            '면과 간장 1큰술, 굴소스나 느억맘 반 큰술을 넣고 빠르게 섞습니다.',
+            '계란이나 두부가 있으면 마지막에 넣어 단백질을 보충합니다.'
+          ]
+        }
       ];
 
-      let foods = [];
-
-      function initializeRouletteMenu() {
-        // ALL_FOOD_POOL에서 무작위로 8개 무작위 셔플 후 선택
-        const shuffled = [...ALL_FOOD_POOL].sort(() => 0.5 - Math.random());
-        foods = shuffled.slice(0, 8);
+      function normalizeIngredient(value) {
+        return value.trim().replace(/\s+/g, ' ');
       }
 
-      function refreshRouletteMenu() {
-        if (isSpinning) return;
-        document.getElementById('roulette-result').style.display = 'none';
-        initializeRouletteMenu();
-        drawRoulette();
-        
-        canvas.style.transition = 'none';
-        canvas.style.transform = 'rotate(0deg)';
-        currentRotation = 0;
+      function escapeHTML(value) {
+        return value.replace(/[&<>"']/g, (char) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[char]));
       }
 
-      const colors = [
-        '#fff0f5', // 라벤더블러쉬
-        '#ffe5d9', // 소프트피치
-        '#ffd6ff', // 파우더핑크
-        '#ffeedd', // 크림베이지
-        '#ffcad4', // 살몬핑크
-        '#f4acb7', // 블러쉬핑크
-        '#ffc3a0', // 로즈골드골드
-        '#ffafbd'  // 피치핑크
-      ];
+      function addIngredientFromInput() {
+        const input = document.getElementById('ingredient-input');
+        const values = input.value.split(',').map(normalizeIngredient).filter(Boolean);
+        values.forEach(addIngredient);
+        input.value = '';
+      }
 
-      function drawRoulette() {
-        const numSections = foods.length;
-        const arcSize = (2 * Math.PI) / numSections;
-        const radius = canvas.width / 2;
+      function addIngredient(name) {
+        const ingredient = normalizeIngredient(name);
+        if (!ingredient || selectedIngredients.includes(ingredient)) return;
+        selectedIngredients.push(ingredient);
+        renderSelectedIngredients();
+      }
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      function removeIngredient(index) {
+        selectedIngredients.splice(index, 1);
+        renderSelectedIngredients();
+      }
 
-        for (let i = 0; i < numSections; i++) {
-          const angle = i * arcSize;
-          ctx.fillStyle = colors[i % colors.length];
-          
-          ctx.beginPath();
-          ctx.moveTo(radius, radius);
-          ctx.arc(radius, radius, radius - 8, angle, angle + arcSize);
-          ctx.closePath();
-          ctx.fill();
-
-          // 구분선 그리기
-          ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
-          ctx.lineWidth = 2.5;
-          ctx.stroke();
-
-          // 텍스트 회전하여 그리기
-          ctx.save();
-          ctx.fillStyle = '#5c4d44';
-          ctx.font = 'bold 12px "Noto Sans KR"';
-          ctx.textAlign = 'right';
-          ctx.textBaseline = 'middle';
-          
-          ctx.translate(radius, radius);
-          ctx.rotate(angle + arcSize / 2);
-          
-          ctx.fillText(foods[i].name, radius - 25, -7);
-          
-          ctx.font = '9px "Montserrat"';
-          ctx.fillStyle = '#8a766a';
-          ctx.fillText(foods[i].sub, radius - 25, 9);
-          
-          ctx.restore();
+      function renderSelectedIngredients() {
+        const container = document.getElementById('selected-ingredients');
+        if (!selectedIngredients.length) {
+          container.innerHTML = '<span class="fridge-empty">아직 넣은 재료가 없습니다.</span>';
+          return;
         }
-
-        // 중앙 로즈골드 장식 원
-        ctx.beginPath();
-        ctx.arc(radius, radius, 22, 0, 2 * Math.PI);
-        const grad = ctx.createRadialGradient(radius, radius, 2, radius, radius, 22);
-        grad.addColorStop(0, '#ffffff');
-        grad.addColorStop(0.3, '#ffe5d9');
-        grad.addColorStop(1, '#e5a99e');
-        ctx.fillStyle = grad;
-        ctx.fill();
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-        
-        // 바깥 테두리 금장 효과
-        ctx.beginPath();
-        ctx.arc(radius, radius, radius - 4, 0, 2 * Math.PI);
-        ctx.strokeStyle = '#e5a99e';
-        ctx.lineWidth = 4;
-        ctx.stroke();
+        container.innerHTML = selectedIngredients.map((item, index) => `
+          <span class="selected-ingredient">${escapeHTML(item)}<button type="button" aria-label="${escapeHTML(item)} 제거" onclick="removeIngredient(${index})">×</button></span>
+        `).join('');
       }
 
-      let currentRotation = 0;
-      let isSpinning = false;
-      let selectedFoodIndex = 0;
+      function pickRecipeTemplate() {
+        return recipeTemplates.find((template) =>
+          template.keywords.every((keyword) => selectedIngredients.includes(keyword))
+        ) || {
+          title: `${selectedIngredients.slice(0, 2).join('·')} 냉장고 볶음밥`,
+          time: '조리 15분',
+          style: '남은 재료 활용 집밥',
+          summary: `냉장고에 있는 ${selectedIngredients.join(', ')}을 한 팬에 정리하는 실용 레시피입니다. 밥, 면, 라이스페이퍼 중 집에 있는 탄수화물과 연결하면 한 끼가 됩니다.`,
+          steps: [
+            '재료를 한입 크기로 썰고 익는 시간이 긴 재료부터 따로 둡니다.',
+            '팬에 기름을 두르고 단단한 채소와 고기류를 먼저 볶습니다.',
+            '나머지 재료를 넣고 간장 1큰술, 설탕 조금, 물 2큰술로 간을 맞춥니다.',
+            '밥이나 면을 넣어 섞고, 아이용을 먼저 덜어낸 뒤 어른용에 후추나 매운 소스를 더합니다.'
+          ]
+        };
+      }
 
-      function spinWheel() {
-        if (isSpinning) return;
-        isSpinning = true;
-
-        document.getElementById('roulette-result').style.display = 'none';
-
-        selectedFoodIndex = Math.floor(Math.random() * foods.length);
-        const targetAngle = 270 - (selectedFoodIndex * 45 + 22.5); // 0~360도 사이
-        
-        const currentNormalized = currentRotation % 360;
-        let diff = targetAngle - currentNormalized;
-        if (diff <= 0) {
-          diff += 360;
+      function generateFridgeRecipe() {
+        if (!selectedIngredients.length) {
+          addIngredient('계란');
+          addIngredient('두부');
         }
-        
-        const additionalRotation = diff + (360 * 6); // 6바퀴 회전 연출
-        currentRotation += additionalRotation;
-
-        canvas.style.transition = 'transform 4.5s cubic-bezier(0.1, 0.8, 0.1, 1)';
-        canvas.style.transform = `rotate(${currentRotation}deg)`;
-
-        setTimeout(() => {
-          isSpinning = false;
-          showRouletteResult(selectedFoodIndex);
-        }, 4500);
-      }
-
-      function showRouletteResult(idx) {
-        const item = foods[idx];
-        document.getElementById('result-food').innerText = `${item.name} (${item.sub})`;
-        document.getElementById('result-desc').innerText = item.desc;
-        
-        const resultCard = document.getElementById('roulette-result');
-        resultCard.style.display = 'block';
+        const recipe = pickRecipeTemplate();
+        generatedRecipeTitle = recipe.title;
+        document.getElementById('fridge-recipe-title').innerText = recipe.title;
+        document.getElementById('fridge-recipe-time').innerText = recipe.time;
+        document.getElementById('fridge-recipe-style').innerText = recipe.style;
+        document.getElementById('fridge-recipe-summary').innerText = recipe.summary;
+        document.getElementById('fridge-recipe-steps').innerHTML = recipe.steps.map((step) => `<li>${step}</li>`).join('');
+        document.getElementById('fridge-recipe-result').style.display = 'block';
       }
 
       // 레시피 검색 결과 미니 팝업창 연동 (window.open 방식)
       function openRecipeSearchPopup() {
-        const item = foods[selectedFoodIndex];
-        const query = item.name + ' 레시피';
+        const query = `${generatedRecipeTitle} 레시피`;
         const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
         window.open(url, '_blank', 'width=950,height=750,location=no,status=no,scrollbars=yes');
       }
@@ -1861,8 +1901,6 @@
 
       // 페이지 로드 초기화
       window.addEventListener('DOMContentLoaded', () => {
-        initializeRouletteMenu();
-        drawRoulette();
         loadRoutines();
         loadTodo();
       });

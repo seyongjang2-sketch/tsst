@@ -2,6 +2,28 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 06:20 - Mom fridge chef recipe generator
+- Type: feature
+- Owner: web_admin
+- Status: done
+- Summary: Replaced the "오늘 뭐 먹지? 요리 룰렛" card on mom.html with a "냉장고를 부탁해" ingredient-input recipe generator for leftover ingredients.
+- Files: mom.html,reports/screenshots/mom-fridge-chef-mobile-390x720.png
+- Validation: Local mobile Playwright screenshot captured at 390x720 after entering ingredients and generating a recipe.
+- Decisions: Use direct ingredient input, quick ingredient chips, removable selected ingredients, generated cooking steps, and YouTube recipe search tied to the generated recipe title.
+- Risks: Recipe generation is template-based and local to the page; it is not connected to an external AI or nutrition database.
+- Next: Include this update in the next private test deploy/push batch.
+
+## 2026-05-31 06:09 - stars mobile planet modal clipping fix
+- Type: bugfix
+- Owner: web_admin
+- Status: done
+- Summary: Fixed the mobile planet description modal on stars.html so it no longer opens partly outside the viewport or under the fixed navbar.
+- Files: stars.html,reports/screenshots/stars-mobile-planet-modal-390x568.png
+- Validation: Local Playwright runtime check at 390x568 passed with modal top 6, bottom 562, close button bottom 433 inside a 568px viewport; screenshot captured.
+- Decisions: Keep desktop modal animation; replace mobile modal animation with opacity-only fade and raise modal z-index above the fixed navbar.
+- Risks: none
+- Next: Include this fix in the next deploy/push batch.
+
 ## 2026-05-31 06:04 - Private test deployment 4cabb52
 - Type: technical
 - Owner: web_admin

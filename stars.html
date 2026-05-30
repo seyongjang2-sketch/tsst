@@ -18,13 +18,18 @@
             width: 90%; max-width: 650px; background: linear-gradient(135deg, rgba(8, 12, 28, 0.96), rgba(20, 8, 30, 0.96)); 
             border: 2px solid #00ffff; border-radius: 24px; padding: 25px; text-align: center; color: white; 
             box-shadow: 0 0 35px rgba(0, 255, 255, 0.3), inset 0 0 15px rgba(0, 255, 255, 0.05); 
-            z-index: 120; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1500; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
+            box-sizing: border-box;
         }
         @keyframes popIn {
             from { transform: translate(-50%, -40%) scale(0.9); opacity: 0; }
             to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        @keyframes mobileModalIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         #info-modal h2 { margin: 0 0 15px 0; color: #00ffff; font-size: 26px; font-weight: 800; text-shadow: 0 0 12px rgba(0, 255, 255, 0.5); }
         
@@ -376,11 +381,15 @@
                 left: 8px;
                 width: auto;
                 max-width: none;
+                height: calc(100dvh - 16px);
                 max-height: calc(100dvh - 16px);
                 transform: none;
                 padding: 14px;
                 border-radius: 16px;
                 overflow: auto;
+                overscroll-behavior: contain;
+                -webkit-overflow-scrolling: touch;
+                animation: mobileModalIn 0.2s ease-out;
             }
             #info-modal h2 {
                 font-size: 1.2rem;
@@ -403,7 +412,7 @@
             }
             .tab-content {
                 height: auto;
-                max-height: 30vh;
+                max-height: min(30dvh, 180px);
                 font-size: 0.88rem;
                 padding: 12px;
             }
@@ -413,6 +422,44 @@
                 border-radius: 12px;
             }
             #hud-panel { display: none; }
+        }
+        @media (max-width: 768px) and (max-height: 640px) {
+            #info-modal {
+                inset: 6px;
+                height: calc(100dvh - 12px);
+                max-height: calc(100dvh - 12px);
+                padding: 10px;
+            }
+            #info-modal h2 {
+                font-size: 1.05rem;
+                margin-bottom: 8px;
+            }
+            #star-canvas {
+                height: 104px;
+                margin-bottom: 8px;
+            }
+            .modal-tabs {
+                gap: 5px;
+                margin: 6px 0 8px 0;
+                padding-bottom: 6px;
+            }
+            .modal-tab-btn {
+                min-height: 34px;
+                padding: 6px 4px;
+                font-size: 0.68rem;
+            }
+            .tab-content {
+                max-height: min(26dvh, 132px);
+                margin-bottom: 8px;
+                padding: 10px;
+                font-size: 0.82rem;
+                line-height: 1.55;
+            }
+            .close-btn {
+                min-height: 40px;
+                padding: 9px 12px;
+                font-size: 0.9rem;
+            }
         }
     </style>
     <link rel="stylesheet" href="login-modal.css" />
