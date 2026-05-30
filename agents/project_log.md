@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 06:04 - Private test deployment 4cabb52
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Pushed the latest FamilySpace private-test updates, including stars mobile stargazing usability, shopping quick compare links, and private test operation wording, to origin/main, origin/test, and tsst/main.
+- Files: stars.html,style.css,mom.html,blog.html,DEPLOYMENT.md,README.md,agents/project_log.md,reports/screenshots/stars-mobile-usability-20260531.png,reports/screenshots/stars-desktop-usability-20260531.png
+- Validation: git diff --check passed; local stars.html HTTP 200; git ls-remote origin main/test and tsst main at 4cabb523075f701ae2e5cad2c9c285bee702fc44; Cloudflare preview /stars includes roof-mobile-toggle and is-collapsed; /mom and /blog include new shopping links; /DEPLOYMENT.md includes private operating test wording.
+- Decisions: none
+- Risks: none
+- Next: Treat https://tsst-csa.pages.dev/ as technical preview only until explicit public-operation approval.
+
 ## 2026-05-31 06:00 - stars mobile stargazing usability
 - Type: design
 - Owner: web_admin
