@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 17:35 - Cloudflare Pages latest deployment attempt
+- Type: technical
+- Owner: web_admin
+- Status: blocked
+- Summary: Confirmed local and GitHub main are on latest FamilySpace site, but https://tsst-csa.pages.dev/ still serves the old 6.5KB page after redeploy trigger commit 8355539. Direct wrangler deploy is blocked because CLOUDFLARE_API_TOKEN is not configured.
+- Files: index.html,assets,images,guides
+- Validation: Invoke-WebRequest URL checks; git push origin main; wrangler@3 deploy attempt
+- Decisions: none
+- Risks: none
+- Next: Provide Cloudflare API token or update Pages project source/build settings in Cloudflare dashboard, then run wrangler pages deploy from the prepared latest static site.
+
 ## 2026-05-30 16:35 - Dad page disconnected navigator cleanup
 - Type: technical
 - Owner: web_admin
