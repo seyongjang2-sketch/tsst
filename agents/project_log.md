@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 18:43 - Deploy floor navigation and daily meal update
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Prepared latest FamilySpace changes for deployment: unified the main navigation into 1층~옥상 labels and connected Mom meal links to the new daily meal card with recipe content.
+- Files: index.html,style.css,mom.html,about.html,baby.html,blog.html,contact.html,dad.html,privacy.html,stars.html,terms.html,guides
+- Validation: Local HTTP 200 checks for main pages and guides; internal href/src/hash audit passed
+- Decisions: none
+- Risks: none
+- Next: Push main and verify the public Pages URL returns the updated navigation and meal section.
+
 ## 2026-05-30 17:35 - Cloudflare Pages latest deployment attempt
 - Type: technical
 - Owner: web_admin

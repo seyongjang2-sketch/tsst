@@ -768,6 +768,94 @@
         overflow: hidden;
         scroll-margin-top: 68px;
       }
+      .daily-meal-card {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 0;
+        overflow: hidden;
+        scroll-margin-top: 68px;
+      }
+      .daily-meal-visual {
+        margin: 0;
+        min-height: 100%;
+        background: #fff7f0;
+      }
+      .daily-meal-visual img {
+        width: 100%;
+        height: 100%;
+        min-height: 360px;
+        object-fit: cover;
+        display: block;
+      }
+      .daily-meal-content {
+        padding: 28px;
+      }
+      .daily-meal-date {
+        display: inline-flex;
+        margin-bottom: 12px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(255, 154, 118, 0.16);
+        color: #d35400;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.04rem;
+      }
+      .daily-meal-title {
+        margin: 0 0 10px;
+        color: #2f3542;
+        font-size: 1.65rem;
+        line-height: 1.25;
+      }
+      .daily-meal-menu {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin: 20px 0;
+      }
+      .daily-meal-menu div {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 245, 242, 0.82);
+        border: 1px solid rgba(211, 84, 0, 0.08);
+      }
+      .daily-meal-menu b {
+        display: block;
+        margin-bottom: 4px;
+        color: #d35400;
+        font-size: 0.8rem;
+      }
+      .daily-meal-menu span {
+        color: #4c3f3a;
+        font-size: 0.92rem;
+        line-height: 1.45;
+      }
+      .daily-recipe-box {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, rgba(255, 154, 118, 0.17), rgba(255, 255, 255, 0.92));
+        border: 1px solid rgba(211, 84, 0, 0.12);
+      }
+      .daily-recipe-box h4 {
+        margin: 0 0 10px;
+        color: #d35400;
+        font-size: 1.05rem;
+      }
+      .daily-recipe-box ol {
+        margin: 0;
+        padding-left: 20px;
+        color: #5f4a42;
+        line-height: 1.65;
+        font-size: 0.92rem;
+      }
+      .daily-recipe-note {
+        margin-top: 12px;
+        color: #8a5a50;
+        font-size: 0.86rem;
+        line-height: 1.55;
+      }
       .weekly-feature-head {
         display: grid;
         grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.8fr);
@@ -906,6 +994,20 @@
         .mom-update-card.weekly-feature {
           scroll-margin-top: 112px;
         }
+        .daily-meal-card {
+          grid-template-columns: 1fr;
+          scroll-margin-top: 112px;
+        }
+        .daily-meal-visual img {
+          min-height: 240px;
+          max-height: 320px;
+        }
+        .daily-meal-content {
+          padding: 22px;
+        }
+        .daily-meal-menu {
+          grid-template-columns: 1fr;
+        }
         .weekly-feature-head {
           grid-template-columns: 1fr;
           padding: 22px;
@@ -933,10 +1035,10 @@
       <div class="nav-container">
         <a href="index.html" class="nav-logo">FamilySpace</a>
         <ul class="nav-links">
-          <li><a href="mom.html" class="active">1F 엄마</a></li>
-          <li><a href="baby.html">2F 아기</a></li>
-          <li><a href="dad.html">3F 아빠</a></li>
-          <li><a href="blog.html">4F 가족</a></li>
+          <li><a href="mom.html" class="active">1층 엄마</a></li>
+          <li><a href="baby.html">2층 아기</a></li>
+          <li><a href="dad.html">3층 아빠</a></li>
+          <li><a href="blog.html">4층 가족</a></li>
           <li><a href="stars.html">옥상</a></li>
           <li id="nav-auth-link"></li>
         </ul>
@@ -956,7 +1058,7 @@
           <article class="room-brief-card">
             <b>오늘의 한-베 식단</b>
             <span>한국 반찬과 베트남 재료를 섞어 아이도 먹기 쉬운 저녁 메뉴를 추천합니다.</span>
-            <a href="blog.html#meal-plan">식단 보기</a>
+            <a href="#daily-meal-table">식단 보기</a>
           </article>
           <article class="room-brief-card">
             <b>장보기 빠른 비교</b>
@@ -1005,7 +1107,7 @@
         <article class="mom-resource-card">
           <h4>한-베 식탁 캘린더</h4>
           <p>한국 음식과 베트남 음식을 번갈아 준비할 수 있게 장보기 목록까지 연결한 7일 식단 아이디어입니다.</p>
-          <a href="blog.html#meal-plan">식단 아이디어 보기 →</a>
+          <a href="#daily-meal-table">오늘 식단 보기 →</a>
         </article>
         <article class="mom-resource-card">
           <h4>육아·가족 소통 노트</h4>
@@ -1025,6 +1127,33 @@
       </div>
 
       <section class="mom-update-board" id="weekly-updates" aria-label="엄마 페이지 업데이트 기준">
+        <article class="mom-update-card daily-meal-card" id="daily-meal-table" aria-label="오늘의 한-베식단과 주메뉴 레시피">
+          <figure class="daily-meal-visual">
+            <img src="images/mom-real-meal-plan.jpg" alt="밥과 반찬, 찌개가 함께 놓인 한-베 가족 저녁 밥상" loading="eager" />
+          </figure>
+          <div class="daily-meal-content">
+            <span class="daily-meal-date">매일 업데이트 · 오늘의 한-베식단</span>
+            <h3 class="daily-meal-title">오늘의 멋진 밥상: 불고기 월남쌈 정식</h3>
+            <p>한국식 달콤한 불고기를 베트남 라이스페이퍼와 허브에 싸 먹는 저녁 메뉴입니다. 아이는 밥반찬으로, 어른은 느억맘 라임 소스로 가볍게 즐길 수 있습니다.</p>
+            <div class="daily-meal-menu">
+              <div><b>주메뉴</b><span>간장 불고기 월남쌈</span></div>
+              <div><b>국물</b><span>두부 애호박 된장국</span></div>
+              <div><b>아이 반찬</b><span>계란말이와 오이 스틱</span></div>
+              <div><b>베트남 곁들임</b><span>고수, 민트, 상추, 라임 소스</span></div>
+            </div>
+            <div class="daily-recipe-box">
+              <h4>주메뉴 레시피: 간장 불고기 월남쌈</h4>
+              <ol>
+                <li>소고기 불고기감 300g에 간장 3큰술, 설탕 1큰술, 다진 마늘 1큰술, 참기름 1큰술, 후추를 넣고 15분 재웁니다.</li>
+                <li>양파와 당근을 얇게 썰어 고기와 함께 센 불에서 빠르게 볶아 물이 많이 생기지 않게 합니다.</li>
+                <li>라이스페이퍼, 상추, 오이, 고수, 민트, 삶은 쌀국수면을 접시에 나눠 담습니다.</li>
+                <li>아이 접시에는 불고기와 밥, 계란말이를 먼저 담고, 어른은 라이스페이퍼에 불고기와 허브를 싸서 먹습니다.</li>
+                <li>느억맘 1큰술, 라임즙 1큰술, 물 2큰술, 설탕 1작은술을 섞어 어른용 소스로 곁들입니다.</li>
+              </ol>
+              <div class="daily-recipe-note">대체 재료: 소고기 대신 돼지고기 앞다리살이나 닭다리살을 써도 좋습니다. 아이가 허브 향을 어려워하면 상추와 오이만 먼저 주세요.</div>
+            </div>
+          </div>
+        </article>
         <article class="mom-update-card">
           <h3>매일 업데이트</h3>
           <p>오늘 바로 써야 하는 가벼운 생활 정보는 매일 바꿉니다.</p>
