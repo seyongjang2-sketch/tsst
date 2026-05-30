@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 20:59 - Cloudflare deployment canon public verification
+- Type: qa
+- Owner: operations_lead
+- Status: done
+- Summary: Verified the deployment canon and README are publicly available through Cloudflare Pages after push.
+- Files: DEPLOYMENT.md,README.md,agents/project_log.md
+- Validation: https://tsst-csa.pages.dev/DEPLOYMENT.md returned HTTP 200 text/markdown and contained FamilySpace Deployment Canon; https://tsst-csa.pages.dev/README.md returned HTTP 200 text/markdown and contained Production Deployment.
+- Decisions: Keep deployment evidence in both project log and publicly served deployment canon.
+- Risks: Cloudflare may take a short delay after future pushes, so public URL verification must be repeated after each deployment.
+- Next: Push this verification entry and recheck DEPLOYMENT.md on Cloudflare.
+
 ## 2026-05-30 20:57 - Canonical Cloudflare deployment target fixed
 - Type: decision
 - Owner: operations_lead

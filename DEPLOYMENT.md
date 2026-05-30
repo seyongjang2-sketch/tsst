@@ -8,7 +8,6 @@ Last updated: 2026-05-30
 - Mom page public route: `https://tsst-csa.pages.dev/mom`
 - Repository used for production source: `https://github.com/seyongjang2-sketch/woori-company.git`
 - Production branch: `main`
-- Current verified commit: `1eefe5438f59338bb46d59237174c3c508ebbb80`
 
 Cloudflare Pages is the only production deployment target for this project unless a later dated entry in this file explicitly replaces it.
 
@@ -38,7 +37,7 @@ Required completion evidence:
 
 ## Current Verification
 
-Checked on 2026-05-30 20:56 Asia/Bangkok:
+Checked on 2026-05-30 20:56 Asia/Bangkok, before publishing this deployment-canon document:
 
 - `origin/main`: `1eefe5438f59338bb46d59237174c3c508ebbb80`
 - `origin/test`: `1eefe5438f59338bb46d59237174c3c508ebbb80`
@@ -47,6 +46,13 @@ Checked on 2026-05-30 20:56 Asia/Bangkok:
 - `/mom` includes `daily-meal-table`.
 - `/mom` includes `recipe-bulgogi-rice-paper-rolls.png`.
 - `https://tsst-csa.pages.dev/images/recipe-bulgogi-rice-paper-rolls.png` returns HTTP 200 `image/png`.
+
+Checked again on 2026-05-30 20:58 Asia/Bangkok:
+
+- `https://tsst-csa.pages.dev/DEPLOYMENT.md` returns HTTP 200 `text/markdown`.
+- `https://tsst-csa.pages.dev/README.md` returns HTTP 200 `text/markdown`.
+- `DEPLOYMENT.md` includes `FamilySpace Deployment Canon` on the public Cloudflare URL.
+- `README.md` includes `Production Deployment` on the public Cloudflare URL.
 
 ## If Deployment Is Blocked
 
