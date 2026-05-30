@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 520" role="img" aria-label="한-베 가족의 재무, 비자, 주말 계획 일러스트">
+  <rect width="720" height="520" rx="36" fill="#eef6ff"/>
+  <rect x="70" y="80" width="280" height="330" rx="28" fill="#ffffff" stroke="#9cc8ef" stroke-width="4"/>
+  <rect x="108" y="128" width="204" height="28" rx="14" fill="#0984e3"/>
+  <rect x="108" y="188" width="172" height="18" rx="9" fill="#cfe8ff"/>
+  <rect x="108" y="226" width="202" height="18" rx="9" fill="#cfe8ff"/>
+  <rect x="108" y="264" width="146" height="18" rx="9" fill="#cfe8ff"/>
+  <rect x="108" y="318" width="74" height="52" rx="12" fill="#2ecc71"/>
+  <rect x="196" y="318" width="74" height="52" rx="12" fill="#f2c14e"/>
+  <rect x="284" y="318" width="74" height="52" rx="12" fill="#d97b5c"/>
+  <rect x="430" y="112" width="210" height="150" rx="20" fill="#1e272e"/>
+  <rect x="454" y="140" width="162" height="92" rx="12" fill="#9ee8ff"/>
+  <rect x="492" y="274" width="86" height="18" rx="9" fill="#1e272e"/>
+  <rect x="468" y="292" width="134" height="20" rx="10" fill="#57606f"/>
+  <path d="M432 386c26-52 72-82 122-82s90 30 118 82" fill="none" stroke="#0984e3" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="552" cy="246" r="34" fill="#e8b88c"/>
+  <path d="M512 344h80" stroke="#2ecc71" stroke-width="14" stroke-linecap="round"/>
+  <text x="94" y="452" fill="#1e272e" font-family="Arial, sans-serif" font-size="30" font-weight="700">Docs + Money</text>
+</svg>

@@ -1,0 +1,104 @@
+{
+    "prompts": [
+        {
+            "name": "School Notebook",
+            "positive_prompt": "A warm natural morning light shines through[7D[K
+through the windows of a lived-in apartment in Vietnam. A Korean father hol[3D[K
+holds a school notebook with his 25-month-old child while the mother is see[3D[K
+seen checking TRC/visa documents on a memo board, without visible faces or [K
+direct eye contact.",
+            "negative_prompt": "stock photo, glossy advertisement, overpose[8D[K
+overposed smiling family, direct eye contact, visible faces, flags, nationa[7D[K
+national costume, tourist landmark, ph?, kimchi, traditional symbols, reada[5D[K
+readable brand logos, distorted hands, uncanny faces, fake text, cluttered [K
+composition, oversaturated colors, harsh contrast, low quality, blurry",
+            "composition_note": "Korean father holding a school notebook in[2D[K
+in the background with mother's focused work on TRC/visa documents and memo[4D[K
+memo board.",
+            "why": "Maintains realistic documentary-style photography for a[1D[K
+a warm morning scene."
+        },
+        {
+            "name": "Hospital Appointment",
+            "positive_prompt": "In an authentic Vietnamese home, a father w[1D[K
+without visible faces gently supports his 25-month-old child as they naviga[6D[K
+navigate through budget receipts related to a hospital appointment, while t[1D[K
+the mother checks TRC/visa documents on the memo board.",
+            "negative_prompt": "stock photo, glossy advertisement, overpose[8D[K
+overposed smiling family, direct eye contact, visible faces, flags, nationa[7D[K
+national costume, tourist landmark, ph?, kimchi, traditional symbols, reada[5D[K
+readable brand logos, distorted hands, uncanny faces, fake text, cluttered [K
+composition, oversaturated colors, harsh contrast, low quality, blurry",
+            "composition_note": "Father supporting child with budget receip[6D[K
+receipts while mother works on TRC/visa documents.",
+            "why": "Captures the realism and natural interaction of a famil[5D[K
+family dealing with health matters."
+        },
+        {
+            "name": "TRC/VISA Documents",
+            "positive_prompt": "A warm morning light bathes an apartment in[2D[K
+in Vietnam where a father without visible faces meticulously organizes TRC/[4D[K
+TRC/visa documents while his 25-month-old child is seen playing with hands [K
+in the background, and the mother checks budget receipts on the memo board.[6D[K
+board.",
+            "negative_prompt": "stock photo, glossy advertisement, overpose[8D[K
+overposed smiling family, direct eye contact, visible faces, flags, nationa[7D[K
+national costume, tourist landmark, ph?, kimchi, traditional symbols, reada[5D[K
+readable brand logos, distorted hands, uncanny faces, fake text, cluttered [K
+composition, oversaturated colors, harsh contrast, low quality, blurry",
+            "composition_note": "Father organizing TRC/visa documents with [K
+child playing and mother working on budget receipts.",
+            "why": "Focuses on the practical aspects of paperwork in a real[4D[K
+real home setting."
+        },
+        {
+            "name": "Budget Receipts",
+            "positive_prompt": "A Korean father without visible faces sits [K
+at an apartment table, his hands busy organizing budget receipts, while his[3D[K
+his 25-month-old child is seen holding hands with objects and the mother ch[2D[K
+checks TRC/visa documents on a memo board in the background.",
+            "negative_prompt": "stock photo, glossy advertisement, overpose[8D[K
+overposed smiling family, direct eye contact, visible faces, flags, nationa[7D[K
+national costume, tourist landmark, ph?, kimchi, traditional symbols, reada[5D[K
+readable brand logos, distorted hands, uncanny faces, fake text, cluttered [K
+composition, oversaturated colors, harsh contrast, low quality, blurry",
+            "composition_note": "Father organizing budget receipts while ch[2D[K
+child holds objects and mother works on TRC/visa documents.",
+            "why": "Highlights the financial aspect of family life in a rea[3D[K
+realistic setting."
+        },
+        {
+            "name": "Apartment Morning",
+            "positive_prompt": "In a warm morning light, a father without v[1D[K
+visible faces is seen with his 25-month-old child holding hands and explori[7D[K
+exploring around an authentic Vietnamese apartment interior. The mother che[3D[K
+checks TRC/visa documents on the memo board in the background.",
+            "negative_prompt": "stock photo, glossy advertisement, overpose[8D[K
+overposed smiling family, direct eye contact, visible faces, flags, nationa[7D[K
+national costume, tourist landmark, ph?, kimchi, traditional symbols, reada[5D[K
+readable brand logos, distorted hands, uncanny faces, fake text, cluttered [K
+composition, oversaturated colors, harsh contrast, low quality, blurry",
+            "composition_note": "Father and child exploring the apartment w[1D[K
+while mother works on TRC/visa documents.",
+            "why": "Creates a natural and cozy morning scene in an everyday[8D[K
+everyday home."
+        },
+        {
+            "name": "Memo Board",
+            "positive_prompt": "A Korean father without visible faces is se[2D[K
+seen with his 25-month-old child, who are exploring the apartment while hol[3D[K
+holding hands. In the background, the mother checks budget receipts on a me[2D[K
+memo board, and TRC/visa documents are scattered around them.",
+            "negative_prompt": "stock photo, glossy advertisement, overpose[8D[K
+overposed smiling family, direct eye contact, visible faces, flags, nationa[7D[K
+national costume, tourist landmark, ph?, kimchi, traditional symbols, reada[5D[K
+readable brand logos, distorted hands, uncanny faces, fake text, cluttered [K
+composition, oversaturated colors, harsh contrast, low quality, blurry",
+            "composition_note": "Father and child exploring while mother wo[2D[K
+works on budget receipts.",
+            "why": "Captures the interaction between family members in a li[2D[K
+lived-in home setting."
+        }
+    ]
+}
+

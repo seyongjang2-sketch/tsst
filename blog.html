@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>가족 일기장 - FamilySpace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+    <style>
+      .post-image { max-width: 100%; border-radius: 12px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+      .delete-post-btn { color: #ff4757; border: none; background: none; cursor: pointer; float: right; font-size: 1.2rem; }
+      .login-alert-box { background: #f8f9fa; padding: 20px; border-radius: 16px; text-align: center; border: 2px dashed #ddd; }
+      .loading-indicator { text-align: center; color: #888; padding: 20px; font-weight: bold; }
+      .content-card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05); border: 1px solid rgba(0,0,0,0.03); }
+      
+      /* 공개 범위 라벨 스타일 */
+      .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-left: 8px; }
+      .badge.public { background: #e3f2fd; color: #0d47a1; }
+      .badge.family { background: #fff3e0; color: #e65100; }
+      .badge.private { background: #ffebee; color: #c62828; }
+    </style>
+  </head>
+  <body class="blog-page">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="mom.html">생활</a></li>
+          <li><a href="baby.html">육아</a></li>
+          <li><a href="dad.html">서류</a></li>
+          <li><a href="blog.html" class="active">이야기</a></li>
+          <li><a href="stars.html">별보기</a></li>
+          <li id="nav-auth-link"></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-wrapper" style="max-width: 1100px; margin: 0 auto; padding: 40px 20px; margin-top: 40px;">
+      <header style="text-align: center; margin-bottom: 34px;">
+        <h1 style="font-size: 2.5rem; color: #2c3e50;">한-베 가족 생활 블로그 📔</h1>
+        <p style="color: #666;">일기는 안전하게 기록하고, 공개 글은 호치민 생활 정보 허브로 발행합니다.</p>
+      </header>
+
+      <section class="room-brief with-visual">
+        <span class="room-brief-kicker">4F FAMILY LOUNGE</span>
+        <figure class="room-brief-visual">
+          <img src="assets/home-layers/floor-4-family.png" alt="4F family lounge visual" loading="eager" />
+        </figure>
+        <h2>가족이 같이 앉아 이야기와 글감을 고르는 거실</h2>
+        <p>4층은 가족의 기억을 모으는 공간입니다. 사적인 일기는 가족끼리 남기고, 다른 한-베 가족에게 도움이 되는 이야기는 공개 글감으로 키웁니다.</p>
+        <div class="room-brief-grid">
+          <article class="room-brief-card">
+            <b>오늘의 가족 질문</b>
+            <span>오늘 제일 웃겼던 순간, 아이가 새로 한 말, 다음 주말에 가고 싶은 곳을 적습니다.</span>
+            <a href="#post-title">질문에 답하기</a>
+          </article>
+          <article class="room-brief-card">
+            <b>공개 글 후보</b>
+            <span>비자, 병원, 장보기, 육아처럼 다른 가족도 찾을 만한 글감을 골라냅니다.</span>
+            <a href="#blog-feed">후보 보기</a>
+          </article>
+          <article class="room-brief-card">
+            <b>가족 앨범</b>
+            <span>사진을 붙여 일기처럼 저장하고, 공개/가족/비공개 범위를 나눕니다.</span>
+            <a href="#post-file">사진 올리기</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-card" style="margin-bottom:30px;">
+        <h3 style="margin-top:0;">가족 콘텐츠 선반</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+          <article id="meal-plan" style="padding:16px;border-radius:16px;background:#fff7ed;">
+            <b>한-베 7일 식단</b>
+            <p style="margin:8px 0 0;color:#666;">아이 반찬, 엄마 식단, 베트남 재료 대체표를 묶어 공개 글로 키웁니다.</p>
+          </article>
+          <article id="shopping" style="padding:16px;border-radius:16px;background:#f2fbff;">
+            <b>장보기 비교 메모</b>
+            <p style="margin:8px 0 0;color:#666;">마트별 가격, 한국 식재료 구입처, 이번 주 꼭 살 것만 정리합니다.</p>
+          </article>
+          <article id="finance" style="padding:16px;border-radius:16px;background:#f6f8ff;">
+            <b>생활비와 송금</b>
+            <p style="margin:8px 0 0;color:#666;">월세, 유치원, 병원, 송금 루틴을 실제 가족 기준으로 정리합니다.</p>
+          </article>
+          <article id="docs" style="padding:16px;border-radius:16px;background:#fff4f4;">
+            <b>비자와 서류</b>
+            <p style="margin:8px 0 0;color:#666;">TRC, 출생 신고, 번역/공증, 병원 서류를 체크리스트로 만듭니다.</p>
+          </article>
+          <article id="weekend" style="padding:16px;border-radius:16px;background:#f5fff4;">
+            <b>주말 가족 루트</b>
+            <p style="margin:8px 0 0;color:#666;">아이 동선, 엄마 휴식, 아빠 준비물을 같이 보는 주말 코스입니다.</p>
+          </article>
+        </div>
+      </section>
+      <section class="content-card family-topic-board" style="margin-bottom:30px; background:linear-gradient(135deg,#f7fbff,#fff);">
+        <h3 style="margin-top:0;">이번 주 공개 글 우선순위</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;">
+          <a href="guides/trc-visa-checklist.html" style="padding:14px;border-radius:16px;background:#eaf8ff;text-decoration:none;color:#0984e3;font-weight:800;">TRC·비자 갱신 체크리스트</a>
+          <a href="guides/krw-vnd-cashflow.html" style="padding:14px;border-radius:16px;background:#fff6e8;text-decoration:none;color:#d35400;font-weight:800;">KRW↔VND 송금 루틴</a>
+          <a href="guides/han-viet-vaccine-checklist.html" style="padding:14px;border-radius:16px;background:#eefaf3;text-decoration:none;color:#27ae60;font-weight:800;">호치민 예방접종 일정표</a>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 30px;">
+        <div style="flex: 1; min-width: 320px;">
+          <div class="content-card">
+            <h3 style="margin-top:0; margin-bottom:15px;">오늘의 추억 기록하기</h3>
+            
+            <label style="display:block; margin-bottom:5px; font-weight:bold; color:#555;">작성자 선택</label>
+            <select id="author-select" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; font-size:1rem;">
+              <option value="dad">아빠 (Bố)</option>
+              <option value="mom">엄마 (Mẹ)</option>
+              <option value="baby">아기 (Bé)</option>
+            </select>
+            
+            <label style="display:block; margin-bottom:5px; font-weight:bold; color:#555;">공개 범위 설정</label>
+            <select id="visibility-select" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; font-size:1rem; background-color: #fcfcfc;">
+              <option value="public">🌐 모두 공개 (누구나 볼 수 있음)</option>
+              <option value="family">👨‍👩‍👧 가족만 공개 (가족 로그인 필수)</option>
+              <option value="private">🔒 나만 보기 (비공개 일기장)</option>
+            </select>
+
+            <input type="text" id="post-title" placeholder="제목을 입력하세요" style="width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; font-size:1rem; box-sizing: border-box;" />
+            <textarea id="post-content" placeholder="오늘 어떤 일이 있었나요?" style="width: 100%; height: 150px; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; resize: none; font-size:1rem; box-sizing: border-box; font-family:inherit;"></textarea>
+            
+            <div style="margin-bottom: 20px;">
+              <input type="file" id="post-file" accept="image/*" style="width:100%;" />
+              <img id="image-preview" src="" style="max-width: 100%; border-radius: 8px; margin-top: 10px; display: none;" />
+            </div>
+            <button id="btn-save-post" style="width: 100%; padding: 15px; background: #4a90e2; color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer;">클라우드에 저장하기 🚀</button>
+          </div>
+        </div>
+
+        <div style="flex: 2; min-width: 350px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+            <h3 style="margin:0; color:#2c3e50;">최근 일기 피드</h3>
+            <span id="viewer-badge" style="font-size:0.85rem; color:#666; background:#eee; padding:5px 12px; border-radius:15px;">조회 모드: 확인 중...</span>
+          </div>
+          <div id="blog-feed">
+            <div class="loading-indicator">서버에서 일기장을 동기화하는 중...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyASXXnU8bB6G641bY00V6MCRMLtdUgddpI",
+        authDomain: "familyspace-db.firebaseapp.com",
+        projectId: "familyspace-db",
+        storageBucket: "familyspace-db.firebasestorage.app",
+        messagingSenderId: "17439157934",
+        appId: "1:17439157934:web:d2e65b864fac46c1a6873f",
+        measurementId: "G-MJ449CTT88"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      let currentImageData = "";
+
+      // 사용자의 현재 로그인 세션 상태 수집 (auth.js 명세 규격 연동)
+      const isFamilyAuthenticated = sessionStorage.getItem('family_space_authenticated') === 'true';
+
+      document.getElementById('post-file').onchange = function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+        var reader = new FileReader();
+        reader.onload = function(evt) {
+          currentImageData = evt.target.result;
+          var preview = document.getElementById('image-preview');
+          preview.src = currentImageData;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      };
+
+      // [핵심 로직] 서버 데이터를 읽어와서 공개 범위 조건에 맞게 실시간 필터링 렌더링
+      async function renderAllPosts() {
+        const feedContainer = document.getElementById('blog-feed');
+        feedContainer.innerHTML = '<div class="loading-indicator">클라우드 동기화 중...</div>';
+        
+        // 현재 글을 읽으려고 필터 패널을 조작 중인 글쓴이 권한 식별자 수집
+        const currentSelectedUser = document.getElementById('author-select').value;
+        
+        // 우측 상단 인디케이터 라벨 상태 텍스트 분기 업데이트
+        const viewerBadge = document.getElementById('viewer-badge');
+        if (isFamilyAuthenticated) {
+          viewerBadge.innerHTML = `👨‍👩‍👧 가족 인증됨 (작성자: ${currentSelectedUser})`;
+          viewerBadge.style.background = "#e8f5e9"; viewerBadge.style.color = "#2e7d32";
+        } else {
+          viewerBadge.innerHTML = "🌐 일반 방문자 모드";
+          viewerBadge.style.background = "#fff3e0"; viewerBadge.style.color = "#ef6c00";
+        }
+
+        try {
+          const q = query(collection(db, "posts"), orderBy("timestamp", "desc"));
+          const querySnapshot = await getDocs(q);
+          
+          if (querySnapshot.empty) {
+            feedContainer.innerHTML = '<div class="login-alert-box">아직 등록된 일기가 없습니다. 첫 추억을 기록해보세요!</div>';
+            return;
+          }
+
+          let htmlBuffer = "";
+          let visibleCount = 0;
+
+          querySnapshot.forEach((docSnap) => {
+            const post = docSnap.data();
+            const id = docSnap.id;
+            
+            // 만약 옛날에 쓴 글이라 visibility 속성이 비어있다면 기본값 'public'으로 간주 처리
+            const visibility = post.visibility || 'public'; 
+            
+            // --- [가장 비판적인 보안 필터링 알고리즘 구역] ---
+            let showThisPost = false;
+
+            if (visibility === 'public') {
+              // 모두공개 글은 로그인을 하든 안 하든 전 세계 누구나 볼 수 있음
+              showThisPost = true;
+            } else if (visibility === 'family') {
+              // 가족공개 글은 오직 가족 로그인을 통과한 세션 보유자만 열람 가능
+              if (isFamilyAuthenticated) showThisPost = true;
+            } else if (visibility === 'private') {
+              // 나만보기 비밀 일기는 가족 로그인이 되어 있고, 동시에 '글쓴이 계정 키'까지 정확히 일치해야 함
+              if (isFamilyAuthenticated && post.authorKey === currentSelectedUser) showThisPost = true;
+            }
+
+            // 조건 필터링 검문을 통과한 일기 패킷만 화면 그리기 버퍼에 삽입
+            if (showThisPost) {
+              visibleCount++;
+              const authorColor = post.authorKey === 'dad' ? '#2c3e50' : (post.authorKey === 'mom' ? '#d35400' : '#27ae60');
+              
+              // 범위에 맞는 한글 라벨 텍스트 매핑 분기
+              let vBadgeHtml = "";
+              if (visibility === 'public') vBadgeHtml = '<span class="badge public">모두공개</span>';
+              else if (visibility === 'family') vBadgeHtml = '<span class="badge family">가족공개</span>';
+              else if (visibility === 'private') vBadgeHtml = '<span class="badge private">나만보기 비밀일기</span>';
+
+              htmlBuffer += `
+                <div class="content-card" style="margin-bottom: 20px; border-left: 5px solid ${authorColor}; position: relative; background: white;">
+                  <button class="delete-post-btn" data-id="${id}">&times;</button>
+                  <h4 style="color: ${authorColor}; margin-top:0; margin-bottom:5px; font-size:1.3rem;">
+                    ${post.title} ${vBadgeHtml}
+                  </h4>
+                  <p style="font-size: 0.8rem; color: #777; margin-bottom: 15px;">${post.date} | 작성자: ${post.author}</p>
+                  <div style="white-space: pre-wrap; font-size:1rem; color:#2f3542;">${post.content}</div>
+                  ${post.image ? `<img src="${post.image}" class="post-image" alt="photo">` : ''}
+                </div>
+              `;
+            }
+          });
+          
+          if (visibleCount === 0) {
+            feedContainer.innerHTML = '<div class="login-alert-box">현재 로그인 상태 및 작성자 권한으로 조회 가능한 일기가 없습니다.</div>';
+          } else {
+            feedContainer.innerHTML = htmlBuffer;
+          }
+
+          // 삭제 제어 바인딩 루프
+          document.querySelectorAll('.delete-post-btn').forEach(btn => {
+            btn.onclick = async function() {
+              if (confirm('이 추억 일기를 서버에서 영구 삭제하시겠습니까?')) {
+                const docId = this.getAttribute('data-id');
+                try {
+                  await deleteDoc(doc(db, "posts", docId));
+                  renderAllPosts();
+                } catch (err) { alert('삭제 실패: ' + err.message); }
+              }
+            };
+          });
+
+        } catch (error) {
+          feedContainer.innerHTML = `<div class="login-alert-box" style="color:red;">서버 연결 실패. 파이어베이스 세션을 점검해 주세요.</div>`;
+        }
+      }
+
+      // 왼쪽 폼 영역에서 작성자 탭을 아빠/엄마/아기로 전환할 때마다, '나만보기(private)' 글들을 동적으로 스크리닝 리렌더링
+      document.getElementById('author-select').onchange = function() {
+        renderAllPosts();
+      };
+
+      // 일기 세션 저장 트랜잭션 발사 처리
+      document.getElementById('btn-save-post').onclick = async function() {
+        var authorKey = document.getElementById('author-select').value;
+        var visibility = document.getElementById('visibility-select').value;
+        var title = document.getElementById('post-title').value;
+        var content = document.getElementById('post-content').value;
+        
+        if (!title || !content) { alert('제목과 내용을 입력해주세요!'); return; }
+        
+        // 비공개 나만보기 일기를 쓰려고 하는데 가족 로그인을 안 한 상태라면 강제 차단 리스크 스크리닝
+        if ((visibility === 'family' || visibility === 'private') && !isFamilyAuthenticated) {
+          alert('가족만공개 또는 나만보기 일기는 메인 화면 하단 모달창을 통해 [가족 로그인]을 완료하셔야 클라우드 저장이 가능합니다!');
+          return;
+        }
+
+        var authorName = authorKey === 'dad' ? '아빠 (Bố)' : (authorKey === 'mom' ? '엄마 (Mẹ)' : '아기 (Bé)');
+        
+        var newPost = {
+          authorKey: authorKey,
+          author: authorName,
+          visibility: visibility, // 'public', 'family', 'private' 문자열 식별 필드 데이터 매핑
+          title: title,
+          content: content,
+          image: currentImageData,
+          date: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
+          timestamp: Date.now()
+        };
+
+        try {
+          this.innerText = "서버 전송 중..."; this.disabled = true;
+          await addDoc(collection(db, "posts"), newPost);
+          document.getElementById('post-title').value = '';
+          document.getElementById('post-content').value = '';
+          document.getElementById('post-file').value = '';
+          document.getElementById('image-preview').style.display = 'none';
+          currentImageData = "";
+          alert('일기가 지정된 공개 범위 조건으로 안전하게 분산 기록되었습니다!');
+          await renderAllPosts();
+        } catch (error) { alert('저장 실패: ' + error.message); } 
+        finally { this.innerText = "클라우드에 저장하기 🚀"; this.disabled = false; }
+      };
+
+      window.onload = function() { renderAllPosts(); };
+    </script>
+  </body>
+</html>

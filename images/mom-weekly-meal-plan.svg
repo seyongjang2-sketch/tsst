@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" role="img" aria-labelledby="title desc">
+  <title id="title">한-베 7일 식단 계획</title>
+  <desc id="desc">식탁 위에 놓인 7일 식단표, 밥그릇, 국수, 채소를 따뜻한 색감으로 그린 일러스트</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff7e8"/>
+      <stop offset="1" stop-color="#ffd6c9"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#c66f5e" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="640" height="420" rx="32" fill="url(#bg)"/>
+  <circle cx="86" cy="78" r="44" fill="#fff" opacity=".55"/>
+  <circle cx="552" cy="335" r="64" fill="#fff" opacity=".45"/>
+  <g filter="url(#shadow)">
+    <rect x="74" y="70" width="356" height="278" rx="26" fill="#fffdf8"/>
+    <rect x="104" y="104" width="296" height="42" rx="16" fill="#ff9a76"/>
+    <text x="127" y="132" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#fff">7 DAY MENU</text>
+    <g fill="#ffe9df">
+      <rect x="106" y="174" width="78" height="48" rx="14"/>
+      <rect x="198" y="174" width="78" height="48" rx="14"/>
+      <rect x="290" y="174" width="78" height="48" rx="14"/>
+      <rect x="106" y="238" width="78" height="48" rx="14"/>
+      <rect x="198" y="238" width="78" height="48" rx="14"/>
+      <rect x="290" y="238" width="78" height="48" rx="14"/>
+    </g>
+    <g fill="#d35400">
+      <circle cx="145" cy="198" r="8"/>
+      <circle cx="237" cy="198" r="8"/>
+      <circle cx="329" cy="198" r="8"/>
+      <circle cx="145" cy="262" r="8"/>
+      <circle cx="237" cy="262" r="8"/>
+      <circle cx="329" cy="262" r="8"/>
+    </g>
+  </g>
+  <g filter="url(#shadow)">
+    <ellipse cx="482" cy="246" rx="82" ry="44" fill="#fff"/>
+    <ellipse cx="482" cy="238" rx="60" ry="28" fill="#f8efe0"/>
+    <path d="M426 238c34 42 78 42 112 0" fill="none" stroke="#e05b3f" stroke-width="9" stroke-linecap="round"/>
+    <path d="M460 224c12-32 44-32 56 0" fill="none" stroke="#4caf50" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="462" cy="238" r="10" fill="#ffd166"/>
+    <circle cx="502" cy="238" r="10" fill="#7bc96f"/>
+  </g>
+</svg>

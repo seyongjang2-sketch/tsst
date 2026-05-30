@@ -1,0 +1,2806 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아빠의 휴식처 & 테크 매거진 - FamilySpace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+    <style>
+      /* --- Reset & Core Variables (밝고 세련된 라이트 글래스모피즘 테마) --- */
+      :root {
+          --bg-color: url('images/dad_bg.png');
+          --card-bg: rgba(255, 255, 255, 0.85);
+          --border-color: rgba(0, 0, 0, 0.08);
+          --text-primary: #1e272e;
+          --text-secondary: #57606f;
+          --neon-cyan: #0984e3;
+          --neon-pink: #d63031;
+          --neon-blue: #00cec9;
+          --neon-green: #2ecc71;
+          --accent-glow: rgba(9, 132, 227, 0.08);
+      }
+
+      body.dad-page {
+          background: var(--bg-color) no-repeat center center fixed;
+          background-size: cover;
+          color: var(--text-primary);
+          font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
+          margin: 0;
+          padding: 0;
+          padding-top: 80px;
+          min-height: 100vh;
+          -webkit-font-smoothing: antialiased;
+          overflow-x: hidden;
+      }
+      
+      /* --- Views Container & SPA Transition --- */
+      .view-section {
+          display: none;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+      }
+      .view-section.active {
+          display: block;
+          animation: fadeIn 0.5s ease forwards;
+      }
+      @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+      }
+
+      /* Page Header */
+      .page-header {
+          text-align: center;
+          margin-bottom: 50px;
+          padding: 20px 0;
+      }
+      .page-header h1 {
+          font-size: 2.6rem;
+          font-weight: 800;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-bottom: 12px;
+          letter-spacing: -0.5px;
+          filter: drop-shadow(0 2px 10px rgba(0, 242, 254, 0.2));
+      }
+      .page-header p {
+          color: var(--text-secondary);
+          font-size: 1.1rem;
+      }
+
+      /* --- Interactive Info --- */
+      .interactive-info {
+          text-align: center;
+          color: var(--neon-cyan);
+          font-size: 0.9rem;
+          margin-bottom: 40px;
+          font-weight: 500;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          animation: blink 2s infinite;
+      }
+
+      /* --- Dashboard Grid Layout & Sidebar --- */
+      .dad-top-dashboard {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 30px;
+          max-width: 1200px;
+          margin: 0 auto 15px auto;
+          box-sizing: border-box;
+          transition: all 0.3s ease;
+      }
+      
+      @media (min-width: 993px) {
+          #main-view {
+              max-width: 1380px !important;
+              padding-left: 0 !important;
+              padding-right: 0 !important; /* Removed right padding to allow ads and content to center */
+              padding-top: 80px !important; /* Raised cards and content further by double amount */
+              position: relative !important;
+          }
+          .dad-top-dashboard {
+              position: static;
+              background: transparent;
+              border: none;
+              box-shadow: none;
+              backdrop-filter: none;
+              -webkit-backdrop-filter: none;
+              padding: 0;
+              margin: 0;
+          }
+          .dad-header-left {
+              position: fixed;
+              left: max(20px, calc((100vw - 1380px) / 2 + 20px)) !important;
+              right: auto !important;
+              top: 82px;
+              z-index: 1001;
+          }
+          .dad-widgets-right {
+              position: absolute !important;
+              right: 15px !important;
+              left: auto !important;
+              /* Keep the utility monitor attached to the dashboard, not over the new hero. */
+              top: 690px;
+              z-index: 120;
+              width: 180px;
+          }
+          .unified-monitor-widget {
+              flex-direction: column !important;
+              width: 100% !important;
+              gap: 6px !important; /* Reduced gap */
+              padding: 8px !important; /* Reduced padding */
+              background: rgba(255, 255, 255, 0.45) !important; /* Highly transparent */
+              border: 1px solid rgba(255, 255, 255, 0.25) !important; /* Clean glass border */
+              box-shadow: 0 8px 24px rgba(0, 0, 0, 0.03) !important; /* Soft shadow */
+              backdrop-filter: blur(10px) !important;
+              -webkit-backdrop-filter: blur(10px) !important;
+              border-radius: 12px !important;
+          }
+          .monitor-divider {
+              width: 100% !important;
+              height: 1px !important;
+              background: rgba(0, 0, 0, 0.08) !important;
+              align-self: auto !important;
+              margin: 5px 0;
+          }
+          .card-stack-container {
+              padding-left: 0 !important; /* Removed padding-left to center-align the cards */
+          }
+          .dad-dashboard-container {
+              padding-right: 210px !important; /* Shuffled to avoid overlapping with right widgets */
+          }
+          .category-header-wrapper {
+              position: static !important;
+              transform: none !important;
+              z-index: auto;
+              width: auto;
+              margin: 0 0 18px 0 !important;
+              padding-left: 14px;
+              border-left: 4px solid var(--neon-cyan);
+              background: rgba(255, 255, 255, 0.72);
+              border-radius: 0 16px 16px 0;
+              padding-top: 10px;
+              padding-bottom: 10px;
+              text-align: left;
+          }
+          .category-header-wrapper h2 {
+              font-size: 1.2rem !important;
+              line-height: 1.35 !important;
+              margin-bottom: 4px !important;
+          }
+      }
+
+      .dad-header-left {
+          flex: 1;
+          text-align: left;
+      }
+      .dad-header-left .logo {
+          font-size: 1.55rem;
+          font-weight: 800;
+          letter-spacing: 2px;
+          color: var(--neon-cyan) !important;
+          -webkit-text-fill-color: var(--neon-cyan) !important;
+          background: rgba(255, 255, 255, 0.85) !important;
+          -webkit-background-clip: border-box !important;
+          background-clip: border-box !important;
+          border: 1px solid rgba(9, 132, 227, 0.15) !important;
+          padding: 8px 20px;
+          border-radius: 12px;
+          text-transform: uppercase;
+          display: inline-block;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 8px 32px 0 rgba(9, 132, 227, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+          font-family: 'Montserrat', sans-serif;
+          transition: all 0.3s ease;
+      }
+      .dad-header-left .logo:hover {
+          background: rgba(255, 255, 255, 0.95) !important;
+          -webkit-background-clip: border-box !important;
+          background-clip: border-box !important;
+          -webkit-text-fill-color: var(--neon-cyan) !important;
+          box-shadow: 0 8px 32px 0 rgba(9, 132, 227, 0.15), inset 0 1px 0 rgba(255, 255, 255, 1);
+          transform: translateY(-1px);
+      }
+      .dad-header-left .slogan {
+          font-size: 0.72rem;
+          color: var(--text-secondary);
+          font-weight: 500;
+          margin: 0;
+          display: block;
+      }
+      .dad-widgets-right {
+          display: flex;
+          align-items: center;
+      }
+      .unified-monitor-widget {
+          display: flex;
+          gap: 15px;
+          padding: 10px 15px !important;
+          width: 440px;
+          box-sizing: border-box;
+          align-items: center;
+          justify-content: space-between;
+      }
+      .monitor-column {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+      }
+      .monitor-column h3 {
+          font-size: 0.6rem !important;
+          margin-top: 0;
+          margin-bottom: 4px !important;
+          padding-bottom: 3px !important;
+          letter-spacing: 0.5px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+          font-weight: 700;
+          color: var(--text-secondary);
+          opacity: 0.8;
+      }
+      .monitor-divider {
+          width: 1px;
+          background: var(--border-color);
+          align-self: stretch;
+      }
+
+      .dad-dashboard-container {
+          max-width: 1200px;
+          margin: 0 auto 30px auto;
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+      }
+
+      .widget-card {
+          background: var(--card-bg);
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+          padding: 12px;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          box-shadow: 0 10px 30px rgba(9, 132, 227, 0.04);
+      }
+      /* --- Today's Mission Checklist --- */
+      .todo-list {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 2px 0;
+      }
+      .todo-item {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 0.68rem;
+          font-weight: 600;
+          color: var(--text-primary);
+          cursor: pointer;
+          user-select: none;
+      }
+      .todo-item input[type="checkbox"] {
+          margin: 0;
+          width: 12px;
+          height: 12px;
+          cursor: pointer;
+          accent-color: var(--neon-cyan);
+      }
+      .todo-text {
+          transition: all 0.2s ease;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 145px;
+      }
+      .todo-item input:checked + .todo-text {
+          text-decoration: line-through;
+          opacity: 0.5;
+          color: var(--text-secondary);
+      }
+
+      /* --- Family Events D-Day --- */
+      .dday-list {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 2px 0;
+      }
+      .dday-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.68rem;
+          font-weight: 600;
+      }
+      .dday-text {
+          color: var(--text-primary);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 110px;
+      }
+      .dday-badge {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.58rem;
+          font-weight: 800;
+          padding: 2px 6px;
+          border-radius: 6px;
+          text-align: center;
+          min-width: 32px;
+          font-variant-numeric: tabular-nums;
+          font-feature-settings: "tnum" 1;
+      }
+      .dday-urgent {
+          background-color: rgba(255, 59, 48, 0.12);
+          color: #ff3b30;
+      }
+      .dday-soon {
+          background-color: rgba(255, 149, 0, 0.12);
+          color: #ff9500;
+      }
+      .dday-normal {
+          background-color: rgba(0, 122, 255, 0.12);
+          color: #007aff;
+      }
+
+      /* --- Vietnam Signal Styling --- */
+      .vietnam-signal-box {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          padding: 2px 0;
+          width: 100%;
+          box-sizing: border-box;
+      }
+      .vn-time-display {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.1rem;
+          font-weight: 800;
+          color: var(--neon-cyan);
+          text-align: center;
+          font-variant-numeric: tabular-nums;
+          font-feature-settings: "tnum" 1;
+          letter-spacing: 0.5px;
+          line-height: 1;
+          margin-bottom: 2px;
+      }
+      .vn-date-display {
+          font-size: 0.6rem;
+          color: var(--text-secondary);
+          text-align: center;
+          font-weight: 600;
+          margin-bottom: 4px;
+      }
+      .vn-weather-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          background: rgba(0, 0, 0, 0.02);
+          border-radius: 8px;
+          padding: 6px 8px;
+          border: 1px solid rgba(0, 0, 0, 0.03);
+          box-sizing: border-box;
+          width: 100%;
+      }
+      .vn-weather-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 0.62rem;
+          font-weight: 600;
+      }
+      .vn-weather-label {
+          color: var(--text-secondary);
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+      }
+      .vn-weather-value {
+          color: var(--text-primary);
+          font-weight: 700;
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+          font-feature-settings: "tnum" 1;
+      }
+      .vn-weather-value.temp {
+          color: var(--text-primary);
+      }
+      .vn-weather-value.condition {
+          color: var(--neon-cyan);
+      }
+
+      .category-header-wrapper {
+          margin-bottom: 12px;
+          padding-left: 12px;
+          border-left: 4px solid var(--neon-cyan);
+          transition: border-color 0.3s ease;
+      }
+      .category-header-wrapper h2 {
+          font-size: 1.35rem;
+          color: var(--text-primary);
+          font-weight: 700;
+          margin: 0;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .card-stack-container {
+          width: 100%;
+          margin: 0 auto;
+          padding: 10px 5px 30px;
+      }
+      .card-stack {
+          position: static;
+          width: 100%;
+          min-height: 0;
+          perspective: none;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 24px;
+      }
+      .card-stack .card {
+          position: relative;
+          width: 100%;
+          min-height: 320px;
+          background: linear-gradient(180deg, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.82) 100%);
+          border-radius: 28px;
+          border: 1px solid rgba(255, 255, 255, 0.45);
+          padding: 18px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+          overflow: hidden;
+          box-shadow: 0 25px 45px rgba(6, 12, 34, 0.15);
+          transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+          isolation: isolate;
+      }
+      .card-stack .card::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          opacity: 0.6;
+          pointer-events: none;
+      }
+      .card-stack .card::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.65), transparent 55%);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          pointer-events: none;
+      }
+      .card-stack .card:hover {
+          transform: translateY(-10px) scale(1.01);
+          box-shadow: 0 40px 70px rgba(6, 12, 34, 0.25);
+          border-color: var(--card-accent, rgba(255, 255, 255, 0.65));
+      }
+      .card-stack .card:hover::after {
+          opacity: 1;
+      }
+
+      #dad-dashboard[data-category="finance"] .card-stack .card { --card-accent: var(--neon-cyan); --card-glow: rgba(9, 132, 227, 0.25); }
+      #dad-dashboard[data-category="golf"] .card-stack .card { --card-accent: var(--neon-green); --card-glow: rgba(46, 204, 113, 0.25); }
+      #dad-dashboard[data-category="ent"] .card-stack .card { --card-accent: var(--neon-pink); --card-glow: rgba(214, 48, 49, 0.25); }
+      #dad-dashboard[data-category="family"] .card-stack .card { --card-accent: var(--neon-blue); --card-glow: rgba(0, 206, 203, 0.25); }
+      #dad-dashboard[data-category="beauty"] .card-stack .card { --card-accent: #6c5ce7; --card-glow: rgba(108, 92, 231, 0.25); }
+
+      .card-stack .card .card-glow-ring {
+          position: absolute;
+          inset: 12px;
+          border-radius: inherit;
+          border: 1px solid rgba(255,255,255,0.15);
+          box-shadow: 0 0 40px var(--card-glow, rgba(0,0,0,0.15));
+          opacity: 0.35;
+          pointer-events: none;
+      }
+
+      .card-banner {
+          height: 150px;
+          width: 100%;
+          border-radius: 20px;
+          background-size: cover;
+          background-position: center;
+          position: relative;
+          overflow: hidden;
+      }
+      .card-banner::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(180deg, rgba(0, 0, 0, 0) 20%, rgba(12, 13, 25, 0.5) 100%);
+      }
+      .card-banner .indicator {
+          position: absolute;
+          left: 14px;
+          bottom: 14px;
+          margin-bottom: 0;
+          z-index: 2;
+      }
+
+      .card-content {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          flex: 1;
+      }
+
+      .card-header {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+      }
+      .card-header h3 {
+          font-size: 0.78rem;
+          color: var(--text-secondary);
+          text-transform: uppercase;
+          letter-spacing: 1.6px;
+          margin: 0;
+      }
+      .card-header h2 {
+          font-size: 1.25rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin: 0;
+      }
+      .card-body p {
+          margin: 0;
+          color: var(--text-secondary);
+          font-size: 0.95rem;
+          line-height: 1.65;
+      }
+
+      .indicator {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          border-radius: 999px;
+          padding: 5px 12px;
+          font-size: 0.75rem;
+          font-weight: 700;
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(255, 255, 255, 0.35);
+          color: var(--card-accent, #ff3b93);
+          backdrop-filter: blur(6px);
+      }
+      .indicator .indicator-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: currentColor;
+          box-shadow: 0 0 8px currentColor;
+      }
+      .card-footer {
+          margin-top: auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
+          padding-top: 14px;
+      }
+      .card-footer .cta-text {
+          color: var(--card-accent, var(--neon-cyan));
+          font-weight: 700;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: gap 0.2s ease;
+      }
+      .card-footer .cta-text:hover {
+          gap: 10px;
+      }
+      .movie-card-footer a {
+          color: var(--neon-pink);
+      }
+      .movie-card-footer a:hover {
+          color: #ff3b93;
+      }
+      .cta-btn {
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          color: #0b0c10;
+          border: none;
+          padding: 10px 16px;
+          border-radius: 8px;
+          font-weight: 700;
+          font-size: 0.85rem;
+          cursor: pointer;
+          width: 100%;
+          text-align: center;
+          box-shadow: 0 4px 12px rgba(0, 242, 254, 0.2);
+          transition: all 0.3s ease;
+      }
+      .cta-btn:hover {
+          box-shadow: 0 6px 18px rgba(0, 242, 254, 0.4);
+          transform: scale(1.02);
+      }
+
+      /* --- Magazine Blog Feed --- */
+      .magazine-header h2 {
+          font-size: 1.6rem;
+          color: var(--text-primary);
+          font-weight: 700;
+          margin: 60px 0 30px 0;
+          padding-left: 16px;
+          border-left: 5px solid var(--neon-blue);
+      }
+      .magazine-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+          gap: 30px;
+      }
+      .article-card {
+          background: var(--card-bg);
+          border-radius: 24px;
+          overflow: hidden;
+          border: 1px solid var(--border-color);
+          box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          display: flex;
+          flex-direction: column;
+      }
+      .article-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0, 242, 254, 0.15);
+          border-color: var(--neon-cyan);
+      }
+      .article-img {
+          width: 100%;
+          height: 200px;
+          background-color: #12131e;
+          background-size: cover;
+          background-position: center;
+      }
+      .article-content {
+          padding: 28px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+      }
+      .article-chip {
+          display: inline-flex;
+          width: fit-content;
+          padding: 4px 12px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.2);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          font-size: 0.75rem;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          color: var(--neon-blue);
+      }
+      .article-title {
+          font-size: 1.25rem;
+          font-weight: 700;
+          margin: 0 0 12px 0;
+          color: var(--text-primary);
+          line-height: 1.5;
+      }
+      .article-excerpt {
+          font-size: 0.98rem;
+          margin: 0;
+          color: var(--text-secondary);
+          line-height: 1.7;
+          flex: 1;
+      }
+      .article-date {
+          font-size: 0.9rem;
+          color: var(--text-secondary);
+          margin-top: auto;
+          font-weight: 500;
+      }
+
+      /* Ad Banner Styling */
+      .ad-banner {
+          width: 100%;
+          height: 100px;
+          background: rgba(255, 255, 255, 0.02);
+          border: 1px dashed var(--border-color);
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          font-weight: 600;
+          margin-bottom: 50px;
+          backdrop-filter: blur(5px);
+      }
+
+      /* --- Form Containers (Read/Write Views) --- */
+      .form-container {
+          background: var(--card-bg);
+          padding: 50px;
+          border-radius: 28px;
+          border: 1px solid var(--border-color);
+          box-shadow: 0 15px 50px rgba(9, 132, 227, 0.08);
+          max-width: 850px;
+          margin: 0 auto;
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+      }
+      .input-field {
+          width: 100%;
+          padding: 18px;
+          margin-bottom: 24px;
+          background: rgba(255, 255, 255, 0.8);
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          color: var(--text-primary);
+          font-family: inherit;
+          font-size: 1.05rem;
+          box-sizing: border-box;
+          transition: 0.2s;
+      }
+      .input-field:focus {
+          outline: none;
+          border-color: var(--neon-cyan);
+          background: rgba(255, 255, 255, 0.95);
+          box-shadow: 0 0 0 4px rgba(9, 132, 227, 0.15);
+      }
+      .input-textarea {
+          width: 100%;
+          height: 450px;
+          padding: 18px;
+          margin-bottom: 24px;
+          background: rgba(255, 255, 255, 0.8);
+          border: 1px solid var(--border-color);
+          border-radius: 16px;
+          color: var(--text-primary);
+          font-family: inherit;
+          font-size: 1.05rem;
+          resize: vertical;
+          box-sizing: border-box;
+          line-height: 1.7;
+          transition: 0.2s;
+      }
+      .input-textarea:focus {
+          outline: none;
+          border-color: var(--neon-cyan);
+          background: rgba(18, 22, 38, 0.8);
+          box-shadow: 0 0 0 4px rgba(0, 242, 254, 0.15);
+      }
+      .btn-primary {
+          width: 100%;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          color: #0b0c10;
+          padding: 18px;
+          border: none;
+          border-radius: 16px;
+          font-size: 1.15rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: 0.3s;
+          box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+      }
+      .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+      }
+      .btn-back {
+          background: rgba(255, 255, 255, 0.05);
+          color: var(--text-primary);
+          border: 1px solid var(--border-color);
+          padding: 12px 24px;
+          border-radius: 12px;
+          cursor: pointer;
+          font-weight: 600;
+          margin-bottom: 30px;
+          transition: 0.2s;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+      }
+      .btn-back:hover {
+          background: rgba(255, 255, 255, 0.1);
+          color: #ffffff;
+      }
+
+      /* --- Footer --- */
+      .footer {
+          text-align: center;
+          max-width: 1200px;
+          margin: 80px auto 0 auto;
+          padding: 30px 20px;
+          border-top: 1px solid var(--border-color);
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+      }
+      .footer-links a {
+          color: var(--text-secondary);
+          text-decoration: none;
+          margin: 0 10px;
+          transition: color 0.2s;
+      }
+      .footer-links a:hover {
+          color: var(--neon-cyan);
+      }
+
+      /* --- Animations & Responsive Mobile Split (Vertical Unfold) --- */
+      @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.3; }
+      }
+
+      @media (max-width: 992px) {
+          .dad-top-dashboard {
+              flex-direction: column;
+              align-items: center;
+              text-align: center;
+              gap: 20px;
+          }
+          .dad-header-left {
+              text-align: center;
+          }
+          .dad-widgets-right {
+              width: 100%;
+              justify-content: center;
+          }
+          /* On screens under 992px but above 600px, keep card-stack but with smaller horizontal spreads */
+          .card-stack:hover .card-left {
+              transform: translateX(-160px) rotate(-5deg) scale(0.98);
+          }
+          .card-stack:hover .card-right {
+              transform: translateX(160px) rotate(5deg) scale(0.98);
+          }
+          .card-stack:hover .card-left:hover {
+              transform: translateX(-170px) translateY(-10px) rotate(0deg) scale(1.05) !important;
+          }
+          .card-stack:hover .card-right:hover {
+              transform: translateX(170px) translateY(-10px) rotate(0deg) scale(1.05) !important;
+          }
+      }
+      @media (max-width: 600px) {
+          .dad-widgets-right {
+              width: 100%;
+              justify-content: center;
+          }
+          .unified-monitor-widget {
+              width: 100%;
+              max-width: 320px;
+              flex-direction: column;
+              gap: 12px;
+              padding: 12px !important;
+          }
+          .monitor-divider {
+              width: 100%;
+              height: 1px;
+              background: var(--border-color);
+              align-self: auto;
+          }
+          .card-stack-container {
+              padding: 150px 0; /* plenty of space for vertical expansion! */
+          }
+          .card-stack {
+              height: 300px;
+          }
+          .card-stack .card {
+              width: 270px;
+              height: 290px;
+          }
+          .card-left {
+              transform: translateY(-8px) scale(0.95);
+          }
+          .card-right {
+              transform: translateY(8px) scale(0.95);
+          }
+          .card-stack:hover .card-left {
+              transform: translateY(-140px) rotate(-2deg) scale(0.96);
+          }
+          .card-stack:hover .card-right {
+              transform: translateY(140px) rotate(2deg) scale(0.96);
+          }
+          .card-stack:hover .card-cover {
+              transform: scale(1.02);
+          }
+          .card-stack:hover .card-left:hover {
+              transform: translateY(-160px) scale(1.05) !important;
+          }
+          .card-stack:hover .card-right:hover {
+              transform: translateY(160px) scale(1.05) !important;
+          }
+      }
+
+      /* --- Custom Modal for Card Details --- */
+      .dad-modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          z-index: 2000;
+          justify-content: center;
+          align-items: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+      }
+      .dad-modal.active {
+          display: flex;
+          opacity: 1;
+      }
+      .dad-modal-content {
+          background: rgba(255, 255, 255, 0.95);
+          border: 1px solid var(--border-color);
+          border-radius: 24px;
+          max-width: 600px;
+          width: 90%;
+          max-height: 80vh;
+          overflow-y: auto;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+          position: relative;
+          padding: 30px;
+          transform: translateY(20px);
+          transition: transform 0.3s ease;
+      }
+      .dad-modal.active .dad-modal-content {
+          transform: translateY(0);
+      }
+      .dad-modal-close {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          font-size: 1.8rem;
+          font-weight: 700;
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: color 0.2s;
+          line-height: 1;
+      }
+      .dad-modal-close:hover {
+          color: var(--text-primary);
+      }
+      .modal-detail-banner {
+          height: 180px;
+          background-size: cover;
+          background-position: center;
+          border-radius: 16px;
+          margin-bottom: 24px;
+          border: 1px solid var(--border-color);
+      }
+      .modal-detail-title {
+          font-size: 1.8rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin-top: 0;
+          margin-bottom: 8px;
+      }
+      .modal-detail-category {
+          font-size: 0.85rem;
+          color: var(--neon-cyan);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-weight: 700;
+          margin-bottom: 16px;
+      }
+      .modal-detail-body {
+          font-size: 1.05rem;
+          line-height: 1.7;
+          color: var(--text-primary);
+          margin-bottom: 30px;
+          white-space: pre-line;
+      }
+      .modal-detail-links {
+          border-top: 1px solid var(--border-color);
+          padding-top: 20px;
+      }
+      .modal-detail-links h4 {
+          margin-top: 0;
+          margin-bottom: 12px;
+          color: var(--text-secondary);
+          font-size: 0.95rem;
+      }
+      .modal-link-list {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+      .modal-link-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: var(--neon-cyan);
+          text-decoration: none;
+          font-weight: 700;
+          transition: color 0.2s;
+      }
+      .modal-link-item:hover {
+          color: var(--neon-blue);
+          text-decoration: underline;
+      }
+
+      /* --- 데스크톱 index.html에서 이식된 헤더 & 푸터 CSS --- */
+      .dad-header {
+          text-align: center;
+          max-width: 1200px;
+          margin: 0 auto 60px auto;
+          padding: 20px;
+      }
+
+      .logo {
+          font-size: 2.8rem;
+          font-weight: 800;
+          letter-spacing: 5px;
+          background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+          filter: drop-shadow(0 2px 15px rgba(0, 242, 254, 0.3));
+          animation: glowPulse 3s infinite alternate;
+      }
+
+      .slogan {
+          font-size: 1.05rem;
+          color: var(--text-secondary);
+          font-weight: 400;
+          position: relative;
+          display: inline-block;
+          padding-bottom: 8px;
+      }
+
+      .slogan::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 20%;
+          width: 60%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+      }
+
+      .lounge-footer {
+          text-align: center;
+          max-width: 1200px;
+          margin: 80px auto 0 auto;
+          padding: 20px;
+          border-top: 1px solid var(--border-color);
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+      }
+
+      @keyframes glowPulse {
+          0% {
+              filter: drop-shadow(0 2px 8px rgba(0, 242, 254, 0.25));
+          }
+          100% {
+              filter: drop-shadow(0 2px 18px rgba(0, 242, 254, 0.5));
+          }
+      }
+
+      /* --- Widget Settings Styles --- */
+      .unified-monitor-widget {
+          position: relative !important;
+      }
+      .widget-settings-toggle {
+          position: absolute;
+          top: 6px;
+          right: 8px;
+          cursor: pointer;
+          font-size: 0.65rem;
+          opacity: 0.5;
+          z-index: 100;
+          transition: opacity 0.2s ease, transform 0.2s ease;
+          width: 14px;
+          height: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--text-primary);
+      }
+      .widget-settings-toggle:hover {
+          opacity: 1;
+          transform: rotate(45deg);
+      }
+      .setting-input {
+          width: 100%;
+          padding: 8px 12px;
+          border: 1px solid var(--border-color);
+          border-radius: 10px;
+          background: rgba(255, 255, 255, 0.8);
+          font-family: inherit;
+          font-size: 0.78rem;
+          color: var(--text-primary);
+          box-sizing: border-box;
+          outline: none;
+          transition: all 0.2s ease;
+      }
+      .setting-input:focus {
+          border-color: var(--neon-cyan);
+          box-shadow: 0 0 8px rgba(9, 132, 227, 0.15);
+          background: #ffffff;
+      }
+      .setting-dday-row {
+          display: flex;
+          gap: 8px;
+          width: 100%;
+      }
+      /* New multicultural hero + resource grid */
+      .dad-identity-hero {
+          margin: 120px auto 40px;
+          max-width: 1200px;
+          padding: 50px;
+          border-radius: 32px;
+          background: rgba(255, 255, 255, 0.82);
+          border: 1px solid rgba(255, 255, 255, 0.45);
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 40px;
+          align-items: center;
+      }
+      .dad-identity-hero .hero-eyebrow {
+          font-size: 0.85rem;
+          letter-spacing: 0.25rem;
+          text-transform: uppercase;
+          color: var(--neon-cyan);
+          font-weight: 700;
+          margin-bottom: 10px;
+      }
+      .dad-identity-hero h1 {
+          font-size: 2.8rem;
+          line-height: 1.2;
+          margin-bottom: 16px;
+      }
+      .dad-identity-hero .hero-lead {
+          font-size: 1.05rem;
+          color: var(--text-secondary);
+          margin-bottom: 20px;
+      }
+      .hero-badges {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-bottom: 20px;
+      }
+      .hero-badge {
+          padding: 10px 16px;
+          border-radius: 999px;
+          background: rgba(0, 0, 0, 0.05);
+          font-size: 0.85rem;
+          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+      }
+      .hero-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+      }
+      .hero-btn-primary,
+      .hero-btn-secondary {
+          border: none;
+          border-radius: 50px;
+          padding: 14px 28px;
+          font-size: 0.95rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+      .hero-btn-primary {
+          background: linear-gradient(135deg, #00cec9, #0984e3);
+          color: white;
+          box-shadow: 0 10px 25px rgba(9, 132, 227, 0.3);
+      }
+      .hero-btn-secondary {
+          background: rgba(9, 132, 227, 0.12);
+          color: var(--text-primary);
+      }
+      .hero-btn-primary:hover,
+      .hero-btn-secondary:hover {
+          transform: translateY(-2px);
+      }
+      .dad-identity-hero .hero-card {
+          background: rgba(15, 14, 36, 0.9);
+          color: white;
+          border-radius: 28px;
+          padding: 32px;
+          box-shadow: 0 25px 40px rgba(10, 10, 20, 0.4);
+      }
+      .dad-hero-visual {
+          margin: 22px 0 0;
+          border-radius: 22px;
+          overflow: hidden;
+          border: 1px solid rgba(255,255,255,0.35);
+          background: rgba(255,255,255,0.08);
+      }
+      .dad-hero-visual img {
+          display: block;
+          width: 100%;
+          height: auto;
+      }
+      .hero-card h3 {
+          margin-top: 0;
+          font-size: 1.35rem;
+      }
+      .hero-card ul {
+          list-style: none;
+          padding: 0;
+          margin: 20px 0;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+      }
+      .hero-card ul li {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          font-size: 0.95rem;
+      }
+      .hero-card .hero-note {
+          font-size: 0.8rem;
+          letter-spacing: 0.1rem;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.7);
+      }
+      .dad-resource-grid {
+          max-width: 1200px;
+          margin: 0 auto 40px;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 20px;
+      }
+      .resource-card {
+          border-radius: 22px;
+          padding: 24px;
+          background: rgba(255, 255, 255, 0.9);
+          border: 1px solid rgba(0, 0, 0, 0.05);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+          min-height: 220px;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+      }
+      .resource-card h4 {
+          margin: 0;
+          font-size: 1.1rem;
+          font-weight: 700;
+      }
+      .resource-card p {
+          color: var(--text-secondary);
+          font-size: 0.9rem;
+          line-height: 1.5;
+          flex: 1;
+      }
+      .resource-card a {
+          align-self: flex-start;
+          font-weight: 700;
+          text-decoration: none;
+          color: var(--neon-cyan);
+      }
+      .dad-community-banner {
+          max-width: 1200px;
+          margin: 40px auto 60px;
+          padding: 26px;
+          border-radius: 20px;
+          background: linear-gradient(135deg, rgba(0, 206, 201, 0.1), rgba(9, 132, 227, 0.15));
+          border: 1px solid rgba(9, 132, 227, 0.25);
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+          align-items: center;
+          justify-content: space-between;
+      }
+      .dad-community-banner .banner-text {
+          font-size: 1rem;
+          color: var(--text-primary);
+          font-weight: 600;
+      }
+      .dad-community-banner button {
+          border: none;
+          background: #1dd1a1;
+          color: #0b1b2b;
+          font-weight: 700;
+          border-radius: 999px;
+          padding: 12px 26px;
+          cursor: pointer;
+      }
+      .dad-update-board {
+          max-width: 1200px;
+          margin: 0 auto 60px;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 20px;
+          box-sizing: border-box;
+          scroll-margin-top: 160px;
+      }
+      .dad-update-card {
+          padding: 26px;
+          border-radius: 22px;
+          background: rgba(255, 255, 255, 0.9);
+          border: 1px solid rgba(9, 132, 227, 0.14);
+          box-shadow: 0 20px 44px rgba(9, 132, 227, 0.12);
+      }
+      .dad-update-card.weekly-feature {
+          grid-column: 1 / -1;
+          padding: 0;
+          overflow: hidden;
+          scroll-margin-top: 160px;
+      }
+      .dad-weekly-feature-head {
+          display: grid;
+          grid-template-columns: minmax(0, 1.18fr) minmax(220px, 0.82fr);
+          gap: 18px;
+          padding: 28px;
+          background: linear-gradient(120deg, rgba(9, 132, 227, 0.2), rgba(255, 255, 255, 0.92));
+          align-items: center;
+      }
+      .dad-weekly-feature-head h3 {
+          font-size: 1.55rem;
+      }
+      .dad-weekly-feature-head img {
+          width: 100%;
+          max-height: 210px;
+          aspect-ratio: 4 / 3;
+          object-fit: cover;
+          border-radius: 16px;
+          box-shadow: 0 12px 26px rgba(12, 42, 76, 0.18);
+      }
+      .dad-weekly-kicker {
+          display: inline-flex;
+          margin-bottom: 10px;
+          padding: 6px 12px;
+          border-radius: 999px;
+          background: rgba(9, 132, 227, 0.12);
+          color: #0984e3;
+          font-size: 0.78rem;
+          font-weight: 800;
+          letter-spacing: 0.04rem;
+      }
+      .dad-weekly-feature-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          gap: 0;
+          border-top: 1px solid rgba(9, 132, 227, 0.12);
+      }
+      .dad-weekly-feature-item {
+          padding: 20px;
+          border-right: 1px solid rgba(9, 132, 227, 0.12);
+      }
+      .dad-weekly-feature-item:last-child {
+          border-right: none;
+      }
+      .dad-weekly-feature-item img {
+          width: 100%;
+          aspect-ratio: 4 / 3;
+          object-fit: cover;
+          border-radius: 16px;
+          background: #eef6ff;
+          margin-bottom: 14px;
+          box-shadow: 0 10px 24px rgba(9, 132, 227, 0.14);
+      }
+      .dad-weekly-feature-item h4 {
+          margin: 0 0 8px;
+          color: #0984e3;
+          font-size: 1rem;
+      }
+      .dad-weekly-feature-item p {
+          margin: 0 0 12px;
+          color: #34495e;
+          font-size: 0.9rem;
+      }
+      .dad-weekly-feature-item ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: 7px;
+      }
+      .dad-weekly-feature-item li {
+          position: relative;
+          padding-left: 18px;
+          color: #475569;
+          font-size: 0.84rem;
+          line-height: 1.45;
+      }
+      .dad-weekly-feature-item li::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0.58em;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #1dd1a1;
+      }
+      .dad-update-card h3 {
+          margin: 0 0 10px;
+          color: var(--neon-cyan);
+          font-size: 1.22rem;
+      }
+      .dad-update-card p {
+          margin: 0 0 18px;
+          color: var(--text-secondary);
+          line-height: 1.6;
+          font-size: 0.92rem;
+      }
+      .dad-update-list {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+      .dad-update-list li {
+          display: grid;
+          grid-template-columns: 92px 1fr;
+          gap: 12px;
+          align-items: start;
+          padding: 13px 14px;
+          border-radius: 14px;
+          background: rgba(9, 132, 227, 0.07);
+          color: var(--text-primary);
+          line-height: 1.45;
+          font-size: 0.92rem;
+      }
+      .dad-update-list b {
+          color: #0984e3;
+          font-size: 0.78rem;
+          text-transform: uppercase;
+          letter-spacing: 0.04rem;
+      }
+      @media (min-width: 993px) {
+          .dad-update-board {
+              padding-left: 250px;
+          }
+      }
+      @media (max-width: 768px) {
+          .dad-identity-hero {
+              padding: 24px;
+          }
+          .dad-identity-hero h1 {
+              font-size: 2.1rem;
+          }
+          .dad-update-board {
+              grid-template-columns: 1fr;
+              scroll-margin-top: 112px;
+          }
+          .dad-update-card.weekly-feature {
+              scroll-margin-top: 112px;
+          }
+          .dad-weekly-feature-head {
+              grid-template-columns: 1fr;
+              padding: 22px;
+          }
+          .dad-weekly-feature-grid {
+              grid-template-columns: 1fr;
+          }
+          .dad-weekly-feature-item {
+              border-right: none;
+              border-bottom: 1px solid rgba(9, 132, 227, 0.12);
+          }
+          .dad-weekly-feature-item:last-child {
+              border-bottom: none;
+          }
+          .dad-update-list li {
+              grid-template-columns: 1fr;
+              gap: 4px;
+          }
+      }
+    </style>
+  </head>
+  <body class="dad-page">
+    
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="mom.html">생활</a></li>
+          <li><a href="baby.html">육아</a></li>
+          <li><a href="dad.html" class="active">서류</a></li>
+          <li><a href="blog.html">이야기</a></li>
+          <li><a href="stars.html">별보기</a></li>
+          <li id="nav-auth-link"></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div id="main-view" class="view-section active">
+
+      <section class="room-brief dark with-visual">
+        <span class="room-brief-kicker">3F DAD OFFICE</span>
+        <figure class="room-brief-visual">
+          <img src="assets/home-layers/floor-3-dad.png" alt="3F dad office visual" loading="eager" />
+        </figure>
+        <h2>돈, 비자, 서류를 놓치지 않는 아빠 작업실</h2>
+        <p>3층은 가족 운영실입니다. 흥미는 낮지만 놓치면 큰일 나는 생활비, 송금, 보험, TRC, 출생 신고 같은 항목을 한눈에 보고 처리할 수 있게 만듭니다.</p>
+        <div class="room-brief-grid">
+          <article class="room-brief-card">
+            <b>이번 달 생활비 보드</b>
+            <span>KRW와 VND 지출을 나눠 보고, 고정비와 변수비를 한 번에 확인합니다.</span>
+            <a href="blog.html#finance">생활비 보기</a>
+          </article>
+          <article class="room-brief-card">
+            <b>비자/TRC 마감 알림</b>
+            <span>갱신일, 준비 서류, 번역/공증 체크를 놓치지 않게 정리합니다.</span>
+            <a href="blog.html#docs">서류 체크</a>
+          </article>
+          <article class="room-brief-card">
+            <b>아빠의 주말 작전표</b>
+            <span>아이와 갈 곳, 엄마가 쉴 시간, 가족 외식 후보를 같이 잡습니다.</span>
+            <a href="blog.html#weekend">주말 계획</a>
+          </article>
+        </div>
+      </section>
+      
+      <section class="dad-identity-hero">
+        <div class="hero-text">
+          <div class="hero-eyebrow">Korean Dad · Vietnam Life Lab</div>
+          <h1>호치민에서 한국 아빠로 산다는 것,<br>돈·비자·가족 시간을 한 번에 정리합니다.</h1>
+          <p class="hero-lead">25개월 또또와 베트남인 아내와 함께 살아보니, 한국식 계획표만으로는 버틸 수 없더라고요. 그래서 금융/비자/즐길 거리까지 한-베 가족 전용 대시보드를 만들었습니다.</p>
+          <div class="hero-badges">
+            <span class="hero-badge">🇻🇳 7년 차 호치민 거주</span>
+            <span class="hero-badge">👶 25개월 또또 아빠</span>
+            <span class="hero-badge">💼 전직 금융 PM → 가족 CFO</span>
+          </div>
+          <div class="hero-actions">
+            <button class="hero-btn-primary" onclick="window.location.href='guides/trc-visa-checklist.html'">한-베 가족 체크리스트 무료 받기</button>
+            <button class="hero-btn-secondary" onclick="window.location.href='contact.html'">커뮤니티 소식 받기</button>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-note">FAMILYSPACE PREMIUM PREVIEW</div>
+          <h3>이번 주에 나누는 주제</h3>
+          <ul>
+            <li>💳 베트남+한국 이중 통장 운영법</li>
+            <li>📄 혼인·장기 비자 절차 타임라인</li>
+            <li>🏖️ 아기랑 갈 만한 주말 코스 3선</li>
+          </ul>
+          <p style="margin:0; font-size:0.9rem; color:rgba(255,255,255,0.75);">무료 리드 구독으로 맛보기 콘텐츠를 먼저 받아보고, 괜찮으면 프리미엄 라운지에 합류하세요.</p>
+          <figure class="dad-hero-visual" aria-label="한-베 가족 생활 가이드 일러스트">
+            <img src="images/familyspace-dad-guide.svg" alt="한-베 가족의 재무, 비자, 주말 계획을 정리하는 일러스트" loading="lazy" />
+          </figure>
+        </div>
+      </section>
+
+      <div class="dad-resource-grid">
+        <article class="resource-card">
+          <h4>한-베 재무 파이프라인</h4>
+          <p>KRW ↔ VND 송금 수수료, 한국 증권 계좌를 지키면서도 현지 생활비를 자동화하는 루틴을 공유합니다.</p>
+          <a href="blog.html#finance">재무 노트 읽기 →</a>
+        </article>
+        <article class="resource-card">
+          <h4>비자·행정 일정표</h4>
+          <p>출생 신고, temporary residence card, 예방접종 등 아빠 입장에서 놓치기 쉬운 서류 리스트를 주 단위로 정리했습니다.</p>
+          <a href="blog.html#docs">체크리스트 보기 →</a>
+        </article>
+        <article class="resource-card">
+          <h4>주말 치유 플레이북</h4>
+          <p>25개월 아이와도 무리 없는 호치민 주변 카페·골프·스파 루트를 골라 지도와 함께 제공합니다.</p>
+          <a href="stars.html">주말 루트 둘러보기 →</a>
+        </article>
+      </div>
+
+      <div class="dad-community-banner">
+        <div class="banner-text">한-베 가족 Q&A 라운지를 준비 중입니다. 먼저 신청한 분께 무료 체크리스트와 첫 모임 소식을 보내드립니다.</div>
+        <button onclick="window.location.href='contact.html'">소식 받기</button>
+      </div>
+
+      <section class="dad-update-board" id="dad-updates" aria-label="아빠 페이지 업데이트 기준">
+        <article class="dad-update-card">
+          <h3>매일 업데이트</h3>
+          <p>하루 단위로 바뀌는 돈, 서류, 가족 운영 신호는 짧게 확인하고 바로 처리할 수 있게 갱신합니다.</p>
+          <ul class="dad-update-list">
+            <li><b>환율</b><span>KRW/VND 기준 환율, 송금 타이밍, 오늘 확인할 수수료 메모</span></li>
+            <li><b>지출</b><span>오늘 결제한 생활비, 영수증 보관 여부, 현금/카드 사용 기록</span></li>
+            <li><b>서류</b><span>비자, TRC, 보험, 병원 예약처럼 오늘 놓치면 밀리는 알림</span></li>
+            <li><b>가족 일정</b><span>아이 등원/병원/픽업, 엄마 휴식 시간, 아빠 처리 시간 블록</span></li>
+          </ul>
+        </article>
+        <article class="dad-update-card">
+          <h3>주간 업데이트</h3>
+          <p>비교표와 체크리스트는 한 주 단위로 묶어 다시 볼 가치가 있는 운영 자료로 정리합니다.</p>
+          <ul class="dad-update-list">
+            <li><b>생활비 정산</b><span>고정비, 변동비, KRW/VND 흐름, 다음 주 예산 한도</span></li>
+            <li><b>비자 체크</b><span>TRC·출생신고·공증·번역 서류의 주차별 준비 상태</span></li>
+            <li><b>비교 자료</b><span>보험, 송금, 통신비, 마트/멤버십 비용을 한 번에 비교</span></li>
+            <li><b>주말 작전</b><span>아이와 갈 곳, 부부 회복 시간, 이동비와 예약 필요 여부</span></li>
+          </ul>
+        </article>
+        <article class="dad-update-card weekly-feature" id="dad-weekly-kit" aria-label="아빠용 주간 업데이트 상세">
+          <div class="dad-weekly-feature-head">
+            <div>
+              <span class="dad-weekly-kicker">이번 주 아빠 운영 키트</span>
+              <h3>주간 자료는 숫자와 일정만 나열하지 않고, 실제 생활 장면이 보이는 이미지 카드로 업데이트합니다.</h3>
+              <p>예산, 비자, 비교 자료, 주말 계획을 한 화면에서 다시 열어볼 수 있게 묶었습니다. 각 카드는 사진으로 맥락을 먼저 보여주고, 바로 실행할 체크포인트를 붙여 아빠가 이번 주 결정을 빠르게 끝내도록 설계했습니다.</p>
+            </div>
+            <img src="images/dad-real-comparison-desk.jpg" alt="노트북, 계산기, 보고서가 놓인 실제 업무 책상 사진" loading="eager" />
+          </div>
+          <div class="dad-weekly-feature-grid">
+            <section class="dad-weekly-feature-item">
+              <img src="images/dad-real-budget-dong.jpg" alt="베트남 동 지폐를 들고 있는 실제 사진" loading="eager" />
+              <h4>생활비 정산 보드</h4>
+              <p>KRW와 VND 흐름을 한 주 단위로 끊어 다음 주 예산을 바로 정합니다.</p>
+              <ul>
+                <li>고정비, 변동비, 현금 지출을 분리해 기록</li>
+                <li>송금 타이밍과 환율 메모를 같은 카드에 배치</li>
+                <li>초과 지출은 다음 주 조정 항목으로 자동 분류</li>
+              </ul>
+            </section>
+            <section class="dad-weekly-feature-item">
+              <img src="images/dad-real-visa-docs.jpg" alt="여권, 노트북, 여행 서류가 놓인 실제 준비 사진" loading="eager" />
+              <h4>비자·TRC 체크</h4>
+              <p>갱신일, 번역, 공증, 가족 서류를 주차별 상태표로 관리합니다.</p>
+              <ul>
+                <li>D-60, D-45, D-30 단계별 준비물을 표시</li>
+                <li>스캔본, 원본, 번역본 보관 위치를 함께 기록</li>
+                <li>에이전트 연락과 병원 예약 여부를 금요일에 점검</li>
+              </ul>
+            </section>
+            <section class="dad-weekly-feature-item">
+              <img src="images/dad-real-comparison-desk.jpg" alt="재무 보고서와 노트북을 비교하는 실제 책상 사진" loading="eager" />
+              <h4>비교 자료 팩</h4>
+              <p>보험, 송금, 통신비, 멤버십을 한 번에 비교해 결정을 줄입니다.</p>
+              <ul>
+                <li>금액, 혜택, 해지 조건을 같은 행에서 비교</li>
+                <li>이번 주 유지할 것과 바꿀 것을 따로 표시</li>
+                <li>가족에게 공유할 요약 문장을 카드 하단에 제공</li>
+              </ul>
+            </section>
+            <section class="dad-weekly-feature-item">
+              <img src="images/dad-real-weekend-park.jpg" alt="베트남 공원에서 아빠와 아이가 걷는 실제 사진" loading="eager" />
+              <h4>주말 작전표</h4>
+              <p>아이 일정과 부부 회복 시간을 같이 놓고 무리 없는 주말을 만듭니다.</p>
+              <ul>
+                <li>이동 시간, 낮잠, 식사 장소를 먼저 고정</li>
+                <li>엄마 휴식 시간과 아빠 단독 처리 시간을 분리</li>
+                <li>예약, 우천 대안, Grab 비용을 금요일에 확인</li>
+              </ul>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <!-- 상단 헤더 & 실시간 위젯 대시보드 (수평 배치) -->
+      <div class="dad-top-dashboard">
+        <div class="dad-header-left">
+          <div class="logo">DAD LOUNGE</div>
+        </div>
+        
+        <div class="dad-widgets-right">
+          <!-- 통합 대시보드 모니터 위젯 -->
+          <div class="widget-card unified-monitor-widget">
+            <!-- 설정 톱니바퀴 아이콘 -->
+            <div class="widget-settings-toggle" onclick="openWidgetSettingsModal()">⚙️</div>
+            
+            <!-- 오늘의 미션 (Checklist) -->
+            <div class="monitor-column mission-column">
+              <h3>📋 TODAY'S MISSION</h3>
+              <div class="todo-list" id="todo-list-container">
+                <!-- JS로 동적 렌더링 -->
+              </div>
+            </div>
+            <div class="monitor-divider"></div>
+            <!-- 가족 행사 (D-Day) -->
+            <div class="monitor-column family-column">
+              <h3>📅 FAMILY EVENTS</h3>
+              <div class="dday-list" id="dday-list-container">
+                <!-- JS로 동적 렌더링 -->
+              </div>
+            </div>
+            <div class="monitor-divider"></div>
+            <div class="monitor-column vietnam-column">
+              <h3>🇻🇳 VIETNAM SIGNAL</h3>
+              <div id="vietnam-time-weather">
+                <!-- JS로 주입됨 -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dad-dashboard-container" id="dad-dashboard" data-category="finance">
+        <!-- 메인 콘텐츠 영역 -->
+        <main class="dad-dashboard-main">
+          <div class="category-header-wrapper" id="active-category-header">
+            <h2 id="active-category-title">📈 금융 & 주식 분석</h2>
+            <span class="category-subtitle" id="active-category-subtitle" style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Finance & Market Analysis</span>
+          </div>
+          
+          <div class="card-stack-container">
+            <div class="card-stack" id="dad-cards-grid">
+              <!-- JS로 현재 탭의 3개 카드가 동적으로 주입됨 -->
+            </div>
+          </div>
+        </main>
+      </div>
+
+      <div class="ad-banner">[구글 애드센스 상단 디스플레이 영역]</div>
+
+      <div class="magazine-header">
+        <h2>📚 아빠의 베트남 생생 정보 노트</h2>
+      </div>
+      
+      <div class="magazine-grid" id="post-list-container">
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-secondary); font-size: 1.1rem;">
+          클라우드에서 최신 글을 불러오는 중입니다...
+        </div>
+      </div>
+
+      <div class="ad-banner" style="margin-top: 60px;">[구글 애드센스 하단 멀티플렉스 영역]</div>
+      <footer class="lounge-footer">
+          <p>THE DAD LOUNGE v1.0 | 접속 기록: 아빠의 아지트</p>
+      </footer>
+    </div>
+
+    <div id="read-view" class="view-section">
+      <div class="form-container">
+        <button class="btn-back" onclick="switchView('main-view')">← 라운지로 돌아가기</button>
+        <div id="read-container-box"></div>
+      </div>
+    </div>
+
+    <div id="write-view" class="view-section">
+      <div class="form-container">
+        <button class="btn-back" onclick="switchView('main-view')">← 작성 취소</button>
+        <h2 style="margin-top:0; color:var(--text-primary); margin-bottom: 30px; font-size: 1.8rem; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">✍️ 매거진 새 글 발행</h2>
+        
+        <select id="edit-category" class="input-field">
+          <option value="vietnam">베트남 생활/맛집</option>
+          <option value="game">게임/테크 공략</option>
+        </select>
+        
+        <input type="text" id="edit-title" class="input-field" placeholder="시선을 끄는 제목을 입력하세요" />
+        
+        <label style="display:block; margin-bottom:12px; font-weight: 600; color:var(--text-secondary);">대표 이미지 (목록 썸네일)</label>
+        <input type="file" id="edit-image" accept="image/*" class="input-field" style="padding: 14px;" />
+        <img id="edit-preview" src="" style="width:100%; max-height:300px; object-fit:cover; border-radius:16px; margin-bottom:24px; display:none; box-shadow:0 5px 15px rgba(0,0,0,0.5);" />
+        
+        <textarea id="edit-content" class="input-textarea" placeholder="본문 내용을 자유롭게 작성하세요. 줄바꿈과 간단한 HTML 태그 적용이 가능합니다."></textarea>
+        
+        <button id="btn-publish" class="btn-primary">클라우드 서버에 전 세계 발행하기 🚀</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2026 FamilySpace. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="terms.html">이용약관</a>
+      </div>
+    </footer>
+
+    <!-- 5. 상세정보 팝업 모달 구조 -->
+    <div id="dad-card-modal" class="dad-modal" onclick="closeDetailModalOnOutside(event)">
+      <div class="dad-modal-content">
+        <span class="dad-modal-close" onclick="closeDetailModal()">&times;</span>
+        <div id="dad-modal-body">
+          <!-- 스크립트로 내용 동적 생성 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. 위젯 대시보드 설정 팝업 모달 구조 -->
+    <div id="dad-widget-settings-modal" class="dad-modal" onclick="closeWidgetSettingsModalOnOutside(event)">
+      <div class="dad-modal-content" style="max-width: 420px; padding: 25px; border-radius: 20px;">
+        <span class="dad-modal-close" onclick="closeWidgetSettingsModal()">&times;</span>
+        <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--text-primary); display: flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 700;">⚙️ 위젯 대시보드 설정</h3>
+        
+        <form id="widget-settings-form" onsubmit="saveWidgetSettings(event)">
+          <!-- 오늘의 미션 설정 -->
+          <div style="margin-bottom: 20px;">
+            <h4 style="margin: 0 0 10px 0; font-size: 0.8rem; color: var(--neon-cyan); font-weight: 700;">📋 오늘의 미션 설정</h4>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <input type="text" id="setting-todo-1" class="setting-input" placeholder="미션 1 (예: 🥛 영양제 챙겨먹기)" required>
+              <input type="text" id="setting-todo-2" class="setting-input" placeholder="미션 2 (예: 🚶‍♂️ 1만 보 걷기)" required>
+              <input type="text" id="setting-todo-3" class="setting-input" placeholder="미션 3 (예: 📞 가족에게 안부 전화)" required>
+            </div>
+          </div>
+          
+          <!-- 가족 행사 D-Day 설정 -->
+          <div style="margin-bottom: 25px;">
+            <h4 style="margin: 0 0 10px 0; font-size: 0.8rem; color: var(--neon-cyan); font-weight: 700;">📅 가족 D-Day 일정 설정</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div class="setting-dday-row">
+                <input type="text" id="setting-dday-title-1" class="setting-input" style="flex: 1.3;" placeholder="일정 1 (예: 🎂 아내 생일)" required>
+                <input type="date" id="setting-dday-date-1" class="setting-input" style="flex: 1;" required>
+              </div>
+              <div class="setting-dday-row">
+                <input type="text" id="setting-dday-title-2" class="setting-input" style="flex: 1.3;" placeholder="일정 2 (예: 👨‍👩‍👧‍👦 가족 저녁 식사)" required>
+                <input type="date" id="setting-dday-date-2" class="setting-input" style="flex: 1;" required>
+              </div>
+              <div class="setting-dday-row">
+                <input type="text" id="setting-dday-title-3" class="setting-input" style="flex: 1.3;" placeholder="일정 3 (예: 💌 결혼기념일)" required>
+                <input type="date" id="setting-dday-date-3" class="setting-input" style="flex: 1;" required>
+              </div>
+            </div>
+          </div>
+          
+          <button type="submit" class="write-submit-btn" style="width: 100%; border-radius: 12px; padding: 12px; font-weight: 700; background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-blue) 100%); color: white; border: none; cursor: pointer; transition: 0.2s;">설정 저장하기 💾</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      const cardDetailsDB = {
+        'finance-cover': {
+          category: 'Cashflow Lab',
+          title: '💱 KRW↔VND 현금흐름 커맨드센터',
+          image: 'images/dad_finance_2026.svg',
+          body: `25개월 또또 가족이 실제로 쓰는 월간 현금흐름 대시보드입니다.\n\n1) 한국 CMA → 토스뱅크 (D+1)\n- 월급일 다음 날 생활비분만 자동 이체, 잔액은 투자 버킷으로 분리\n\n2) 토스 해외송금 → HSBC Vietnam (D+2)\n- 환율이 가장 안정적인 한국시간 11~13시에 송금, 수수료 절감을 위해 월 2회로 고정\n\n3) HSBC → VPBank 서브어카운트\n- 생활비·교육비·주말힐링 계좌 3개를 분리해 자동 리포트\n\n4) 여유 자금은 Wise 멀티커런시 → 미국 ETF 재투자\n- 환율이 급등하면 자동 알림으로 송금 시점 조정\n\n위 흐름을 그대로 복제할 수 있도록 은행/앱/서류 체크리스트와 예시 금액표를 제공하고 있습니다.`,
+          links: [
+            { text: '토스뱅크 해외송금 안내', url: 'https://tossbank.com/' },
+            { text: 'HSBC Vietnam Retail Banking', url: 'https://www.hsbc.com.vn/en-vn/' },
+            { text: 'Wise Multi-currency 계좌', url: 'https://wise.com/' }
+          ]
+        },
+        'finance-left': {
+          category: 'Visa & Docs Budget',
+          title: '📂 TRC·비자 갱신 비용 타임라인',
+          image: 'images/dad_finance_2026.svg',
+          body: `장기 체류증(TRC)과 비자 갱신에 들어가는 비용·서류·예약 일정을 8주 전부터 쪼개 둔 체크리스트입니다.\n\n- D-60: 여권 만료 확인, 회사 인감·노동허가 스캔, 기본 수수료 예산 6백만동 확보\n- D-45: 번역·공증비(한↔베) 예상치 입력, 가족 서류 스캔 후 노션 공유\n- D-30: 건강검진 예약금, HR e-visa letter 요청비 포함\n- D-15: 증명사진/교통비/에이전트 잔금 정리\n\n각 타임라인마다 필요한 서류/비용을 xls 템플릿으로 내려받을 수 있게 했습니다.`,
+          links: [
+            { text: '베트남 입국·체류 안내 (외교부)', url: 'https://www.mofa.go.kr/' },
+            { text: '호치민 공증 번역 센터 예시', url: 'https://www.vietnam-translation.com/' }
+          ]
+        },
+        'finance-right': {
+          category: 'Investing Playbook',
+          title: '📊 생활비 ETF 자동이체 포트폴리오',
+          image: 'images/dad_finance_2026.svg',
+          body: `한-베 이중 통장을 지키면서도 장기투자를 멈추지 않기 위한 3 버킷 ETF 포트폴리오입니다.\n\n- 버킷 A (20%): TIGER 미국S&P500 커버드콜 (월 현금흐름 확보)\n- 버킷 B (50%): KBSTAR 글로벌반도체 TOP10 (아이 교육비 장기 성장)\n- 버킷 C (30%): KODEX 단기채권액티브 (비상자금·환율 방어)\n\n한국 증권사 자동이체 스케줄 + VPBank/HSBC 잔고를 Notion으로 연동해, 환율 변동에도 월간 투자액이 흔들리지 않도록 모니터링하는 방법을 정리했습니다.`,
+          links: [
+            { text: '한국거래소 ETF 정보', url: 'https://kind.krx.co.kr/' },
+            { text: 'KB국민증권 자동이체 가이드', url: 'https://www.kbsec.com/' }
+          ]
+        },
+
+        'golf-cover': {
+          category: 'Night Golf Lab',
+          title: '🌙 호치민 야간 실내골프 캠프',
+          image: 'images/dad_golf_night.svg',
+          body: `밤 9시 이후 아이가 잠든 뒤에도 집중력 있게 훈련할 수 있는 호치민 실내 연습장/스크린 골프 루트를 맵으로 정리했습니다.\n\n- Thao Dien Q2 실내 연습장: 조용하고 냉방 잘 되는 1시간 패키지\n- Giga Golf Binh Thanh: 트랙맨 기반 샷 분석 + 24시 운영\n- 주 2회는 실내, 주 1회는 새벽 필드 9홀 번개로 루틴 구성\n\n각 장소별 혼잡 시간·주차·Grab 이동시간·대여채 체크리스트까지 포함되어 있습니다.`,
+          links: [
+            { text: 'Giga Golf Vietnam', url: 'https://gigagolf.vn/' },
+            { text: 'Thao Dien Driving Range', url: 'https://www.facebook.com/thaodiendrivingrange/' }
+          ]
+        },
+        'golf-left': {
+          category: 'Routine',
+          title: '⏱ 밤 9시 이후 70분 집중 루틴',
+          image: 'images/dad_golf_night.svg',
+          body: `퇴근 후 아이 재우고 나서 70분 동안 스윙·체력·멘탈을 동시에 챙기는 루틴입니다.\n\n1) 이동·세팅 10분: Grab Bike + 미니 타월, 볼캡 준비\n2) 워밍업 10분: 52도 웨지 20구로 리듬 찾기\n3) 본 세션 35분: 드라이버 3구 루틴 → 하이브리드/7번 아이언 탄도 연습\n4) 쿨다운 15분: 폼롤러 스트레칭, 노트앱에 체크포인트 3줄 기록\n\n번호별로 필요한 장비/음료/촬영앵글을 미리 체크 리스트로 만들어 놨습니다.`,
+          links: [
+            { text: 'YouTube: night golf routine', url: 'https://www.youtube.com/results?search_query=night+golf+practice+routine' }
+          ]
+        },
+        'golf-right': {
+          category: 'Program',
+          title: '🎯 12주 싱글 리빌드 프로그램',
+          image: 'images/dad_golf_night.svg',
+          body: `아이 돌봄과 일을 병행하면서도 12주 동안 싱글 스코어를 유지하도록 만든 주차별 미션표입니다.\n\n- 1~4주: 숏게임 70%, 드라이버 30% 비율로 실내 집중\n- 5~8주: 새벽 9홀 번개 라운드 + 홀별 공략 시트 작성\n- 9~12주: 체력 보강(케틀벨·밴드) + 멘탈 노트 작성\n\n각 주차별 체크리스트를 Notion 템플릿으로 제공하며, 완료율을 시각화하는 위젯도 함께 올려두었습니다.`,
+          links: [
+            { text: 'Notion Template 미리보기', url: 'https://www.notion.so/' }
+          ]
+        },
+        'ent-cover': {
+          category: 'Weekend Healing',
+          title: '🍿 주말 리커버리 플레이북',
+          image: 'images/dad_ent_family.svg',
+          body: `호치민 주말 48시간을 “아이·부부·나” 세 구간으로 나누어 에너지를 회복하는 플레이북입니다.\n\n- 토 오전: 타오디엔 북카페 + Lullaby Cafe 수영장 루틴\n- 토 밤: 부부 각자 90분 힐링(넷플릭스/골프 연습) 후 커플 회고 15분\n- 일 오전: 4성급 조식 패키지로 미니 호캉스, 낮잠 루틴 확보\n\n각 구간에 맞는 음악·OTT·팟캐스트, 아이와 함께 볼 수 있는 유튜브 재생목록을 큐레이션했습니다.`,
+          links: [
+            { text: 'Spotify Weekend Reset Playlist', url: 'https://open.spotify.com/' }
+          ]
+        },
+        'ent-left': {
+          category: 'Console Picks',
+          title: '🎮 90분 몰입용 콘솔 큐레이션',
+          image: 'images/dad_ent_family.svg',
+          body: `호치민 전력요금·시간제약을 고려해 90분 안에 목적을 달성할 수 있는 콘솔 콘텐츠만 골랐습니다.\n\n- Nintendo: “젤다 TOTK”의 하늘섬 빌드 챌린지 (30분)\n- PlayStation: “고스트 오브 쓰시마” 전투 챕터 리플레이 (30분)\n- Steam Deck: “Dave the Diver” 심해 채집 + 초밥집 운영 (30분)\n\n세 작품 모두 오프라인 세이브 지원, 중간 저장 가능, 게임패스나 eShop 딜 가격 정보까지 정리했습니다.`,
+          links: [
+            { text: 'Nintendo eShop (한국)', url: 'https://store.nintendo.co.kr/' },
+            { text: 'PlayStation Store (아시아)', url: 'https://store.playstation.com/ko-kr/home/games' }
+          ]
+        },
+        'ent-right': {
+          category: 'Streaming',
+          title: '📺 가족 동시 감상 OTT 세트',
+          image: 'images/dad_ent_family.svg',
+          body: `25개월 또또도 함께 볼 수 있는 잔잔한 콘텐츠부터, 아빠 혼자 보는 다큐까지 3트랙으로 묶었습니다.\n\n- Family Track: “블루이(Disney+)”, “하이큐(Netflix)” 한국어 더빙 링크\n- Couple Track: “Moving(디즈니+)” 힐링 에피소드 표시, 시청 시간 45분 컷\n- Dad Track: “Live to 100” 다큐, 베트남 생활습관에 적용할 메모 템플릿 제공\n\n각 트랙은 QR로 바로 재생 가능하며, 시청 후 대화거리 노트도 첨부했습니다.`,
+          links: [
+            { text: 'Disney+ Korea', url: 'https://www.disneyplus.com/ko-kr' },
+            { text: 'Netflix Korea', url: 'https://www.netflix.com/kr/' }
+          ]
+        },
+        'family-cover': {
+          category: 'Family Ops',
+          title: '📘 한-베 가족 운영 일지',
+          image: 'images/dad_family_ops.svg',
+          body: `예방접종, 유치원 투어, 공증 일정 같은 “가족 운영” 업무를 모두 한 장에서 볼 수 있게 캘린더화했습니다.\n\n- 월요일: 한국 대사관/영사 민원 예약, 카톡 공지 체크\n- 수요일: 호치민 소아과/예방접종 스케줄 동기화\n- 금요일: 주말 놀이·예산·교통 계획 작성\n\nGoogle Calendar ICS와 종이 플래너 두 가지 버전으로 내려받을 수 있습니다.`,
+          links: [
+            { text: '주베트남 대한민국대사관', url: 'https://overseas.mofa.go.kr/vn-ko/index.do' }
+          ]
+        },
+        'family-left': {
+          category: 'Checklist',
+          title: '💉 호치민 예방접종 & 건강 루틴',
+          image: 'images/dad_family_ops.svg',
+          body: `떼잉빈/호치민 소아과에서 25개월 또또가 실제로 맞은 예방접종과 건강검진 루틴을 표로 정리했습니다.\n\n- Bệnh viện Nhi Đồng 2 백신 요일 + 대기시간\n- Vinmec 패밀리 검진 패키지 비용과 준비물\n- 발열 시 응급 키트(전해질, 해열 패치, 미니 공기청정기) 리스트\n\nPDF로 인쇄해 냉장고에 붙일 수 있는 버전도 함께 제공합니다.`,
+          links: [
+            { text: 'Vinmec International Hospital', url: 'https://www.vinmec.com/' }
+          ]
+        },
+        'family-right': {
+          category: 'Community',
+          title: '🤝 한-베 가족 커뮤니티 액션',
+          image: 'images/dad_family_ops.svg',
+          body: `텔레그램/카톡 그룹, 오프라인 밋업, 파트너 제안까지 이어지는 커뮤니티 액션 플랜입니다.\n\n- 주 1회 텔레그램 “Q&A 라운지” 진행 스크립트\n- 구글폼 대기자 → 텔레그램 초대 자동화(Zapier) 가이드\n- 베트남 아기용품/교육 브랜드 파트너십 제안 템플릿\n\n각 채널의 환영 메시지/규칙/콘텐츠 캘린더를 복사해 바로 적용할 수 있습니다.`,
+          links: [
+            { text: 'FamilySpace Telegram', url: 'https://t.me/familyspace_vn' },
+            { text: '구글폼 템플릿', url: 'https://docs.google.com/forms' }
+          ]
+        },
+        'beauty-cover': {
+          category: 'Humidity Defense',
+          title: '💧 호치민 습도형 피부 방어 루틴',
+          image: 'images/dad_groom_humid.svg',
+          body: `상시 70% 이상의 습도와 강한 자외선에 노출되는 호치민에서도 깔끔한 인상을 유지하도록 만든 4단계 루틴입니다.\n\n1. 아침: 비타민C 세럼 + SPF50 무기자차\n2. 점심: 미스트 대신 정제수+세라마이드 패드\n3. 저녁: 약산성 클렌저 2회, 갈락토미 세럼, 수분크림\n4. 주 2회: 아이스롤러 + LED 마스크로 붓기 케어\n\n각 단계별 추천 제품과 현지 구매처, 월별 예상 비용표를 함께 제공합니다.`,
+          links: [
+            { text: 'Olive Young Global', url: 'https://global.oliveyoung.com/' }
+          ]
+        },
+        'beauty-left': {
+          category: 'Barber Index',
+          title: '💈 한-베 바버샵 추천 맵',
+          image: 'images/dad_groom_humid.svg',
+          body: `District 2, 7, Bình Thạnh에서 직접 다녀본 바버샵/살롱을 가격·예약 방식·스타일별로 비교했습니다.\n\n- Liem Barber Q2: 스킨 페이드·아트라인 특화, 대기 20분\n- Brothers Cut Sala: 회사원용 다운펌, 예약제, VND 350k\n- Maison94 Thao Dien: 스파 패키지 포함, 영어 커뮤니케이션 OK\n\n각 매장의 구글맵 링크와 예약 메시지 템플릿을 붙여두었습니다.`,
+          links: [
+            { text: 'Google Maps 한-베 바버샵 리스트', url: 'https://maps.google.com/' }
+          ]
+        },
+        'beauty-right': {
+          category: 'Hair & Scalp',
+          title: '🧖‍♂️ 탈모 방지 두피 스테이션',
+          image: 'images/dad_groom_humid.svg',
+          body: `에어컨·자외선·오토바이 헬멧 때문에 자극받는 두피를 보호하기 위한 3way 솔루션입니다.\n\n- 헬멧 라이너를 주 2회 세탁하고, 외출 후 즉시 쿨샴푸\n- 한 주에 한 번은 커피스크럽 + 두피 토닉으로 각질 제거\n- GHA/아미노산 성분의 leave-in 토닉으로 수분 잠금\n\n각 단계별 추천 제품, 현지 구매처(Guardian, Watsons), 그리고 4주간 사용 기록표를 제공합니다.`,
+          links: [
+            { text: 'Guardian Vietnam', url: 'https://www.guardian.com.vn/' },
+            { text: 'Watsons Vietnam', url: 'https://www.watsons.vn/' }
+          ]
+        }
+      };
+
+
+      const cardsSummaryDB = {
+        finance: [
+          {
+            id: 'finance-cover',
+            badge: 'CASHFLOW',
+            title: 'KRW↔VND 커맨드센터',
+            subtitle: '송금 스케줄·환율 락인·자산 버킷',
+            desc: '월 2회 자동송금 · CMA 분리 · Wise 재투자까지 한눈에 보는 현금흐름 보드입니다.',
+            image: 'images/dad_finance_2026.svg',
+            cta: '흐름 보기'
+          },
+          {
+            id: 'finance-left',
+            badge: 'TRC',
+            title: '비자/서류 예산 타임라인',
+            subtitle: 'D-60부터 준비하는 비용 시뮬레이터',
+            desc: 'TRC·비자 갱신비, 공증·번역비, 건강검진 예약금을 8주 전부터 쪼개둔 체크리스트.',
+            image: 'images/dad_finance_2026.svg',
+            cta: '체크리스트 받기'
+          },
+          {
+            id: 'finance-right',
+            badge: 'ETF',
+            title: '생활비 ETF 자동이체',
+            subtitle: '3 버킷 포트폴리오 & Notion 로그',
+            desc: 'S&P500 커버드콜 · 글로벌 반도체 · 단기채 버킷으로 구성한 장기 루틴.',
+            image: 'images/dad_finance_2026.svg',
+            cta: '포트폴리오 열기'
+          }
+        ],
+        golf: [
+          {
+            id: 'golf-cover',
+            badge: 'NIGHT',
+            title: '호치민 야간 실내골프',
+            subtitle: '연습장/스크린 루트 & 혼잡도',
+            desc: 'Thao Dien·Giga Golf 등 야간 루틴과 이동·주차·패키지 정보를 정리했습니다.',
+            image: 'images/dad_golf_night.svg',
+            cta: '맵 보기'
+          },
+          {
+            id: 'golf-left',
+            badge: 'ROUTINE',
+            title: '밤 9시 70분 루틴',
+            subtitle: '이동-워밍업-본세션-쿨다운',
+            desc: '퇴근 후 70분 만에 스윙/체력/노트를 끝내는 분 단위 스케줄.',
+            image: 'images/dad_golf_night.svg',
+            cta: '루틴 복사'
+          },
+          {
+            id: 'golf-right',
+            badge: 'PROGRAM',
+            title: '12주 싱글 리빌드',
+            subtitle: '주차별 미션 & 위클리 보고',
+            desc: '실내 4주 → 필드 4주 → 체력/멘탈 4주로 나눈 Notion 템플릿.',
+            image: 'images/dad_golf_night.svg',
+            cta: '플랜 열람'
+          }
+        ],
+        ent: [
+          {
+            id: 'ent-cover',
+            badge: 'RESET',
+            title: '주말 리커버리 플레이북',
+            subtitle: '아이·부부·나 48시간 설계',
+            desc: '타오디엔 카페→부부 힐링→호캉스 루틴과 음악·OTT 큐레이션.',
+            image: 'images/dad_ent_family.svg',
+            cta: '플레이북 보기'
+          },
+          {
+            id: 'ent-left',
+            badge: 'CONSOLE',
+            title: '90분 몰입 큐레이션',
+            subtitle: 'Nintendo·PS·Steam Deck 세트',
+            desc: '젤다·고스트·Dave the Diver 30분 모듈씩 구성한 저전력 루틴.',
+            image: 'images/dad_ent_family.svg',
+            cta: '세트 다운로드'
+          },
+          {
+            id: 'ent-right',
+            badge: 'OTT',
+            title: '가족 동시감상 세트',
+            subtitle: 'Family·Couple·Dad Track',
+            desc: 'Disney+/Netflix 링크 + 시청 후 대화거리 노트까지 제공.',
+            image: 'images/dad_ent_family.svg',
+            cta: '트랙 재생'
+          }
+        ],
+        family: [
+          {
+            id: 'family-cover',
+            badge: 'OPS',
+            title: '한-베 가족 운영 일지',
+            subtitle: '대사관·소아과·주말 캘린더',
+            desc: 'Google Calendar와 종이 플래너 버전으로 제공되는 주간 운영판.',
+            image: 'images/dad_family_ops.svg',
+            cta: '캘린더 받기'
+          },
+          {
+            id: 'family-left',
+            badge: 'HEALTH',
+            title: '예방접종 & 건강 루틴',
+            subtitle: 'Vinmec·Nhi Đồng 2 체크',
+            desc: '25개월 또또가 맞은 백신 스케줄과 응급 키트 리스트.',
+            image: 'images/dad_family_ops.svg',
+            cta: 'PDF 열기'
+          },
+          {
+            id: 'family-right',
+            badge: 'COMMUNITY',
+            title: '한-베 커뮤니티 액션',
+            subtitle: '폼 → 텔레그램 → 파트너십',
+            desc: '대기자 전환, Q&A 라이브, 브랜드 제안 템플릿까지 한 번에.',
+            image: 'images/dad_family_ops.svg',
+            cta: '액션 실행'
+          }
+        ],
+        beauty: [
+          {
+            id: 'beauty-cover',
+            badge: 'HUMID',
+            title: '습도형 피부 방어',
+            subtitle: '4단계 수분·자차 루틴',
+            desc: '비타민C→미스트→야간 루틴→LED 풀코스를 Ho Chi Minh 기준으로 정리.',
+            image: 'images/dad_groom_humid.svg',
+            cta: '루틴 적용'
+          },
+          {
+            id: 'beauty-left',
+            badge: 'BARBER',
+            title: '한-베 바버맵',
+            subtitle: '가격·예약·스타일 비교',
+            desc: 'Liem Barber·Brothers Cut·Maison94 등 실사용 후기와 예약 문구.',
+            image: 'images/dad_groom_humid.svg',
+            cta: '맵 열기'
+          },
+          {
+            id: 'beauty-right',
+            badge: 'SCALP',
+            title: '탈모 방지 스테이션',
+            subtitle: '헬멧 루틴·쿨샴푸·토닉',
+            desc: 'Guardian·Watsons에서 바로 살 수 있는 제품과 4주 기록표.',
+            image: 'images/dad_groom_humid.svg',
+            cta: '케어 시작'
+          }
+        ]
+      };
+
+
+      const categoryMeta = {
+        finance: {
+          title: '📈 금융 & 주식 분석',
+          subtitle: 'Finance & Market Analysis',
+          border: 'var(--neon-cyan)'
+        },
+        golf: {
+          title: '⛳ 스포츠 & 취미',
+          subtitle: 'Sports & Hobby Club',
+          border: 'var(--neon-green)'
+        },
+        ent: {
+          title: '🕹️ 엔터테인먼트 & 문화',
+          subtitle: 'Entertainment & Culture Lounge',
+          border: 'var(--neon-pink)'
+        },
+        family: {
+          title: '👨‍👩‍👧‍👦 가족 & 라이프스타일',
+          subtitle: 'Family & Lifestyle Log',
+          border: 'var(--neon-blue)'
+        },
+        beauty: {
+          title: '💈 그루밍 & 미용',
+          subtitle: 'Grooming & Skincare',
+          border: '#6c5ce7'
+        }
+      };
+
+
+      let vietnamWeather = {
+        temp: 31.5,
+        condition: '맑음 ☀️',
+        humidity: 72
+      };
+
+      function renderCards(catId) {
+        const grid = document.getElementById('dad-cards-grid');
+        if (!grid) return;
+        const cards = cardsSummaryDB[catId] || [];
+        const meta = categoryMeta[catId];
+        
+        let indicatorBg, indicatorBorder, indicatorColor, blinkerBg;
+        if (catId === 'finance') {
+          indicatorBg = 'rgba(9, 132, 227, 0.12)';
+          indicatorBorder = 'rgba(9, 132, 227, 0.25)';
+          indicatorColor = 'var(--neon-cyan)';
+          blinkerBg = 'var(--neon-cyan)';
+        } else if (catId === 'golf') {
+          indicatorBg = 'rgba(46, 204, 113, 0.12)';
+          indicatorBorder = 'rgba(46, 204, 113, 0.25)';
+          indicatorColor = 'var(--neon-green)';
+          blinkerBg = 'var(--neon-green)';
+        } else if (catId === 'ent') {
+          indicatorBg = 'rgba(214, 48, 49, 0.12)';
+          indicatorBorder = 'rgba(214, 48, 49, 0.25)';
+          indicatorColor = 'var(--neon-pink)';
+          blinkerBg = 'var(--neon-pink)';
+        } else if (catId === 'family') {
+          indicatorBg = 'rgba(0, 206, 203, 0.12)';
+          indicatorBorder = 'rgba(0, 206, 203, 0.25)';
+          indicatorColor = 'var(--neon-blue)';
+          blinkerBg = 'var(--neon-blue)';
+        }
+
+        grid.innerHTML = cards.map(c => {
+          let stackClass = 'card-cover';
+          if (c.id.endsWith('-left')) {
+            stackClass = 'card-left';
+          } else if (c.id.endsWith('-right')) {
+            stackClass = 'card-right';
+          }
+          return `
+            <div class="card ${stackClass}" onclick="openDetailModal('${c.id}')">
+              <div class="card-banner" style="background-image: url('${c.image}');">
+                <span class="indicator" style="background: ${indicatorBg}; border-color: ${indicatorBorder}; color: ${indicatorColor};">
+                  <span class="indicator-dot" style="width: 6px; height: 6px; background-color: ${blinkerBg}; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px ${blinkerBg}; animation: blink 1.2s infinite; margin-right: 6px;"></span>
+                  ${c.badge}
+                </span>
+              </div>
+              <span class="card-glow-ring" aria-hidden="true"></span>
+              <div class="card-content">
+                <div class="card-header">
+                  <h3>${c.subtitle}</h3>
+                  <h2 style="margin-top: 5px; margin-bottom: 0;">${c.title}</h2>
+                </div>
+                <div class="card-body">
+                  <p style="margin: 0;">${c.desc}</p>
+                </div>
+                <div class="card-footer">
+                  <span class="cta-text" style="color: ${meta.border}">${c.cta} &rarr;</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function switchCategory(catId) {
+        const container = document.getElementById('dad-dashboard');
+        if (container) {
+          container.setAttribute('data-category', catId);
+        }
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        const activeBtn = document.querySelector(`.tab-btn.tab-${catId}`);
+        if (activeBtn) {
+          activeBtn.classList.add('active');
+        }
+
+        const meta = categoryMeta[catId];
+        if (meta) {
+          document.getElementById('active-category-title').innerHTML = meta.title;
+          document.getElementById('active-category-subtitle').innerHTML = meta.subtitle;
+          document.getElementById('active-category-header').style.borderColor = meta.border;
+        }
+
+        renderCards(catId);
+      }
+
+      // Helper function to calculate target dates relative to today for dynamic defaults
+      function getOffsetDateString(daysOffset) {
+        const d = new Date();
+        d.setDate(d.getDate() + daysOffset);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      // Calculate D-Day string and return classification for style classes
+      function calculateDDay(dateString) {
+        if (!dateString) return { text: '', styleClass: '' };
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const target = new Date(dateString);
+        target.setHours(0, 0, 0, 0);
+        
+        const diffTime = target - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) {
+          return { text: 'D-Day', styleClass: 'dday-urgent' };
+        } else if (diffDays === 1) {
+          return { text: 'D-1', styleClass: 'dday-urgent' };
+        } else if (diffDays > 1 && diffDays <= 7) {
+          return { text: `D-${diffDays}`, styleClass: 'dday-soon' };
+        } else if (diffDays > 7) {
+          return { text: `D-${diffDays}`, styleClass: 'dday-normal' };
+        } else {
+          // Passed events
+          return { text: `D+${Math.abs(diffDays)}`, styleClass: 'dday-normal' };
+        }
+      }
+
+      // Default configurations
+      const WIDGET_DEFAULT_CONFIG = {
+        missions: [
+          { id: 'todo-vitamin', text: '🥛 영양제 챙겨먹기' },
+          { id: 'todo-walk', text: '🚶‍♂️ 1만 보 걷기' },
+          { id: 'todo-call', text: '📞 가족에게 안부 전화' }
+        ],
+        events: [
+          { id: 'dday-wife', title: '🎂 아내 생일', date: getOffsetDateString(5) },
+          { id: 'dday-dinner', title: '👨‍👩‍👧‍👦 가족 저녁 식사', date: getOffsetDateString(2) },
+          { id: 'dday-anniversary', title: '💌 결혼기념일', date: getOffsetDateString(14) }
+        ]
+      };
+
+      // Load config from localStorage
+      function getWidgetConfig() {
+        const saved = localStorage.getItem('dad-widget-config');
+        if (saved) {
+          try {
+            return JSON.parse(saved);
+          } catch(e) {
+            console.error('Failed to parse widget config, loading defaults');
+          }
+        }
+        return WIDGET_DEFAULT_CONFIG;
+      }
+
+      // Save config to localStorage
+      function saveWidgetConfig(config) {
+        localStorage.setItem('dad-widget-config', JSON.stringify(config));
+      }
+
+      // Render the widget elements
+      function renderWidgetDashboard() {
+        const config = getWidgetConfig();
+        
+        // 1. Render Missions
+        const todoContainer = document.getElementById('todo-list-container');
+        if (todoContainer) {
+          todoContainer.innerHTML = config.missions.map(m => {
+            const isChecked = localStorage.getItem(m.id) === 'true';
+            return `
+              <label class="todo-item">
+                <input type="checkbox" id="${m.id}" ${isChecked ? 'checked' : ''}>
+                <span class="todo-text">${m.text}</span>
+              </label>
+            `;
+          }).join('');
+          
+          // Add change listeners to checkboxes to save their checked state
+          todoContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('change', () => {
+              localStorage.setItem(cb.id, cb.checked);
+            });
+          });
+        }
+        
+        // 2. Render Family Events (D-Day)
+        const ddayContainer = document.getElementById('dday-list-container');
+        if (ddayContainer) {
+          ddayContainer.innerHTML = config.events.map(ev => {
+            const ddayInfo = calculateDDay(ev.date);
+            return `
+              <div class="dday-item">
+                <span class="dday-text">${ev.title}</span>
+                <span class="dday-badge ${ddayInfo.styleClass}">${ddayInfo.text}</span>
+              </div>
+            `;
+          }).join('');
+        }
+      }
+
+      function initMissionChecklist() {
+        renderWidgetDashboard();
+      }
+
+      /* Modal UI Actions */
+      function openWidgetSettingsModal() {
+        const modal = document.getElementById('dad-widget-settings-modal');
+        if (!modal) return;
+        
+        // Populate inputs with current config
+        const config = getWidgetConfig();
+        
+        // Populate missions
+        config.missions.forEach((m, idx) => {
+          const input = document.getElementById(`setting-todo-${idx + 1}`);
+          if (input) input.value = m.text;
+        });
+        
+        // Populate events
+        config.events.forEach((ev, idx) => {
+          const titleInput = document.getElementById(`setting-dday-title-${idx + 1}`);
+          const dateInput = document.getElementById(`setting-dday-date-${idx + 1}`);
+          if (titleInput) titleInput.value = ev.title;
+          if (dateInput) dateInput.value = ev.date;
+        });
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeWidgetSettingsModal() {
+        const modal = document.getElementById('dad-widget-settings-modal');
+        if (!modal) return;
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function closeWidgetSettingsModalOnOutside(event) {
+        if (event.target === event.currentTarget) {
+          closeWidgetSettingsModal();
+        }
+      }
+
+      function saveWidgetSettings(event) {
+        event.preventDefault();
+        
+        const config = {
+          missions: [
+            { id: 'todo-vitamin', text: document.getElementById('setting-todo-1').value },
+            { id: 'todo-walk', text: document.getElementById('setting-todo-2').value },
+            { id: 'todo-call', text: document.getElementById('setting-todo-3').value }
+          ],
+          events: [
+            { id: 'dday-wife', title: document.getElementById('setting-dday-title-1').value, date: document.getElementById('setting-dday-date-1').value },
+            { id: 'dday-dinner', title: document.getElementById('setting-dday-title-2').value, date: document.getElementById('setting-dday-date-2').value },
+            { id: 'dday-anniversary', title: document.getElementById('setting-dday-title-3').value, date: document.getElementById('setting-dday-date-3').value }
+          ]
+        };
+        
+        saveWidgetConfig(config);
+        renderWidgetDashboard();
+        closeWidgetSettingsModal();
+      }
+
+      function getVietnamTime() {
+        const options = {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        };
+        const formatter = new Intl.DateTimeFormat('en-US', options);
+        return formatter.format(new Date());
+      }
+
+      function getVietnamDate() {
+        const options = {
+          timeZone: 'Asia/Ho_Chi_Minh',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          weekday: 'short'
+        };
+        const formatter = new Intl.DateTimeFormat('ko-KR', options);
+        return formatter.format(new Date());
+      }
+
+      function renderVietnamWidget() {
+        const container = document.getElementById('vietnam-time-weather');
+        if (!container) return;
+        
+        const timeStr = getVietnamTime();
+        const dateStr = getVietnamDate();
+        
+        container.innerHTML = `
+          <div class="vietnam-signal-box">
+            <div class="vn-time-display">${timeStr}</div>
+            <div class="vn-date-display">${dateStr} (ICT)</div>
+            <div class="vn-weather-grid">
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">📍 도시</span>
+                <span class="vn-weather-value">하노이/호치민</span>
+              </div>
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">🌡️ 기온</span>
+                <span class="vn-weather-value temp">${vietnamWeather.temp.toFixed(1)}°C</span>
+              </div>
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">🌦️ 날씨</span>
+                <span class="vn-weather-value condition">${vietnamWeather.condition}</span>
+              </div>
+              <div class="vn-weather-row">
+                <span class="vn-weather-label">💧 습도</span>
+                <span class="vn-weather-value">${vietnamWeather.humidity}%</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      function initVietnamWidget() {
+        renderVietnamWidget();
+        
+        setInterval(() => {
+          renderVietnamWidget();
+        }, 1000);
+        
+        setInterval(() => {
+          const diff = (Math.random() * 0.4 - 0.2);
+          vietnamWeather.temp = Math.max(28, Math.min(36, vietnamWeather.temp + diff));
+          const rand = Math.random();
+          if (rand < 0.6) {
+            vietnamWeather.condition = '맑음 ☀️';
+            vietnamWeather.humidity = Math.max(60, Math.min(80, vietnamWeather.humidity + Math.floor(Math.random() * 3 - 1)));
+          } else if (rand < 0.9) {
+            vietnamWeather.condition = '구름 조금 ⛅';
+            vietnamWeather.humidity = Math.max(65, Math.min(85, vietnamWeather.humidity + Math.floor(Math.random() * 3 - 1)));
+          } else {
+            vietnamWeather.condition = '소나기 🌧️';
+            vietnamWeather.humidity = Math.max(80, Math.min(95, vietnamWeather.humidity + Math.floor(Math.random() * 4 - 1)));
+          }
+        }, 10000);
+      }
+
+      function openDetailModal(cardId) {
+        const data = cardDetailsDB[cardId];
+        if (!data) return;
+
+        const bodyEl = document.getElementById('dad-modal-body');
+        
+        let linksHtml = '';
+        if (data.links && data.links.length > 0) {
+          linksHtml = `
+            <div class="modal-detail-links">
+              <h4>🔗 추천 바로가기 링크</h4>
+              <div class="modal-link-list">
+                ${data.links.map(link => `
+                  <a href="${link.url}" class="modal-link-item" target="_blank" rel="noopener noreferrer">
+                    📁 ${link.text} ↗
+                  </a>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        bodyEl.innerHTML = `
+          <div class="modal-detail-banner" style="background-image: url('${data.image}');"></div>
+          <div class="modal-detail-category">${data.category}</div>
+          <h3 class="modal-detail-title">${data.title}</h3>
+          <div class="modal-detail-body">${data.body}</div>
+          ${linksHtml}
+        `;
+
+        const modal = document.getElementById('dad-card-modal');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 부모 스크롤 방지
+      }
+
+      function closeDetailModal() {
+        const modal = document.getElementById('dad-card-modal');
+        modal.classList.remove('active');
+        document.body.style.overflow = ''; // 부모 스크롤 복구
+      }
+
+      function closeDetailModalOnOutside(event) {
+        const modalContent = document.querySelector('.dad-modal-content');
+        if (event.target === event.currentTarget) {
+          closeDetailModal();
+        }
+      }
+    </script>
+
+    <script src="main.js"></script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, getDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyASXXnU8bB6G641bY00V6MCRMLtdUgddpI",
+        authDomain: "familyspace-db.firebaseapp.com",
+        projectId: "familyspace-db",
+        storageBucket: "familyspace-db.firebasestorage.app",
+        messagingSenderId: "17439157934",
+        appId: "1:17439157934:web:d2e65b864fac46c1a6873f"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const fallbackPosts = [
+        {
+          id: 'saigon-weekend-reset',
+          title: '호치민 주말 리커버리 루틴 3가지',
+          category: 'Weekend',
+          date: '2026.05.21',
+          thumbnail: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '아이와 함께 체력·멍타임·부부 대화를 모두 챙기는 48시간 루틴을 지도와 함께 정리했습니다.',
+          content: `25개월 아이와 함께 호치민에서 주말을 보낼 때 가장 만족도가 높았던 3단계 루틴입니다.\n\n1) 토요일 오전: 타오디엔 미니 카페 투어\n- 아이가 좋아하는 수영장이 있는 Lullaby Cafe → 한산한 시간대(오전 10시 이전)에 가면 아빠/엄마가 번갈아 노트북으로 일 처리도 가능\n- 근처 Annam Gourmet에서 다음 주 도시락 재료까지 픽업\n\n2) 토요일 밤: 부부 리커버리 타임\n- 아내 휴식: 홈 스파 + 넷플릭스, 아빠는 밤 9시 이후 Q2 골프 연습장(1시간)으로 가볍게 땀 빼기\n- 귀가 후 15분 커플 회고 미팅: 아이 컨디션/이번 주 감사한 점 3가지 공유\n\n3) 일요일 오전: Kidzania 대신 미니 리조트 호캉스\n- 시내 4성급 호텔 조식 패키지를 당일 예약(Grab 초특가) → 수영장 + 낮잠 루틴까지 한 번에 해결\n- 오후에는 빈컴 메가몰 내 대형 슈퍼에서 장보기 후 일찍 귀가해 월요일 준비.\n\n핵심은 “아이-부부-나”에게 모두 90분씩의 명확한 힐링 슬롯을 주는 것입니다.`
+        },
+        {
+          id: 'visa-checklist-2026',
+          title: '2026년 베트남 TRC/비자 갱신 체크리스트',
+          category: 'Docs',
+          date: '2026.05.02',
+          thumbnail: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '아빠 입장에서 놓치기 쉬운 가족 비자·TRC 갱신 서류를 주차별로 나눠 정리한 표입니다.',
+          content: `✔ 8주 전 (D-60)\n- 여권 만료 시점 확인: 최소 12개월 이상 남아야 TRC 갱신 진행 가능\n- 회사 인감증명서 업데이트 + 노동허가서(Work Permit) 스캔본 정리\n\n✔ 6주 전 (D-45)\n- 아내/아이 출생증명서 공증본 준비, 한-베 번역본 업데이트\n- 거주지 증명(임대차 계약서 + 임대인 신분증) 스캔 후 Google Drive 공유\n\n✔ 4주 전 (D-30)\n- 건강검진 예약: Thu Duc 병원 기준 가족 패키지 3명 2시간 소요\n- 회사 HR에 e-visa extension letter 요청, PDF 서명본 확보\n\n✔ 2주 전 (D-15)\n- 사진관에서 4x6cm 배경 흰색 증명사진 새로 촬영 (USB/카톡 전송)\n- 아빠 서류 + 가족 서류 각각 투명 파일에 분류, 체크리스트 출력\n\n✔ 1주 전 (D-7)\n- 담당 에이전트와 픽업 일정 확정, 영수증/현금 분리 보관\n- 만약을 대비해 여권/서류 사본을 Cloud + iPad에 동기화.\n\n위 순서를 따르면 촉박함 없이 TRC를 갱신할 수 있습니다.`
+        },
+        {
+          id: 'dad-golf-night',
+          title: '밤 9시 이후 골프 연습장 집중 루틴',
+          category: 'Hobby',
+          date: '2026.04.28',
+          thumbnail: 'https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '아이 재우고 나간 뒤 70분 안에 스윙·체력·멘탈을 모두 챙기는 체크리스트.',
+          content: `1) 이동 & 세팅 (10분)\n- Grab Bike로 Q2 연습장 이동 → 헬멧 안쪽에 즉시 땀 흡수 가능한 미니 타월 필수\n- 타석 선택 시 밝기/에어컨/거울 유무를 먼저 확인\n\n2) 워밍업 (10분)\n- 그립 프레셔/견갑 수축 체크\n- 52도 웨지 어프로치 20구로 리듬 잡기\n\n3) 본 세션 (35분)\n- 드라이버: 3구씩 루틴 반복 → 루틴(정렬-테이크백-탑)마다 핸드폰으로 슬로모 녹화\n- 하이브리드 & 7번 아이언: 탄도 + 페이스 컨트롤 연습\n- 마지막 10구는 필드 이미지 트레이닝(타겟 시각화)\n\n4) 쿨다운 (15분)\n- 폼롤러 스트레칭 + 노트 앱에 당일 체크포인트 3줄 기록\n- 집에 오는 길에 이온음료/프로틴 주스 한 병으로 회복.\n\n“짧고 집중된 루틴”이 다음날 피로 누적을 막아줍니다.`
+        },
+        {
+          id: 'krw-vnd-automation',
+          title: 'KRW→VND 자동이체 파이프라인 구축기',
+          category: 'Finance',
+          date: '2026.04.10',
+          thumbnail: 'https://images.unsplash.com/photo-1508387021433-30e5f5d0d1d2?auto=format&fit=crop&w=1100&q=80',
+          excerpt: '한국 주식 계좌를 유지하면서도 호치민 생활비를 자동 배분하는 4단계 세팅.',
+          content: `① 한국 내 KB증권 CMA → 토스뱅크\n- 매달 월급일 +1일에 생활비만큼 자동이체 스케줄러 등록\n\n② 토스 해외송금 → HSBC Vietnam\n- 낮은 환율 스프레드 구간(한국 시간 11:00~13:00)로 고정\n- 수수료 절약을 위해 월 2회(1일/15일)로 나눠서 송금\n\n③ HSBC → VPBank 패밀리 계좌\n- 생활비, 교육비, 주말 여행비 3개의 서브어카운트 사용\n- Monite 앱으로 자동 예산 리포트 받아보기\n\n④ 비상금/투자금 분리\n- 미사용 VND는 다시 Wise Multi-currency로 역송금→미국 ETF 적립식\n\n모든 흐름을 Notion DB에 연결해주면, 환율 변동에도 감정 기복 없이 생활비를 관리할 수 있습니다.`
+        }
+      ];
+      const fallbackPostMap = fallbackPosts.reduce((acc, post) => {
+        acc[post.id] = { ...post, isFallback: true };
+        return acc;
+      }, {});
+      
+      const isAuth = sessionStorage.getItem('family_space_authenticated') === 'true';
+      const adminMenu = document.getElementById('dad-admin-menu');
+      if(adminMenu) {
+        if(isAuth) {
+          adminMenu.style.display = 'block';
+        } else {
+          adminMenu.remove();
+        }
+      }
+
+      window.switchView = function(viewId) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if(viewId === 'main-view') fetchPosts(); 
+      };
+
+      async function fetchPosts() {
+        const listContainer = document.getElementById('post-list-container');
+        try {
+          const q = query(collection(db, "magazine_posts"), orderBy("timestamp", "desc"));
+          const snapshot = await getDocs(q);
+          
+          if(snapshot.empty) {
+            listContainer.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px; border: 1px dashed var(--border-color); border-radius: 20px; background: var(--card-bg);">아직 발행된 글이 없습니다. 위 메뉴에서 새 글을 작성해 보세요!</div>';
+            return;
+          }
+
+          let htmlBuffer = '';
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            htmlBuffer += `
+              <div class="article-card" onclick="openPost('${docSnap.id}')">
+                <div class="article-img" style="background-image: url('${data.thumbnail || ''}');"></div>
+                <div class="article-content">
+                  <h2 class="article-title">${data.title}</h2>
+                  <div class="article-date">${data.date}</div>
+                </div>
+              </div>
+            `;
+          });
+          listContainer.innerHTML = htmlBuffer;
+        } catch(e) {
+          listContainer.innerHTML = '<div style="color:var(--neon-pink); text-align:center; grid-column:1/-1;">서버 통신 지연. 새로고침을 해주세요.</div>';
+        }
+      }
+
+      window.openPost = async function(docId) {
+        const readBox = document.getElementById('read-container-box');
+        readBox.innerHTML = '<div style="text-align:center; padding: 50px; color:var(--text-secondary);">안전하게 데이터를 불러오는 중...</div>';
+        window.switchView('read-view');
+
+        try {
+          const docRef = doc(db, "magazine_posts", docId);
+          const docSnap = await getDoc(docRef);
+          
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            readBox.innerHTML = `
+              <h1 style="font-size: 2.4rem; margin-top: 0; margin-bottom: 20px; color:var(--text-primary); letter-spacing: -0.5px; filter: drop-shadow(0 2px 8px rgba(9, 132, 227, 0.12));">${data.title}</h1>
+              <div style="color: var(--text-secondary); border-bottom: 1px solid var(--border-color); padding-bottom: 20px; margin-bottom: 35px; font-size:1rem; display: flex; gap: 15px;">
+                <span style="font-weight:700; color:var(--neon-cyan);">By 아빠</span> <span>|</span> <span>${data.date}</span>
+              </div>
+              ${data.thumbnail ? `<img src="${data.thumbnail}" style="width:100%; border-radius:20px; margin-bottom:40px; box-shadow:0 10px 30px rgba(0,0,0,0.5); border: 1px solid var(--border-color);">` : ''}
+              <div class="ad-banner" style="margin-bottom: 40px; border-radius: 16px;">[구글 애드센스 본문 상단 광고]</div>
+              <div style="font-size: 1.15rem; line-height: 1.9; color: var(--text-primary); white-space: pre-wrap;">${data.content}</div>
+              <div class="ad-banner" style="margin-top: 60px; border-radius: 16px;">[구글 애드센스 본문 하단 광고]</div>
+            `;
+          }
+        } catch(e) {
+          readBox.innerHTML = '글을 불러올 수 없습니다. 네트워크를 확인해주세요.';
+        }
+      };
+
+      let currentThumbnail = "";
+      document.getElementById('edit-image').onchange = function(e) {
+        const file = e.target.files[0];
+        if(!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          currentThumbnail = evt.target.result;
+          document.getElementById('edit-preview').src = currentThumbnail;
+          document.getElementById('edit-preview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      };
+
+      document.getElementById('btn-publish').onclick = async function() {
+        if(!isAuth) { alert("로그인이 필요합니다!"); return; }
+        
+        const title = document.getElementById('edit-title').value;
+        const category = document.getElementById('edit-category').value;
+        const content = document.getElementById('edit-content').value;
+        
+        if(!title || !content || !currentThumbnail) {
+          alert('제목, 썸네일 이미지, 본문을 모두 채워주세요!'); return;
+        }
+
+        const payload = {
+          title: title,
+          category: category,
+          thumbnail: currentThumbnail,
+          content: content,
+          date: new Date().toLocaleDateString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit' }),
+          timestamp: Date.now()
+        };
+
+        try {
+          this.innerText = "발행 중..."; this.disabled = true;
+          await addDoc(collection(db, "magazine_posts"), payload);
+          
+          document.getElementById('edit-title').value = '';
+          document.getElementById('edit-content').value = '';
+          document.getElementById('edit-image').value = '';
+          document.getElementById('edit-preview').style.display = 'none';
+          currentThumbnail = '';
+          
+          alert('성공적으로 발행되었습니다!');
+          window.switchView('main-view');
+        } catch(e) {
+          alert('발행 실패: ' + e.message);
+        } finally {
+          this.innerText = "클라우드 서버에 전 세계 발행하기 🚀"; this.disabled = false;
+        }
+      };
+
+      function initNavbarSPA() {
+        document.querySelectorAll('.navbar a').forEach(link => {
+          const href = link.getAttribute('href');
+          if (href === 'dad.html') {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              window.switchView('main-view');
+              window.location.hash = '';
+            });
+          } else if (href === 'dad.html#write-view') {
+            link.addEventListener('click', (e) => {
+              e.preventDefault();
+              if(isAuth) {
+                window.switchView('write-view');
+                window.location.hash = 'write-view';
+              } else {
+                window.switchView('main-view');
+                window.location.hash = '';
+              }
+            });
+          }
+        });
+        
+        // Initial view check on load based on hash
+        if (window.location.hash === '#write-view' && isAuth) {
+          window.switchView('write-view');
+        } else if (window.location.hash === '#write-view') {
+          window.switchView('main-view');
+          window.location.hash = '';
+        }
+      }
+
+      window.onload = function() {
+        fetchPosts();
+        initNavbarSPA();
+        if (typeof switchCategory === 'function') {
+          switchCategory('finance');
+        }
+        if (typeof initMissionChecklist === 'function') {
+          initMissionChecklist();
+        }
+        if (typeof initVietnamWidget === 'function') {
+          initVietnamWidget();
+        }
+      };
+
+      // Immediate initialization in case onload has already fired
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        fetchPosts();
+        initNavbarSPA();
+        if (typeof switchCategory === 'function') {
+          switchCategory('finance');
+        }
+        if (typeof initMissionChecklist === 'function') {
+          initMissionChecklist();
+        }
+        if (typeof initVietnamWidget === 'function') {
+          initVietnamWidget();
+        }
+      }
+    </script>
+  </body>
+</html>

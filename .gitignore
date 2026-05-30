@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+*.log
+.server.pid
+
+# Local dependencies and generated output
+node_modules/
+venv/
+.venv/
+output/
+.system_generated/
+
+# Local backups, generated cache, and one-off experiment artifacts
+archive/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

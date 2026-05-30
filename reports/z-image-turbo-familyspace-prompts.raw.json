@@ -1,0 +1,28 @@
+Sure, let's fill in the details based on your instructions and requirements[12D[K
+requirements:
+
+```json
+{
+  "name": "FamilySpace Hero - Z-Image Turbo",
+  "positive_prompt": "A warm and inviting living room in a FamilySpace home[4D[K
+home, with cozy textiles, muted ivory walls, and natural wooden furniture. [K
+Gentle green plants add life to the space, while soft morning light creates[7D[K
+creates a peaceful atmosphere. The shallow depth of field highlights the un[2D[K
+unique features of this authentic, lived-in environment, making it perfect [K
+for an editorial web hero background.",
+  "negative_prompt": "stock photo, glossy advertisement, overposed smiling [K
+family, direct eye contact, visible faces, flags, national costume, tourist[7D[K
+tourist landmark, ph?, kimchi, traditional symbols, readable brand logos, d[1D[K
+distorted hands, uncanny faces, fake text, cluttered composition, oversatur[9D[K
+oversaturated colors, harsh contrast, low quality, blurry",
+  "composition_note": "Hero crop/centered framing",
+  "why": "To showcase the authentic and warm living spaces offered by Famil[5D[K
+FamilySpace, emphasizing the lived-in feel and inviting atmosphere that fam[3D[K
+families can experience in their homes."
+}
+```
+
+This JSON structure aligns with your request for a positive prompt, negativ[7D[K
+negative prompt, composition note, and reasoning for using Z-Image Turbo to[2D[K
+to create an effective hero image for FamilySpace.
+

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FamilySpace | 베트남 한-베 가족 생활비, 육아, 비자/TRC 가이드</title>
+    <meta name="description" content="베트남에서 사는 한-베 가족을 위한 생활 메모장. 생활비, 육아, 병원, 비자/TRC, 주말 가족 루트를 실제 가족 기준으로 정리합니다." />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+    <style>
+      :root {
+        --fs-bg: #efe7dc;
+        --fs-paper: #fffaf2;
+        --fs-ink: #1d1d1f;
+        --fs-muted: #6e6257;
+        --fs-blue: #0071e3;
+        --fs-soft: #fbf7ef;
+        --fs-clay: #c9a984;
+        --fs-green: #6c8f6b;
+        --fs-coral: #d97b5c;
+      }
+      * { box-sizing: border-box; }
+      body.home-page { margin:0; padding-top:0; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color:var(--fs-ink); background:var(--fs-bg); }
+      .fs-nav { position:fixed; top:0; left:0; right:0; z-index:50; height:46px; background:rgba(247,239,226,.9); border-bottom:1px solid rgba(84,58,35,.12); backdrop-filter:saturate(180%) blur(22px); box-shadow:0 6px 24px rgba(70,46,24,.08); }
+      .fs-nav-inner { max-width:1024px; height:48px; margin:0 auto; padding:0 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+      .fs-logo { color:var(--fs-ink); font-size:15px; font-weight:850; letter-spacing:-.025em; text-decoration:none; white-space:nowrap; }
+      .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+      .fs-links { display:flex; align-items:center; justify-content:center; gap:22px; margin:0; padding:0; list-style:none; }
+      .fs-links a { color:rgba(29,29,31,.86); text-decoration:none; font-size:12px; font-weight:750; line-height:1; }
+      .fs-links a:hover { color:var(--fs-blue); }
+      .fs-tools { display:flex; align-items:center; gap:8px; }
+      #nav-auth-link a { color:rgba(29,29,31,.82); text-decoration:none; font-size:12px; font-weight:750; }
+
+      .fs-hero {
+        position:relative;
+        min-height:100vh;
+        overflow:hidden;
+        display:grid;
+        align-items:center;
+        padding-top:46px;
+        background:#ead9c4;
+      }
+      .fs-hero::before {
+        content:""; position:absolute; inset:-28px; z-index:0; opacity:.92; pointer-events:none;
+        background-image:url('assets/familyspace-city-home-front.png');
+        background-position:center center;
+        background-size:cover;
+        filter:blur(16px) saturate(.92);
+        transform:scale(1.04);
+      }
+      .fs-hero::after {
+        content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+        background:
+          linear-gradient(90deg, rgba(20,18,16,.18), rgba(255,250,242,.12) 34%, rgba(255,250,242,.08) 66%, rgba(20,18,16,.22)),
+          linear-gradient(180deg, rgba(255,246,232,.2), rgba(45,35,25,.18));
+      }
+      .fs-hero-layout { position:relative; z-index:2; width:min(1220px, calc(100% - 36px)); margin:0 auto; display:grid; grid-template-columns:1fr; gap:20px; align-items:center; padding:34px 0 42px; }
+      .fs-eyebrow { margin:0 0 14px; color:var(--fs-muted); font-size:15px; font-weight:700; letter-spacing:-.02em; }
+      .fs-hero h1 { margin:0; max-width:560px; color:var(--fs-ink); font-size:clamp(38px, 5.4vw, 68px); line-height:1.04; letter-spacing:-.055em; font-weight:750; }
+      .fs-hero p.fs-desc { max-width:520px; margin:20px 0 0; color:var(--fs-muted); font-size:clamp(18px, 2vw, 23px); line-height:1.42; letter-spacing:-.025em; }
+      .fs-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+      .fs-btn { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:11px 20px; border-radius:999px; text-decoration:none; font-size:16px; line-height:1; border:1px solid transparent; }
+      .fs-btn.primary { background:var(--fs-blue); color:#fff; }
+      .fs-btn.secondary { color:var(--fs-blue); border-color:rgba(0,113,227,.34); background:rgba(255,255,255,.42); }
+      .fs-house-stage { position:relative; min-height:calc(100vh - 46px); perspective:1400px; display:grid; grid-template-columns:minmax(320px, 500px); gap:34px; align-items:start; justify-content:start; padding:26px 430px 48px 24px; }
+      .fs-house-stage::after { display:none; }
+      .fs-house-stage::before { content:""; position:absolute; left:22%; width:38%; bottom:34px; height:90px; border-radius:50%; background:radial-gradient(ellipse, rgba(42,30,20,.32), transparent 70%); filter:blur(12px); pointer-events:none; }
+      .fs-city-bg { display:none; }
+      .fs-city-bg span { position:absolute; bottom:7%; width:74px; border-radius:14px 14px 0 0; background:linear-gradient(180deg, rgba(62,83,73,.28), rgba(102,127,110,.07)); box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 28px 46px rgba(70,46,24,.08); }
+      .fs-city-bg span:nth-child(1) { left:3%; height:220px; }
+      .fs-city-bg span:nth-child(2) { left:12%; height:300px; width:96px; }
+      .fs-city-bg span:nth-child(3) { right:12%; height:280px; width:90px; }
+      .fs-city-bg span:nth-child(4) { right:3%; height:210px; }
+      .fs-house-scene { position:relative; width:min(520px, 42vw); aspect-ratio:941/1672; overflow:visible; filter:drop-shadow(30px 40px 34px rgba(38,27,18,.34)); transform-style:preserve-3d; }
+      .fs-house-image { display:block; width:100%; height:100%; object-fit:contain; background:transparent; }
+      .fs-house-scene::after { content:""; position:absolute; inset:0; pointer-events:none; box-shadow:inset 0 0 0 1px rgba(255,255,255,.16); }
+      .fs-townhouse { position:absolute; left:50%; top:4%; width:310px; height:560px; transform:translateX(-50%); transform-style:preserve-3d; background:linear-gradient(90deg, #e7c39d 0%, #fff7ea 15%, #fff2dc 70%, #d4a477 100%); border-radius:18px 18px 10px 10px; box-shadow:inset 0 0 0 1px rgba(84,58,35,.12), inset 18px 0 30px rgba(255,255,255,.28), inset -22px 0 32px rgba(105,68,35,.1); }
+      .fs-townhouse::before { content:""; position:absolute; right:-42px; top:22px; width:42px; height:538px; background:linear-gradient(180deg, #bc8d65, #8f6548); transform:skewY(18deg); transform-origin:left top; border-radius:0 12px 10px 0; box-shadow:inset 12px 0 24px rgba(0,0,0,.12); }
+      .fs-townhouse::after { content:""; position:absolute; left:-20px; right:-50px; bottom:-30px; height:46px; border-radius:50%; background:rgba(70,46,24,.18); filter:blur(4px); z-index:-1; }
+      .fs-rooftop { position:absolute; left:20%; right:20%; top:8%; height:20%; border:0; border-radius:18px; background:rgba(0,113,227,.02); color:#fff; font:inherit; cursor:pointer; z-index:8; }
+      .fs-balcony { display:none; }
+      .balcony-1 { top:122px; } .balcony-2 { top:238px; } .balcony-3 { top:354px; }
+      .fs-room { position:absolute; left:19.5%; right:19.5%; height:17%; padding:0; border:1px solid transparent; border-radius:10px; color:transparent; text-align:left; font:inherit; background:rgba(255,255,255,.02); cursor:pointer; z-index:10; transition:background .2s ease, border-color .2s ease; }
+      .fs-room::before, .fs-room::after { display:none; }
+      .fs-room:hover, .fs-room.active, .fs-rooftop:hover, .fs-rooftop.active { background:rgba(255,250,242,.08); border-color:rgba(255,255,255,.38); backdrop-filter:blur(.5px); }
+      .fs-floor-guide { position:absolute; left:19.5%; right:19.5%; z-index:6; pointer-events:none; border-radius:10px; opacity:.76; border-top:3px solid rgba(255,255,255,.9); border-bottom:2px solid rgba(68,48,32,.22); background:rgba(255,255,255,.055); box-shadow:0 1px 0 rgba(255,255,255,.46), 0 8px 16px rgba(42,30,20,.14); transition:background .18s ease, opacity .18s ease, box-shadow .18s ease; }
+      .guide-family { top:30.6%; height:16.5%; }
+      .guide-dad { top:47.1%; height:17.2%; }
+      .guide-baby { top:64.3%; height:17.3%; }
+      .guide-mom { top:81.6%; height:18.1%; }
+      .fs-room { box-shadow:inset 0 0 0 0 rgba(255,255,255,0); }
+      .fs-room:hover, .fs-room.active { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.88); box-shadow:inset 0 0 0 3px rgba(255,255,255,.45), 0 0 0 1px rgba(84,58,35,.16); }
+      .fs-house-scene:has(.room-weekend:hover) .guide-family,
+      .fs-house-scene:has(.room-paper:hover) .guide-dad,
+      .fs-house-scene:has(.room-baby:hover) .guide-baby,
+      .fs-house-scene:has(.room-money:hover) .guide-mom,
+      .fs-house-scene:has(.room-weekend.active) .guide-family,
+      .fs-house-scene:has(.room-paper.active) .guide-dad,
+      .fs-house-scene:has(.room-baby.active) .guide-baby,
+      .fs-house-scene:has(.room-money.active) .guide-mom { opacity:1; background:rgba(255,255,255,.18); box-shadow:inset 0 0 0 2px rgba(255,255,255,.6), 0 12px 24px rgba(42,30,20,.18); }
+      .fs-folder-tab { position:absolute; z-index:6; right:-146px; width:162px; min-height:66px; padding:12px 14px; border-radius:0 16px 16px 0; background:linear-gradient(90deg, #fffaf2, #ffffff); color:var(--fs-ink); box-shadow:18px 18px 32px rgba(70,46,24,.16), inset 1px 0 0 rgba(84,58,35,.1); transform:translateX(-70px) scaleX(.82); transform-origin:left center; opacity:0; pointer-events:none; transition:transform .24s ease, opacity .2s ease; }
+      .fs-folder-tab b { display:block; font-size:14px; letter-spacing:-.02em; }
+      .fs-folder-tab small { display:block; margin-top:5px; color:var(--fs-muted); font-size:11px; font-weight:800; line-height:1.3; }
+      .fs-room.active + .fs-folder-tab, .fs-room:hover + .fs-folder-tab, .fs-rooftop.active ~ .tab-roof, .fs-rooftop:hover ~ .tab-roof { transform:translateX(0) scaleX(1); opacity:1; }
+      .tab-roof { top:11%; } .tab-family { top:33%; } .tab-dad { top:49%; } .tab-baby { top:67%; } .tab-mom { top:84%; }
+      .fs-room b, .fs-room small { display:none; }
+      .room-weekend { top:30.6%; height:16.5%; }
+      .room-paper { top:47.1%; height:17.2%; }
+      .room-baby { top:64.3%; height:17.3%; }
+      .room-money { top:81.6%; height:18.1%; }
+      .fs-house-door, .fs-house-door::after, .fs-shop-awning { display:none; }
+      .fs-house-hint { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); padding:10px 14px; border-radius:999px; background:rgba(255,250,242,.78); color:var(--fs-muted); font-size:13px; font-weight:800; box-shadow:0 12px 28px rgba(70,46,24,.12); white-space:nowrap; backdrop-filter:blur(14px); }
+      .fs-layered-house { width:min(440px, 40vw); aspect-ratio:auto; display:flex; flex-direction:column; align-items:stretch; gap:0; }
+      .fs-layered-house .fs-house-image, .fs-layered-house .fs-floor-guide { display:none; }
+      .fs-layered-house .fs-house-layer { position:relative; left:auto !important; right:auto !important; top:auto !important; height:auto !important; display:block; width:100%; margin:-1px 0 0; padding:0; border:0; border-radius:0; background:transparent; color:transparent; cursor:pointer; transform:translateX(0) translateZ(0) scale(1); transform-origin:center center; transition:transform .28s cubic-bezier(.2,.8,.2,1), filter .22s ease; z-index:2; }
+      .fs-layered-house .fs-house-layer:first-child { margin-top:0; }
+      .fs-layered-house .fs-house-layer img { display:block; width:100%; height:auto; pointer-events:none; user-select:none; }
+      .fs-layered-house .fs-house-layer:hover,
+      .fs-layered-house .fs-house-layer:focus-visible { z-index:9; transform:translateX(34px) translateZ(120px) scale(1.03); filter:drop-shadow(22px 24px 22px rgba(38,27,18,.32)) brightness(1.04); outline:none; }
+      .fs-layered-house .fs-house-layer:hover + .fs-folder-tab,
+      .fs-layered-house .fs-house-layer:focus-visible + .fs-folder-tab { transform:translateX(0) scaleX(1); opacity:1; }
+      .fs-layered-house .tab-roof { top:8%; }
+      .fs-layered-house .tab-family { top:38%; }
+      .fs-layered-house .tab-dad { top:54%; }
+      .fs-layered-house .tab-baby { top:72%; }
+      .fs-layered-house .tab-mom { top:89%; }
+      .fs-layered-house .fs-folder-tab { z-index:12; }
+      .fs-room-drawer { position:fixed; top:84px; right:max(28px, calc((100vw - 1220px) / 2 + 24px)); z-index:80; width:min(360px, calc(100vw - 56px)); max-height:calc(100vh - 112px); min-height:0; border-radius:30px; padding:22px; background:linear-gradient(180deg, rgba(255,250,242,.94), rgba(255,246,232,.84)); border:1px solid rgba(84,58,35,.1); box-shadow:0 28px 74px rgba(70,46,24,.2), inset 0 1px 0 rgba(255,255,255,.68); backdrop-filter:blur(18px); overflow:auto; transform-origin:left center; animation: drawerOpen .28s ease both; }
+      .fs-room-drawer::before { content:"ROOM PREVIEW"; display:inline-flex; margin-bottom:12px; padding:7px 10px; border-radius:999px; background:rgba(0,113,227,.08); color:var(--fs-blue); font-size:11px; font-weight:900; letter-spacing:.05em; }
+      @keyframes drawerOpen { from { opacity:.35; transform:translateX(-18px) scaleX(.96); } to { opacity:1; transform:translateX(0) scaleX(1); } }
+      .fs-room-drawer h2 { margin:0; font-size:26px; line-height:1.08; letter-spacing:-.04em; }
+      .fs-room-drawer p { margin:8px 0 0; color:var(--fs-muted); font-size:14px; line-height:1.45; }
+      .fs-room-scene { position:relative; margin-top:14px; height:190px; border-radius:22px; background:linear-gradient(180deg, #fff, #f6eadb); box-shadow:inset 0 0 0 1px rgba(84,58,35,.08), inset 0 -42px 80px rgba(201,169,132,.2); overflow:hidden; }
+      .fs-room-scene::before { content:""; position:absolute; left:0; right:0; bottom:0; height:78px; background:linear-gradient(90deg, rgba(201,169,132,.25), rgba(108,143,107,.16)); }
+      .scene-item { position:absolute; border-radius:18px; box-shadow:0 14px 26px rgba(70,46,24,.12); }
+      .scene-person { left:34px; bottom:58px; width:54px; height:92px; background:#e7b991; border-radius:28px 28px 18px 18px; }
+      .scene-person::before { content:""; position:absolute; left:12px; top:-34px; width:32px; height:32px; border-radius:50%; background:#d59b74; }
+      .scene-person::after { content:""; position:absolute; left:-16px; top:42px; width:86px; height:10px; border-radius:999px; background:#6c8f6b; }
+      .scene-kitchen .counter { right:24px; bottom:60px; width:150px; height:84px; background:#f3c98b; }
+      .scene-kitchen .plant { right:48px; top:34px; width:52px; height:74px; background:#6c8f6b; border-radius:50% 50% 18px 18px; }
+      .scene-play .toy { left:132px; bottom:68px; width:54px; height:54px; background:#f2c14e; border-radius:14px; box-shadow:64px 16px 0 #d97b5c, 118px -8px 0 #6c8f6b; }
+      .scene-play .mat { left:42px; right:38px; bottom:38px; height:46px; background:#dfefff; border-radius:999px; }
+      .scene-office .desk { right:26px; bottom:58px; width:160px; height:76px; background:#9f7658; }
+      .scene-office .screen { right:68px; bottom:130px; width:88px; height:58px; background:#1d1d1f; border-radius:10px; }
+      .scene-office .papers { left:128px; bottom:78px; width:54px; height:70px; background:#fff; transform:rotate(-8deg); box-shadow:22px 14px 0 #fff0c7, 44px -4px 0 #eef6ff; }
+      .scene-lounge .table { left:116px; bottom:54px; width:132px; height:46px; background:#c9a984; border-radius:50%; }
+      .scene-lounge .cup { left:152px; bottom:98px; width:24px; height:28px; background:#fff; box-shadow:46px 0 0 #fff, 88px 0 0 #fff; }
+      .scene-lounge .sofa { right:30px; bottom:70px; width:126px; height:76px; background:#d97b5c; }
+      .fs-room-link { display:inline-flex; margin-top:14px; min-height:40px; align-items:center; justify-content:center; padding:10px 18px; border-radius:999px; background:var(--fs-blue); color:#fff; text-decoration:none; font-weight:850; box-shadow:0 12px 24px rgba(0,113,227,.2); }
+
+      .fs-footer { padding:28px 20px; background:#f5f5f7; color:var(--fs-muted); font-size:12px; } .fs-footer-inner { max-width:980px; margin:0 auto; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; } .fs-footer a { color:var(--fs-muted); text-decoration:none; margin-left:14px; }
+
+      @media (prefers-reduced-motion: reduce) { .note, .hand-sticker { animation:none; } }
+      @media (max-width: 900px) { .fs-hero-layout { grid-template-columns:1fr; padding:30px 0; } .fs-house-stage { min-height:auto; order:-1; grid-template-columns:1fr; justify-items:center; justify-content:center; padding:0 0 38px; } .fs-house-stage::before { left:12%; width:76%; } .fs-house-scene { width:min(520px, 94vw); } .fs-layered-house { width:min(430px, 88vw); } .fs-layered-house .fs-house-layer:hover, .fs-layered-house .fs-house-layer:focus-visible { transform:translateX(22px) translateZ(80px) scale(1.025); } .fs-room-drawer { position:relative; top:auto; right:auto; z-index:2; width:min(540px, 94vw); max-height:none; min-height:420px; } .fs-room-scene { height:230px; } }
+      @media (max-width: 560px) { .fs-nav { height:auto; min-height:46px; padding:6px 0; } .fs-nav-inner { height:auto; flex-direction:column; gap:8px; padding:0 10px; } .fs-links { width:100%; gap:10px 14px; flex-wrap:wrap; } #nav-auth-link { display:none; } .fs-hero { overflow:hidden; padding-top:82px; } .fs-hero-layout { width:calc(100% - 24px); } .fs-house-stage { gap:12px; } .fs-house-scene { width:min(360px, 96vw); height:auto; transform:none; } .fs-layered-house { width:min(330px, 88vw); } .fs-layered-house .fs-house-layer:hover, .fs-layered-house .fs-house-layer:focus-visible { transform:translateX(12px) scale(1.02); } .fs-folder-tab { right:-118px; width:132px; min-height:56px; padding:10px; } .fs-folder-tab small { display:none; } .fs-house-hint { bottom:8px; } .fs-room-drawer { min-height:380px; padding:18px; } .fs-room-scene { height:210px; } .fs-btn { width:100%; } }
+    </style>
+  </head>
+  <body class="home-page">
+    <nav class="fs-nav" aria-label="주요 메뉴">
+      <div class="fs-nav-inner">
+        <a class="fs-logo" href="index.html">FamilySpace</a>
+        <ul class="fs-links">
+          <li><a href="mom.html">생활</a></li>
+          <li><a href="baby.html">육아</a></li>
+          <li><a href="dad.html">서류</a></li>
+          <li><a href="blog.html">이야기</a></li>
+          <li><a href="stars.html">별보기</a></li>
+        </ul>
+        <div class="fs-tools">
+          <span id="nav-auth-link"></span>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <section class="fs-hero" aria-labelledby="home-title">
+        <h1 id="home-title" class="sr-only">FamilySpace 층별 가족 주택</h1>
+        <div class="fs-hero-layout">
+          <div id="rooms" class="fs-house-stage" aria-label="클릭해서 구경하는 FamilySpace 집">
+            <div class="fs-city-bg" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="fs-house-scene fs-layered-house">
+              <a class="fs-house-layer fs-rooftop" href="stars.html" data-room="roof" aria-label="옥상 별보기로 바로 이동">
+                <img src="assets/home-layers/roof.png" alt="" />
+              </a>
+              <span class="fs-folder-tab tab-roof"><b>옥상</b><small>망원경과 별보기 테라스</small></span>
+              <a class="fs-house-layer fs-room room-weekend" href="blog.html" data-room="family" aria-label="4층 가족 거실로 바로 이동">
+                <img src="assets/home-layers/floor-4-family.png" alt="" />
+              </a>
+              <span class="fs-folder-tab tab-family"><b>가족 거실</b><small>커피와 과자를 두고 이야기</small></span>
+              <a class="fs-house-layer fs-room room-paper" href="dad.html" data-room="dad" aria-label="3층 아빠 작업실로 바로 이동">
+                <img src="assets/home-layers/floor-3-dad.png" alt="" />
+              </a>
+              <span class="fs-folder-tab tab-dad"><b>아빠 작업실</b><small>컴퓨터와 서류 정리</small></span>
+              <a class="fs-house-layer fs-room room-baby" href="baby.html" data-room="baby" aria-label="2층 아기 놀이방으로 바로 이동">
+                <img src="assets/home-layers/floor-2-baby.png" alt="" />
+              </a>
+              <span class="fs-folder-tab tab-baby"><b>아기 놀이방</b><small>장난감과 놀이 기록</small></span>
+              <a class="fs-house-layer fs-room room-money" href="mom.html" data-room="mom" aria-label="1층 주방과 요가방으로 바로 이동">
+                <img src="assets/home-layers/floor-1-mom.png" alt="" />
+              </a>
+              <span class="fs-folder-tab tab-mom"><b>주방과 요가</b><small>식단과 엄마의 휴식</small></span>
+            </div>
+            <div class="fs-house-hint">층에 마우스를 올리면 서랍처럼 열립니다</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <div id="roomDrawer" class="fs-room-drawer">
+      <h2>1층 주방과 요가</h2>
+      <p>문을 열면 주방 옆에서 엄마가 잠깐 요가를 하고 있습니다. 식단, 장보기, 휴식 루틴은 여기에서 시작합니다.</p>
+      <div class="fs-room-scene scene-kitchen">
+        <i class="scene-item scene-person" aria-hidden="true"></i>
+        <i class="scene-item counter" aria-hidden="true"></i>
+        <i class="scene-item plant" aria-hidden="true"></i>
+      </div>
+      <a class="fs-room-link" href="mom.html">엄마 공간으로 들어가기</a>
+    </div>
+
+    <footer class="fs-footer">
+      <div class="fs-footer-inner">
+        <span>© 2026 FamilySpace. Korean · Vietnamese family notes from Vietnam.</span>
+        <span>
+          <a href="privacy.html">개인정보처리방침</a>
+          <a href="terms.html">이용약관</a>
+        </span>
+      </div>
+    </footer>
+
+    <script>
+      const roomScenes = {
+        roof: {
+          title: '옥상 별보기',
+          body: '베트남 밤공기 속에서 가족이 잠깐 하늘을 올려다보는 공간입니다. 옥상을 누르면 별보기 페이지로 이어집니다.',
+          scene: 'scene-lounge',
+          items: '<i class="scene-item table" aria-hidden="true"></i><i class="scene-item cup" aria-hidden="true"></i><i class="scene-item plant" aria-hidden="true"></i>',
+          href: 'stars.html',
+          link: '옥상 별보기로 올라가기'
+        },
+        mom: {
+          title: '1층 주방과 요가',
+          body: '문을 열면 주방 옆에서 엄마가 잠깐 요가를 하고 있습니다. 식단, 장보기, 휴식 루틴은 여기에서 시작합니다.',
+          scene: 'scene-kitchen',
+          items: '<i class="scene-item scene-person" aria-hidden="true"></i><i class="scene-item counter" aria-hidden="true"></i><i class="scene-item plant" aria-hidden="true"></i>',
+          href: 'mom.html',
+          link: '엄마 공간으로 들어가기'
+        },
+        baby: {
+          title: '2층 아기 놀이방',
+          body: '장난감이 펼쳐진 놀이방입니다. 놀이, 식단, 병원 기록, 어린이집 알림장이 이 층에 모입니다.',
+          scene: 'scene-play',
+          items: '<i class="scene-item mat" aria-hidden="true"></i><i class="scene-item scene-person" aria-hidden="true"></i><i class="scene-item toy" aria-hidden="true"></i>',
+          href: 'baby.html',
+          link: '아기 놀이방으로 들어가기'
+        },
+        dad: {
+          title: '3층 아빠 작업실',
+          body: '아빠가 컴퓨터 앞에서 생활비와 서류를 정리하는 방입니다. 비자, TRC, 보험, 돈 기록이 여기에서 이어집니다.',
+          scene: 'scene-office',
+          items: '<i class="scene-item scene-person" aria-hidden="true"></i><i class="scene-item desk" aria-hidden="true"></i><i class="scene-item screen" aria-hidden="true"></i><i class="scene-item papers" aria-hidden="true"></i>',
+          href: 'dad.html',
+          link: '아빠 작업실로 들어가기'
+        },
+        family: {
+          title: '4층 가족 거실',
+          body: '할머니, 할아버지와 가족들이 커피와 과자를 두고 이야기하는 층입니다. 가족 이야기와 생활 기록은 여기에서 편하게 봅니다.',
+          scene: 'scene-lounge',
+          items: '<i class="scene-item scene-person" aria-hidden="true"></i><i class="scene-item table" aria-hidden="true"></i><i class="scene-item cup" aria-hidden="true"></i><i class="scene-item sofa" aria-hidden="true"></i>',
+          href: 'blog.html',
+          link: '가족 이야기 보러가기'
+        }
+      };
+      document.querySelectorAll('[data-room]').forEach(btn => {
+        const showRoom = () => {
+          const room = roomScenes[btn.dataset.room];
+          const drawer = document.getElementById('roomDrawer');
+          drawer.style.animation = 'none';
+          drawer.offsetHeight;
+          drawer.style.animation = '';
+          drawer.innerHTML = `<h2>${room.title}</h2><p>${room.body}</p><div class="fs-room-scene ${room.scene}">${room.items}</div><a class="fs-room-link" href="${room.href}">${room.link}</a>`;
+        };
+        btn.addEventListener('mouseenter', showRoom);
+        btn.addEventListener('focus', showRoom);
+        btn.addEventListener('click', showRoom);
+      });
+    </script>
+  </body>
+</html>

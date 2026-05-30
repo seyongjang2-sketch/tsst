@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>아기 놀이터 - FamilySpace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="login-modal.css" />
+    <script src="auth.js"></script>
+  </head>
+  <body class="baby-page">
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="index.html" class="nav-logo">FamilySpace</a>
+        <ul class="nav-links">
+          <li><a href="mom.html">생활</a></li>
+          <li><a href="baby.html" class="active">육아</a></li>
+          <li><a href="dad.html">서류</a></li>
+          <li><a href="blog.html">이야기</a></li>
+          <li><a href="stars.html">별보기</a></li>
+          <li id="nav-auth-link"></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-wrapper">
+      <header style="text-align: center; margin-bottom: 40px;">
+        <h1 style="font-size: 3rem; color: #27ae60;">Bé (아기)</h1>
+        <p>한국어와 베트남어를 함께 배우는 즐거운 놀이터</p>
+      </header>
+
+      <section class="room-brief with-visual">
+        <span class="room-brief-kicker">2F BABY PLAYROOM</span>
+        <figure class="room-brief-visual">
+          <img src="assets/home-layers/floor-2-baby.png" alt="2F baby playroom visual" loading="eager" />
+        </figure>
+        <h2>아이와 바로 놀 수 있는 5분 놀이방</h2>
+        <p>2층은 아이가 웃고 만지고 따라 할 수 있는 공간입니다. 긴 육아 정보보다 지금 바로 할 수 있는 놀이, 단어, 성장 기록을 먼저 보여줍니다.</p>
+        <div class="room-brief-grid">
+          <article class="room-brief-card">
+            <b>오늘의 말놀이</b>
+            <span>한국어 한 글자와 베트남어 한 단어를 같이 눌러보고 따라 말합니다.</span>
+            <a href="#alphabet-board">글자판 열기</a>
+          </article>
+          <article class="room-brief-card">
+            <b>풍선 터뜨리기</b>
+            <span>손가락으로 누르는 간단한 놀이로 색깔과 반응을 함께 익힙니다.</span>
+            <a href="#game-area">놀이 시작</a>
+          </article>
+          <article class="room-brief-card">
+            <b>성장 기록 질문</b>
+            <span>오늘 새로 한 말, 먹은 음식, 웃긴 행동을 가족 일기로 넘깁니다.</span>
+            <a href="blog.html">기록 남기기</a>
+          </article>
+        </div>
+      </section>
+
+      <div class="content-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
+        <div class="content-card">
+          <h3>글자 공부 학습판</h3>
+          <div id="display-letter" style="font-size: 5rem; text-align: center; color: #27ae60; margin: 20px 0; font-weight: 700;">가</div>
+          <div id="alphabet-board" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 10px;"></div>
+        </div>
+
+        <div class="content-card">
+          <h3>신나는 동요 & 게임</h3>
+          <div style="height: 150px; background: white; border-radius: 12px; position: relative; overflow: hidden; border: 1px solid #eee;" id="game-area"></div>
+          <p style="margin-top: 15px;">풍선을 눌러 터뜨려 보세요!</p>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <a href="blog.html" class="btn-enter" style="background: #27ae60; color: white;">아기 성장 일기 보러가기</a>
+      </div>
+    </div>
+    <script src="main.js"></script>
+    <script>
+      var krLetters = '가나다라마바사아자차카타파하';
+      var viLetters = 'ABCDEGHIKLMNOPQRSTUVXY';
+      var currentLang = 'kr';
+      var board = document.getElementById('alphabet-board');
+      var display = document.getElementById('display-letter');
+
+      function renderBoard() {
+        if (!board) return;
+        board.innerHTML = '';
+        var letters = currentLang === 'kr' ? krLetters : viLetters;
+        letters.split('').forEach(function(char) {
+          var btn = document.createElement('button');
+          btn.style = 'width: 100%; aspect-ratio: 1; background: white; border: 2px solid #27ae60; border-radius: 12px; font-size: 1.2rem; font-weight: 700; cursor: pointer;';
+          btn.textContent = char;
+          btn.onclick = function() { display.textContent = char; };
+          board.appendChild(btn);
+        });
+      }
+      renderBoard();
+
+      var gameArea = document.getElementById('game-area');
+      function createBalloon() {
+        if (!gameArea) return;
+        var balloon = document.createElement('div');
+        var size = 30 + Math.random() * 20;
+        balloon.style.width = size + 'px';
+        balloon.style.height = (size * 1.2) + 'px';
+        balloon.style.background = 'hsl(' + (Math.random() * 360) + ', 70%, 60%)';
+        balloon.style.borderRadius = '50%';
+        balloon.style.position = 'absolute';
+        balloon.style.left = Math.random() * (gameArea.clientWidth - size) + 'px';
+        balloon.style.bottom = '-60px';
+        balloon.style.transition = 'bottom 4s linear';
+        balloon.onclick = function() {
+          balloon.style.transform = 'scale(2)';
+          balloon.style.opacity = '0';
+          setTimeout(function() { balloon.remove(); }, 200);
+        };
+        gameArea.appendChild(balloon);
+        setTimeout(function() { balloon.style.bottom = '160px'; }, 10);
+        setTimeout(function() { if (balloon.parentNode) balloon.remove(); }, 4000);
+      }
+      setInterval(createBalloon, 800);
+    </script>
+  </body>
+</html>

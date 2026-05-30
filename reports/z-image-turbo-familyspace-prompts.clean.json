@@ -1,0 +1,46 @@
+{
+  "prompts": [
+    {
+      "name": "School Notebook",
+      "positive_prompt": "A Korean father and Vietnamese mother arranging a school notebook on an editorial web hero background with realistic documentary-style photograph. Warm natural morning light, shallow depth of field, authentic lived-in home. No visible faces, hands adjusting the notebook's position near memo board without direct eye contact.",
+      "negative_prompt": "stock photo, glossy advertisement, overposed smiling family, direct eye contact, visible faces, flags, national costume, tourist landmark, pho, kimchi, traditional symbols, readable brand logos, distorted hands, uncanny faces, fake text, cluttered composition, oversaturated colors, harsh contrast, low quality, blurry",
+      "composition_note": "Framing the notebook in focus with blurred background for a soft look.",
+      "why": "To capture a realistic moment of school preparation without any cliche elements."
+    },
+    {
+      "name": "Hospital Appointment",
+      "positive_prompt": "A family placing documents related to hospital appointments into a budget receipt book on an editorial web hero background. Warm natural morning light, shallow depth of field, authentic lived-in home with memo board visible in the background. No visible faces, back view of hands handling paperwork without direct eye contact.",
+      "negative_prompt": "stock photo, glossy advertisement, overposed smiling family, direct eye contact, visible faces, flags, national costume, tourist landmark, pho, kimchi, traditional symbols, readable brand logos, distorted hands, uncanny faces, fake text, cluttered composition, oversaturated colors, harsh contrast, low quality, blurry",
+      "composition_note": "Highlighting the receipt book in focus while background remains softly blurred.",
+      "why": "To depict a real-life scenario of managing family health without any cliches."
+    },
+    {
+      "name": "TRC Visa Documents",
+      "positive_prompt": "A father and mother placing various TRC visa documents on an editorial web hero background with realistic documentary-style photograph. Warm natural morning light, shallow depth of field, authentic lived-in home setting. No visible faces, hands carefully arranging the documents without direct eye contact.",
+      "negative_prompt": "stock photo, glossy advertisement, overposed smiling family, direct eye contact, visible faces, flags, national costume, tourist landmark, pho, kimchi, traditional symbols, readable brand logos, distorted hands, uncanny faces, fake text, cluttered composition, oversaturated colors, harsh contrast, low quality, blurry",
+      "composition_note": "Focus on the documents with a blurred background for a soft, intimate feel.",
+      "why": "To portray the process of handling important paperwork without cliches."
+    },
+    {
+      "name": "Budget Receipts",
+      "positive_prompt": "A mother placing budget receipts in an editorial web hero background. A realistic documentary-style photograph captures warm natural morning light, shallow depth of field, and an authentic lived-in home setting with a memo board visible in the background. No visible faces, hands handling the receipts without direct eye contact.",
+      "negative_prompt": "stock photo, glossy advertisement, overposed smiling family, direct eye contact, visible faces, flags, national costume, tourist landmark, pho, kimchi, traditional symbols, readable brand logos, distorted hands, uncanny faces, fake text, cluttered composition, oversaturated colors, harsh contrast, low quality, blurry",
+      "composition_note": "Maintaining a focus on the receipts with a blurred background to create depth and softness.",
+      "why": "To represent daily financial management in an authentic manner without cliches."
+    },
+    {
+      "name": "Apartment Morning",
+      "positive_prompt": "A father and child placing items like clothes and bags near the entrance of their apartment on an editorial web hero background. A realistic documentary-style photograph with warm natural morning light, shallow depth of field, and an authentic lived-in home setting. No visible faces, hands handling objects without direct eye contact.",
+      "negative_prompt": "stock photo, glossy advertisement, overposed smiling family, direct eye contact, visible faces, flags, national costume, tourist landmark, pho, kimchi, traditional symbols, readable brand logos, distorted hands, uncanny faces, fake text, cluttered composition, oversaturated colors, harsh contrast, low quality, blurry",
+      "composition_note": "Capturing the early morning routine with a soft focus on objects.",
+      "why": "To depict a typical morning scene without any cliches."
+    },
+    {
+      "name": "Memo Board",
+      "positive_prompt": "A mother using a marker to write on a memo board in an editorial web hero background. A realistic documentary-style photograph with warm natural morning light, shallow depth of field, and an authentic lived-in home setting. No visible faces, back view of hands writing without direct eye contact.",
+      "negative_prompt": "stock photo, glossy advertisement, overposed smiling family, direct eye contact, visible faces, flags, national costume, tourist landmark, pho, kimchi, traditional symbols, readable brand logos, distorted hands, uncanny faces, fake text, cluttered composition, oversaturated colors, harsh contrast, low quality, blurry",
+      "composition_note": "Focusing on the memo board with a blurred background for a soft, intimate feel.",
+      "why": "To show daily organization and planning without any cliches."
+    }
+  ]
+}
