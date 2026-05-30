@@ -22,6 +22,84 @@
       .badge.public { background: #e3f2fd; color: #0d47a1; }
       .badge.family { background: #fff3e0; color: #e65100; }
       .badge.private { background: #ffebee; color: #c62828; }
+      .family-daily-proof {
+        margin-bottom: 30px;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+        gap: 18px;
+      }
+      .family-daily-proof article {
+        background: #fff;
+        border: 1px solid rgba(44, 62, 80, 0.12);
+        border-radius: 18px;
+        padding: 24px;
+        box-shadow: 0 12px 28px rgba(44, 62, 80, 0.07);
+      }
+      .family-daily-proof h3 {
+        margin: 0 0 10px;
+        color: #2c3e50;
+        font-size: 1.18rem;
+      }
+      .family-daily-proof p {
+        margin: 0 0 16px;
+        color: #5d6872;
+        line-height: 1.6;
+      }
+      .family-daily-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+      .family-daily-list li {
+        display: grid;
+        grid-template-columns: 92px 1fr;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: #f6f8fb;
+        color: #2f3c48;
+        line-height: 1.45;
+      }
+      .family-daily-list b {
+        color: #0984e3;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+      }
+      .family-proof-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .family-proof-grid figure {
+        margin: 0;
+        overflow: hidden;
+        border-radius: 14px;
+        border: 1px solid rgba(44, 62, 80, 0.12);
+        background: #f6f8fb;
+      }
+      .family-proof-grid img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+      .family-proof-grid figcaption {
+        padding: 10px 12px;
+        color: #52606c;
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+      @media (max-width: 768px) {
+        .family-daily-proof,
+        .family-proof-grid {
+          grid-template-columns: 1fr;
+        }
+        .family-daily-list li {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body class="blog-page">
@@ -69,6 +147,33 @@
             <a href="#post-file">사진 올리기</a>
           </article>
         </div>
+      </section>
+
+      <section class="family-daily-proof" id="family-daily-updates" aria-label="가족 라운지 매일 업데이트 증거">
+        <article>
+          <h3>오늘 실제 반영한 매일 업데이트</h3>
+          <p>2026-05-30 21:55 ICT 기준으로 가족 라운지의 공개 글 후보와 일기 입력 흐름을 오늘 운영 항목으로 분리했습니다.</p>
+          <ul class="family-daily-list">
+            <li><b>질문</b><span>오늘 가족 질문은 아이의 새 말, 웃긴 순간, 다음 주말 희망 장소를 바로 기록하게 정리했습니다.</span></li>
+            <li><b>공개 후보</b><span>TRC, 송금, 예방접종 가이드를 오늘 외부 공개 후보로 우선순위화했습니다.</span></li>
+            <li><b>사진 기록</b><span>이미지 업로드 흐름을 오늘 기록의 핵심 증거로 두고, 글만 남는 빈 일기처럼 보이지 않게 했습니다.</span></li>
+            <li><b>검수</b><span>가족 공개/비공개 범위 선택을 오늘 작성 전 확인 항목으로 고정했습니다.</span></li>
+          </ul>
+        </article>
+        <article>
+          <h3>오늘 이미지 증거</h3>
+          <p>가족 라운지는 실제 기록/검수 장면이 보여야 운영 페이지로 보입니다. 오늘은 글 후보와 문서 확인 이미지를 붙였습니다.</p>
+          <div class="family-proof-grid">
+            <figure>
+              <img src="assets/zturbo/01_Morning_Ritual_v1_00001_.png" alt="오늘 가족 질문과 생활 기록을 정리하는 아침 루틴 이미지" loading="lazy" />
+              <figcaption>오늘 가족 질문과 생활 기록 이미지</figcaption>
+            </figure>
+            <figure>
+              <img src="assets/zturbo/03_Health___Finance_Hub_v1_00001_.png" alt="오늘 공개 글 후보인 병원, 예산, 서류를 확인하는 이미지" loading="lazy" />
+              <figcaption>오늘 공개 글 후보 검수 이미지</figcaption>
+            </figure>
+          </div>
+        </article>
       </section>
 
       <section class="content-card" style="margin-bottom:30px;">
