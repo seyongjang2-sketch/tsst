@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 20:37 - Homepage management audit and operating guideline
+- Type: qa
+- Owner: general_manager
+- Status: done
+- Summary: Investigated repeated homepage management failures. Local HTTP and internal link/image audits pass, but deployment ownership is split across origin, tsst, Cloudflare Pages, and GitHub Pages. Added a written audit report and homepage management guideline with mandatory acceptance criteria, public URL checks, and blocker reporting.
+- Files: reports/homepage-management-audit-20260530.md,agents/homepage_management_guidelines.md,agents/project_log.md
+- Validation: git status --short; local HTTP 200 checks; internal href/src/hash audit; public URL branch/version checks
+- Decisions: Treat the issue as a management/process failure, not an individual staff-only failure. Completion requires local QA and final public URL verification.
+- Risks: Cloudflare deployment source/branch and GitHub Pages stale output remain unresolved until the final production URL and branch are fixed.
+- Next: Assign owner and due date for Cloudflare branch/source correction, test preview 404, and GitHub Pages stale-site cleanup.
+
 ## 2026-05-30 20:14 - Test branch deploy path correction
 - Type: technical
 - Owner: web_admin
@@ -67,6 +78,17 @@
 - Decisions: none
 - Risks: none
 - Next: Before publish, consider extracting the repeated nav into a shared component or generation step to prevent future drift.
+
+## 2026-05-30 20:50 - 홈페이지 파티별 긴급 운영 회의
+- Type: meeting
+- Owner: general_manager
+- Status: done
+- Summary: 사용자 지시에 따라 홈페이지를 파티별로 다시 점검하는 긴급 회의 결과를 문서화했다. 결론은 일부 직원이 로컬/일부 화면은 봤지만 공개 URL 기준으로 최종 홈페이지를 본 것으로 볼 수 없으며, 공개 반영 확인 없이 완료 판단한 운영 실패다.
+- Files: reports/homepage-party-meeting-20260530.md,reports/homepage-management-audit-20260530.md,agents/homepage_management_guidelines.md
+- Validation: Cloudflare 운영 후보 URL HTTP 200 확인, test preview 404 확인, GitHub Pages 구버전 노출 확인, 최신 레시피 이미지/앵커 공개 미반영 확인
+- Decisions: 홈페이지 완료 기준은 공개 URL 반영까지로 고정한다. 공개 URL에서 최신 변경이 보이지 않으면 완료가 아니라 배포 차단으로 보고한다. 모든 작업은 수락 기준, 로컬 검증, 공개 URL 검증, 증거 기록을 거쳐야 한다.
+- Risks: Cloudflare Pages 연결 저장소/브랜치, test preview 404, GitHub Pages 구버전 노출, Cloudflare 직접 배포 권한 문제가 아직 남아 있다.
+- Next: 최종 공개 URL/브랜치/저장소를 확정하고, 권한 차단이 있으면 승인 요청을 유지한 상태로 배포 담당자가 해결한다.
 
 ## 2026-05-30 12:33 - dad weekly kit real photos
 - Type: design

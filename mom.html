@@ -838,6 +838,40 @@
         background: linear-gradient(135deg, rgba(255, 154, 118, 0.17), rgba(255, 255, 255, 0.92));
         border: 1px solid rgba(211, 84, 0, 0.12);
       }
+      .daily-recipe-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+        align-items: start;
+      }
+      .daily-recipe-photo {
+        margin: 0;
+        position: relative;
+        overflow: hidden;
+        border-radius: 16px;
+        background: #fff7f0;
+        border: 1px solid rgba(211, 84, 0, 0.1);
+        box-shadow: 0 12px 24px rgba(119, 74, 51, 0.14);
+      }
+      .daily-recipe-photo img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        max-height: 320px;
+        object-fit: cover;
+      }
+      .daily-recipe-photo figcaption {
+        position: absolute;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        padding: 7px 10px;
+        border-radius: 10px;
+        background: rgba(47, 53, 66, 0.72);
+        color: #fff;
+        font-size: 0.78rem;
+        line-height: 1.35;
+      }
       .daily-recipe-box h4 {
         margin: 0 0 10px;
         color: #d35400;
@@ -1008,6 +1042,9 @@
         .daily-meal-menu {
           grid-template-columns: 1fr;
         }
+        .daily-recipe-photo img {
+          max-height: 260px;
+        }
         .weekly-feature-head {
           grid-template-columns: 1fr;
           padding: 22px;
@@ -1142,15 +1179,23 @@
               <div><b>베트남 곁들임</b><span>고수, 민트, 상추, 라임 소스</span></div>
             </div>
             <div class="daily-recipe-box">
-              <h4>주메뉴 레시피: 간장 불고기 월남쌈</h4>
-              <ol>
-                <li>소고기 불고기감 300g에 간장 3큰술, 설탕 1큰술, 다진 마늘 1큰술, 참기름 1큰술, 후추를 넣고 15분 재웁니다.</li>
-                <li>양파와 당근을 얇게 썰어 고기와 함께 센 불에서 빠르게 볶아 물이 많이 생기지 않게 합니다.</li>
-                <li>라이스페이퍼, 상추, 오이, 고수, 민트, 삶은 쌀국수면을 접시에 나눠 담습니다.</li>
-                <li>아이 접시에는 불고기와 밥, 계란말이를 먼저 담고, 어른은 라이스페이퍼에 불고기와 허브를 싸서 먹습니다.</li>
-                <li>느억맘 1큰술, 라임즙 1큰술, 물 2큰술, 설탕 1작은술을 섞어 어른용 소스로 곁들입니다.</li>
-              </ol>
-              <div class="daily-recipe-note">대체 재료: 소고기 대신 돼지고기 앞다리살이나 닭다리살을 써도 좋습니다. 아이가 허브 향을 어려워하면 상추와 오이만 먼저 주세요.</div>
+              <div class="daily-recipe-layout">
+                <figure class="daily-recipe-photo">
+                  <img src="images/recipe-bulgogi-rice-paper-rolls.png" alt="간장 불고기와 허브를 넣은 월남쌈 완성 사진" loading="lazy" />
+                  <figcaption>완성 예시: 달콤한 불고기, 오이, 허브를 라이스페이퍼에 말아 바로 먹는 주메뉴</figcaption>
+                </figure>
+                <div>
+                  <h4>주메뉴 레시피: 간장 불고기 월남쌈</h4>
+                  <ol>
+                    <li>소고기 불고기감 300g에 간장 3큰술, 설탕 1큰술, 다진 마늘 1큰술, 참기름 1큰술, 후추를 넣고 15분 재웁니다.</li>
+                    <li>양파와 당근을 얇게 썰어 고기와 함께 센 불에서 빠르게 볶아 물이 많이 생기지 않게 합니다.</li>
+                    <li>라이스페이퍼, 상추, 오이, 고수, 민트, 삶은 쌀국수면을 접시에 나눠 담습니다.</li>
+                    <li>아이 접시에는 불고기와 밥, 계란말이를 먼저 담고, 어른은 라이스페이퍼에 불고기와 허브를 싸서 먹습니다.</li>
+                    <li>느억맘 1큰술, 라임즙 1큰술, 물 2큰술, 설탕 1작은술을 섞어 어른용 소스로 곁들입니다.</li>
+                  </ol>
+                  <div class="daily-recipe-note">대체 재료: 소고기 대신 돼지고기 앞다리살이나 닭다리살을 써도 좋습니다. 아이가 허브 향을 어려워하면 상추와 오이만 먼저 주세요.</div>
+                </div>
+              </div>
             </div>
           </div>
         </article>
