@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 21:59 - daily update proof expanded to remaining pages
+- Type: qa
+- Owner: web_admin
+- Status: done
+- Summary: Added visible daily update proof sections to Baby, Family Lounge, and Rooftop pages with 2026-05-30 21:55 ICT timestamps, concrete daily operating items, and image evidence. Added a critique report that states remaining operating weaknesses.
+- Files: baby.html,blog.html,stars.html,reports/homepage-daily-update-critique-20260530.md,reports/screenshots/baby-daily-proof-desktop-20260530.png,reports/screenshots/baby-daily-proof-mobile-20260530.png,reports/screenshots/family-daily-proof-desktop-20260530.png,reports/screenshots/family-daily-proof-mobile-20260530.png,reports/screenshots/roof-daily-proof-desktop-20260530.png,reports/screenshots/roof-daily-proof-mobile-20260530.png
+- Validation: Local HTTP 200 for baby/blog/stars with 2026-05-30 21:55 marker; internal href/src/hash audit passed; local image URLs returned HTTP 200 image/png; Playwright desktop/mobile screenshots captured; pushed commit ed5f095 to origin/main, origin/test, and tsst/main; Cloudflare public /baby, /blog, /stars returned HTTP 200 with the new date marker and daily proof ids; public critique report returned HTTP 200.
+- Decisions: Daily update claims now apply to Baby/Family/Rooftop only when visible timestamp, concrete items, and image evidence are present. This is still a manual patch, not a true automated daily operating system.
+- Risks: Static daily text will become stale after 2026-05-30 unless the next update changes or downgrades the label; Baby/Family/Rooftop image evidence is weaker than Mom/Dad real-photo proof; Family Firebase live data can still fail separately from static proof cards.
+- Next: Build a shared daily-updates data source and stale-date guard so pages cannot keep saying daily updated after the date expires.
+
 ## 2026-05-30 20:59 - Cloudflare deployment canon public verification
 - Type: qa
 - Owner: operations_lead
