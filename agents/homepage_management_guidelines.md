@@ -1,5 +1,12 @@
 # 홈페이지 관리 지침
 
+## Canonical deployment rule
+
+- Production target is Cloudflare Pages: `https://tsst-csa.pages.dev/`.
+- Deployment canon file: `DEPLOYMENT.md`.
+- GitHub Pages and `test.tsst-csa.pages.dev` are not production proof in the current operating state.
+- A task is complete only after the changed content is verified on the Cloudflare public URL and the result is logged in `agents/project_log.md` plus Telegram.
+
 적용 대상: FamilySpace 홈페이지의 HTML, CSS, JS, 이미지, 가이드 문서, 배포 작업  
 최종 기준: 사용자가 보는 공개 사이트가 정상이어야 완료다.
 

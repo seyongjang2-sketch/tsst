@@ -1,5 +1,11 @@
 # FamilySpace
 
+## Production Deployment
+
+Canonical production is Cloudflare Pages: `https://tsst-csa.pages.dev/`.
+
+Deployment and completion rules are fixed in `DEPLOYMENT.md`. GitHub Pages and `test.tsst-csa.pages.dev` are not production evidence unless a later dated deployment record explicitly changes that.
+
 FamilySpace는 베트남에서 살아가는 한국-베트남 가족을 위한 생활형 정적 웹사이트입니다. 가족 생활비, 육아, 비자/TRC, 예방접종, 주말 루트, 가족 이야기를 한곳에 정리하는 것을 목표로 합니다.
 
 ## 프로젝트 구조

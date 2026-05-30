@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-30 20:57 - Canonical Cloudflare deployment target fixed
+- Type: decision
+- Owner: operations_lead
+- Status: done
+- Summary: Fixed Cloudflare Pages as the only production deployment target and recorded current public URL verification so future work does not confuse old GitHub Pages or broken test preview with production.
+- Files: DEPLOYMENT.md,README.md,agents/homepage_management_guidelines.md
+- Validation: curl -L https://tsst-csa.pages.dev/mom.html returned HTTP 200 after /mom redirect and contained daily-meal-table plus recipe-bulgogi-rice-paper-rolls.png; image URL returned HTTP 200 image/png; git ls-remote showed origin/main, origin/test, and tsst/main at 1eefe5438f59338bb46d59237174c3c508ebbb80.
+- Decisions: Production target is https://tsst-csa.pages.dev/ on origin/main. GitHub Pages and test.tsst-csa.pages.dev are not production evidence.
+- Risks: Direct Cloudflare deployment still requires CLOUDFLARE_API_TOKEN or authenticated wrangler if the Git integration fails.
+- Next: Every future completion report must include Cloudflare public URL verification and the verified commit.
+
 ## 2026-05-30 20:55 - Public deployment visibility fix
 - Type: deployment
 - Owner: web_admin
