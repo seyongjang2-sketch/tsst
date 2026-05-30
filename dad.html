@@ -1462,6 +1462,31 @@
           text-transform: uppercase;
           letter-spacing: 0.04rem;
       }
+      .dad-daily-proof-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+          margin-top: 18px;
+      }
+      .dad-daily-proof-grid figure {
+          margin: 0;
+          overflow: hidden;
+          border-radius: 14px;
+          border: 1px solid rgba(9, 132, 227, 0.16);
+          background: rgba(9, 132, 227, 0.07);
+      }
+      .dad-daily-proof-grid img {
+          display: block;
+          width: 100%;
+          aspect-ratio: 4 / 3;
+          object-fit: cover;
+      }
+      .dad-daily-proof-grid figcaption {
+          padding: 10px 12px;
+          font-size: 0.82rem;
+          line-height: 1.45;
+          color: var(--text-secondary);
+      }
       @media (min-width: 993px) {
           .dad-update-board {
               padding-left: 250px;
@@ -1486,6 +1511,9 @@
               padding: 22px;
           }
           .dad-weekly-feature-grid {
+              grid-template-columns: 1fr;
+          }
+          .dad-daily-proof-grid {
               grid-template-columns: 1fr;
           }
           .dad-weekly-feature-item {
@@ -1601,14 +1629,24 @@
 
       <section class="dad-update-board" id="dad-updates" aria-label="아빠 페이지 업데이트 기준">
         <article class="dad-update-card">
-          <h3>매일 업데이트</h3>
-          <p>하루 단위로 바뀌는 돈, 서류, 가족 운영 신호는 짧게 확인하고 바로 처리할 수 있게 갱신합니다.</p>
+          <h3>오늘 실제 반영한 매일 업데이트</h3>
+          <p>2026-05-30 21:10 ICT 기준으로 오늘 확인할 돈, 서류, 가족 운영 신호를 이미지와 함께 남깁니다.</p>
           <ul class="dad-update-list">
-            <li><b>환율</b><span>KRW/VND 기준 환율, 송금 타이밍, 오늘 확인할 수수료 메모</span></li>
-            <li><b>지출</b><span>오늘 결제한 생활비, 영수증 보관 여부, 현금/카드 사용 기록</span></li>
-            <li><b>서류</b><span>비자, TRC, 보험, 병원 예약처럼 오늘 놓치면 밀리는 알림</span></li>
-            <li><b>가족 일정</b><span>아이 등원/병원/픽업, 엄마 휴식 시간, 아빠 처리 시간 블록</span></li>
+            <li><b>환율</b><span>송금 전 KRW/VND 확인, 수수료 비교, 현금 보유액 점검을 오늘 항목으로 고정</span></li>
+            <li><b>지출</b><span>생활비 영수증, 현금/카드 사용 기록, 다음 결제 예정 항목을 오늘 정리</span></li>
+            <li><b>서류</b><span>TRC, 보험, 병원 예약, 여권 사본처럼 미루면 밀리는 항목을 오늘 확인</span></li>
+            <li><b>가족 일정</b><span>아이 픽업, 엄마 휴식 시간, 아빠 처리 시간을 오늘 운영 블록으로 분리</span></li>
           </ul>
+          <div class="dad-daily-proof-grid" aria-label="아빠 페이지 오늘 업데이트 이미지 증거">
+            <figure>
+              <img src="images/dad-real-budget-dong.jpg" alt="오늘 생활비와 환율 점검에 쓰는 베트남 동 지폐 사진" loading="lazy" />
+              <figcaption>오늘 돈/생활비 점검 이미지</figcaption>
+            </figure>
+            <figure>
+              <img src="images/dad-real-visa-docs.jpg" alt="오늘 서류 점검에 쓰는 여권과 여행 서류 사진" loading="lazy" />
+              <figcaption>오늘 서류/TRC 점검 이미지</figcaption>
+            </figure>
+          </div>
         </article>
         <article class="dad-update-card">
           <h3>주간 업데이트</h3>

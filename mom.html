@@ -1014,6 +1014,31 @@
         text-transform: uppercase;
         letter-spacing: 0.04rem;
       }
+      .mom-daily-proof-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .mom-daily-proof-grid figure {
+        margin: 0;
+        overflow: hidden;
+        border-radius: 14px;
+        border: 1px solid rgba(211, 84, 0, 0.18);
+        background: rgba(255, 245, 242, 0.78);
+      }
+      .mom-daily-proof-grid img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+      .mom-daily-proof-grid figcaption {
+        padding: 10px 12px;
+        font-size: 0.82rem;
+        line-height: 1.45;
+        color: #68544d;
+      }
       @media (max-width: 768px) {
         .mom-identity-hero {
           padding: 26px;
@@ -1044,6 +1069,9 @@
         }
         .daily-recipe-photo img {
           max-height: 260px;
+        }
+        .mom-daily-proof-grid {
+          grid-template-columns: 1fr;
         }
         .weekly-feature-head {
           grid-template-columns: 1fr;
@@ -1169,7 +1197,7 @@
             <img src="images/mom-real-meal-plan.jpg" alt="밥과 반찬, 찌개가 함께 놓인 한-베 가족 저녁 밥상" loading="eager" />
           </figure>
           <div class="daily-meal-content">
-            <span class="daily-meal-date">매일 업데이트 · 오늘의 한-베식단</span>
+            <span class="daily-meal-date">2026-05-30 21:10 ICT 갱신 · 오늘의 한-베식단</span>
             <h3 class="daily-meal-title">오늘의 멋진 밥상: 불고기 월남쌈 정식</h3>
             <p>한국식 달콤한 불고기를 베트남 라이스페이퍼와 허브에 싸 먹는 저녁 메뉴입니다. 아이는 밥반찬으로, 어른은 느억맘 라임 소스로 가볍게 즐길 수 있습니다.</p>
             <div class="daily-meal-menu">
@@ -1200,14 +1228,24 @@
           </div>
         </article>
         <article class="mom-update-card">
-          <h3>매일 업데이트</h3>
-          <p>오늘 바로 써야 하는 가벼운 생활 정보는 매일 바꿉니다.</p>
+          <h3>오늘 실제 반영한 매일 업데이트</h3>
+          <p>매일 바꾼다고 쓰는 대신, 오늘 화면에 올라간 식단, 장보기, 회복, 육아 항목과 이미지 증거를 같이 남깁니다.</p>
           <ul class="mom-update-list">
-            <li><b>식단</b><span>오늘 저녁 추천 메뉴, 아이가 먹기 쉬운 대체 재료, 남은 반찬 활용법</span></li>
-            <li><b>장보기</b><span>오늘 필요한 품목, 마트별 간단 메모, 떨어지기 쉬운 기본 식재료</span></li>
-            <li><b>회복</b><span>10~20분 스트레칭, 음악 검색 키워드, 감사 일기 질문 하나</span></li>
-            <li><b>육아</b><span>아이 컨디션 메모, 낮잠/식사 리듬, 가족에게 공유할 짧은 알림</span></li>
+            <li><b>식단</b><span>불고기 월남쌈 정식, 두부 애호박 된장국, 아이 반찬 대체 재료까지 본문에 반영</span></li>
+            <li><b>장보기</b><span>라이스페이퍼, 허브, 오이, 상추, 불고기감처럼 오늘 메뉴에 필요한 재료 중심으로 정리</span></li>
+            <li><b>회복</b><span>저녁 준비 후 15분 정리 시간과 가족 공유용 체크 항목을 운영 메모로 유지</span></li>
+            <li><b>육아</b><span>아이용 밥반찬 분리, 허브 향 대체 안내, 매운 소스 분리 기준을 레시피에 포함</span></li>
           </ul>
+          <div class="mom-daily-proof-grid" aria-label="엄마 페이지 오늘 업데이트 이미지 증거">
+            <figure>
+              <img src="images/recipe-bulgogi-rice-paper-rolls.png" alt="오늘 갱신된 불고기 월남쌈 완성 사진" loading="lazy" />
+              <figcaption>오늘 주메뉴 완성 이미지</figcaption>
+            </figure>
+            <figure>
+              <img src="images/mom-real-market-produce.jpg" alt="오늘 장보기 항목과 연결되는 신선식품 매대 사진" loading="lazy" />
+              <figcaption>오늘 장보기 항목 이미지</figcaption>
+            </figure>
+          </div>
         </article>
         <article class="mom-update-card">
           <h3>주간 업데이트</h3>

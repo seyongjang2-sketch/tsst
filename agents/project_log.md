@@ -123,6 +123,17 @@
 - Risks: Cloudflare Pages 연결 저장소/브랜치, test preview 404, GitHub Pages 구버전 노출, Cloudflare 직접 배포 권한 문제가 아직 남아 있다.
 - Next: 최종 공개 URL/브랜치/저장소를 확정하고, 권한 차단이 있으면 승인 요청을 유지한 상태로 배포 담당자가 해결한다.
 
+## 2026-05-30 21:10 - daily update proof correction
+- Type: qa/content
+- Owner: web_admin
+- Status: done
+- Summary: Corrected the Mom and Dad "daily update" sections so they no longer rely on vague claims. Each section now shows the 2026-05-30 21:10 ICT update time, concrete items changed for today, and image evidence tied to those items.
+- Files: mom.html,dad.html,reports/screenshots/mom-daily-proof-desktop-20260530.png,reports/screenshots/mom-daily-proof-mobile-20260530.png,reports/screenshots/dad-daily-proof-desktop-20260530.png,reports/screenshots/dad-daily-proof-mobile-20260530.png
+- Validation: rg 2026-05-30 daily proof markers; image src existence check for Mom/Dad; Playwright desktop/mobile screenshots for Mom and Dad daily update sections.
+- Decisions: Any future "daily update" label must include a visible date/time, actual changed content, and visible media proof, otherwise it should not be called daily updated.
+- Risks: Production still requires Cloudflare public URL verification after push.
+- Next: Commit, push to the canonical production branches, then verify Cloudflare public /mom and /dad include the new proof copy and assets.
+
 ## 2026-05-30 12:33 - dad weekly kit real photos
 - Type: design
 - Owner: web_admin
