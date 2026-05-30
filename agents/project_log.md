@@ -129,10 +129,10 @@
 - Status: done
 - Summary: Corrected the Mom and Dad "daily update" sections so they no longer rely on vague claims. Each section now shows the 2026-05-30 21:10 ICT update time, concrete items changed for today, and image evidence tied to those items.
 - Files: mom.html,dad.html,reports/screenshots/mom-daily-proof-desktop-20260530.png,reports/screenshots/mom-daily-proof-mobile-20260530.png,reports/screenshots/dad-daily-proof-desktop-20260530.png,reports/screenshots/dad-daily-proof-mobile-20260530.png
-- Validation: rg 2026-05-30 daily proof markers; image src existence check for Mom/Dad; Playwright desktop/mobile screenshots for Mom and Dad daily update sections.
+- Validation: rg 2026-05-30 daily proof markers; image src existence check for Mom/Dad; Playwright desktop/mobile screenshots for Mom and Dad daily update sections; Cloudflare public /mom and /dad HTTP 200 include "오늘 실제 반영한 매일 업데이트", "2026-05-30 21:10", and each page proof-grid marker after commit f7259f8.
 - Decisions: Any future "daily update" label must include a visible date/time, actual changed content, and visible media proof, otherwise it should not be called daily updated.
-- Risks: Production still requires Cloudflare public URL verification after push.
-- Next: Commit, push to the canonical production branches, then verify Cloudflare public /mom and /dad include the new proof copy and assets.
+- Risks: Remaining pages must not use daily/weekly update claims unless they carry the same visible date, concrete content, and image proof standard.
+- Next: Apply this proof standard to future Baby/Family/Roof update sections before labeling them as actively operated.
 
 ## 2026-05-30 12:33 - dad weekly kit real photos
 - Type: design
