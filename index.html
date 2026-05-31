@@ -178,7 +178,11 @@
       .fs-dot.ready { background:#6c8f6b; box-shadow:0 0 0 4px rgba(108,143,107,.14); }
       .fs-ops-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
       .fs-ops-action { min-height:38px; padding:9px 12px; border:1px solid rgba(0,111,120,.18); border-radius:8px; background:#006f78; color:#fff; font:inherit; font-size:12px; font-weight:900; cursor:pointer; }
+      .fs-ops-action:disabled { cursor:not-allowed; opacity:.58; }
       .fs-ops-action.secondary { background:#fff; color:#1e2d2f; }
+      .fs-ops-progress { display:grid; grid-template-columns:auto minmax(0, 1fr); gap:10px; align-items:center; margin-top:14px; color:var(--fs-muted); font-size:12px; font-weight:900; }
+      .fs-ops-progress span:last-child { height:8px; border-radius:999px; background:#e8eee9; overflow:hidden; }
+      .fs-ops-progress i { display:block; width:20%; height:100%; border-radius:999px; background:#006f78; transition:width .2s ease; }
       .fs-ops-log { min-height:118px; max-height:160px; overflow:auto; display:grid; gap:8px; padding-right:4px; }
       .fs-log-row { display:grid; grid-template-columns:48px minmax(0, 1fr); gap:8px; color:var(--fs-muted); font-size:12px; line-height:1.4; }
       .fs-log-row time { color:#006f78; font-weight:900; }
@@ -318,6 +322,10 @@
                   <button class="fs-ops-action" type="button" id="opsNextButton">다음 단계 진행</button>
                   <button class="fs-ops-action secondary" type="button" id="opsResetButton">오늘 운영 리셋</button>
                 </div>
+                <div class="fs-ops-progress" aria-label="운영 진행률">
+                  <span id="opsProgressLabel">1/5</span>
+                  <span><i id="opsProgressBar" aria-hidden="true"></i></span>
+                </div>
               </div>
               <div class="fs-command-card">
                 <h3>오늘의 운영 큐</h3>
@@ -419,7 +427,18 @@
         }
       ];
 
-      const opsState = { step: 0 };
+      const opsStorageKey = 'familyspace.opsConsole.v1';
+      const savedOpsState = (() => {
+        try {
+          return JSON.parse(window.localStorage.getItem(opsStorageKey)) || {};
+        } catch (error) {
+          return {};
+        }
+      })();
+      const opsState = {
+        step: Number.isInteger(savedOpsState.step) ? Math.min(Math.max(savedOpsState.step, 0), opsSteps.length - 1) : 0,
+        logs: Array.isArray(savedOpsState.logs) ? savedOpsState.logs.slice(0, 8) : []
+      };
       const opsEls = {
         current: document.getElementById('opsCurrent'),
         next: document.getElementById('opsNext'),
@@ -429,15 +448,31 @@
         queuePublish: document.getElementById('opsQueuePublish'),
         nextButton: document.getElementById('opsNextButton'),
         resetButton: document.getElementById('opsResetButton'),
+        progressLabel: document.getElementById('opsProgressLabel'),
+        progressBar: document.getElementById('opsProgressBar'),
         shifts: [...document.querySelectorAll('[data-ops-step]')]
       };
 
-      function addOpsLog(step) {
+      function saveOpsState() {
+        try {
+          window.localStorage.setItem(opsStorageKey, JSON.stringify({ step: opsState.step, logs: opsState.logs }));
+        } catch (error) {}
+      }
+
+      function renderOpsLog() {
         if (!opsEls.log) return;
-        const row = document.createElement('div');
-        row.className = 'fs-log-row';
-        row.innerHTML = `<time>${step.time}</time><span>${step.log}</span>`;
-        opsEls.log.prepend(row);
+        opsEls.log.innerHTML = '';
+        opsState.logs.forEach(entry => {
+          const row = document.createElement('div');
+          row.className = 'fs-log-row';
+          row.innerHTML = `<time>${entry.time}</time><span>${entry.log}</span>`;
+          opsEls.log.append(row);
+        });
+      }
+
+      function addOpsLog(step) {
+        opsState.logs = [{ time: step.time, log: step.log }, ...opsState.logs].slice(0, 8);
+        renderOpsLog();
       }
 
       function renderOpsStep(appendLog = true) {
@@ -451,21 +486,31 @@
           shift.classList.toggle('is-active', index === opsState.step);
           shift.classList.toggle('is-done', index < opsState.step);
         });
+        const isComplete = opsState.step === opsSteps.length - 1;
+        if (opsEls.nextButton) {
+          opsEls.nextButton.disabled = isComplete;
+          opsEls.nextButton.textContent = isComplete ? '운영 완료' : '다음 단계 진행';
+        }
+        if (opsEls.progressLabel) opsEls.progressLabel.textContent = `${opsState.step + 1}/${opsSteps.length}`;
+        if (opsEls.progressBar) opsEls.progressBar.style.width = `${((opsState.step + 1) / opsSteps.length) * 100}%`;
         if (appendLog) addOpsLog(step);
+        saveOpsState();
       }
 
       opsEls.nextButton?.addEventListener('click', () => {
+        if (opsState.step >= opsSteps.length - 1) return;
         opsState.step = Math.min(opsState.step + 1, opsSteps.length - 1);
         renderOpsStep();
       });
 
       opsEls.resetButton?.addEventListener('click', () => {
         opsState.step = 0;
-        if (opsEls.log) opsEls.log.innerHTML = '';
+        opsState.logs = [];
         renderOpsStep();
       });
 
-      renderOpsStep();
+      renderOpsLog();
+      renderOpsStep(opsState.logs.length === 0);
 
       const roomScenes = {
         roof: {

@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 08:08 - Homepage live operating console debug
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Ran the homepage private-test operating console as an operating workflow and fixed state issues: final step now disables the next action, progress is visible as 1/5-5/5, and the current step plus execution log persist across refresh via localStorage.
+- Files: index.html,reports/screenshots/index-ops-live-debug-desktop-20260531.png,reports/screenshots/index-ops-live-debug-mobile-20260531.png
+- Validation: Local index.html HTTP 200; inline script syntax check with Node Function; git diff --check; stdlib HTML href/src path check; Playwright desktop/mobile full-page screenshots.
+- Decisions: Treat the homepage console as a private-test operating tool, not only a static demonstration. Completion state should stop repeated final logs and preserve the current operating point on revisit.
+- Risks: Playwright test-runner package is not installed in this repository, so click automation was not run as a formal test spec; behavior was verified by code inspection plus browser screenshot/render checks.
+- Next: If the console grows beyond private test, move the operating state to a real backend or project log feed instead of browser-local storage.
+
 ## 2026-05-31 08:02 - Homepage operating sequence behavior
 - Type: feature
 - Owner: web_admin
