@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 07:38 - Homepage operating sequence remote verification
+- Type: qa
+- Owner: qa_reviewer
+- Status: done
+- Summary: Verified the operating sequence update after pushing commit c95381ccb56d16f284201db9b49af90063631b70 to origin/main, origin/test, and tsst/main.
+- Files: index.html,agents/daily_operating_sequence.md,reports/screenshots/index-operating-sequence-desktop-20260531.png,reports/screenshots/index-operating-sequence-mobile-20260531.png,agents/project_log.md
+- Validation: git ls-remote origin main/test and tsst main all returned c95381ccb56d16f284201db9b49af90063631b70; https://tsst-csa.pages.dev/?check=operating-sequence-20260531b returned HTTP 200 and included the operating sequence text
+- Decisions: Report as private test update completed, not public production approval.
+- Risks: TELEGRAM_PROJECT_POLICY.md has a pre-existing unrelated local modification and was not included in this commit.
+- Next: If the owner approves public operation later, replace private-test status copy with approved public-operation copy.
+
 ## 2026-05-31 07:37 - Homepage operating sequence
 - Type: design
 - Owner: web_admin
