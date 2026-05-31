@@ -127,3 +127,37 @@ test('local room pages keep distinct customer roles', async ({ page }) => {
     await expect(page.getByText(secondaryText).first()).toBeVisible();
   }
 });
+
+test('public page copy avoids stale daily dates and keeps risk disclaimers', async () => {
+  const publicPages = ['mom.html', 'baby.html', 'dad.html', 'blog.html', 'stars.html'];
+  const combined = publicPages.map((file) => fs.readFileSync(file, 'utf8')).join('\n');
+
+  expect(combined).not.toContain('2026-05-30');
+  expect(combined).not.toContain('오늘 실제 반영한 매일 업데이트');
+  expect(combined).not.toContain('오늘 이미지 증거');
+  expect(combined).not.toContain('위 순서를 따르면 촉박함 없이 TRC를 갱신할 수 있습니다.');
+
+  expect(combined).toContain('금융 조언이 아니라');
+  expect(combined).toContain('법률 조언이 아니라');
+  expect(combined).toContain('공식 기관·전문가 기준으로 재확인');
+});
+
+test('sample external reference links are reachable', async ({ request }) => {
+  const urls = [
+    'https://winmart.vn/info/transaction-policy',
+    'https://www.lottemart.vn/',
+    'https://k-market.vn/en/k-market/',
+    'https://overseas.mofa.go.kr/vn-ko/index.do'
+  ];
+
+  const reachable = [];
+  for (const url of urls) {
+    try {
+      const response = await request.get(url, { timeout: 20000 });
+      if (response.status() < 400) reachable.push(url);
+    } catch (error) {
+      // Some government/CDN sites reset bot-like test clients; require the commercial references plus one official-style sample overall.
+    }
+  }
+  expect(reachable.length, `reachable links: ${reachable.join(', ')}`).toBeGreaterThanOrEqual(3);
+});

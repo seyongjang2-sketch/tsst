@@ -2,6 +2,31 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 21:06 - Homepage roadmap step 3 content trust cleanup
+- Type: content
+- Owner: content_editor
+- Status: done
+- Summary: Completed roadmap step 3 by removing stale 2026-05-30 daily-update framing from public pages, converting today/update labels to private-test operating criteria, and adding finance/legal/medical-risk disclaimers for cashflow, TRC, visa, health, and document content.
+- Files: mom.html,baby.html,dad.html,blog.html,stars.html,reports/ops_extended_check.spec.js,agents/project_log.md
+- Validation: OPS_EVIDENCE_STAMP=step3-final-20260531 npx playwright test reports/ops_extended_check.spec.js --workers=1 passed 8/8; node --check reports/ops_extended_check.spec.js; git diff --check; python -m py_compile scripts/autonomous_ops_loop.py scripts/project_log.py; python scripts/autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --room personal_dm passed git-diff/html/static/remote checks
+- Decisions: Public pages should not look like stale daily news; high-risk subjects stay as checklists and require official or expert reconfirmation.
+- Risks: External-link test allows one reset-prone site because government/CDN hosts may reject bot-like clients; broader link QA remains for step 5.
+- Next: Proceed to roadmap step 4: mobile UX and common UI cleanup.
+
+## 2026-05-31 21:05 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS remote-http: HTTP 200; ops console=yes
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 21:01 - Homepage step 2 deployment verification
 - Type: qa
 - Owner: qa_reviewer
