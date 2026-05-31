@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 07:37 - Homepage operating sequence
+- Type: design
+- Owner: web_admin
+- Status: done
+- Summary: Added a homepage operating board that presents FamilySpace as a private-test service with a daily production sequence, owners, queue, metrics, and completion criteria.
+- Files: index.html,agents/daily_operating_sequence.md,reports/screenshots/index-operating-sequence-desktop-20260531.png,reports/screenshots/index-operating-sequence-mobile-20260531.png
+- Validation: HTTP 200 for http://127.0.0.1:8000/index.html; static href/src targets exist excluding JS templates; git diff --check; Playwright desktop/mobile screenshots
+- Decisions: Show real operation as a daily loop: collect signals, editorial priority, page update, mobile/policy QA, and reporting. Keep the visible status as private test, not public production approval.
+- Risks: Cloudflare public operation is still not approved; this is a test-operation signal only.
+- Next: Use this operating board as the homepage control surface before adding automated daily data feeds.
+
 ## 2026-05-31 06:31 - Private test deployment 53fbc66
 - Type: technical
 - Owner: web_admin

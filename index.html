@@ -149,11 +149,40 @@
       .scene-lounge .sofa { right:30px; bottom:70px; width:126px; height:76px; background:#d97b5c; }
       .fs-room-link { display:inline-flex; margin-top:14px; min-height:40px; align-items:center; justify-content:center; padding:10px 18px; border-radius:999px; background:var(--fs-blue); color:#fff; text-decoration:none; font-weight:850; box-shadow:0 12px 24px rgba(0,113,227,.2); }
 
+      .fs-ops { padding:74px 20px 82px; background:#f7f2ea; border-top:1px solid rgba(84,58,35,.1); }
+      .fs-ops-inner { width:min(1120px, 100%); margin:0 auto; }
+      .fs-ops-head { display:grid; grid-template-columns:minmax(0, 1fr) minmax(260px, 360px); gap:26px; align-items:end; margin-bottom:28px; }
+      .fs-ops-kicker { margin:0 0 10px; color:#006f78; font-size:13px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+      .fs-ops h2 { margin:0; max-width:820px; font-size:clamp(30px, 3.2vw, 42px); line-height:1.12; font-weight:820; letter-spacing:-.035em; word-break:keep-all; }
+      .fs-ops-lede { margin:14px 0 0; max-width:720px; color:var(--fs-muted); font-size:18px; line-height:1.55; }
+      .fs-live-panel { padding:18px; border-radius:8px; background:#17202a; color:#fff; box-shadow:0 18px 40px rgba(23,32,42,.18); }
+      .fs-live-panel b { display:block; font-size:14px; color:#9ee493; }
+      .fs-live-panel strong { display:block; margin-top:8px; font-size:26px; letter-spacing:-.03em; }
+      .fs-live-panel span { display:block; margin-top:8px; color:rgba(255,255,255,.72); font-size:13px; line-height:1.45; }
+      .fs-ops-grid { display:grid; grid-template-columns:minmax(0, 1.2fr) minmax(280px, .8fr); gap:22px; align-items:start; }
+      .fs-shift-board { display:grid; gap:12px; }
+      .fs-shift { display:grid; grid-template-columns:88px minmax(0, 1fr) 150px; gap:16px; align-items:center; padding:16px; border-radius:8px; background:#fffaf2; border:1px solid rgba(84,58,35,.1); box-shadow:0 10px 24px rgba(70,46,24,.06); }
+      .fs-shift time { color:#006f78; font-size:16px; font-weight:900; }
+      .fs-shift h3 { margin:0; font-size:17px; letter-spacing:-.02em; }
+      .fs-shift p { margin:5px 0 0; color:var(--fs-muted); font-size:14px; line-height:1.45; }
+      .fs-owner { justify-self:end; display:inline-flex; align-items:center; min-height:30px; padding:7px 10px; border-radius:999px; background:#eef7f2; color:#275d42; font-size:12px; font-weight:900; white-space:nowrap; }
+      .fs-ops-side { display:grid; gap:14px; }
+      .fs-command-card { padding:18px; border-radius:8px; background:#ffffff; border:1px solid rgba(84,58,35,.1); box-shadow:0 10px 24px rgba(70,46,24,.06); }
+      .fs-command-card h3 { margin:0 0 12px; font-size:18px; letter-spacing:-.02em; }
+      .fs-status-list { display:grid; gap:10px; }
+      .fs-status { display:grid; grid-template-columns:14px minmax(0, 1fr); gap:10px; align-items:start; color:var(--fs-muted); font-size:14px; line-height:1.45; }
+      .fs-dot { width:10px; height:10px; margin-top:5px; border-radius:50%; background:#006f78; box-shadow:0 0 0 4px rgba(0,111,120,.1); }
+      .fs-dot.warn { background:#d97b5c; box-shadow:0 0 0 4px rgba(217,123,92,.12); }
+      .fs-dot.ready { background:#6c8f6b; box-shadow:0 0 0 4px rgba(108,143,107,.14); }
+      .fs-metric-row { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:14px; }
+      .fs-metric { padding:12px; border-radius:8px; background:#f3f8f6; border:1px solid rgba(0,111,120,.1); }
+      .fs-metric b { display:block; color:#006f78; font-size:20px; line-height:1; }
+      .fs-metric span { display:block; margin-top:6px; color:var(--fs-muted); font-size:12px; font-weight:800; line-height:1.25; }
       .fs-footer { padding:28px 20px; background:#f5f5f7; color:var(--fs-muted); font-size:12px; } .fs-footer-inner { max-width:980px; margin:0 auto; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; } .fs-footer a { color:var(--fs-muted); text-decoration:none; margin-left:14px; }
 
       @media (prefers-reduced-motion: reduce) { .note, .hand-sticker { animation:none; } }
-      @media (max-width: 900px) { .fs-hero-layout { grid-template-columns:1fr; padding:30px 0; } .fs-house-stage { min-height:auto; order:-1; grid-template-columns:1fr; justify-items:center; justify-content:center; padding:0 0 38px; } .fs-house-stage::before { left:12%; width:76%; } .fs-house-scene { width:min(520px, 94vw); } .fs-layered-house { width:min(430px, 88vw); } .fs-layered-house .fs-house-layer:hover, .fs-layered-house .fs-house-layer:focus-visible { transform:translateX(22px) translateZ(80px) scale(1.025); } .fs-room-drawer { position:relative; top:auto; right:auto; z-index:2; width:min(540px, 94vw); max-height:none; min-height:420px; } .fs-room-scene { height:230px; } }
-      @media (max-width: 560px) { .fs-nav { height:auto; min-height:46px; padding:6px 0; } .fs-nav-inner { height:auto; flex-direction:column; gap:8px; padding:0 10px; } .fs-links { width:100%; min-width:0; grid-template-columns:repeat(5, minmax(54px, 1fr)); gap:6px; } .fs-links a { min-height:32px; padding:7px 6px; font-size:.78rem; } #nav-auth-link { display:none; } .fs-hero { overflow:hidden; padding-top:82px; } .fs-hero-layout { width:calc(100% - 24px); } .fs-house-stage { gap:12px; } .fs-house-scene { width:min(360px, 96vw); height:auto; transform:none; } .fs-layered-house { width:min(330px, 88vw); } .fs-layered-house .fs-house-layer:hover, .fs-layered-house .fs-house-layer:focus-visible { transform:translateX(12px) scale(1.02); } .fs-folder-tab { right:-118px; width:132px; min-height:56px; padding:10px; } .fs-folder-tab small { display:none; } .fs-house-hint { bottom:8px; } .fs-room-drawer { min-height:380px; padding:18px; } .fs-room-scene { height:210px; } .fs-btn { width:100%; } }
+      @media (max-width: 900px) { .fs-hero-layout { grid-template-columns:1fr; padding:30px 0; } .fs-house-stage { min-height:auto; order:-1; grid-template-columns:1fr; justify-items:center; justify-content:center; padding:0 0 38px; } .fs-house-stage::before { left:12%; width:76%; } .fs-house-scene { width:min(520px, 94vw); } .fs-layered-house { width:min(430px, 88vw); } .fs-layered-house .fs-house-layer:hover, .fs-layered-house .fs-house-layer:focus-visible { transform:translateX(22px) translateZ(80px) scale(1.025); } .fs-room-drawer { position:relative; top:auto; right:auto; z-index:2; width:min(540px, 94vw); max-height:none; min-height:420px; } .fs-room-scene { height:230px; } .fs-ops-head, .fs-ops-grid { grid-template-columns:1fr; } .fs-live-panel { max-width:520px; } }
+      @media (max-width: 560px) { .fs-nav { height:auto; min-height:46px; padding:6px 0; } .fs-nav-inner { height:auto; flex-direction:column; gap:8px; padding:0 10px; } .fs-links { width:100%; min-width:0; grid-template-columns:repeat(5, minmax(54px, 1fr)); gap:6px; } .fs-links a { min-height:32px; padding:7px 6px; font-size:.78rem; } #nav-auth-link { display:none; } .fs-hero { overflow:hidden; padding-top:82px; } .fs-hero-layout { width:calc(100% - 24px); } .fs-house-stage { gap:12px; } .fs-house-scene { width:min(360px, 96vw); height:auto; transform:none; } .fs-layered-house { width:min(330px, 88vw); } .fs-layered-house .fs-house-layer:hover, .fs-layered-house .fs-house-layer:focus-visible { transform:translateX(12px) scale(1.02); } .fs-folder-tab { right:-118px; width:132px; min-height:56px; padding:10px; } .fs-folder-tab small { display:none; } .fs-house-hint { bottom:8px; } .fs-room-drawer { min-height:380px; padding:18px; } .fs-room-scene { height:210px; } .fs-btn { width:100%; } .fs-ops { padding:52px 14px 60px; } .fs-shift { grid-template-columns:1fr; gap:8px; } .fs-owner { justify-self:start; } .fs-metric-row { grid-template-columns:1fr; } }
     </style>
   </head>
   <body class="home-page">
@@ -207,6 +236,95 @@
               <span class="fs-folder-tab tab-mom"><b>주방과 요가</b><small>식단과 엄마의 휴식</small></span>
             </div>
             <div class="fs-house-hint">층에 마우스를 올리면 서랍처럼 열립니다</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="fs-ops" aria-labelledby="ops-title">
+        <div class="fs-ops-inner">
+          <div class="fs-ops-head">
+            <div>
+              <p class="fs-ops-kicker">Live operating sequence</p>
+              <h2 id="ops-title">오늘도 한-베 가족 생활 정보를 실제 운영 순서대로 갱신합니다.</h2>
+              <p class="fs-ops-lede">FamilySpace는 페이지를 만들고 끝내는 사이트가 아니라, 매일 수집, 편집, 검증, 배포, 회고가 돌아가는 생활 운영실입니다. 각 층은 담당자가 있고, 변경 전후에는 QA와 로그가 남습니다.</p>
+            </div>
+            <aside class="fs-live-panel" aria-label="오늘 운영 상태">
+              <b>2026.05.31 운영 모드</b>
+              <strong>Private test running</strong>
+              <span>공개 운영 승인 전까지는 Cloudflare Pages를 기술 검증 표면으로만 사용하고, 모든 변경은 운영 로그와 Telegram 보고를 남깁니다.</span>
+            </aside>
+          </div>
+
+          <div class="fs-ops-grid">
+            <div class="fs-shift-board" aria-label="일일 운영 시퀀스">
+              <article class="fs-shift">
+                <time datetime="09:00">09:00</time>
+                <div>
+                  <h3>생활 신호 수집</h3>
+                  <p>엄마, 아빠, 아기, 가족 이야기 층에서 오늘 필요한 식단, 서류, 육아, 일정 이슈를 모읍니다.</p>
+                </div>
+                <span class="fs-owner">idea team</span>
+              </article>
+              <article class="fs-shift">
+                <time datetime="10:30">10:30</time>
+                <div>
+                  <h3>편집 회의와 우선순위 확정</h3>
+                  <p>운영 총괄이 오늘 반영할 3개 항목을 고르고, 검증이 필요한 법률, 의료, 금융 문구는 보류로 분리합니다.</p>
+                </div>
+                <span class="fs-owner">general manager</span>
+              </article>
+              <article class="fs-shift">
+                <time datetime="13:00">13:00</time>
+                <div>
+                  <h3>페이지 반영</h3>
+                  <p>웹 관리자가 HTML, 이미지, 내부 링크를 업데이트하고 각 층의 사용 흐름이 끊기지 않게 연결합니다.</p>
+                </div>
+                <span class="fs-owner">web admin</span>
+              </article>
+              <article class="fs-shift">
+                <time datetime="16:00">16:00</time>
+                <div>
+                  <h3>모바일 QA와 정책 점검</h3>
+                  <p>모바일 화면, 이미지 경로, 내부 링크, 개인정보/광고/제휴 문구를 확인하고 문제는 완료가 아닌 보류로 기록합니다.</p>
+                </div>
+                <span class="fs-owner">qa reviewer</span>
+              </article>
+              <article class="fs-shift">
+                <time datetime="18:00">18:00</time>
+                <div>
+                  <h3>운영 보고와 다음 액션</h3>
+                  <p>변경 파일, 검증 결과, 남은 위험, 다음 조치를 프로젝트 로그와 Telegram 보고에 남깁니다.</p>
+                </div>
+                <span class="fs-owner">content editor</span>
+              </article>
+            </div>
+
+            <aside class="fs-ops-side" aria-label="운영 대시보드">
+              <div class="fs-command-card">
+                <h3>오늘의 운영 큐</h3>
+                <div class="fs-status-list">
+                  <div class="fs-status"><i class="fs-dot ready" aria-hidden="true"></i><span>엄마 층: 냉장고 재료 기반 레시피 카드 검증 완료</span></div>
+                  <div class="fs-status"><i class="fs-dot" aria-hidden="true"></i><span>아빠 층: 주말 예산, TRC, 서류 가이드 링크 점검 대기</span></div>
+                  <div class="fs-status"><i class="fs-dot warn" aria-hidden="true"></i><span>공개 운영: 아직 승인 전, 기술 검증 URL만 사용</span></div>
+                </div>
+              </div>
+              <div class="fs-command-card">
+                <h3>운영 지표</h3>
+                <div class="fs-metric-row">
+                  <div class="fs-metric"><b>5</b><span>담당 역할</span></div>
+                  <div class="fs-metric"><b>4</b><span>생활 층</span></div>
+                  <div class="fs-metric"><b>2</b><span>필수 검증</span></div>
+                </div>
+              </div>
+              <div class="fs-command-card">
+                <h3>완료 기준</h3>
+                <div class="fs-status-list">
+                  <div class="fs-status"><i class="fs-dot ready" aria-hidden="true"></i><span>변경 화면이 모바일과 데스크톱에서 깨지지 않는다.</span></div>
+                  <div class="fs-status"><i class="fs-dot ready" aria-hidden="true"></i><span>내부 링크와 이미지 경로가 모두 살아 있다.</span></div>
+                  <div class="fs-status"><i class="fs-dot ready" aria-hidden="true"></i><span>프로젝트 로그와 보고가 같은 결론을 말한다.</span></div>
+                </div>
+              </div>
+            </aside>
           </div>
         </div>
       </section>
