@@ -97,6 +97,16 @@ def git_status() -> list[str]:
     return [line for line in result.stdout.splitlines() if line.strip()]
 
 
+def status_paths(status_lines: Iterable[str]) -> set[str]:
+    paths: set[str] = set()
+    for line in status_lines:
+        raw = line[3:] if len(line) > 3 else line
+        if " -> " in raw:
+            raw = raw.split(" -> ", 1)[1]
+        paths.add(raw.strip().strip('"'))
+    return paths
+
+
 def html_files() -> list[Path]:
     return sorted(ROOT.glob("*.html"))
 
@@ -230,12 +240,20 @@ Failing checks:
 
 def commit_and_push(cycle: int, baseline_status: list[str], room: str) -> Check:
     current_status = git_status()
-    if baseline_status:
-        return Check("deploy", False, "workspace was dirty at cycle start; automatic deploy blocked")
     if not current_status:
         return Check("deploy", True, "no file changes to deploy")
 
-    add_result = run(["git", "add", "-A"], timeout=60)
+    baseline_paths = status_paths(baseline_status)
+    current_paths = status_paths(current_status)
+    stage_paths = sorted(current_paths - baseline_paths)
+    skipped_paths = sorted(current_paths & baseline_paths)
+    if not stage_paths:
+        detail = "no new clean file changes to deploy"
+        if skipped_paths:
+            detail += f"; skipped pre-existing dirty paths: {', '.join(skipped_paths)}"
+        return Check("deploy", True, detail)
+
+    add_result = run(["git", "add", "--", *stage_paths], timeout=60)
     if add_result.returncode != 0:
         return Check("deploy", False, f"git add failed: {add_result.stdout}")
     message = f"Run autonomous ops loop cycle {cycle}"
@@ -255,7 +273,10 @@ def commit_and_push(cycle: int, baseline_status: list[str], room: str) -> Check:
     if failed:
         return Check("deploy", False, "push failed: " + "\n".join(failed))
     head = run(["git", "rev-parse", "--short", "HEAD"], timeout=30).stdout.strip()
-    return Check("deploy", True, f"pushed {head} to origin/main, origin/test, tsst/main")
+    detail = f"pushed {head} to origin/main, origin/test, tsst/main"
+    if skipped_paths:
+        detail += f"; skipped pre-existing dirty paths: {', '.join(skipped_paths)}"
+    return Check("deploy", True, detail)
 
 
 def cycle_once(args: argparse.Namespace, cycle: int) -> bool:

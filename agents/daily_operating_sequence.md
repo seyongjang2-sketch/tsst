@@ -46,7 +46,7 @@ Safety rules:
 - The worker is scoped to the company/homepage project only.
 - It must not touch video or game work.
 - Public operation approval is still separate from private-test deployment.
-- Automatic deploy is blocked when the workspace is already dirty at the start of a cycle, because that could include unrelated human changes.
+- Pre-existing dirty files are not staged by automatic deploy; the loop only commits files created or changed by its own cycle.
 - Failed checks are reported as blocked instead of being hidden.
 
 ## Homepage Representation
