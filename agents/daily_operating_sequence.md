@@ -24,6 +24,31 @@ A daily operation is complete only when all of these are true:
 4. The decision and verification result are recorded in `agents/project_log.md`.
 5. The same result is reported to the project Telegram room.
 
+## Continuous Autonomous Loop
+
+For unattended private-test operation, run the local worker instead of relying
+on the browser console alone:
+
+```powershell
+python scripts\autonomous_ops_loop.py --cycles 0 --interval-minutes 60 --playwright --allow-agent-edits --allow-deploy --room personal_dm
+```
+
+The loop does this sequence:
+
+1. Audit HTML parsing, local static paths, git whitespace, remote preview health, and the Playwright operating-console flow.
+2. If a check fails and `--allow-agent-edits` is set, launch Codex CLI inside this project only to fix the issue.
+3. Verify again after the fix.
+4. If verification passes and `--allow-deploy` is set, commit and push to `origin/main`, `origin/test`, and `tsst/main`.
+5. Send start, progress, and result reports to Telegram and write the cycle result to `agents/project_log.md`.
+
+Safety rules:
+
+- The worker is scoped to the company/homepage project only.
+- It must not touch video or game work.
+- Public operation approval is still separate from private-test deployment.
+- Automatic deploy is blocked when the workspace is already dirty at the start of a cycle, because that could include unrelated human changes.
+- Failed checks are reported as blocked instead of being hidden.
+
 ## Homepage Representation
 
 The homepage includes a public-facing operating board with:

@@ -2,6 +2,54 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 08:35 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deploy result: deploy disabled
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS remote-http: HTTP 200; ops console=yes
+PASS playwright-ops: Running 4 tests using 1 worker
+
+  ok 1 reports\ops_extended_check.spec.js:16:5 â€º remote desktop operating console survives a real daily run (5.0s)
+  ok 2 reports\ops_extended_check.spec.js:16:5 â€º remote mobile operating console survives a real daily run (4.2s)
+  ok 3 reports\ops_extended_check.spec.js:16:5 â€º local desktop operating console survives a real daily run (2.7s)
+  ok 4 reports\ops_extended_check.spec.js:16:5 â€º local mobile operating console survives a real daily run (2.2s)
+
+  4 passed (15.0s)
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 08:34 - autonomous ops loop issue found
+- Type: technical
+- Owner: web_admin
+- Status: blocked
+- Summary: The loop detected issues but agent edits were not enabled.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: FAIL playwright-ops: Error: No tests found.
+Make sure that arguments are regular expressions matching test files.
+You may need to escape symbols like "$" or "*" and quote the arguments.
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 08:34 - autonomous ops loop issue found
+- Type: technical
+- Owner: web_admin
+- Status: blocked
+- Summary: The loop detected issues but agent edits were not enabled.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: FAIL playwright-ops: Error: No tests found.
+Make sure that arguments are regular expressions matching test files.
+You may need to escape symbols like "$" or "*" and quote the arguments.
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 08:20 - Extended live ops deployment check
 - Type: qa
 - Owner: qa_reviewer
