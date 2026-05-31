@@ -163,6 +163,33 @@ test('local pages use the shared navigation structure and floor order', async ({
   }
 });
 
+test('local index and room pages align the main navigator position', async ({ page }) => {
+  const pages = ['index.html', 'mom.html', 'baby.html', 'dad.html', 'blog.html', 'stars.html'];
+  const viewportChecks = [
+    ['desktop', { width: 1366, height: 900 }],
+    ['mobile', { width: 390, height: 720 }]
+  ];
+
+  for (const [viewportName, viewport] of viewportChecks) {
+    await page.setViewportSize(viewport);
+    const boxes = {};
+
+    for (const file of pages) {
+      await page.goto(`http://127.0.0.1:8000/${file}`, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('ul.nav-links').first()).toBeVisible();
+      boxes[file] = await page.locator('ul.nav-links').first().boundingBox();
+    }
+
+    const baseline = boxes['index.html'];
+    for (const file of pages.slice(1)) {
+      expect(Math.abs(boxes[file].x - baseline.x), `${viewportName} ${file} nav x`).toBeLessThanOrEqual(1);
+      expect(Math.abs(boxes[file].y - baseline.y), `${viewportName} ${file} nav y`).toBeLessThanOrEqual(1);
+      expect(Math.abs(boxes[file].width - baseline.width), `${viewportName} ${file} nav width`).toBeLessThanOrEqual(1);
+      expect(Math.abs(boxes[file].height - baseline.height), `${viewportName} ${file} nav height`).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
 test('homepage removes the room review drawer and duplicate preview layer', async ({ page }) => {
   const indexHtml = fs.readFileSync('index.html', 'utf8');
   expect(indexHtml).not.toContain('ROOM PREVIEW');

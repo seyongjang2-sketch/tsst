@@ -2,6 +2,50 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 22:44 - align main navigator position
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Fixed the remaining mismatch between the homepage navigator and room-page navigators. The room pages had nav-auth-link inside ul.nav-links, making the five-link grid wrap as six items and shifting the navigator. Moved auth controls outside the menu, unified header dimensions, logo font, desktop tool width, and mobile stacked nav behavior.
+- Files: index.html,style.css,mom.html,baby.html,dad.html,blog.html,stars.html,reports/ops_extended_check.spec.js,scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: node --check reports/ops_extended_check.spec.js; python -m py_compile scripts/autonomous_ops_loop.py scripts/project_log.py; git diff --check; npx playwright test reports/ops_extended_check.spec.js --reporter=list => 14 passed; python scripts/autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --playwright --room personal_dm => PASS
+- Decisions: Navigator QA must compare rendered x/y/width/height, not only shared link order or DOM structure.
+- Risks: Remote public deployment still needs push/deploy verification if this change is to be published beyond local/private source.
+- Next: Commit and push after final diff review if deployment is required.
+
+## 2026-05-31 22:44 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS operating-gate-source: CTA, navigation-structure, navigation-position, QA-prevention, trend-purpose, role-uniqueness, and evidence-manifest gates present
+PASS remote-http: HTTP 200; ops console=yes
+PASS playwright-ops: Running 14 tests using 1 worker
+
+  ok 1 reports\ops_extended_check.spec.js:49:5 â€º remote desktop operating console survives a real daily run (5.0s)
+  ok 2 reports\ops_extended_check.spec.js:49:5 â€º remote mobile operating console survives a real daily run (4.5s)
+  ok 3 reports\ops_extended_check.spec.js:49:5 â€º local desktop operating console survives a real daily run (2.8s)
+  ok 4 reports\ops_extended_check.spec.js:49:5 â€º local mobile operating console survives a real daily run (2.3s)
+  ok 5 reports\ops_extended_check.spec.js:102:1 â€º local first viewport explains audience, route, and private-test status (760ms)
+  ok 6 reports\ops_extended_check.spec.js:147:1 â€º local pages use the shared navigation structure and floor order (1.9s)
+  ok 7 reports\ops_extended_check.spec.js:166:1 â€º local index and room pages align the main navigator position (2.6s)
+  ok 8 reports\ops_extended_check.spec.js:193:1 â€º homepage removes the room review drawer and duplicate preview layer (653ms)
+  ok 9 reports\ops_extended_check.spec.js:206:1 â€º local room pages keep distinct customer roles (1.7s)
+  ok 10 reports\ops_extended_check.spec.js:223:1 â€º local primary CTAs and floor links navigate to intended pages (2.9s)
+  ok 11 reports\ops_extended_check.spec.js:251:1 â€º page role headlines stay unique and do not collapse into duplicate content (12ms)
+  ok 12 reports\ops_extended_check.spec.js:275:1 â€º public page copy avoids stale daily dates and keeps risk disclaimers (7ms)
+  ok 13 reports\ops_extended_check.spec.js:289:1 â€º sample external reference links are reachable (2.7s)
+  ok 14 reports\ops_extended_check.spec.js:309:1 â€º operating docs require missed-QA prevention and trend-purpose gates (2ms)
+
+  14 passed (28.6s)
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 22:34 - autonomous ops loop cycle
 - Type: technical
 - Owner: web_admin

@@ -176,6 +176,7 @@ def operating_gate_source_check() -> Check:
     required_spec_markers = [
         "local primary CTAs and floor links navigate to intended pages",
         "local pages use the shared navigation structure and floor order",
+        "local index and room pages align the main navigator position",
         "homepage removes the room review drawer and duplicate preview layer",
         "page role headlines stay unique",
         "operating docs require missed-QA prevention and trend-purpose gates",
@@ -184,6 +185,7 @@ def operating_gate_source_check() -> Check:
     required_doc_markers = [
         "cta navigation",
         "shared navigation structure",
+        "main navigator position",
         "missed-qa prevention",
         "trend-purpose filter",
         "screenshot evidence manifest",
@@ -192,7 +194,7 @@ def operating_gate_source_check() -> Check:
     missing += [marker for marker in required_doc_markers if marker not in docs_text]
     if missing:
         return Check("operating-gate-source", False, "missing markers: " + ", ".join(missing))
-    return Check("operating-gate-source", True, "CTA, navigation-structure, QA-prevention, trend-purpose, role-uniqueness, and evidence-manifest gates present")
+    return Check("operating-gate-source", True, "CTA, navigation-structure, navigation-position, QA-prevention, trend-purpose, role-uniqueness, and evidence-manifest gates present")
 
 
 def remote_http_check() -> Check:
