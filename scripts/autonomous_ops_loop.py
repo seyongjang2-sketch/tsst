@@ -171,8 +171,9 @@ def remote_http_check() -> Check:
         req = Request(REMOTE_URL, headers={"User-Agent": "familyspace-autonomous-ops/1.0"})
         with urlopen(req, timeout=20) as response:
             body = response.read(250_000).decode("utf-8", errors="replace")
-            ok = response.status == 200 and "운영 실행 콘솔" in body
-            detail = f"HTTP {response.status}; ops console={'yes' if '운영 실행 콘솔' in body else 'no'}"
+            ops_marker = "운영 실행 콘솔" in body or "테스트 운영 현황" in body
+            ok = response.status == 200 and ops_marker
+            detail = f"HTTP {response.status}; ops console={'yes' if ops_marker else 'no'}"
             return Check("remote-http", ok, detail)
     except Exception as exc:
         return Check("remote-http", False, str(exc))

@@ -110,3 +110,20 @@ test('local first viewport explains audience, route, and private-test status', a
 
   expect(consoleErrors).toEqual([]);
 });
+
+test('local room pages keep distinct customer roles', async ({ page }) => {
+  const roleChecks = [
+    ['mom.html', /오늘 식탁과 엄마의 회복을 먼저 챙기는 방/, /냉장고 재료로 오늘 식단 만들기/],
+    ['baby.html', /아이와 바로 놀 수 있는 5분 놀이방/, /글자 공부 학습판/],
+    ['dad.html', /돈, 비자, 서류를 놓치지 않는 아빠 작업실/, /생활비·송금 보드/],
+    ['blog.html', /4층 가족 거실 기록장/, /공개 글 후보 선반/],
+    ['stars.html', /옥상 별보기 미션/, /밤하늘 이동/]
+  ];
+
+  for (const [file, primaryText, secondaryText] of roleChecks) {
+    await page.setViewportSize(file === 'stars.html' ? { width: 1366, height: 900 } : { width: 390, height: 720 });
+    await page.goto(`http://127.0.0.1:8000/${file}`, { waitUntil: 'domcontentloaded' });
+    await expect(page.getByText(primaryText).first()).toBeVisible();
+    await expect(page.getByText(secondaryText).first()).toBeVisible();
+  }
+});

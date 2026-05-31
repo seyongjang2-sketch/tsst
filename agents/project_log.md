@@ -2,6 +2,42 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 20:59 - Homepage roadmap step 2 page role cleanup
+- Type: content
+- Owner: content_editor
+- Status: done
+- Summary: Completed roadmap step 2 first pass by separating the five room pages into clearer roles: mom for meals/shopping/recovery, baby for 5-minute play and records, dad for cashflow/remittance/TRC/family logistics, blog for family diary and public content candidates, and stars for rooftop stargazing rather than a generic space-game frame.
+- Files: mom.html,baby.html,dad.html,blog.html,stars.html,reports/ops_extended_check.spec.js,scripts/autonomous_ops_loop.py,agents/project_log.md
+- Validation: node --check reports/ops_extended_check.spec.js; OPS_EVIDENCE_STAMP=step2-final-20260531 npx playwright test reports/ops_extended_check.spec.js --workers=1 passed 6/6; python -m py_compile scripts/autonomous_ops_loop.py scripts/project_log.py; git diff --check; python scripts/autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --room personal_dm passed git-diff/html/static/remote checks
+- Decisions: Keep one clear primary role per room and treat cross-room content on the blog as public-candidate curation rather than duplicated execution content.
+- Risks: Dad and stars pages still contain older large interactive systems; this step adjusted role copy and tests, while deeper UI/style consolidation remains for step 4.
+- Next: Proceed to roadmap step 3: content trust, dates, high-risk wording, and external-link purpose checks.
+
+## 2026-05-31 20:58 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS remote-http: HTTP 200; ops console=yes
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 20:58 - autonomous ops loop issue found
+- Type: technical
+- Owner: web_admin
+- Status: blocked
+- Summary: The loop detected issues but agent edits were not enabled.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: FAIL remote-http: HTTP 200; ops console=no
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 20:52 - Homepage step 1 deployment verification
 - Type: qa
 - Owner: qa_reviewer

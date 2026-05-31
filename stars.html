@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>우주 탐험 - FamilySpace</title>
+    <title>옥상 별보기 - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -532,8 +532,8 @@
     </div>
 </section>
 
-<div id="loading">🌌 우주를 불러오는 중...</div>
-<div id="guide">🚀 우주 탐색: 화면 드래그<br>🔍 천체를 터치하거나 검색해보세요!</div>
+<div id="loading">옥상 별보기 화면을 불러오는 중...</div>
+<div id="guide">밤하늘 이동: 화면 드래그<br>천체를 터치하거나 검색해보세요</div>
 
 <div id="search-container">
     <input type="text" id="search-input" placeholder="🔍 천체 검색 (예: 지구, 목성)" autocomplete="off">
@@ -542,22 +542,22 @@
 
 <!-- 우주선 HUD 조종 패널 -->
 <div id="hud-panel">
-    <div class="hud-header">🛸 ENTERPRISE COCKPIT v2.5</div>
+    <div class="hud-header">ROOFTOP TELESCOPE CHECK</div>
     <div class="hud-row">
         <span>COORDS:</span>
         <span id="hud-target" style="color: #00ffff;">DEEP SPACE</span>
     </div>
     <div class="hud-row">
-        <span>WARP ENGINE:</span>
+        <span>TELESCOPE:</span>
         <span id="hud-warp" style="color: #00ffff;">READY</span>
     </div>
     <div class="hud-progress-container">
-        <div class="hud-progress-label">DEFLECTOR SHIELD:</div>
+        <div class="hud-progress-label">FAMILY FOCUS:</div>
         <div class="hud-progress-bar"><div class="hud-progress-fill" id="hud-shield-fill" style="width: 100%;"></div></div>
     </div>
     <div class="hud-btn-group">
-        <button class="hud-btn" id="hud-btn-tour">🚀 자동 탐사 여행 시작</button>
-        <button class="hud-btn" id="hud-btn-sound">🔊 우주 사운드 ON</button>
+        <button class="hud-btn" id="hud-btn-tour">오늘 밤 별보기 순서 시작</button>
+        <button class="hud-btn" id="hud-btn-sound">조용한 배경음 ON</button>
     </div>
 </div>
 
@@ -1321,10 +1321,10 @@
         tourIndex = 0;
         
         const btn = document.getElementById('hud-btn-tour');
-        btn.innerText = "⏹️ 자동 탐사 중단";
+        btn.innerText = "별보기 순서 중단";
         btn.classList.add('active');
         
-        document.getElementById('hud-warp').innerText = "WARPING";
+        document.getElementById('hud-warp').innerText = "MOVING";
         document.getElementById('hud-warp').style.color = "#ff007f";
         
         runTourStep();
@@ -1337,7 +1337,7 @@
         stopTourTabSwitching();
         
         const btn = document.getElementById('hud-btn-tour');
-        btn.innerText = "🚀 자동 탐사 시작";
+        btn.innerText = "별보기 순서 시작";
         btn.classList.remove('active');
         
         document.getElementById('hud-warp').innerText = "READY";
@@ -1708,7 +1708,7 @@
             ctx.strokeRect(tx, ty, tw, th);
             
             ctx.fillStyle = `rgba(${rgbString}, 0.15)`;
-            ctx.fillText("WARP SYS STATUS", tx + 5, ty + 10);
+            ctx.fillText("TELESCOPE STATUS", tx + 5, ty + 10);
 
             ctx.fillStyle = "#ffffff";
             ctx.font = "9px 'Courier New', monospace";
@@ -1717,7 +1717,7 @@
             const isScanningBlink = (Math.floor(now / 500) % 2 === 0) ? "SCANNING..." : "SCANNING   ";
             ctx.fillStyle = `rgba(${rgbString}, 0.95)`;
             ctx.fillText(`STATUS: ${isScanningBlink}`, tx + 8, ty + 36);
-            ctx.fillText(`WARP EN: COCKPIT LCKD`, tx + 8, ty + 48);
+            ctx.fillText(`FOCUS: FAMILY MODE`, tx + 8, ty + 48);
             
             ctx.fillStyle = "#ffffff";
             ctx.fillText(`SHIELD: ${(98.4 + Math.sin(now/800)*0.2).toFixed(1)}%`, tx + 8, ty + 60);
@@ -1842,7 +1842,7 @@
                 tempVal = Math.floor(Math.random() * 15000) + 15000; // 15000~30000
                 coreMat = "맹렬한 수소 핵융합";
                 colorDesc = "우와! 태양보다 훨씬 뜨거워서 파란 불꽃을 내뿜는 젊고 힘센 별이야."; 
-                featureDesc = "우주 탐험가들이 여기서 빛의 에너지를 충전한대."; 
+                featureDesc = "가족이 여기서 잠깐 쉬며 밤하늘 이야기를 나눠요.";
             } 
             else if (r > 200 && g > 200 && b < 150) { 
                 typeStr = "황색 왜성 (G형 주계열성)";
@@ -1942,10 +1942,10 @@
         const isMuted = audioEngine.toggleMute();
         const btn = document.getElementById('hud-btn-sound');
         if (isMuted) {
-            btn.innerText = "🔇 우주 사운드 OFF";
+            btn.innerText = "조용한 배경음 OFF";
             btn.classList.remove('active');
         } else {
-            btn.innerText = "🔊 우주 사운드 ON";
+            btn.innerText = "조용한 배경음 ON";
             btn.classList.add('active');
         }
     });

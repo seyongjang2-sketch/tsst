@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>아빠의 휴식처 & 테크 매거진 - FamilySpace</title>
+    <title>아빠의 생활비·송금·TRC 작업실 - FamilySpace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -1578,11 +1578,11 @@
         <div class="hero-text">
           <div class="hero-eyebrow">Korean Dad · Vietnam Life Lab</div>
           <h1>호치민에서 한국 아빠로 산다는 것,<br>돈·비자·가족 시간을 한 번에 정리합니다.</h1>
-          <p class="hero-lead">25개월 또또와 베트남인 아내와 함께 살아보니, 한국식 계획표만으로는 버틸 수 없더라고요. 그래서 금융/비자/즐길 거리까지 한-베 가족 전용 대시보드를 만들었습니다.</p>
+          <p class="hero-lead">25개월 또또와 베트남인 아내와 함께 살아보니, 한국식 계획표만으로는 버틸 수 없더라고요. 그래서 생활비, 송금, TRC, 보험, 주말 동선을 한-베 가족 전용 작업실로 정리했습니다.</p>
           <div class="hero-badges">
             <span class="hero-badge">🇻🇳 7년 차 호치민 거주</span>
             <span class="hero-badge">👶 25개월 또또 아빠</span>
-            <span class="hero-badge">💼 전직 금융 PM → 가족 CFO</span>
+            <span class="hero-badge">💼 가족 생활비·송금 담당</span>
           </div>
           <div class="hero-actions">
             <button class="hero-btn-primary" onclick="window.location.href='guides/trc-visa-checklist.html'">한-베 가족 체크리스트 무료 받기</button>
@@ -1593,9 +1593,9 @@
           <div class="hero-note">FAMILYSPACE PREMIUM PREVIEW</div>
           <h3>이번 주에 나누는 주제</h3>
           <ul>
-            <li>💳 베트남+한국 이중 통장 운영법</li>
-            <li>📄 혼인·장기 비자 절차 타임라인</li>
-            <li>🏖️ 아기랑 갈 만한 주말 코스 3선</li>
+            <li>💳 KRW/VND 생활비와 송금 루틴</li>
+            <li>📄 TRC·보험·가족 서류 체크 순서</li>
+            <li>🏖️ 아이 낮잠까지 고려한 주말 작전표</li>
           </ul>
           <p style="margin:0; font-size:0.9rem; color:rgba(255,255,255,0.75);">무료 리드 구독으로 맛보기 콘텐츠를 먼저 받아보고, 괜찮으면 프리미엄 라운지에 합류하세요.</p>
           <figure class="dad-hero-visual" aria-label="한-베 가족 생활 가이드 일러스트">
@@ -1754,8 +1754,8 @@
         <!-- 메인 콘텐츠 영역 -->
         <main class="dad-dashboard-main">
           <div class="category-header-wrapper" id="active-category-header">
-            <h2 id="active-category-title">📈 금융 & 주식 분석</h2>
-            <span class="category-subtitle" id="active-category-subtitle" style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Finance & Market Analysis</span>
+            <h2 id="active-category-title">생활비·송금 보드</h2>
+            <span class="category-subtitle" id="active-category-subtitle" style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;">Family Cashflow & Transfer</span>
           </div>
           
           <div class="card-stack-container">
@@ -1769,7 +1769,7 @@
       <div class="ad-banner">[구글 애드센스 상단 디스플레이 영역]</div>
 
       <div class="magazine-header">
-        <h2>📚 아빠의 베트남 생생 정보 노트</h2>
+        <h2>아빠의 생활비·서류 실행 노트</h2>
       </div>
       
       <div class="magazine-grid" id="post-list-container">
@@ -2173,28 +2173,28 @@
 
       const categoryMeta = {
         finance: {
-          title: '📈 금융 & 주식 분석',
-          subtitle: 'Finance & Market Analysis',
+          title: '생활비·송금 보드',
+          subtitle: 'Family Cashflow & Transfer',
           border: 'var(--neon-cyan)'
         },
         golf: {
-          title: '⛳ 스포츠 & 취미',
-          subtitle: 'Sports & Hobby Club',
+          title: '주말 이동·휴식 작전',
+          subtitle: 'Weekend Route Planning',
           border: 'var(--neon-green)'
         },
         ent: {
-          title: '🕹️ 엔터테인먼트 & 문화',
-          subtitle: 'Entertainment & Culture Lounge',
+          title: '가족 공유 콘텐츠 후보',
+          subtitle: 'Family Content Queue',
           border: 'var(--neon-pink)'
         },
         family: {
-          title: '👨‍👩‍👧‍👦 가족 & 라이프스타일',
-          subtitle: 'Family & Lifestyle Log',
+          title: '가족 일정·역할 분담',
+          subtitle: 'Family Ops Log',
           border: 'var(--neon-blue)'
         },
         beauty: {
-          title: '💈 그루밍 & 미용',
-          subtitle: 'Grooming & Skincare',
+          title: '아빠 컨디션 관리',
+          subtitle: 'Dad Routine Check',
           border: '#6c5ce7'
         }
       };
