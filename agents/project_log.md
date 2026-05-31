@@ -2,6 +2,56 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 20:50 - Homepage roadmap step 1 first viewport
+- Type: design
+- Owner: web_admin
+- Status: done
+- Summary: Completed roadmap step 1 by adding a visible FamilySpace first-viewport message for Korean-Vietnamese family life, a private-test badge, primary entry CTA, clearer floor navigation hint, and less internal operating-section wording.
+- Files: index.html,style.css,reports/ops_extended_check.spec.js,agents/project_log.md
+- Validation: node --check reports/ops_extended_check.spec.js; npx playwright test reports/ops_extended_check.spec.js --workers=1 passed 5/5; python -m py_compile scripts/autonomous_ops_loop.py scripts/project_log.py; python scripts/autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --room personal_dm passed git-diff/html/static/remote checks; git diff --check
+- Decisions: Keep the house interaction as the core visual route, but add customer-facing purpose and private-test status before the user reaches operational details.
+- Risks: Remote Cloudflare preview still reflects the previously deployed version until this batch is committed and pushed; public operation approval remains separate.
+- Next: Proceed to roadmap step 2: page-by-page role cleanup for mom, baby, dad, blog, and stars.
+
+## 2026-05-31 20:49 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS remote-http: HTTP 200; ops console=yes
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 20:43 - Homepage staged revision roadmap
+- Type: decision
+- Owner: general_manager
+- Status: done
+- Summary: 사용자 지시에 따라 홈페이지를 한 번에 전면 수정하지 않고 1차 첫 화면/경로, 2차 페이지 역할, 3차 콘텐츠 신뢰도, 4차 모바일 UI, 5차 운영 검증 게이트로 나누어 단계별 수정 계획을 확정했다.
+- Files: reports/homepage-revision-roadmap-20260531.md,agents/project_log.md
+- Validation: project policy, latest project log, homepage management guidelines, daily operating sequence, and current HTML structure reviewed
+- Decisions: Homepage revisions will proceed in small verified batches instead of one broad rewrite.
+- Risks: Current automatic checks still do not fully judge semantic content duplication, unnecessary content, or every external link's purpose match.
+- Next: Start batch 1: simplify index.html first viewport, core navigation, and private-test messaging, then run mobile/desktop and link QA.
+
+## 2026-05-31 20:17 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS remote-http: HTTP 200; ops console=yes
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 12:07 - autonomous ops loop operating issues fixed
 - Type: technical
 - Owner: web_admin
