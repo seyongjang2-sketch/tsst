@@ -321,6 +321,8 @@ def cycle_once(args: argparse.Namespace, cycle: int) -> bool:
         summarize_checks(checks),
         status,
     )
+    if deploy_result.ok:
+        report("progress", f"진행: 자동 운영 루프 {cycle}회차가 통과했습니다. {deploy_result.detail}", room=args.room)
     return deploy_result.ok
 
 
