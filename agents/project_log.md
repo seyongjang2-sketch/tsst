@@ -2,6 +2,31 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 21:13 - Homepage roadmap step 4 mobile UI cleanup
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed roadmap step 4 by adding common mobile overflow guards, stable floor-menu behavior, touch-safe button/card constraints, and a local Playwright mobile UI gate for index/mom/baby/dad/blog/stars.
+- Files: style.css,dad.html,reports/mobile_ui_check.spec.js,reports/screenshots/autonomous/step4-mobile-ui-20260531,reports/screenshots/autonomous/step4-ops-regression-20260531
+- Validation: npx playwright test reports/mobile_ui_check.spec.js --reporter=line => 7 passed; npx playwright test reports/ops_extended_check.spec.js --reporter=line => 8 passed; python scripts\\autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --room personal_dm => PASS html-parse/static-paths/remote-http
+- Decisions: Keep the five floor links in one consistent mobile order and hide empty/auth-only nav list items on small screens. Replace missing Dad SVG/background references with existing real-photo assets so mobile tests do not request dead paths.
+- Risks: Dad page still contains older large inline dashboard styles; this pass adds mobile guardrails without a full component rewrite.
+- Next: 5차 운영/배포 검증 게이트 강화
+
+## 2026-05-31 21:13 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS remote-http: HTTP 200; ops console=yes
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 21:06 - Homepage roadmap step 3 content trust cleanup
 - Type: content
 - Owner: content_editor

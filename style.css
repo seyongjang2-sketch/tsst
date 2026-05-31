@@ -12,9 +12,21 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   font-family: 'Montserrat', 'Noto Sans KR', sans-serif;
   color: var(--text-main); line-height: 1.6; padding-top: 46px; min-height: 100vh;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 /* Page Backgrounds */
@@ -60,6 +72,7 @@ body.blog-page { background: #ffffff; }
   transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
 }
 .nav-links a:hover { color: var(--primary-color); border-color: rgba(74,144,226,.34); background: rgba(255,255,255,.86); transform: translateY(-1px); }
+.nav-links li:empty { display: none; }
 .logout-btn { background: #ff4757; color: white !important; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem !important; }
 
 /* Dropdown Menu (Dad page & general) */
@@ -310,7 +323,7 @@ body.blog-page { background: #ffffff; }
 .ad-placeholder { background: rgba(0,0,0,0.03); border: 2px dashed #ddd; border-radius: 12px; height: 100px; display: flex; align-items: center; justify-content: center; color: #999; margin: 20px 0; }
 
 .footer { background: white; padding: 40px 20px; margin-top: 60px; border-top: 1px solid #eee; text-align: center; }
-.footer-links { margin-top: 15px; display: flex; justify-content: center; gap: 20px; }
+.footer-links { margin-top: 15px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
 .footer-links a { text-decoration: none; color: #777; font-size: 0.9rem; }
 
 /* Responsive Navigation for Mobile Devices */
@@ -338,9 +351,74 @@ body.blog-page { background: #ffffff; }
     padding: 7px 6px;
     font-size: 0.78rem;
   }
+  .nav-links #nav-auth-link {
+    display: none;
+  }
   .logout-btn {
     padding: 3px 8px;
     font-size: 0.75rem !important;
+  }
+  .main-wrapper {
+    width: 100%;
+    padding: 28px 14px;
+  }
+  .content-card,
+  .room-brief,
+  .glass-card,
+  .baby-daily-card {
+    border-radius: 14px;
+    padding: 20px;
+  }
+  .content-grid,
+  .dashboard-grid,
+  .baby-daily-board,
+  .baby-proof-grid,
+  .family-daily-proof,
+  .family-proof-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .content-grid > *,
+  .dashboard-grid > *,
+  .baby-daily-board > *,
+  .family-daily-proof > *,
+  .family-proof-grid > *,
+  .room-brief-grid > * {
+    min-width: 0 !important;
+  }
+  [style*="min-width: 320px"],
+  [style*="min-width: 350px"] {
+    min-width: 0 !important;
+  }
+  [style*="font-size: 3rem"],
+  [style*="font-size: 2.8rem"] {
+    font-size: 2.15rem !important;
+    line-height: 1.12 !important;
+  }
+  [style*="font-size: 2.5rem"] {
+    font-size: 2.05rem !important;
+    line-height: 1.12 !important;
+  }
+  [style*="font-size: 5rem"] {
+    font-size: 4rem !important;
+  }
+  .btn-enter,
+  .room-brief-card a,
+  .recipe-link-btn,
+  .spin-btn,
+  .tab-btn,
+  .todo-add-btn,
+  .btn-write-diary,
+  .btn-rose,
+  .btn-outline {
+    min-height: 42px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100%;
   }
   .room-brief.with-visual {
     grid-template-columns: 1fr;
