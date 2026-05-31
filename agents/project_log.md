@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 08:20 - Extended live ops deployment check
+- Type: qa
+- Owner: qa_reviewer
+- Status: done
+- Summary: Ran the homepage operating console like a live daily operation on both the deployed Cloudflare preview and local server. The first deployed desktop run exposed that the room preview drawer stayed fixed while scrolling and covered the operating section. Changed the desktop drawer to absolute positioning so it remains in the hero area, then prepared the same Playwright run for post-deploy verification.
+- Files: index.html,reports/ops_extended_check.spec.js,reports/screenshots/index-ops-extended-remote-desktop-20260531.png,reports/screenshots/index-ops-extended-remote-mobile-20260531.png,reports/screenshots/index-ops-extended-local-desktop-20260531.png,reports/screenshots/index-ops-extended-local-mobile-20260531.png
+- Validation: npx playwright test reports/ops_extended_check.spec.js --reporter=list reproduced the remote desktop overlap before deployment; local desktop and mobile passed after the fix. HTML parse, local href/src path check, and git diff --check passed.
+- Decisions: Keep the room preview as a hero-local panel on desktop instead of a fixed overlay because the operating console must remain usable during real test operation.
+- Risks: Cloudflare propagation still needs final remote verification after push.
+- Next: Commit, push to origin/main, origin/test, and tsst/main, then rerun the remote operating console test against the deployed URL.
+
 ## 2026-05-31 08:08 - Homepage live operating console debug
 - Type: technical
 - Owner: web_admin

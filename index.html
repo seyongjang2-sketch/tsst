@@ -126,7 +126,7 @@
       .fs-layered-house .tab-baby { top:72%; }
       .fs-layered-house .tab-mom { top:89%; }
       .fs-layered-house .fs-folder-tab { z-index:12; }
-      .fs-room-drawer { position:fixed; top:84px; right:max(28px, calc((100vw - 1220px) / 2 + 24px)); z-index:80; width:min(360px, calc(100vw - 56px)); max-height:calc(100vh - 112px); min-height:0; border-radius:30px; padding:22px; background:linear-gradient(180deg, rgba(255,250,242,.94), rgba(255,246,232,.84)); border:1px solid rgba(84,58,35,.1); box-shadow:0 28px 74px rgba(70,46,24,.2), inset 0 1px 0 rgba(255,255,255,.68); backdrop-filter:blur(18px); overflow:auto; transform-origin:left center; animation: drawerOpen .28s ease both; }
+      .fs-room-drawer { position:absolute; top:84px; right:max(28px, calc((100vw - 1220px) / 2 + 24px)); z-index:80; width:min(360px, calc(100vw - 56px)); max-height:calc(100vh - 112px); min-height:0; border-radius:30px; padding:22px; background:linear-gradient(180deg, rgba(255,250,242,.94), rgba(255,246,232,.84)); border:1px solid rgba(84,58,35,.1); box-shadow:0 28px 74px rgba(70,46,24,.2), inset 0 1px 0 rgba(255,255,255,.68); backdrop-filter:blur(18px); overflow:auto; transform-origin:left center; animation: drawerOpen .28s ease both; }
       .fs-room-drawer::before { content:"ROOM PREVIEW"; display:inline-flex; margin-bottom:12px; padding:7px 10px; border-radius:999px; background:rgba(0,113,227,.08); color:var(--fs-blue); font-size:11px; font-weight:900; letter-spacing:.05em; }
       @keyframes drawerOpen { from { opacity:.35; transform:translateX(-18px) scaleX(.96); } to { opacity:1; transform:translateX(0) scaleX(1); } }
       .fs-room-drawer h2 { margin:0; font-size:26px; line-height:1.08; letter-spacing:-.04em; }
