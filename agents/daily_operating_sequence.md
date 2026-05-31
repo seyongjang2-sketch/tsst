@@ -33,5 +33,6 @@ The homepage includes a public-facing operating board with:
 - Team ownership for each step.
 - Today's operation queue.
 - Completion criteria.
+- A test-operation console that advances through the daily sequence, highlights the current owner, updates the queue, and writes an on-page execution log.
 
 This section is not a public launch claim. It is an operating-test signal that shows how FamilySpace will run once public operation is approved.

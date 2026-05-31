@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 08:02 - Homepage operating sequence behavior
+- Type: feature
+- Owner: web_admin
+- Status: done
+- Summary: Updated the homepage operating board from a static representation into a test-operation console. Users can advance the daily sequence, see the active owner highlighted, watch the operation queue change, and read an on-page execution log.
+- Files: index.html,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: git diff --check passed; index.html parsed with Python html.parser; inline script syntax passed with Node new Function; local http://127.0.0.1:8000/index.html returned HTTP 200; Playwright CLI captured reports/screenshots/index-ops-behavior-static-20260531.png and reports/screenshots/index-ops-behavior-mobile-20260531.png.
+- Decisions: Keep the status as private test operation only; the interaction demonstrates operating behavior without claiming public launch approval.
+- Risks: This is front-end simulation/state behavior, not a connected back-office workflow or database.
+- Next: If public operation is approved later, connect this front-end operation console to real stored daily tasks instead of simulated local page state.
+
 ## 2026-05-31 07:38 - Homepage operating sequence remote verification
 - Type: qa
 - Owner: qa_reviewer

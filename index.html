@@ -161,7 +161,9 @@
       .fs-live-panel span { display:block; margin-top:8px; color:rgba(255,255,255,.72); font-size:13px; line-height:1.45; }
       .fs-ops-grid { display:grid; grid-template-columns:minmax(0, 1.2fr) minmax(280px, .8fr); gap:22px; align-items:start; }
       .fs-shift-board { display:grid; gap:12px; }
-      .fs-shift { display:grid; grid-template-columns:88px minmax(0, 1fr) 150px; gap:16px; align-items:center; padding:16px; border-radius:8px; background:#fffaf2; border:1px solid rgba(84,58,35,.1); box-shadow:0 10px 24px rgba(70,46,24,.06); }
+      .fs-shift { display:grid; grid-template-columns:88px minmax(0, 1fr) 150px; gap:16px; align-items:center; padding:16px; border-radius:8px; background:#fffaf2; border:1px solid rgba(84,58,35,.1); box-shadow:0 10px 24px rgba(70,46,24,.06); transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+      .fs-shift.is-active { background:#fff; border-color:rgba(0,111,120,.38); box-shadow:0 16px 34px rgba(0,111,120,.12); transform:translateY(-1px); }
+      .fs-shift.is-done { background:#f4fbf4; border-color:rgba(108,143,107,.28); }
       .fs-shift time { color:#006f78; font-size:16px; font-weight:900; }
       .fs-shift h3 { margin:0; font-size:17px; letter-spacing:-.02em; }
       .fs-shift p { margin:5px 0 0; color:var(--fs-muted); font-size:14px; line-height:1.45; }
@@ -174,6 +176,12 @@
       .fs-dot { width:10px; height:10px; margin-top:5px; border-radius:50%; background:#006f78; box-shadow:0 0 0 4px rgba(0,111,120,.1); }
       .fs-dot.warn { background:#d97b5c; box-shadow:0 0 0 4px rgba(217,123,92,.12); }
       .fs-dot.ready { background:#6c8f6b; box-shadow:0 0 0 4px rgba(108,143,107,.14); }
+      .fs-ops-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+      .fs-ops-action { min-height:38px; padding:9px 12px; border:1px solid rgba(0,111,120,.18); border-radius:8px; background:#006f78; color:#fff; font:inherit; font-size:12px; font-weight:900; cursor:pointer; }
+      .fs-ops-action.secondary { background:#fff; color:#1e2d2f; }
+      .fs-ops-log { min-height:118px; max-height:160px; overflow:auto; display:grid; gap:8px; padding-right:4px; }
+      .fs-log-row { display:grid; grid-template-columns:48px minmax(0, 1fr); gap:8px; color:var(--fs-muted); font-size:12px; line-height:1.4; }
+      .fs-log-row time { color:#006f78; font-weight:900; }
       .fs-metric-row { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:14px; }
       .fs-metric { padding:12px; border-radius:8px; background:#f3f8f6; border:1px solid rgba(0,111,120,.1); }
       .fs-metric b { display:block; color:#006f78; font-size:20px; line-height:1; }
@@ -257,7 +265,7 @@
 
           <div class="fs-ops-grid">
             <div class="fs-shift-board" aria-label="일일 운영 시퀀스">
-              <article class="fs-shift">
+              <article class="fs-shift" data-ops-step="0">
                 <time datetime="09:00">09:00</time>
                 <div>
                   <h3>생활 신호 수집</h3>
@@ -265,7 +273,7 @@
                 </div>
                 <span class="fs-owner">idea team</span>
               </article>
-              <article class="fs-shift">
+              <article class="fs-shift" data-ops-step="1">
                 <time datetime="10:30">10:30</time>
                 <div>
                   <h3>편집 회의와 우선순위 확정</h3>
@@ -273,7 +281,7 @@
                 </div>
                 <span class="fs-owner">general manager</span>
               </article>
-              <article class="fs-shift">
+              <article class="fs-shift" data-ops-step="2">
                 <time datetime="13:00">13:00</time>
                 <div>
                   <h3>페이지 반영</h3>
@@ -281,7 +289,7 @@
                 </div>
                 <span class="fs-owner">web admin</span>
               </article>
-              <article class="fs-shift">
+              <article class="fs-shift" data-ops-step="3">
                 <time datetime="16:00">16:00</time>
                 <div>
                   <h3>모바일 QA와 정책 점검</h3>
@@ -289,7 +297,7 @@
                 </div>
                 <span class="fs-owner">qa reviewer</span>
               </article>
-              <article class="fs-shift">
+              <article class="fs-shift" data-ops-step="4">
                 <time datetime="18:00">18:00</time>
                 <div>
                   <h3>운영 보고와 다음 액션</h3>
@@ -301,12 +309,27 @@
 
             <aside class="fs-ops-side" aria-label="운영 대시보드">
               <div class="fs-command-card">
+                <h3>운영 실행 콘솔</h3>
+                <div class="fs-status-list">
+                  <div class="fs-status"><i class="fs-dot ready" aria-hidden="true"></i><span id="opsCurrent">09:00 생활 신호 수집 진행 중</span></div>
+                  <div class="fs-status"><i class="fs-dot" aria-hidden="true"></i><span id="opsNext">다음: 10:30 편집 회의와 우선순위 확정</span></div>
+                </div>
+                <div class="fs-ops-actions" aria-label="운영 시퀀스 제어">
+                  <button class="fs-ops-action" type="button" id="opsNextButton">다음 단계 진행</button>
+                  <button class="fs-ops-action secondary" type="button" id="opsResetButton">오늘 운영 리셋</button>
+                </div>
+              </div>
+              <div class="fs-command-card">
                 <h3>오늘의 운영 큐</h3>
                 <div class="fs-status-list">
-                  <div class="fs-status"><i class="fs-dot ready" aria-hidden="true"></i><span>엄마 층: 냉장고 재료 기반 레시피 카드 검증 완료</span></div>
-                  <div class="fs-status"><i class="fs-dot" aria-hidden="true"></i><span>아빠 층: 주말 예산, TRC, 서류 가이드 링크 점검 대기</span></div>
-                  <div class="fs-status"><i class="fs-dot warn" aria-hidden="true"></i><span>공개 운영: 아직 승인 전, 기술 검증 URL만 사용</span></div>
+                  <div class="fs-status"><i class="fs-dot ready" aria-hidden="true"></i><span id="opsQueueMom">엄마 층: 냉장고 재료 기반 레시피 카드 검증 완료</span></div>
+                  <div class="fs-status"><i class="fs-dot" aria-hidden="true"></i><span id="opsQueueDad">아빠 층: 주말 예산, TRC, 서류 가이드 링크 점검 대기</span></div>
+                  <div class="fs-status"><i class="fs-dot warn" aria-hidden="true"></i><span id="opsQueuePublish">공개 운영: 아직 승인 전, 기술 검증 URL만 사용</span></div>
                 </div>
+              </div>
+              <div class="fs-command-card">
+                <h3>실행 로그</h3>
+                <div class="fs-ops-log" id="opsLog" aria-live="polite"></div>
               </div>
               <div class="fs-command-card">
                 <h3>운영 지표</h3>
@@ -353,6 +376,97 @@
     </footer>
 
     <script>
+      const opsSteps = [
+        {
+          time: '09:00',
+          title: '생활 신호 수집',
+          current: '09:00 생활 신호 수집 진행 중',
+          next: '다음: 10:30 편집 회의와 우선순위 확정',
+          log: '엄마/아빠/아기/가족 거실에서 오늘 다룰 생활 이슈를 모읍니다.',
+          queue: ['엄마 층: 냉장고 재료 기반 레시피 카드 검증 완료', '아빠 층: 주말 예산, TRC, 서류 가이드 링크 점검 대기', '공개 운영: 아직 승인 전, 기술 검증 URL만 사용']
+        },
+        {
+          time: '10:30',
+          title: '편집 회의와 우선순위 확정',
+          current: '10:30 편집 회의 진행 중',
+          next: '다음: 13:00 페이지 반영',
+          log: '운영 총괄이 오늘 반영할 3개 항목과 보류 항목을 분리합니다.',
+          queue: ['엄마 층: 레시피 카드 유지, 문구만 짧게 정리', '아빠 층: TRC/서류 링크를 우선 점검 대상으로 지정', '정책 문구: 의료/금융/비자 단정 표현은 보류']
+        },
+        {
+          time: '13:00',
+          title: '페이지 반영',
+          current: '13:00 페이지 반영 진행 중',
+          next: '다음: 16:00 모바일 QA와 정책 점검',
+          log: '웹 관리자가 HTML, 이미지, 내부 링크 변경을 테스트 페이지에 반영합니다.',
+          queue: ['엄마 층: 레시피 입력 흐름 확인됨', '아빠 층: 내부 링크와 앵커 이동 확인 중', '공개 URL: 기술 검증 표면으로만 사용']
+        },
+        {
+          time: '16:00',
+          title: '모바일 QA와 정책 점검',
+          current: '16:00 모바일 QA와 정책 점검 진행 중',
+          next: '다음: 18:00 운영 보고와 다음 액션',
+          log: '모바일 화면, 이미지 경로, 개인정보/광고/제휴 문구를 검수합니다.',
+          queue: ['모바일: 390px 폭 기준 화면 깨짐 확인', '링크: 정적 href/src 경로 점검', '리스크: 공개 운영 승인 전 문구 유지']
+        },
+        {
+          time: '18:00',
+          title: '운영 보고와 다음 액션',
+          current: '18:00 운영 보고 작성 중',
+          next: '오늘 운영 완료, 다음 운영 큐 대기',
+          log: '변경 파일, 검증 결과, 남은 위험, 다음 조치를 프로젝트 로그와 Telegram 보고에 남깁니다.',
+          queue: ['프로젝트 로그: 변경/검증/위험 기록', 'Telegram: start/progress/result 보고 확인', '다음 액션: 공개 승인 전까지 테스트 운영 유지']
+        }
+      ];
+
+      const opsState = { step: 0 };
+      const opsEls = {
+        current: document.getElementById('opsCurrent'),
+        next: document.getElementById('opsNext'),
+        log: document.getElementById('opsLog'),
+        queueMom: document.getElementById('opsQueueMom'),
+        queueDad: document.getElementById('opsQueueDad'),
+        queuePublish: document.getElementById('opsQueuePublish'),
+        nextButton: document.getElementById('opsNextButton'),
+        resetButton: document.getElementById('opsResetButton'),
+        shifts: [...document.querySelectorAll('[data-ops-step]')]
+      };
+
+      function addOpsLog(step) {
+        if (!opsEls.log) return;
+        const row = document.createElement('div');
+        row.className = 'fs-log-row';
+        row.innerHTML = `<time>${step.time}</time><span>${step.log}</span>`;
+        opsEls.log.prepend(row);
+      }
+
+      function renderOpsStep(appendLog = true) {
+        const step = opsSteps[opsState.step];
+        opsEls.current.textContent = step.current;
+        opsEls.next.textContent = step.next;
+        opsEls.queueMom.textContent = step.queue[0];
+        opsEls.queueDad.textContent = step.queue[1];
+        opsEls.queuePublish.textContent = step.queue[2];
+        opsEls.shifts.forEach((shift, index) => {
+          shift.classList.toggle('is-active', index === opsState.step);
+          shift.classList.toggle('is-done', index < opsState.step);
+        });
+        if (appendLog) addOpsLog(step);
+      }
+
+      opsEls.nextButton?.addEventListener('click', () => {
+        opsState.step = Math.min(opsState.step + 1, opsSteps.length - 1);
+        renderOpsStep();
+      });
+
+      opsEls.resetButton?.addEventListener('click', () => {
+        opsState.step = 0;
+        if (opsEls.log) opsEls.log.innerHTML = '';
+        renderOpsStep();
+      });
+
+      renderOpsStep();
+
       const roomScenes = {
         roof: {
           title: '옥상 별보기',
