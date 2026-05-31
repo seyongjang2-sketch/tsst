@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 20:52 - Homepage step 1 deployment verification
+- Type: qa
+- Owner: qa_reviewer
+- Status: done
+- Summary: Verified the roadmap step 1 homepage first-viewport changes after private-test deployment. Cloudflare returned the new FamilySpace H1, private-test badge, and revised public-precheck operating copy, and the extended Playwright suite passed after deployment.
+- Files: index.html,reports/ops_extended_check.spec.js,reports/screenshots/autonomous/step1-remote-09c09fe,agents/project_log.md
+- Validation: Invoke-WebRequest https://tsst-csa.pages.dev/?check=step1-09c09fe-retry1 returned HTTP 200 and found new H1/private badge/operating copy; OPS_EVIDENCE_STAMP=step1-remote-09c09fe npx playwright test reports/ops_extended_check.spec.js --workers=1 passed 5/5
+- Decisions: Roadmap step 1 is complete and can hand off to step 2 page role cleanup.
+- Risks: The first-viewport Playwright assertion is currently local-only; step 5 should add remote semantic checks into the operating gate.
+- Next: Start step 2 by reviewing mom, baby, dad, blog, and stars page roles and removing duplicated or weak-purpose content.
+
 ## 2026-05-31 20:50 - Homepage roadmap step 1 first viewport
 - Type: design
 - Owner: web_admin
