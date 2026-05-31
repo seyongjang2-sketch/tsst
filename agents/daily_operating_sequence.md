@@ -41,6 +41,13 @@ The loop does this sequence:
 4. If verification passes, commit and push only when the cycle produced new deployable source changes.
 5. Send start, progress, and per-cycle result reports to Telegram. Write `agents/project_log.md` entries for failures, fixes, deployable changes, or clean cycles only when `--log-clean-cycles` is explicitly set.
 
+Step 5 deployment-gate additions:
+
+- CTA navigation: the Playwright gate clicks or resolves the main floor links and primary customer CTAs on local pages and blocks the cycle if any intended page returns an error or lands on the wrong route.
+- Content role separation: each room page must keep its own role headline and secondary purpose text without duplicating another room's defining copy.
+- External reference sample: the gate keeps checking a representative set of external reference links, allowing for occasional bot blocking but requiring enough reachable references to prove the link set is alive.
+- Screenshot evidence manifest: every Playwright operating-gate run writes screenshots under `reports/screenshots/autonomous/<stamp>/` and records `manifest.json` beside them so evidence can be traced without committing repeated run artifacts.
+
 Safety rules:
 
 - The worker is scoped to the company/homepage project only.

@@ -166,6 +166,29 @@ def diff_check() -> Check:
     return Check("git-diff-check", result.returncode == 0, result.stdout.strip() or "ok")
 
 
+def operating_gate_source_check() -> Check:
+    spec = ROOT / "reports" / "ops_extended_check.spec.js"
+    docs = ROOT / "agents" / "daily_operating_sequence.md"
+    if not spec.exists():
+        return Check("operating-gate-source", False, f"missing {spec}")
+    spec_text = spec.read_text(encoding="utf-8")
+    docs_text = docs.read_text(encoding="utf-8").lower() if docs.exists() else ""
+    required_spec_markers = [
+        "local primary CTAs and floor links navigate to intended pages",
+        "page role headlines stay unique",
+        "manifest.json",
+    ]
+    required_doc_markers = [
+        "cta navigation",
+        "screenshot evidence manifest",
+    ]
+    missing = [marker for marker in required_spec_markers if marker not in spec_text]
+    missing += [marker for marker in required_doc_markers if marker not in docs_text]
+    if missing:
+        return Check("operating-gate-source", False, "missing markers: " + ", ".join(missing))
+    return Check("operating-gate-source", True, "CTA, role-uniqueness, and evidence-manifest gates present")
+
+
 def remote_http_check() -> Check:
     try:
         req = Request(REMOTE_URL, headers={"User-Agent": "familyspace-autonomous-ops/1.0"})
@@ -206,7 +229,7 @@ def playwright_check() -> Check:
 
 
 def audit(include_playwright: bool) -> list[Check]:
-    checks = [diff_check(), parse_html(), static_path_check(), remote_http_check()]
+    checks = [diff_check(), parse_html(), static_path_check(), operating_gate_source_check(), remote_http_check()]
     if include_playwright:
         checks.append(playwright_check())
     return checks

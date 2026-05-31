@@ -2,6 +2,86 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 21:34 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS operating-gate-source: CTA, role-uniqueness, and evidence-manifest gates present
+PASS remote-http: HTTP 200; ops console=yes
+PASS playwright-ops: Running 10 tests using 1 worker
+
+  ok 1 reports\ops_extended_check.spec.js:47:5 â€º remote desktop operating console survives a real daily run (4.9s)
+  ok 2 reports\ops_extended_check.spec.js:47:5 â€º remote mobile operating console survives a real daily run (4.2s)
+  ok 3 reports\ops_extended_check.spec.js:47:5 â€º local desktop operating console survives a real daily run (2.8s)
+  ok 4 reports\ops_extended_check.spec.js:47:5 â€º local mobile operating console survives a real daily run (2.5s)
+  ok 5 reports\ops_extended_check.spec.js:103:1 â€º local first viewport explains audience, route, and private-test status (849ms)
+  ok 6 reports\ops_extended_check.spec.js:148:1 â€º local room pages keep distinct customer roles (1.7s)
+  ok 7 reports\ops_extended_check.spec.js:165:1 â€º local primary CTAs and floor links navigate to intended pages (2.9s)
+  ok 8 reports\ops_extended_check.spec.js:194:1 â€º page role headlines stay unique and do not collapse into duplicate content (19ms)
+  ok 9 reports\ops_extended_check.spec.js:218:1 â€º public page copy avoids stale daily dates and keeps risk disclaimers (10ms)
+  ok 10 reports\ops_extended_check.spec.js:232:1 â€º sample external reference links are reachable (3.2s)
+
+  10 passed (23.9s)
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 21:32 - Homepage roadmap step 5 operating gate hardening
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed roadmap step 5 by adding CTA navigation, page-role uniqueness, external-link sample, and screenshot evidence manifest checks to the operating/deploy gate.
+- Files: reports/ops_extended_check.spec.js,scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,reports/homepage-revision-roadmap-20260531.md,agents/project_log.md
+- Validation: npx playwright test reports/ops_extended_check.spec.js --reporter=list => 10 passed; python scripts\\autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --playwright --room personal_dm => PASS git-diff/html/static/source/remote/playwright
+- Decisions: A private-test homepage batch is blocked if primary CTA routes fail, room role copy collapses into duplicates, or Playwright evidence lacks a manifest.
+- Risks: Remote Cloudflare verification still proves technical preview only, not public production approval.
+- Next: Roadmap 5차 is complete; next work should be owner-directed polish or a new roadmap batch.
+
+## 2026-05-31 21:32 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS operating-gate-source: CTA, role-uniqueness, and evidence-manifest gates present
+PASS remote-http: HTTP 200; ops console=yes
+PASS playwright-ops: Running 10 tests using 1 worker
+
+  ok 1 reports\ops_extended_check.spec.js:43:5 â€º remote desktop operating console survives a real daily run (3.5s)
+  ok 2 reports\ops_extended_check.spec.js:43:5 â€º remote mobile operating console survives a real daily run (4.6s)
+  ok 3 reports\ops_extended_check.spec.js:43:5 â€º local desktop operating console survives a real daily run (2.8s)
+  ok 4 reports\ops_extended_check.spec.js:43:5 â€º local mobile operating console survives a real daily run (2.3s)
+  ok 5 reports\ops_extended_check.spec.js:99:1 â€º local first viewport explains audience, route, and private-test status (769ms)
+  ok 6 reports\ops_extended_check.spec.js:144:1 â€º local room pages keep distinct customer roles (1.7s)
+  ok 7 reports\ops_extended_check.spec.js:161:1 â€º local primary CTAs and floor links navigate to intended pages (2.8s)
+  ok 8 reports\ops_extended_check.spec.js:190:1 â€º page role headlines stay unique and do not collapse into duplicate content (10ms)
+  ok 9 reports\ops_extended_check.spec.js:214:1 â€º public page copy avoids stale daily dates and keeps risk disclaimers (5ms)
+  ok 10 reports\ops_extended_check.spec.js:228:1 â€º sample external reference links are reachable (5.4s)
+
+  10 passed (24.8s)
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 21:31 - autonomous ops loop issue found
+- Type: technical
+- Owner: web_admin
+- Status: blocked
+- Summary: The loop detected issues but agent edits were not enabled.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: FAIL operating-gate-source: missing markers: screenshot evidence manifest
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 21:13 - Homepage roadmap step 4 mobile UI cleanup
 - Type: technical
 - Owner: web_admin

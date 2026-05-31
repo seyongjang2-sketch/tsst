@@ -5,6 +5,32 @@ const path = require('path');
 const evidenceStamp = process.env.OPS_EVIDENCE_STAMP || new Date().toISOString().replace(/[:.]/g, '-');
 const screenshotDir = path.join('reports', 'screenshots', 'autonomous', evidenceStamp);
 fs.mkdirSync(screenshotDir, { recursive: true });
+const evidence = [];
+
+function writeEvidenceManifest() {
+  if (evidence.length === 0) return;
+  fs.writeFileSync(
+    path.join(screenshotDir, 'manifest.json'),
+    JSON.stringify({
+      stamp: evidenceStamp,
+      rule: 'Each operating-gate run stores screenshots and a manifest under reports/screenshots/autonomous/<stamp>.',
+      screenshots: evidence
+    }, null, 2)
+  );
+}
+
+function screenshotPath(name, meta = {}) {
+  const filePath = path.join(screenshotDir, name);
+  evidence.push({
+    file: filePath.replace(/\\/g, '/'),
+    createdAt: new Date().toISOString(),
+    ...meta
+  });
+  writeEvidenceManifest();
+  return filePath;
+}
+
+process.on('exit', writeEvidenceManifest);
 
 const targets = [
   ['remote', 'https://tsst-csa.pages.dev/?check=extended-ops-20260531'],
@@ -61,7 +87,11 @@ for (const [targetName, url] of targets) {
       expect(drawerOverlapsOps).toBe(false);
 
       await page.screenshot({
-        path: path.join(screenshotDir, `index-ops-extended-${targetName}-${viewportName}.png`),
+        path: screenshotPath(`index-ops-extended-${targetName}-${viewportName}.png`, {
+          target: targetName,
+          viewport: viewportName,
+          check: 'operating-console-flow'
+        }),
         fullPage: true
       });
 
@@ -104,7 +134,11 @@ test('local first viewport explains audience, route, and private-test status', a
   expect(houseBox.x + houseBox.width).toBeLessThanOrEqual(heroBox.x + heroBox.width + 2);
 
   await page.screenshot({
-    path: path.join(screenshotDir, 'index-first-viewport-local-mobile.png'),
+    path: screenshotPath('index-first-viewport-local-mobile.png', {
+      target: 'local',
+      viewport: 'mobile',
+      check: 'first-viewport'
+    }),
     fullPage: false
   });
 
@@ -125,6 +159,59 @@ test('local room pages keep distinct customer roles', async ({ page }) => {
     await page.goto(`http://127.0.0.1:8000/${file}`, { waitUntil: 'domcontentloaded' });
     await expect(page.getByText(primaryText).first()).toBeVisible();
     await expect(page.getByText(secondaryText).first()).toBeVisible();
+  }
+});
+
+test('local primary CTAs and floor links navigate to intended pages', async ({ page }) => {
+  const linkChecks = [
+    ['index.html', '1층 식단부터 보기', /mom\.html$/],
+    ['index.html', '엄마 공간으로 들어가기', /mom\.html$/],
+    ['index.html', '1층 엄마', /mom\.html$/],
+    ['index.html', '2층 아기', /baby\.html$/],
+    ['index.html', '3층 아빠', /dad\.html$/],
+    ['index.html', '4층 가족', /blog\.html$/],
+    ['index.html', '옥상', /stars\.html$/],
+    ['mom.html', '2층 아기', /baby\.html$/],
+    ['baby.html', '3층 아빠', /dad\.html$/],
+    ['dad.html', '4층 가족', /blog\.html$/],
+    ['blog.html', '옥상', /stars\.html$/],
+    ['stars.html', '1층 엄마', /mom\.html$/]
+  ];
+
+  for (const [file, label, expectedUrl] of linkChecks) {
+    await page.goto(`http://127.0.0.1:8000/${file}`, { waitUntil: 'domcontentloaded' });
+    const link = page.getByRole('link', { name: label }).first();
+    await expect(link, `${file} -> ${label}`).toBeVisible();
+    const href = await link.getAttribute('href');
+    expect(href, `${file} -> ${label}`).toBeTruthy();
+
+    const response = await page.goto(new URL(href, `http://127.0.0.1:8000/${file}`).toString(), { waitUntil: 'domcontentloaded' });
+    expect(response.status(), `${file} -> ${label} HTTP status`).toBeLessThan(400);
+    expect(page.url(), `${file} -> ${label} destination`).toMatch(expectedUrl);
+  }
+});
+
+test('page role headlines stay unique and do not collapse into duplicate content', async () => {
+  const roleMarkers = {
+    'mom.html': ['오늘 식탁과 엄마의 회복을 먼저 챙기는 방', '냉장고 재료로 오늘 식단 만들기'],
+    'baby.html': ['아이와 바로 놀 수 있는 5분 놀이방', '글자 공부 학습판'],
+    'dad.html': ['돈, 비자, 서류를 놓치지 않는 아빠 작업실', '생활비·송금 보드'],
+    'blog.html': ['4층 가족 거실 기록장', '공개 글 후보 선반'],
+    'stars.html': ['옥상 별보기 미션', '밤하늘 이동']
+  };
+  const allHtml = Object.fromEntries(
+    Object.keys(roleMarkers).map((file) => [file, fs.readFileSync(file, 'utf8')])
+  );
+
+  for (const [file, markers] of Object.entries(roleMarkers)) {
+    const ownHtml = allHtml[file];
+    for (const marker of markers) {
+      expect(ownHtml, `${file} missing ${marker}`).toContain(marker);
+      const duplicatePages = Object.entries(allHtml)
+        .filter(([otherFile, html]) => otherFile !== file && html.includes(marker))
+        .map(([otherFile]) => otherFile);
+      expect(duplicatePages, `${marker} duplicated outside ${file}`).toEqual([]);
+    }
   }
 });
 

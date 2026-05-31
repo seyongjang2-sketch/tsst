@@ -74,6 +74,7 @@
 
 - 대상: `scripts/autonomous_ops_loop.py`, `reports/ops_extended_check.spec.js`, 운영 문서
 - 목표: 현재 자동 점검에 부족한 "실제 클릭, 내용 일치, 중복/불필요 콘텐츠" 검토를 운영 게이트로 추가한다.
+- 구현 상태: 2026-05-31 5차에서 CTA navigation, 페이지별 역할 중복 방지, 외부 링크 샘플, screenshot evidence manifest 규칙을 자동 게이트에 추가했다.
 - 작업:
   - 모든 주요 CTA 클릭 테스트 추가
   - 핵심 외부 링크 샘플 접속 확인 추가
