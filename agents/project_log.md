@@ -8,7 +8,7 @@
 - Status: done
 - Summary: Updated the homepage operating board from a static representation into a test-operation console. Users can advance the daily sequence, see the active owner highlighted, watch the operation queue change, and read an on-page execution log.
 - Files: index.html,agents/daily_operating_sequence.md,agents/project_log.md
-- Validation: git diff --check passed; index.html parsed with Python html.parser; inline script syntax passed with Node new Function; local http://127.0.0.1:8000/index.html returned HTTP 200; Playwright CLI captured reports/screenshots/index-ops-behavior-static-20260531.png and reports/screenshots/index-ops-behavior-mobile-20260531.png.
+- Validation: git diff --check passed; index.html parsed with Python html.parser; inline script syntax passed with Node new Function; local http://127.0.0.1:8000/index.html returned HTTP 200; Playwright CLI captured reports/screenshots/index-ops-behavior-static-20260531.png and reports/screenshots/index-ops-behavior-mobile-20260531.png; origin main/test and tsst main reached commit 294c2b7f57240881e941815c6cccf357b45526b3; https://tsst-csa.pages.dev/?check=ops-behavior-20260531b returned HTTP 200 and included "운영 실행 콘솔", "다음 단계 진행", and "실행 로그".
 - Decisions: Keep the status as private test operation only; the interaction demonstrates operating behavior without claiming public launch approval.
 - Risks: This is front-end simulation/state behavior, not a connected back-office workflow or database.
 - Next: If public operation is approved later, connect this front-end operation console to real stored daily tasks instead of simulated local page state.
