@@ -2,7 +2,39 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
-## 2026-05-31 22:40 - remove room review drawer
+## 2026-05-31 22:34 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS operating-gate-source: CTA, navigation-structure, QA-prevention, trend-purpose, role-uniqueness, and evidence-manifest gates present
+PASS remote-http: HTTP 200; ops console=yes
+PASS playwright-ops: Running 13 tests using 1 worker
+
+  ok 1 reports\ops_extended_check.spec.js:49:5 â€º remote desktop operating console survives a real daily run (3.5s)
+  ok 2 reports\ops_extended_check.spec.js:49:5 â€º remote mobile operating console survives a real daily run (2.9s)
+  ok 3 reports\ops_extended_check.spec.js:49:5 â€º local desktop operating console survives a real daily run (2.9s)
+  ok 4 reports\ops_extended_check.spec.js:49:5 â€º local mobile operating console survives a real daily run (2.3s)
+  ok 5 reports\ops_extended_check.spec.js:102:1 â€º local first viewport explains audience, route, and private-test status (794ms)
+  ok 6 reports\ops_extended_check.spec.js:147:1 â€º local pages use the shared navigation structure and floor order (1.6s)
+  ok 7 reports\ops_extended_check.spec.js:166:1 â€º homepage removes the room review drawer and duplicate preview layer (653ms)
+  ok 8 reports\ops_extended_check.spec.js:179:1 â€º local room pages keep distinct customer roles (1.4s)
+  ok 9 reports\ops_extended_check.spec.js:196:1 â€º local primary CTAs and floor links navigate to intended pages (2.8s)
+  ok 10 reports\ops_extended_check.spec.js:224:1 â€º page role headlines stay unique and do not collapse into duplicate content (11ms)
+  ok 11 reports\ops_extended_check.spec.js:248:1 â€º public page copy avoids stale daily dates and keeps risk disclaimers (5ms)
+  ok 12 reports\ops_extended_check.spec.js:262:1 â€º sample external reference links are reachable (3.1s)
+  ok 13 reports\ops_extended_check.spec.js:282:1 â€º operating docs require missed-QA prevention and trend-purpose gates (2ms)
+
+  13 passed (22.7s)
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 22:31 - remove room review drawer
 - Type: technical
 - Owner: web_admin
 - Status: done
