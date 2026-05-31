@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 21:01 - Homepage step 2 deployment verification
+- Type: qa
+- Owner: qa_reviewer
+- Status: done
+- Summary: Verified roadmap step 2 role-cleanup deployment on Cloudflare after pushing commit 71bb94d. Remote mom, dad, blog, and stars pages now contain the new role markers.
+- Files: mom.html,dad.html,blog.html,stars.html,reports/ops_extended_check.spec.js,scripts/autonomous_ops_loop.py,agents/project_log.md
+- Validation: Remote curl -L downloads with UTF-8 Select-String found markers: mom 냉장고 재료로 오늘 식단 만들기, dad 생활비·송금 보드, blog 공개 글 후보 선반, stars ROOFTOP TELESCOPE CHECK; local Playwright suite passed 6/6 before deployment
+- Decisions: Step 2 can close; continue with content trust/date/link-risk cleanup.
+- Risks: PowerShell direct string Contains on curl output was unreliable for Korean markers; UTF-8 file/Select-String verification was used.
+- Next: Proceed to roadmap step 3.
+
 ## 2026-05-31 20:59 - Homepage roadmap step 2 page role cleanup
 - Type: content
 - Owner: content_editor
