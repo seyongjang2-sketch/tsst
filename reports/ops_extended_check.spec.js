@@ -83,10 +83,7 @@ for (const [targetName, url] of targets) {
 
       const sideBox = await page.locator('.fs-ops-side').boundingBox();
       expect(sideBox.width).toBeLessThanOrEqual(viewport.width + 2);
-      const drawerBox = await page.locator('#roomDrawer').boundingBox();
-      const opsBox = await page.locator('.fs-ops').boundingBox();
-      const drawerOverlapsOps = drawerBox.y < opsBox.y + opsBox.height && drawerBox.y + drawerBox.height > opsBox.y;
-      expect(drawerOverlapsOps).toBe(false);
+      await expect(page.locator('#roomDrawer')).toHaveCount(0);
 
       await page.screenshot({
         path: screenshotPath(`index-ops-extended-${targetName}-${viewportName}.png`, {
@@ -166,15 +163,17 @@ test('local pages use the shared navigation structure and floor order', async ({
   }
 });
 
-test('homepage room drawer is compact and avoids duplicate preview labeling', async ({ page }) => {
+test('homepage removes the room review drawer and duplicate preview layer', async ({ page }) => {
   const indexHtml = fs.readFileSync('index.html', 'utf8');
   expect(indexHtml).not.toContain('ROOM PREVIEW');
+  expect(indexHtml).not.toContain('roomDrawer');
+  expect(indexHtml).not.toContain('fs-room-drawer');
   expect(indexHtml).toContain('nav-links fs-links');
 
   await page.setViewportSize({ width: 1366, height: 900 });
   await page.goto('http://127.0.0.1:8000/index.html', { waitUntil: 'networkidle' });
-  const drawerBox = await page.locator('#roomDrawer').boundingBox();
-  expect(drawerBox.width).toBeLessThanOrEqual(322);
+  await expect(page.locator('#roomDrawer')).toHaveCount(0);
+  await expect(page.locator('.fs-house-stage')).toBeVisible();
 });
 
 test('local room pages keep distinct customer roles', async ({ page }) => {
@@ -197,7 +196,6 @@ test('local room pages keep distinct customer roles', async ({ page }) => {
 test('local primary CTAs and floor links navigate to intended pages', async ({ page }) => {
   const linkChecks = [
     ['index.html', '1층 식단부터 보기', /mom\.html$/],
-    ['index.html', '엄마 공간으로 들어가기', /mom\.html$/],
     ['index.html', '1층 엄마', /mom\.html$/],
     ['index.html', '2층 아기', /baby\.html$/],
     ['index.html', '3층 아빠', /dad\.html$/],

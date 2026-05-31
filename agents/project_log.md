@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 22:40 - remove room review drawer
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: 사용자 정정에 따라 ROOM PREVIEW 라벨만 지우는 수준이 아니라 index의 룸리뷰 드로어 자체를 제거했다. `#roomDrawer` HTML, 전용 CSS, `roomScenes` hover/focus 스크립트를 삭제하고, 층별 집 이미지는 기존 링크와 폴더 탭만으로 바로 이동하게 유지했다.
+- Files: index.html,reports/ops_extended_check.spec.js,scripts/autonomous_ops_loop.py,agents/project_log.md
+- Validation: node --check reports/ops_extended_check.spec.js; python -m py_compile scripts/autonomous_ops_loop.py; git diff --check; npx playwright test ./reports/ops_extended_check.spec.js --grep-invert=remote => 11 passed
+- Decisions: 룸리뷰는 축소 대상이 아니라 불필요한 중복 UI로 간주한다. 운영 게이트는 `ROOM PREVIEW` 라벨 부재뿐 아니라 `roomDrawer`/`fs-room-drawer` 자체가 없어야 통과한다.
+- Risks: 원격 Cloudflare 확인은 배포 반영 후 별도 확인해야 한다. 공개 운영 승인은 여전히 별도다.
+- Next: 변경사항을 private-test 배포 경로에 반영하고 원격 운영 게이트를 재검증한다.
+
 ## 2026-05-31 22:26 - execute homepage structure and QA guard plan
 - Type: technical
 - Owner: web_admin

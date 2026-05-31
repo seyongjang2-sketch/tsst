@@ -176,7 +176,7 @@ def operating_gate_source_check() -> Check:
     required_spec_markers = [
         "local primary CTAs and floor links navigate to intended pages",
         "local pages use the shared navigation structure and floor order",
-        "homepage room drawer is compact and avoids duplicate preview labeling",
+        "homepage removes the room review drawer and duplicate preview layer",
         "page role headlines stay unique",
         "operating docs require missed-QA prevention and trend-purpose gates",
         "manifest.json",
