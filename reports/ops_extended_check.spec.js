@@ -1,5 +1,10 @@
 const { test, expect } = require('@playwright/test');
+const fs = require('fs');
 const path = require('path');
+
+const evidenceStamp = process.env.OPS_EVIDENCE_STAMP || new Date().toISOString().replace(/[:.]/g, '-');
+const screenshotDir = path.join('reports', 'screenshots', 'autonomous', evidenceStamp);
+fs.mkdirSync(screenshotDir, { recursive: true });
 
 const targets = [
   ['remote', 'https://tsst-csa.pages.dev/?check=extended-ops-20260531'],
@@ -56,7 +61,7 @@ for (const [targetName, url] of targets) {
       expect(drawerOverlapsOps).toBe(false);
 
       await page.screenshot({
-        path: path.join('reports', 'screenshots', `index-ops-extended-${targetName}-${viewportName}-20260531.png`),
+        path: path.join(screenshotDir, `index-ops-extended-${targetName}-${viewportName}.png`),
         fullPage: true
       });
 

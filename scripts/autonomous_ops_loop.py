@@ -14,6 +14,7 @@ import argparse
 import json
 import os
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -31,6 +32,7 @@ ROOT_INBOX = Path(r"C:\Users\Admin\Documents\telegram_inbox.py")
 PROJECT_LOG = ROOT / "agents" / "project_log.md"
 REMOTE_URL = "https://tsst-csa.pages.dev/?check=autonomous-ops"
 TASK_ID = "company-autonomous-ops-loop"
+IGNORED_DIRTY_PREFIXES = ("test-results/", "reports/screenshots/autonomous/")
 
 
 @dataclass
@@ -107,6 +109,15 @@ def status_paths(status_lines: Iterable[str]) -> set[str]:
     return paths
 
 
+def deployable_paths(status_lines: Iterable[str]) -> set[str]:
+    paths = status_paths(status_lines)
+    return {
+        path
+        for path in paths
+        if not any(path == prefix.rstrip("/") or path.startswith(prefix) for prefix in IGNORED_DIRTY_PREFIXES)
+    }
+
+
 def html_files() -> list[Path]:
     return sorted(ROOT.glob("*.html"))
 
@@ -172,7 +183,23 @@ def playwright_check() -> Check:
     if not spec.exists():
         return Check("playwright-ops", False, f"missing {spec}")
     spec_arg = spec.relative_to(ROOT).as_posix()
-    result = run(["npx", "playwright", "test", spec_arg, "--reporter=list"], timeout=240)
+    env = os.environ.copy()
+    env["OPS_EVIDENCE_STAMP"] = datetime.now().strftime("%Y%m%d-%H%M%S")
+    resolved = ["npx", "playwright", "test", spec_arg, "--reporter=list"]
+    if os.name == "nt":
+        found = shutil.which("npx.cmd") or shutil.which("npx")
+        if found:
+            resolved[0] = found
+    result = subprocess.run(
+        resolved,
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=240,
+        shell=False,
+        env=env,
+    )
     detail = result.stdout.strip()
     return Check("playwright-ops", result.returncode == 0, detail[-3000:] if detail else "ok")
 
@@ -243,8 +270,8 @@ def commit_and_push(cycle: int, baseline_status: list[str], room: str) -> Check:
     if not current_status:
         return Check("deploy", True, "no file changes to deploy")
 
-    baseline_paths = status_paths(baseline_status)
-    current_paths = status_paths(current_status)
+    baseline_paths = deployable_paths(baseline_status)
+    current_paths = deployable_paths(current_status)
     stage_paths = sorted(current_paths - baseline_paths)
     skipped_paths = sorted(current_paths & baseline_paths)
     if not stage_paths:
@@ -310,15 +337,19 @@ def cycle_once(args: argparse.Namespace, cycle: int) -> bool:
         )
         return False
 
-    append_project_log(
-        "autonomous ops loop cycle",
-        f"Completed autonomous audit cycle {cycle}. Deployment is handled after this log entry is written.",
-        summarize_checks(checks),
-        "done",
-    )
-
     deploy_result = Check("deploy", True, "deploy disabled")
-    if args.allow_deploy:
+    has_new_deployable_changes = bool(deployable_paths(git_status()) - deployable_paths(baseline))
+    should_log_clean_cycle = args.log_clean_cycles or has_new_deployable_changes or not args.allow_deploy
+
+    if should_log_clean_cycle:
+        append_project_log(
+            "autonomous ops loop cycle",
+            f"Completed autonomous audit cycle {cycle}. Deployment is handled after this log entry is written.",
+            summarize_checks(checks),
+            "done",
+        )
+
+    if args.allow_deploy and (has_new_deployable_changes or should_log_clean_cycle):
         deploy_result = commit_and_push(cycle, baseline, args.room)
         if not deploy_result.ok:
             append_project_log(
@@ -340,6 +371,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--playwright", action="store_true", help="include Playwright operating-console run")
     parser.add_argument("--allow-agent-edits", action="store_true", help="let Codex CLI fix detected issues")
     parser.add_argument("--allow-deploy", action="store_true", help="commit and push verified changes")
+    parser.add_argument("--log-clean-cycles", action="store_true", help="write project_log entries for clean no-change cycles")
     return parser
 
 
@@ -354,13 +386,31 @@ def main() -> int:
 
     cycle = 0
     all_ok = True
-    while args.cycles == 0 or cycle < args.cycles:
+    stop_requested = False
+
+    def request_stop(_signum: int, _frame: object) -> None:
+        nonlocal stop_requested
+        stop_requested = True
+
+    signal.signal(signal.SIGINT, request_stop)
+    if hasattr(signal, "SIGTERM"):
+        signal.signal(signal.SIGTERM, request_stop)
+
+    while not stop_requested and (args.cycles == 0 or cycle < args.cycles):
         cycle += 1
         ok = cycle_once(args, cycle)
         all_ok = all_ok and ok
-        if args.cycles != 0 and cycle >= args.cycles:
+        if args.cycles == 0:
+            report(
+                "result",
+                f"중간결과: 회사/홈페이지 자동 운영 루프 {cycle}회차 완료. 현재 상태={'통과' if ok else '보류/실패'}. 장기 실행 모드라 다음 회차를 대기합니다.",
+                room=args.room,
+            )
+        if stop_requested or (args.cycles != 0 and cycle >= args.cycles):
             break
-        time.sleep(max(args.interval_minutes, 0.1) * 60)
+        sleep_until = time.time() + max(args.interval_minutes, 0.1) * 60
+        while not stop_requested and time.time() < sleep_until:
+            time.sleep(min(5, sleep_until - time.time()))
 
     report(
         "result",

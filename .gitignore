@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 *.log
 .server.pid
+test-results/
 
 # Local dependencies and generated output
 node_modules/
@@ -9,6 +10,7 @@ venv/
 .venv/
 output/
 .system_generated/
+reports/screenshots/autonomous/
 
 # Local backups, generated cache, and one-off experiment artifacts
 archive/

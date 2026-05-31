@@ -38,15 +38,17 @@ The loop does this sequence:
 1. Audit HTML parsing, local static paths, git whitespace, remote preview health, and the Playwright operating-console flow.
 2. If a check fails and `--allow-agent-edits` is set, launch Codex CLI inside this project only to fix the issue.
 3. Verify again after the fix.
-4. If verification passes and `--allow-deploy` is set, commit and push to `origin/main`, `origin/test`, and `tsst/main`.
-5. Send start, progress, and result reports to Telegram and write the cycle result to `agents/project_log.md`.
+4. If verification passes, commit and push only when the cycle produced new deployable source changes.
+5. Send start, progress, and per-cycle result reports to Telegram. Write `agents/project_log.md` entries for failures, fixes, deployable changes, or clean cycles only when `--log-clean-cycles` is explicitly set.
 
 Safety rules:
 
 - The worker is scoped to the company/homepage project only.
 - It must not touch video or game work.
 - Public operation approval is still separate from private-test deployment.
-- Pre-existing dirty files are not staged by automatic deploy; the loop only commits files created or changed by its own cycle.
+- Pre-existing dirty files are not staged by automatic deploy; the loop only commits deployable files created or changed by its own cycle.
+- Repeated Playwright evidence is written under ignored run-stamped paths so a clean monitoring cycle does not rewrite tracked screenshot files.
+- `test-results/` is ignored local runner output and must not be treated as a deployable site change.
 - Failed checks are reported as blocked instead of being hidden.
 
 ## Homepage Representation

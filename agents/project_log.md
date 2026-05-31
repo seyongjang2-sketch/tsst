@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 12:07 - autonomous ops loop operating issues fixed
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Fixed the operating problems found during the monitoring loop review. The previous continuous worker was stopped, clean monitoring cycles no longer rewrite tracked Playwright screenshots or create hourly project_log deployment commits by default, test runner output is ignored, and long-running cycles now send per-cycle result reports while waiting for the next interval.
+- Files: .gitignore,TELEGRAM_PROJECT_POLICY.md,scripts/autonomous_ops_loop.py,reports/ops_extended_check.spec.js,agents/daily_operating_sequence.md,reports/screenshots/index-ops-extended-local-desktop-20260531.png,agents/project_log.md
+- Validation: python -m py_compile scripts/autonomous_ops_loop.py; Node syntax check for reports/ops_extended_check.spec.js; git diff --check; python scripts/autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --playwright --allow-deploy --room personal_dm passed with HTML parse, static paths, remote HTTP, and 4 Playwright tests.
+- Decisions: Clean no-change monitoring cycles should report status without producing deploy commits. Run-stamped screenshot evidence stays under ignored autonomous evidence folders unless a human explicitly chooses to preserve a specific proof image.
+- Risks: Public operation approval remains separate from private-test automation. The continuous worker must be restarted with the updated script if unattended operation should continue.
+- Next: Commit and push the operating-loop fix to origin/main, origin/test, and tsst/main, then restart the updated continuous loop only if ongoing monitoring is required.
+
 ## 2026-05-31 11:42 - autonomous ops loop cycle
 - Type: technical
 - Owner: web_admin

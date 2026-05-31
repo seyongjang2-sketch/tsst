@@ -8,27 +8,35 @@ This project is covered by the global Telegram sharing/reporting policy.
 - Chat ID: `8867707684`
 - Note: This is the temporary default until a dedicated company project room is assigned.
 
+## Room Isolation
+
+- This project may only process company/homepage instructions.
+- Do not start, continue, QA, or report video production work from this room unless the user explicitly says the task is cross-project video work.
+- Do not start or report game work from this room unless explicitly requested as cross-project work.
+- For human-initiated desktop work, use explicit `--room personal_dm`; do not rely on `--room auto` when the current cwd or user intent is ambiguous.
+- Telegram-triggered Codex runs may use `--room auto` only because Hermes injects `HERMES_TELEGRAM_REPORT_ROOM=personal_dm`.
+
 ## Required Before Work
 
 ```powershell
-python C:\Users\Admin\Documents\telegram_inbox.py sync-hermes --room auto --limit 50
+python C:\Users\Admin\Documents\telegram_inbox.py sync-hermes --room personal_dm --limit 50
 python C:\Users\Admin\Documents\telegram_inbox.py sync-approvals --limit 100
-python C:\Users\Admin\Documents\telegram_inbox.py show --room auto --limit 10
+python C:\Users\Admin\Documents\telegram_inbox.py show --room personal_dm --limit 10
 ```
 
 ## Required Sharing
 
 ```powershell
-python C:\Users\Admin\Documents\telegram_inbox.py add --room auto --source telegram --message "instruction text"
+python C:\Users\Admin\Documents\telegram_inbox.py add --room personal_dm --source telegram --message "instruction text"
 ```
 
 ## Required Report
 
 ```powershell
-python C:\Users\Admin\Documents\telegram_inbox.py report --room auto --stage start --task-id "task-name" --message "start report text"
-python C:\Users\Admin\Documents\telegram_inbox.py report --room auto --stage progress --task-id "task-name" --message "progress report text"
-python C:\Users\Admin\Documents\telegram_inbox.py report --room auto --stage result --task-id "task-name" --message "result report text"
-python C:\Users\Admin\Documents\telegram_inbox.py audit-reports --room auto --task-id "task-name"
+python C:\Users\Admin\Documents\telegram_inbox.py report --room personal_dm --stage start --task-id "task-name" --message "start report text"
+python C:\Users\Admin\Documents\telegram_inbox.py report --room personal_dm --stage progress --task-id "task-name" --message "progress report text"
+python C:\Users\Admin\Documents\telegram_inbox.py report --room personal_dm --stage result --task-id "task-name" --message "result report text"
+python C:\Users\Admin\Documents\telegram_inbox.py audit-reports --room personal_dm --task-id "task-name"
 ```
 
 ## Required Meeting Report
@@ -53,7 +61,7 @@ Record meeting reports in the correct Telegram room, the shared inbox, and the p
 ## Approval Request
 
 ```powershell
-python C:\Users\Admin\Documents\telegram_inbox.py approval-request --room auto --project "우리회사" --action "what needs approval" --reason "why it is needed"
+python C:\Users\Admin\Documents\telegram_inbox.py approval-request --room personal_dm --project "우리회사" --action "what needs approval" --reason "why it is needed"
 ```
 
 Global policy:
