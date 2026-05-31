@@ -310,17 +310,23 @@ def cycle_once(args: argparse.Namespace, cycle: int) -> bool:
         )
         return False
 
+    append_project_log(
+        "autonomous ops loop cycle",
+        f"Completed autonomous audit cycle {cycle}. Deployment is handled after this log entry is written.",
+        summarize_checks(checks),
+        "done",
+    )
+
     deploy_result = Check("deploy", True, "deploy disabled")
     if args.allow_deploy:
         deploy_result = commit_and_push(cycle, baseline, args.room)
-
-    status = "done" if deploy_result.ok else "blocked"
-    append_project_log(
-        "autonomous ops loop cycle",
-        f"Completed autonomous audit cycle {cycle}. Deploy result: {deploy_result.detail}",
-        summarize_checks(checks),
-        status,
-    )
+        if not deploy_result.ok:
+            append_project_log(
+                "autonomous ops loop deploy failed",
+                f"Autonomous audit cycle {cycle} passed, but deploy failed: {deploy_result.detail}",
+                summarize_checks(checks),
+                "blocked",
+            )
     if deploy_result.ok:
         report("progress", f"진행: 자동 운영 루프 {cycle}회차가 통과했습니다. {deploy_result.detail}", room=args.room)
     return deploy_result.ok
