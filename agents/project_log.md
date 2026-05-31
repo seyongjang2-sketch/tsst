@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 08:37 - autonomous ops loop deployed
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Added and deployed the FamilySpace autonomous private-test operating loop. The worker audits the homepage, can launch Codex CLI to fix failures, verifies again, and can commit/push private-test changes when explicitly enabled.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: python -m py_compile scripts/autonomous_ops_loop.py; python scripts/autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --playwright --room personal_dm passed; git ls-remote origin main/test and tsst main reached 8348c04; Cloudflare /scripts/autonomous_ops_loop.py and /agents/daily_operating_sequence.md returned HTTP 200 with autonomous loop markers
+- Decisions: Continuous unattended operation should run through scripts/autonomous_ops_loop.py with --allow-agent-edits and --allow-deploy only for company/homepage private-test work; public operation approval remains separate.
+- Risks: Existing unrelated local changes remain uncommitted: TELEGRAM_PROJECT_POLICY.md, three ops screenshot files, and test-results/. The worker blocks automatic deploy from a dirty starting workspace.
+- Next: Start the continuous loop with cycles 0 when the machine should keep operating unattended.
+
 ## 2026-05-31 08:35 - autonomous ops loop cycle
 - Type: technical
 - Owner: web_admin
