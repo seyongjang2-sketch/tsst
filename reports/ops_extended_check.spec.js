@@ -42,6 +42,8 @@ const viewports = [
   ['mobile', { width: 390, height: 720 }]
 ];
 
+const sharedFloorHrefs = ['mom.html', 'baby.html', 'dad.html', 'blog.html', 'stars.html'];
+
 for (const [targetName, url] of targets) {
   for (const [viewportName, viewport] of viewports) {
     test(`${targetName} ${viewportName} operating console survives a real daily run`, async ({ page }) => {
@@ -143,6 +145,36 @@ test('local first viewport explains audience, route, and private-test status', a
   });
 
   expect(consoleErrors).toEqual([]);
+});
+
+test('local pages use the shared navigation structure and floor order', async ({ page }) => {
+  const pages = ['index.html', 'mom.html', 'baby.html', 'dad.html', 'blog.html', 'stars.html'];
+
+  for (const file of pages) {
+    await page.goto(`http://127.0.0.1:8000/${file}`, { waitUntil: 'domcontentloaded' });
+    const nav = page.locator('ul.nav-links').first();
+    await expect(nav, `${file} shared nav`).toBeVisible();
+
+    if (file === 'index.html') {
+      await expect(nav, 'index keeps home-specific styling while joining shared nav').toHaveClass(/fs-links/);
+    }
+
+    const hrefs = await nav.locator('a').evaluateAll((links) =>
+      links.slice(0, 5).map((link) => link.getAttribute('href'))
+    );
+    expect(hrefs, `${file} floor href order`).toEqual(sharedFloorHrefs);
+  }
+});
+
+test('homepage room drawer is compact and avoids duplicate preview labeling', async ({ page }) => {
+  const indexHtml = fs.readFileSync('index.html', 'utf8');
+  expect(indexHtml).not.toContain('ROOM PREVIEW');
+  expect(indexHtml).toContain('nav-links fs-links');
+
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await page.goto('http://127.0.0.1:8000/index.html', { waitUntil: 'networkidle' });
+  const drawerBox = await page.locator('#roomDrawer').boundingBox();
+  expect(drawerBox.width).toBeLessThanOrEqual(322);
 });
 
 test('local room pages keep distinct customer roles', async ({ page }) => {
@@ -247,4 +279,12 @@ test('sample external reference links are reachable', async ({ request }) => {
     }
   }
   expect(reachable.length, `reachable links: ${reachable.join(', ')}`).toBeGreaterThanOrEqual(3);
+});
+
+test('operating docs require missed-QA prevention and trend-purpose gates', async () => {
+  const docs = fs.readFileSync(path.join('agents', 'daily_operating_sequence.md'), 'utf8');
+  expect(docs).toContain('Missed-QA prevention');
+  expect(docs).toContain('Trend-purpose filter');
+  expect(docs).toContain('homepage purpose statement');
+  expect(docs).toContain('next QA run must recheck');
 });

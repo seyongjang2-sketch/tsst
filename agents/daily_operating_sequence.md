@@ -44,7 +44,10 @@ The loop does this sequence:
 Step 5 deployment-gate additions:
 
 - CTA navigation: the Playwright gate clicks or resolves the main floor links and primary customer CTAs on local pages and blocks the cycle if any intended page returns an error or lands on the wrong route.
+- Shared navigation structure: the index page and room pages must expose the same `ul.nav-links` floor order. The index may keep `fs-links` for its home-specific visual styling, but it must not drift into a separate navigation contract.
 - Content role separation: each room page must keep its own role headline and secondary purpose text without duplicating another room's defining copy.
+- Missed-QA prevention: when QA misses duplicate UI, navigation drift, mobile breakage, deployment drift, stale dates, or risk wording, the cause must be logged, the employee-facing countermeasure must be shared, the checklist or automated gate must be updated, and the next QA run must recheck that exact missed item.
+- Trend-purpose filter: every trend-driven change must pass the homepage purpose statement before it reaches public copy. The change must help Korean-Vietnamese family life in Vietnam, map to a named room/page owner, avoid unsupported legal/medical/finance claims, and stay inside the private-test approval boundary until explicitly approved.
 - External reference sample: the gate keeps checking a representative set of external reference links, allowing for occasional bot blocking but requiring enough reachable references to prove the link set is alive.
 - Screenshot evidence manifest: every Playwright operating-gate run writes screenshots under `reports/screenshots/autonomous/<stamp>/` and records `manifest.json` beside them so evidence can be traced without committing repeated run artifacts.
 

@@ -175,18 +175,24 @@ def operating_gate_source_check() -> Check:
     docs_text = docs.read_text(encoding="utf-8").lower() if docs.exists() else ""
     required_spec_markers = [
         "local primary CTAs and floor links navigate to intended pages",
+        "local pages use the shared navigation structure and floor order",
+        "homepage room drawer is compact and avoids duplicate preview labeling",
         "page role headlines stay unique",
+        "operating docs require missed-QA prevention and trend-purpose gates",
         "manifest.json",
     ]
     required_doc_markers = [
         "cta navigation",
+        "shared navigation structure",
+        "missed-qa prevention",
+        "trend-purpose filter",
         "screenshot evidence manifest",
     ]
     missing = [marker for marker in required_spec_markers if marker not in spec_text]
     missing += [marker for marker in required_doc_markers if marker not in docs_text]
     if missing:
         return Check("operating-gate-source", False, "missing markers: " + ", ".join(missing))
-    return Check("operating-gate-source", True, "CTA, role-uniqueness, and evidence-manifest gates present")
+    return Check("operating-gate-source", True, "CTA, navigation-structure, QA-prevention, trend-purpose, role-uniqueness, and evidence-manifest gates present")
 
 
 def remote_http_check() -> Check:

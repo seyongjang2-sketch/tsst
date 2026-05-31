@@ -2,6 +2,60 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-05-31 22:26 - execute homepage structure and QA guard plan
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: 직전 계획대로 ROOM PREVIEW 중복 라벨을 제거하고 드로어를 축소했으며, index 네비게이션을 공통 `nav-links` 구조에 합류시켰다. QA 누락 재발 방지와 트렌드/목적 이탈 방지를 운영 문서와 자동 게이트에 추가했다.
+- Files: index.html,reports/ops_extended_check.spec.js,scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: node --check reports/ops_extended_check.spec.js; python -m py_compile scripts/autonomous_ops_loop.py scripts/project_log.py; git diff --check; npx playwright test reports/ops_extended_check.spec.js --reporter=list => 13 passed; python scripts/autonomous_ops_loop.py --cycles 1 --interval-minutes 0.1 --playwright --room personal_dm => PASS git-diff/html/static/source/remote/playwright
+- Decisions: 인덱스의 시각 스타일용 `fs-links`는 유지하되 모든 주요 페이지가 같은 `ul.nav-links` 네비게이션 계약을 공유하게 한다. 트렌드 반영은 홈페이지 목적문과 방별 담당 역할을 통과한 경우에만 허용한다.
+- Risks: 현재 변경은 private-test 기술 반영이며 공개 운영 승인은 별도다.
+- Next: private-test 배포 후 Cloudflare URL에서 새 네비게이션/게이트 마커가 반영됐는지 확인한다.
+
+## 2026-05-31 22:25 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS operating-gate-source: CTA, navigation-structure, QA-prevention, trend-purpose, role-uniqueness, and evidence-manifest gates present
+PASS remote-http: HTTP 200; ops console=yes
+PASS playwright-ops: Running 13 tests using 1 worker
+
+  ok 1 reports\ops_extended_check.spec.js:49:5 â€º remote desktop operating console survives a real daily run (5.3s)
+  ok 2 reports\ops_extended_check.spec.js:49:5 â€º remote mobile operating console survives a real daily run (4.2s)
+  ok 3 reports\ops_extended_check.spec.js:49:5 â€º local desktop operating console survives a real daily run (2.9s)
+  ok 4 reports\ops_extended_check.spec.js:49:5 â€º local mobile operating console survives a real daily run (2.3s)
+  ok 5 reports\ops_extended_check.spec.js:105:1 â€º local first viewport explains audience, route, and private-test status (803ms)
+  ok 6 reports\ops_extended_check.spec.js:150:1 â€º local pages use the shared navigation structure and floor order (2.0s)
+  ok 7 reports\ops_extended_check.spec.js:169:1 â€º homepage room drawer is compact and avoids duplicate preview labeling (663ms)
+  ok 8 reports\ops_extended_check.spec.js:180:1 â€º local room pages keep distinct customer roles (1.9s)
+  ok 9 reports\ops_extended_check.spec.js:197:1 â€º local primary CTAs and floor links navigate to intended pages (3.1s)
+  ok 10 reports\ops_extended_check.spec.js:226:1 â€º page role headlines stay unique and do not collapse into duplicate content (10ms)
+  ok 11 reports\ops_extended_check.spec.js:250:1 â€º public page copy avoids stale daily dates and keeps risk disclaimers (5ms)
+  ok 12 reports\ops_extended_check.spec.js:264:1 â€º sample external reference links are reachable (4.9s)
+  ok 13 reports\ops_extended_check.spec.js:284:1 â€º operating docs require missed-QA prevention and trend-purpose gates (2ms)
+
+  13 passed (28.9s)
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
+## 2026-05-31 21:53 - next homepage fixes after operating-gate pass
+- Type: decision
+- Owner: general_manager
+- Status: review
+- Summary: 최신 운영 게이트는 Playwright 10/10으로 통과했지만, 다음 수정 후보로 ROOM PREVIEW 중복 축소, index와 하위 페이지 네비게이션 구조 통일, QA 누락 재발 방지 게이트 강화, 트렌드/목적 가드의 실제 체크리스트화를 우선순위로 정리했다.
+- Files: agents/project_log.md,reports/ops_extended_check.spec.js,index.html,style.css,agents/daily_operating_sequence.md
+- Validation: npx playwright test reports/ops_extended_check.spec.js --reporter=list: 10 passed
+- Decisions: 다음 수정은 시각적 전면 교체가 아니라 구조 통일과 운영 검증 보강을 우선한다.
+- Risks: 현재 게이트는 통과하지만 공통 네비게이션 구조 동등성, ROOM PREVIEW의 고객 중복감, 트렌드 변경의 목적 이탈 여부는 아직 자동 차단이 약하다.
+- Next: 1) ROOM PREVIEW 제거/축소 판단, 2) 공통 네비게이션 컴포넌트화, 3) QA 누락 원인/재발방지 체크를 테스트에 추가, 4) 트렌드 반영 전 목적 필터를 운영 문서와 게이트에 추가
+
 ## 2026-05-31 21:34 - autonomous ops loop cycle
 - Type: technical
 - Owner: web_admin
