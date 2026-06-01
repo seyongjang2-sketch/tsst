@@ -12,9 +12,9 @@ Deployed source commit:
 - Commit summary: `Add recipe helper private test cycle`
 
 Remote branch state:
-- `origin/main`: `b6fed801c6ba0bda055ffab4c234f1d623b36ff3`
-- `tsst/main`: `b6fed801c6ba0bda055ffab4c234f1d623b36ff3`
-- Note: the deployed site/content change is in parent commit `65e319d73f26d780f9f717d93fd188ae25ba9616`; final branch head `b6fed801c6ba0bda055ffab4c234f1d623b36ff3` adds this deployment evidence and project-log record.
+- `origin/main`: contains deployed site/content commit `65e319d73f26d780f9f717d93fd188ae25ba9616`.
+- `tsst/main`: contains deployed site/content commit `65e319d73f26d780f9f717d93fd188ae25ba9616`.
+- Note: later commits on `main` only add or correct deployment evidence and project-log records; the deployed user-visible site change remains commit `65e319d73f26d780f9f717d93fd188ae25ba9616`.
 
 Pre-deploy verification:
 - `.\node_modules\.bin\playwright.cmd test -g "recipe helper" --reporter=line`
