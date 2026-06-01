@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-06-02 07:16 - private test deploy
+- Type: deployment
+- Owner: web_admin, qa_reviewer
+- Status: done
+- Summary: Deployed the recipe-helper private-test cycle by pushing `main` to both `origin` and `tsst`. Cloudflare technical preview now serves the new `mom` recipe-helper elements.
+- Files: mom.html,reports/private-test-deploy-20260602.md,reports/recipe-helper-cycle-qa-20260602.md
+- Validation: `origin/main` and `tsst/main` pointed to `65e319d73f26d780f9f717d93fd188ae25ba9616`; recipe helper Playwright tests 2 passed; mobile UI tests 7 passed; `https://tsst-csa.pages.dev/mom` returned HTTP 200 and contained `fridge-time` and `fridge-shopping-gaps`.
+- Decisions: Treat Cloudflare Pages only as a technical private-test preview. Do not claim public production operation.
+- Risks: GitHub Pages `https://seyongjang2-sketch.github.io/tsst/mom` still served an older version during verification, so it is not current deployment evidence.
+- Next: Use `https://tsst-csa.pages.dev/mom` for the current technical preview check; resolve GitHub Pages source/cache separately if that URL must remain maintained.
+
 ## 2026-06-02 07:02 - recipe helper proof cycle
 - Type: implementation/qa
 - Owner: web_admin, qa_reviewer, content_editor
