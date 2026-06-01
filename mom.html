@@ -170,6 +170,26 @@
       .ingredient-input-row .todo-input {
         flex: 1;
       }
+      .fridge-context-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .fridge-context-field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .fridge-context-field label {
+        color: #7a574c;
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+      .fridge-context-field select,
+      .fridge-context-field input {
+        min-height: 42px;
+      }
       .ingredient-chips {
         display: flex;
         flex-wrap: wrap;
@@ -255,6 +275,35 @@
         line-height: 1.55;
         font-size: 0.9rem;
       }
+      .recipe-output-section {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 14px;
+        background: #fff9f4;
+        border: 1px solid rgba(211, 84, 0, 0.1);
+      }
+      .recipe-output-section b {
+        display: block;
+        margin-bottom: 7px;
+        color: #d35400;
+        font-size: 0.86rem;
+      }
+      .recipe-output-section ul {
+        margin: 0;
+        padding-left: 18px;
+        color: #5f514c;
+        line-height: 1.55;
+        font-size: 0.88rem;
+      }
+      .recipe-safety-note {
+        margin-top: 12px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(255, 238, 220, 0.82);
+        color: #7a574c;
+        font-size: 0.84rem;
+        line-height: 1.55;
+      }
       .recipe-output-meta {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -272,6 +321,9 @@
       @media (max-width: 560px) {
         .ingredient-input-row {
           flex-direction: column;
+        }
+        .fridge-context-grid {
+          grid-template-columns: 1fr;
         }
         .ingredient-input-row .spin-btn {
           width: 100%;
@@ -1413,6 +1465,32 @@
               <input type="text" id="ingredient-input" class="todo-input" placeholder="예: 계란, 두부, 양파, 라이스페이퍼" onkeypress="if(event.key==='Enter') addIngredientFromInput()">
               <button class="spin-btn" style="margin-top:0; padding:0 20px; border-radius:15px;" onclick="addIngredientFromInput()">재료 넣기</button>
             </div>
+            <div class="fridge-context-grid" aria-label="레시피 조건">
+              <div class="fridge-context-field">
+                <label for="fridge-time">가능한 조리 시간</label>
+                <select id="fridge-time" class="todo-input">
+                  <option value="10분 안에">10분 안에</option>
+                  <option value="15분 안에" selected>15분 안에</option>
+                  <option value="25분 안에">25분 안에</option>
+                </select>
+              </div>
+              <div class="fridge-context-field">
+                <label for="fridge-family">가족 상황</label>
+                <select id="fridge-family" class="todo-input">
+                  <option value="아이 반찬 분리">아이 반찬 분리</option>
+                  <option value="한-베 가족 저녁" selected>한-베 가족 저녁</option>
+                  <option value="어른용 매운맛 분리">어른용 매운맛 분리</option>
+                </select>
+              </div>
+              <div class="fridge-context-field">
+                <label for="fridge-diet">식단 메모</label>
+                <input type="text" id="fridge-diet" class="todo-input" placeholder="예: 덜 짜게, 밥 없이, 야식 아님">
+              </div>
+              <div class="fridge-context-field">
+                <label for="fridge-allergy">알레르기/제외</label>
+                <input type="text" id="fridge-allergy" class="todo-input" placeholder="예: 땅콩 제외, 매운맛 제외">
+              </div>
+            </div>
             <div class="ingredient-chips" aria-label="빠른 재료 선택">
               <button class="ingredient-chip" onclick="addIngredient('계란')">계란</button>
               <button class="ingredient-chip" onclick="addIngredient('두부')">두부</button>
@@ -1434,6 +1512,15 @@
               </div>
               <p id="fridge-recipe-summary"></p>
               <ol id="fridge-recipe-steps"></ol>
+              <div class="recipe-output-section">
+                <b>부족하면 장보기</b>
+                <ul id="fridge-shopping-gaps"></ul>
+              </div>
+              <div class="recipe-output-section">
+                <b>가족별 조정</b>
+                <ul id="fridge-family-adjustments"></ul>
+              </div>
+              <div id="fridge-safety-note" class="recipe-safety-note"></div>
               <button id="result-recipe-btn" class="recipe-link-btn" onclick="openRecipeSearchPopup()">영상 레시피 더 보기 🎥</button>
             </div>
           </div>
@@ -1536,6 +1623,7 @@
           time: '조리 12분',
           style: '아이도 먹기 쉬운 집밥',
           summary: '두부와 계란을 부드럽게 익혀 밥 위에 올리는 냉장고 기본 레시피입니다. 어른 접시에는 고추기름이나 라임을 조금 더해도 좋습니다.',
+          gaps: ['밥 또는 즉석밥', '대파나 양파', '아이용 저염 간장'],
           steps: [
             '두부는 키친타월로 물기를 빼고 한입 크기로 자릅니다.',
             '팬에 양파나 대파가 있으면 먼저 볶고 두부를 넣어 겉면만 살짝 익힙니다.',
@@ -1549,6 +1637,7 @@
           time: '조리 18분',
           style: '한-베 가족 메뉴',
           summary: '돼지고기를 간장 양념으로 빠르게 볶고 냉장고 채소를 곁들여 싸 먹는 메뉴입니다. 상추, 오이, 당근이 조금만 있어도 충분합니다.',
+          gaps: ['상추 또는 오이', '라임', '느억맘 또는 저염 간장'],
           steps: [
             '돼지고기는 간장, 설탕, 다진 마늘, 참기름으로 10분만 재웁니다.',
             '센 불에서 고기를 볶고 물기가 많으면 조금 더 졸입니다.',
@@ -1562,6 +1651,7 @@
           time: '조리 15분',
           style: '베트남식 빠른 한 끼',
           summary: '남은 채소와 단백질을 쌀국수면과 함께 볶는 간단한 한 그릇입니다. 매운 양념은 마지막에 어른 접시에만 더합니다.',
+          gaps: ['계란 또는 두부', '양파나 양배추', '라임 또는 허브'],
           steps: [
             '쌀국수면은 뜨거운 물에 불린 뒤 찬물에 헹궈 둡니다.',
             '팬에 양파, 당근, 양배추 등 남은 채소를 먼저 볶습니다.',
@@ -1583,6 +1673,39 @@
           '"': '&quot;',
           "'": '&#39;'
         }[char]));
+      }
+
+      function getFridgeContext() {
+        return {
+          time: document.getElementById('fridge-time').value,
+          family: document.getElementById('fridge-family').value,
+          diet: normalizeIngredient(document.getElementById('fridge-diet').value),
+          allergy: normalizeIngredient(document.getElementById('fridge-allergy').value)
+        };
+      }
+
+      function renderList(id, items) {
+        document.getElementById(id).innerHTML = items.map((item) => `<li>${escapeHTML(item)}</li>`).join('');
+      }
+
+      function buildFamilyAdjustments(context) {
+        const adjustments = [
+          `${context.family}: 아이 접시와 어른 접시를 먼저 나누고 소스는 마지막에 따로 넣습니다.`
+        ];
+        if (context.diet) {
+          adjustments.push(`식단 메모 반영: ${context.diet}. 간은 한 번에 세게 하지 말고 마지막에 조정합니다.`);
+        }
+        if (context.allergy) {
+          adjustments.push(`제외 항목 확인: ${context.allergy}. 같은 조리도구에 묻은 양념도 확인합니다.`);
+        }
+        return adjustments;
+      }
+
+      function buildSafetyNote(context) {
+        const allergyPart = context.allergy
+          ? ` 알레르기/제외 메모(${context.allergy})가 있으면 대체 재료를 먼저 고르고, 확실하지 않은 소스는 쓰지 마세요.`
+          : ' 알레르기 정보가 없으면 새 소스나 견과류는 먼저 소량만 확인하세요.';
+        return `Private test용 생활 도구입니다. ${context.time} 조리를 목표로 하되 고기와 계란은 완전히 익히고, 아이용은 덜 짜게 따로 덜어낸 뒤 어른용 양념을 추가하세요.${allergyPart}`;
       }
 
       function addIngredientFromInput() {
@@ -1623,6 +1746,7 @@
           time: '조리 15분',
           style: '남은 재료 활용 집밥',
           summary: `냉장고에 있는 ${selectedIngredients.join(', ')}을 한 팬에 정리하는 실용 레시피입니다. 밥, 면, 라이스페이퍼 중 집에 있는 탄수화물과 연결하면 한 끼가 됩니다.`,
+          gaps: ['밥이나 면', '대파 또는 양파', '아이용 저염 소스'],
           steps: [
             '재료를 한입 크기로 썰고 익는 시간이 긴 재료부터 따로 둡니다.',
             '팬에 기름을 두르고 단단한 채소와 고기류를 먼저 볶습니다.',
@@ -1638,12 +1762,16 @@
           addIngredient('두부');
         }
         const recipe = pickRecipeTemplate();
+        const context = getFridgeContext();
         generatedRecipeTitle = recipe.title;
         document.getElementById('fridge-recipe-title').innerText = recipe.title;
-        document.getElementById('fridge-recipe-time').innerText = recipe.time;
-        document.getElementById('fridge-recipe-style').innerText = recipe.style;
-        document.getElementById('fridge-recipe-summary').innerText = recipe.summary;
+        document.getElementById('fridge-recipe-time').innerText = `${recipe.time} · 목표 ${context.time}`;
+        document.getElementById('fridge-recipe-style').innerText = `${recipe.style} · ${context.family}`;
+        document.getElementById('fridge-recipe-summary').innerText = `${recipe.summary} ${context.diet ? `식단 메모는 "${context.diet}" 기준으로 조절합니다.` : ''}`;
         document.getElementById('fridge-recipe-steps').innerHTML = recipe.steps.map((step) => `<li>${step}</li>`).join('');
+        renderList('fridge-shopping-gaps', recipe.gaps);
+        renderList('fridge-family-adjustments', buildFamilyAdjustments(context));
+        document.getElementById('fridge-safety-note').innerText = buildSafetyNote(context);
         document.getElementById('fridge-recipe-result').style.display = 'block';
       }
 

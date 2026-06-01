@@ -2,6 +2,94 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-06-02 07:02 - recipe helper proof cycle
+- Type: implementation/qa
+- Owner: web_admin, qa_reviewer, content_editor
+- Status: done
+- Summary: Executed the next-step plan's primary `recipe-helper` cycle on the private-test mom page. The "냉장고를 부탁해" card now accepts ingredients, cooking time, Korean-Vietnamese family context, diet memo, and allergy/exclusion memo, then returns a practical recipe, shopping gaps, family adjustments, and safety wording.
+- Files: mom.html,reports/recipe_helper_cycle_check.spec.js,reports/recipe-helper-cycle-qa-20260602.md,reports/screenshots/recipe-helper-cycle-20260602
+- Validation: `playwright test -g "recipe helper"` 2 passed; `playwright test reports/mobile_ui_check.spec.js` 7 passed; mobile 390px input/result/bottom screenshots and desktop screenshot captured.
+- Decisions: Keep the cycle private-test and one-page focused; do not start broad redesign, monetization, or public launch wording.
+- Risks: Remote/public verification remains deferred because Cloudflare deployment authority/source/branch is unresolved.
+- Next: If deployment authority is clarified, verify the same changed area on the technical preview URL and compare source/branch before claiming remote readiness.
+
+## 2026-06-02 06:45 - next step plan
+- Type: planning
+- Owner: general_manager
+- Status: planned
+- Summary: Created the next-step operating plan for the company/homepage project after reviewing the valid operations rerun, all-staff possibility meeting, and Skeptic issues report.
+- Files: reports/next-step-plan-20260602.md
+- Validation: Reviewed TELEGRAM_PROJECT_POLICY.md, agents/meetings/homepage-possibility-allstaff-2026-06-02.md, agents/meetings/ops-review-2026-06-02.md, reports/skeptic-homepage-issues-20260602.md, agents/daily_operating_sequence.md, and agents/homepage_management_guidelines.md.
+- Decisions: The next cycle should be a small proof cycle, preferably the ingredient-input recipe helper, with acceptance criteria, mobile/desktop changed-area evidence, link-purpose checks, and private-test wording.
+- Risks: Cloudflare authority/source/branch and public operation approval remain unresolved, so public/deployment completion wording remains blocked.
+- Next: Lock the recipe-helper target or owner override, then implement the focused change with user-criticism replay QA.
+
+## 2026-06-02 06:40 - homepage possibility all-staff meeting
+- Type: meeting
+- Owner: general_manager
+- Status: done
+- Summary: Held an all-staff company/homepage meeting on FamilySpace homepage possibility. The staff consensus is that the homepage has practical possibility as a private-test product candidate, not as an approved public production service. The strongest opportunity is a Korean-Vietnamese family life tool built around small useful workflows such as ingredient-based recipes, shopping comparison, and family administration checks.
+- Files: agents/meetings/homepage-possibility-allstaff-2026-06-02.md,agents/project_log.md
+- Validation: Meeting evidence includes all staff opinions, required meeting report structure, Meeting Expansion Gate, Skeptic Dissent Gate, gate statuses, and `EVIDENCE_REVIEW_COMPLETE`.
+- Decisions: Continue with small proof cycles. Do not claim public operation, deployment completion, or monetization readiness while Cloudflare authority/source/branch and public approval remain unresolved. The next visible change must start with 3-5 acceptance criteria and replay recent user criticisms about mobile clipping, link fit, duplicated/unnecessary content, and purpose drift.
+- Risks: Staff opinions are internal judgment, not visitor data. Automated QA still cannot fully prove usefulness, visual trust, or public readiness. Static HTML repetition still creates future drift risk.
+- Next: Choose one small use case from recipe, shopping comparison, or administration checklist; verify changed-area mobile/desktop evidence and link-content fit before reporting a result.
+
+## 2026-06-02 06:24 - operations review rerun with skeptic gate
+- Type: decision
+- Owner: general_manager
+- Status: done
+- Summary: Reran the company/homepage operations review because the earlier meeting was marked invalid under the new Mandatory Meeting Skeptic Gate. Added the required Meeting Expansion Gate, Skeptic Dissent Gate, and gate statuses to the meeting record.
+- Files: agents/meetings/ops-review-2026-06-02.md,agents/project_log.md
+- Validation: rg confirmed `MEETING_EXPANSION_GATE_PASSED`, `SKEPTIC_DISSENT_GATE_PASSED`, `PUBLIC_OPERATION_NOT_APPROVED`, and `CLOUDFLARE_AUTHORITY_UNRESOLVED` in the meeting file.
+- Decisions: The valid operating rule is now private-test only, company/homepage room isolation, acceptance criteria before edits, user-criticism replay in QA, separated local/remote/public approval wording, and no public operation or deployment completion claim while Cloudflare authority remains unresolved.
+- Risks: This is a meeting and operating-rule update, not a fresh Playwright site QA run. Automated QA still cannot prove visual taste, usefulness, or public readiness without changed-area evidence.
+- Next: On the next company/homepage task, begin with 3-5 acceptance criteria, replay the latest real user criticism, verify local and intended remote preview separately where applicable, then log evidence before reporting result.
+
+## 2026-06-02 06:07 - overall operations review under new rules
+- Type: decision
+- Owner: general_manager
+- Status: done
+- Summary: Conducted a company/homepage-only operations review under the updated operating rules. Confirmed private-test status, room isolation, QA/completion wording, deployment blocker separation, trend-purpose filter, missed-QA prevention, and evidence requirements.
+- Files: agents/meetings/ops-review-2026-06-02.md,agents/project_log.md
+- Validation: Reviewed TELEGRAM_PROJECT_POLICY.md, agents/daily_operating_sequence.md, agents/homepage_management_guidelines.md, DEPLOYMENT.md, reports/ops_extended_check.spec.js, latest project_log entries, and pending Telegram approvals.
+- Decisions: Private-test operation only; public production not approved; QA pass is limited to defined gates; repeated user-identified misses must become gates; deployment authority remains separate.
+- Risks: Cloudflare authority remains pending; automated QA still cannot fully judge visual taste, customer usefulness, or public deployment freshness.
+- Next: Use this meeting as the next-cycle intake rule: define acceptance criteria, run local/mobile/remote checks where applicable, log evidence, and report with precise private-test wording.
+
+## 2026-05-31 22:57 - autonomous ops loop cycle
+- Type: technical
+- Owner: web_admin
+- Status: done
+- Summary: Completed autonomous audit cycle 1. Deployment is handled after this log entry is written.
+- Files: scripts/autonomous_ops_loop.py,agents/daily_operating_sequence.md,agents/project_log.md
+- Validation: PASS git-diff-check: ok
+PASS html-parse: parsed 11 HTML files
+PASS static-paths: all local href/src paths exist
+PASS operating-gate-source: CTA, navigation-structure, navigation-position, QA-prevention, trend-purpose, role-uniqueness, and evidence-manifest gates present
+PASS remote-http: HTTP 200; ops console=yes
+PASS playwright-ops: Running 14 tests using 1 worker
+
+  ok 1 reports\ops_extended_check.spec.js:49:5 â€º remote desktop operating console survives a real daily run (5.2s)
+  ok 2 reports\ops_extended_check.spec.js:49:5 â€º remote mobile operating console survives a real daily run (4.3s)
+  ok 3 reports\ops_extended_check.spec.js:49:5 â€º local desktop operating console survives a real daily run (2.9s)
+  ok 4 reports\ops_extended_check.spec.js:49:5 â€º local mobile operating console survives a real daily run (2.3s)
+  ok 5 reports\ops_extended_check.spec.js:102:1 â€º local first viewport explains audience, route, and private-test status (844ms)
+  ok 6 reports\ops_extended_check.spec.js:147:1 â€º local pages use the shared navigation structure and floor order (1.8s)
+  ok 7 reports\ops_extended_check.spec.js:166:1 â€º local index and room pages align the main navigator position (2.7s)
+  ok 8 reports\ops_extended_check.spec.js:193:1 â€º homepage removes the room review drawer and duplicate preview layer (642ms)
+  ok 9 reports\ops_extended_check.spec.js:206:1 â€º local room pages keep distinct customer roles (2.1s)
+  ok 10 reports\ops_extended_check.spec.js:223:1 â€º local primary CTAs and floor links navigate to intended pages (3.0s)
+  ok 11 reports\ops_extended_check.spec.js:251:1 â€º page role headlines stay unique and do not collapse into duplicate content (12ms)
+  ok 12 reports\ops_extended_check.spec.js:275:1 â€º public page copy avoids stale daily dates and keeps risk disclaimers (17ms)
+  ok 13 reports\ops_extended_check.spec.js:289:1 â€º sample external reference links are reachable (3.4s)
+  ok 14 reports\ops_extended_check.spec.js:309:1 â€º operating docs require missed-QA prevention and trend-purpose gates (2ms)
+
+  14 passed (30.2s)
+- Decisions: Autonomous operation is allowed only inside the company/homepage private-test scope. Public operation approval is still separate.
+- Risks: Automatic deploy is blocked when the workspace starts dirty or verification fails.
+- Next: Run the loop with --allow-agent-edits and --allow-deploy only after the intended private-test automation policy is accepted.
+
 ## 2026-05-31 22:44 - align main navigator position
 - Type: technical
 - Owner: web_admin

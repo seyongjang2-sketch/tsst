@@ -58,6 +58,21 @@ Meetings, staff discussions, concept decisions, test reviews, and planning discu
 
 Record meeting reports in the correct Telegram room, the shared inbox, and the project log when they affect project direction or execution.
 
+## Mandatory Meeting Skeptic Gate
+
+Every company/homepage meeting is invalid unless it includes:
+
+- `Meeting Expansion Gate`: conventional/common answer, counterexample or failure reason, abnormal/non-obvious alternative, and minimum experiment or concrete next action.
+- `Skeptic Dissent Gate`: explicit answers to:
+  1. What are we assuming without proof?
+  2. What would make this decision wrong?
+  3. Are we repeating an old idea under a new name?
+  4. What evidence would change our mind?
+  5. What is the smallest test that can expose the mistake?
+- `Gate Status`: `MEETING_EXPANSION_GATE_PASSED` and `SKEPTIC_DISSENT_GATE_PASSED`.
+
+If either gate is missing, mark the meeting `MEETING_INVALID_SKEPTIC_GATE_MISSING` and rerun it before approval, deployment, QA pass, public/private readiness, or final direction claims.
+
 ## Approval Request
 
 ```powershell
