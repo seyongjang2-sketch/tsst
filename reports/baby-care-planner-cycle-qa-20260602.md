@@ -35,8 +35,8 @@ Verification:
 
 Remote private-test verification:
 - User-visible content commit: `c531b5f7db418f6be8c804084c9bc593146bf4a1`.
-- Evidence-only commits may advance branch heads without changing `baby.html`.
-- Final branch equality after push:
+- Evidence-only commits after `c531b5f7` may advance branch heads without changing `baby.html`.
+- Branch equality check after the user-visible content push:
   - `HEAD`: `c2f78faa45aa282be53057c5ec648363aabebfab`
   - `origin/main`: `c2f78faa45aa282be53057c5ec648363aabebfab`
   - `tsst/main`: `c2f78faa45aa282be53057c5ec648363aabebfab`
