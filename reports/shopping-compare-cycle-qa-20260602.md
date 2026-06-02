@@ -1,6 +1,6 @@
 # Shopping Compare Cycle QA - 2026-06-02
 
-STATUS: SHOPPING_COMPARE_CYCLE_PASS
+STATUS: SHOPPING_COMPARE_REMOTE_PASS
 
 Scope:
 - Company/homepage project only.
@@ -34,6 +34,18 @@ Verification:
 - `git diff --check`
   - Result: passed.
 
+Remote private-test verification:
+- Commit: `a5462e988640a02ee3d79a21e9026224f216772c`.
+- `origin/main`: `a5462e988640a02ee3d79a21e9026224f216772c`.
+- `tsst/main`: `a5462e988640a02ee3d79a21e9026224f216772c`.
+- `https://tsst-csa.pages.dev/mom`
+  - HTTP 200.
+  - Contains `shopping-compare-board`: yes.
+  - Contains `정책·구매 조건 보기`: yes.
+  - Contains `행사·배달 보기`: yes.
+  - Contains `한국 식재료 보기`: yes.
+  - Contains `구매 확정표가 아니라 확인 순서`: yes.
+
 External link checks:
 - `https://winmart.vn/info/transaction-policy`
   - HTTP 200.
@@ -56,8 +68,10 @@ Limits:
 
 Gate Status:
 - SHOPPING_COMPARE_CYCLE_PASS
+- SHOPPING_COMPARE_REMOTE_PASS
 - MOBILE_390_NO_OVERFLOW
 - DESKTOP_1366_VERIFIED
 - LINK_PURPOSE_CHECK_PASS
 - EXTERNAL_LINKS_HTTP_200
+- CLOUDFLARE_PREVIEW_UPDATED
 - PUBLIC_OPERATION_NOT_APPROVED

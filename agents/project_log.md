@@ -8,10 +8,10 @@
 - Status: done
 - Summary: Continued the next small proof cycle by filling the `mom.html` shopping quick comparison area with practical link-purpose content for WinMart, Lotte Mart, and K-Market.
 - Files: mom.html,reports/shopping_compare_check.spec.js,reports/shopping-compare-cycle-qa-20260602.md,reports/screenshots/shopping-compare-20260602
-- Validation: `playwright test -g "shopping quick compare"` 2 passed; `playwright test -g "roadmap step 4 mobile UI"` 7 passed; `git diff --check` passed; WinMart, Lotte Mart, and K-Market links returned HTTP 200.
+- Validation: `playwright test -g "shopping quick compare"` 2 passed; `playwright test -g "roadmap step 4 mobile UI"` 7 passed; `git diff --check` passed; WinMart, Lotte Mart, and K-Market links returned HTTP 200; Cloudflare `https://tsst-csa.pages.dev/mom` returned HTTP 200 and contained `shopping-compare-board`, `정책·구매 조건 보기`, `행사·배달 보기`, and `한국 식재료 보기`.
 - Decisions: Keep this as a private-test shopping decision aid, not a price guarantee or affiliate claim. Link labels now state the reason to open each destination.
 - Risks: Prices, delivery areas, and promotion details change outside this static page, so the screen warns users to recheck conditions before payment.
-- Next: Commit, push, and verify the Cloudflare private-test preview contains the new shopping comparison board.
+- Next: Continue the next small proof cycle against Cloudflare private-test preview, or resolve/retire the stale GitHub Pages surface if the owner wants that URL maintained.
 
 ## 2026-06-02 07:03 - deployment surface reconcile
 - Type: deployment/verification
