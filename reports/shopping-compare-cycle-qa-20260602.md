@@ -35,9 +35,10 @@ Verification:
   - Result: passed.
 
 Remote private-test verification:
-- Commit: `a5462e988640a02ee3d79a21e9026224f216772c`.
-- `origin/main`: `a5462e988640a02ee3d79a21e9026224f216772c`.
-- `tsst/main`: `a5462e988640a02ee3d79a21e9026224f216772c`.
+- User-visible content commit: `a5462e988640a02ee3d79a21e9026224f216772c`.
+- Final recorded branch head after evidence update: `ae08c564cc0dc88e345c83e648f89f557c7f2b96`.
+- `origin/main`: `ae08c564cc0dc88e345c83e648f89f557c7f2b96`.
+- `tsst/main`: `ae08c564cc0dc88e345c83e648f89f557c7f2b96`.
 - `https://tsst-csa.pages.dev/mom`
   - HTTP 200.
   - Contains `shopping-compare-board`: yes.
