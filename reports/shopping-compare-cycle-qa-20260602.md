@@ -36,9 +36,8 @@ Verification:
 
 Remote private-test verification:
 - User-visible content commit: `a5462e988640a02ee3d79a21e9026224f216772c`.
-- Final recorded branch head after evidence update: `ae08c564cc0dc88e345c83e648f89f557c7f2b96`.
-- `origin/main`: `ae08c564cc0dc88e345c83e648f89f557c7f2b96`.
-- `tsst/main`: `ae08c564cc0dc88e345c83e648f89f557c7f2b96`.
+- Later evidence-only commits may advance `origin/main` and `tsst/main` without changing `mom.html`.
+- Final branch equality is verified with `git rev-parse HEAD`, `git rev-parse origin/main`, and `git rev-parse tsst/main` after push.
 - `https://tsst-csa.pages.dev/mom`
   - HTTP 200.
   - Contains `shopping-compare-board`: yes.
