@@ -35,16 +35,22 @@ Verification:
 
 Remote private-test verification:
 - User-visible content commit: `c531b5f7db418f6be8c804084c9bc593146bf4a1`.
+- Evidence-only commits may advance branch heads without changing `baby.html`.
 - Final branch equality after push:
-  - `HEAD`: `c531b5f7db418f6be8c804084c9bc593146bf4a1`
-  - `origin/main`: `c531b5f7db418f6be8c804084c9bc593146bf4a1`
-  - `tsst/main`: `c531b5f7db418f6be8c804084c9bc593146bf4a1`
+  - `HEAD`: `c2f78faa45aa282be53057c5ec648363aabebfab`
+  - `origin/main`: `c2f78faa45aa282be53057c5ec648363aabebfab`
+  - `tsst/main`: `c2f78faa45aa282be53057c5ec648363aabebfab`
 - Raw GitHub `tsst/main/baby.html`:
   - HTTP 200.
   - Contains `baby-care-planner`: yes.
   - Contains `방문 메모 만들기`: yes.
   - Contains `담당 의료진과 병원 안내를 우선`: yes.
 - Cloudflare private-test preview `https://tsst-csa.pages.dev/baby?check=baby-care-planner-20260602-retry1`:
+  - HTTP 200.
+  - Contains `baby-care-planner`: yes.
+  - Contains `방문 메모 만들기`: yes.
+  - Contains `담당 의료진과 병원 안내를 우선`: yes.
+- Final Cloudflare recheck `https://tsst-csa.pages.dev/baby?check=baby-care-planner-20260602-final`:
   - HTTP 200.
   - Contains `baby-care-planner`: yes.
   - Contains `방문 메모 만들기`: yes.
