@@ -50,6 +50,20 @@ Required completion evidence:
 
 ## Current Verification
 
+Checked on 2026-06-02 07:00 Asia/Bangkok:
+
+- `origin/main`: `930fdb5d3face9ab44b8ba21f6e457f0ad28ec44`.
+- `tsst/main`: `930fdb5d3face9ab44b8ba21f6e457f0ad28ec44`.
+- `https://tsst-csa.pages.dev/mom` returns HTTP 200 and includes `fridge-time`, `fridge-shopping-gaps`, and `냉장고를 부탁해`.
+- `https://raw.githubusercontent.com/seyongjang2-sketch/tsst/main/mom.html` returns HTTP 200 and includes `fridge-time`, `fridge-shopping-gaps`, and `냉장고를 부탁해`.
+- `https://seyongjang2-sketch.github.io/tsst/mom` and `/mom.html` return HTTP 200 but do not include the recipe-helper markers.
+- `https://seyongjang2-sketch.github.io/tsst/DEPLOYMENT.md` returns HTTP 404.
+- Current conclusion: Cloudflare Pages is the current private-test technical preview. GitHub Pages is stale and must not be used as current deployment evidence until its Pages source/settings are corrected or the URL is retired.
+
+Evidence:
+
+- `reports/deployment-surface-reconcile-20260602.md`
+
 The following entries are historical technical checks. They are retained for traceability but are superseded by the private-test operating status above.
 
 Checked on 2026-05-30 20:56 Asia/Bangkok, before publishing this deployment-canon document:

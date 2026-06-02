@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-06-02 07:03 - deployment surface reconcile
+- Type: deployment/verification
+- Owner: web_admin, qa_reviewer
+- Status: hold
+- Summary: Continued the next step after private-test deployment by aligning `tsst/main` with `origin/main` and checking the active remote surfaces. Cloudflare Pages and raw GitHub `tsst/main` serve the current recipe-helper markers, but GitHub Pages still serves stale files.
+- Files: DEPLOYMENT.md,reports/deployment-surface-reconcile-20260602.md
+- Validation: `HEAD`, `origin/main`, and `tsst/main` all point to `930fdb5d3face9ab44b8ba21f6e457f0ad28ec44`; `https://tsst-csa.pages.dev/mom` and raw GitHub `tsst/main/mom.html` contain `fridge-time`, `fridge-shopping-gaps`, and `냉장고를 부탁해`; GitHub Pages `/tsst/mom` and `/tsst/mom.html` do not contain those markers.
+- Decisions: Keep Cloudflare Pages as the current private-test technical preview. Do not overwrite `backup-before-familyspace-20260530` or force-change a stale Pages source branch without owner approval.
+- Risks: GitHub Pages source/settings appear stale and cannot be fixed from content commits alone if Pages is configured to a different source.
+- Next: Either correct/retire GitHub Pages settings with owner approval, or continue the next small feature proof cycle against Cloudflare only.
+
 ## 2026-06-02 07:16 - private test deploy
 - Type: deployment
 - Owner: web_admin, qa_reviewer
