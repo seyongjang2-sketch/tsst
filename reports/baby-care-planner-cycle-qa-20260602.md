@@ -1,6 +1,6 @@
 # Baby Care Planner Cycle QA - 2026-06-02
 
-STATUS: BABY_CARE_PLANNER_CYCLE_PASS
+STATUS: BABY_CARE_PLANNER_REMOTE_PASS
 
 Scope:
 - Company/homepage project only.
@@ -33,6 +33,23 @@ Verification:
 - `git diff --check`
   - Result: passed.
 
+Remote private-test verification:
+- User-visible content commit: `c531b5f7db418f6be8c804084c9bc593146bf4a1`.
+- Final branch equality after push:
+  - `HEAD`: `c531b5f7db418f6be8c804084c9bc593146bf4a1`
+  - `origin/main`: `c531b5f7db418f6be8c804084c9bc593146bf4a1`
+  - `tsst/main`: `c531b5f7db418f6be8c804084c9bc593146bf4a1`
+- Raw GitHub `tsst/main/baby.html`:
+  - HTTP 200.
+  - Contains `baby-care-planner`: yes.
+  - Contains `방문 메모 만들기`: yes.
+  - Contains `담당 의료진과 병원 안내를 우선`: yes.
+- Cloudflare private-test preview `https://tsst-csa.pages.dev/baby?check=baby-care-planner-20260602-retry1`:
+  - HTTP 200.
+  - Contains `baby-care-planner`: yes.
+  - Contains `방문 메모 만들기`: yes.
+  - Contains `담당 의료진과 병원 안내를 우선`: yes.
+
 Link-purpose verification:
 - Link label: `접종 기록 체크리스트 보기`
 - Target: `guides/han-viet-vaccine-checklist.html`
@@ -54,9 +71,12 @@ Limits:
 
 Gate Status:
 - BABY_CARE_PLANNER_CYCLE_PASS
+- BABY_CARE_PLANNER_REMOTE_PASS
 - MOBILE_390_NO_OVERFLOW
 - DESKTOP_1366_VERIFIED
 - LINK_PURPOSE_CHECK_PASS
 - MEDICAL_ADVICE_NOT_CLAIMED
+- RAW_GITHUB_TST_MAIN_CURRENT
+- CLOUDFLARE_PREVIEW_UPDATED
 - PRIVATE_TEST_STATUS_CONFIRMED
 - PUBLIC_OPERATION_NOT_APPROVED
