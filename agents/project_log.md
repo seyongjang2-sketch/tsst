@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-06-02 07:05 - shopping compare proof cycle
+- Type: implementation/qa
+- Owner: web_admin, qa_reviewer, content_editor
+- Status: done
+- Summary: Continued the next small proof cycle by filling the `mom.html` shopping quick comparison area with practical link-purpose content for WinMart, Lotte Mart, and K-Market.
+- Files: mom.html,reports/shopping_compare_check.spec.js,reports/shopping-compare-cycle-qa-20260602.md,reports/screenshots/shopping-compare-20260602
+- Validation: `playwright test -g "shopping quick compare"` 2 passed; `playwright test -g "roadmap step 4 mobile UI"` 7 passed; `git diff --check` passed; WinMart, Lotte Mart, and K-Market links returned HTTP 200.
+- Decisions: Keep this as a private-test shopping decision aid, not a price guarantee or affiliate claim. Link labels now state the reason to open each destination.
+- Risks: Prices, delivery areas, and promotion details change outside this static page, so the screen warns users to recheck conditions before payment.
+- Next: Commit, push, and verify the Cloudflare private-test preview contains the new shopping comparison board.
+
 ## 2026-06-02 07:03 - deployment surface reconcile
 - Type: deployment/verification
 - Owner: web_admin, qa_reviewer

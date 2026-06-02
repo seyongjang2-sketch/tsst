@@ -325,6 +325,9 @@
         .fridge-context-grid {
           grid-template-columns: 1fr;
         }
+        .shopping-compare-board {
+          grid-template-columns: 1fr;
+        }
         .ingredient-input-row .spin-btn {
           width: 100%;
         }
@@ -499,6 +502,57 @@
         color: white;
         border-color: transparent;
         box-shadow: 0 4px 10px rgba(255, 154, 158, 0.3);
+      }
+
+      .shopping-compare-board {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin: 0 0 16px;
+      }
+      .shopping-compare-card {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+        padding: 13px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(211, 84, 0, 0.14);
+      }
+      .shopping-compare-card b {
+        color: #7a4b42;
+        font-size: 0.95rem;
+      }
+      .shopping-compare-card span,
+      .shopping-compare-card small {
+        color: #7f675f;
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+      .shopping-compare-card a {
+        margin-top: auto;
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 10px;
+        border-radius: 14px;
+        background: #fff4ef;
+        color: #b94c2e;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 0.82rem;
+        overflow-wrap: anywhere;
+      }
+      .shopping-compare-note {
+        margin: -4px 0 14px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        background: rgba(255, 244, 239, 0.72);
+        color: #7f675f;
+        font-size: 0.84rem;
+        line-height: 1.55;
       }
 
       .todo-input-group {
@@ -1574,6 +1628,28 @@
           <!-- 마트 장보기 메모장 카드 -->
           <div class="glass-card">
             <h3 class="card-title">🛒 마트 장보기 메모장</h3>
+
+            <div class="shopping-compare-board" aria-label="장보기 빠른 비교 보드">
+              <article class="shopping-compare-card">
+                <b>WinMart</b>
+                <span>우유, 물, 세제, 휴지처럼 반복 구매하는 생필품을 먼저 확인합니다.</span>
+                <small>확인: 온라인 구매 정책, 배달 가능 여부, 결제/교환 조건</small>
+                <a href="https://winmart.vn/info/transaction-policy" target="_blank" rel="noopener noreferrer">정책·구매 조건 보기</a>
+              </article>
+              <article class="shopping-compare-card">
+                <b>Lotte Mart</b>
+                <span>한 번에 많이 사는 과일, 고기, 아이 간식, 행사 품목을 비교합니다.</span>
+                <small>확인: 행사 상품, 배달 지역, 대형 장보기 묶음 가격</small>
+                <a href="https://www.lottemart.vn/" target="_blank" rel="noopener noreferrer">행사·배달 보기</a>
+              </article>
+              <article class="shopping-compare-card">
+                <b>K-Market</b>
+                <span>고추장, 된장, 김, 한국 반찬, 아이가 익숙한 한국 식재료를 찾습니다.</span>
+                <small>확인: 한국 식재료 카테고리, 지점/배송, 대체 구매 가능성</small>
+                <a href="https://k-market.vn/en/k-market/" target="_blank" rel="noopener noreferrer">한국 식재료 보기</a>
+              </article>
+            </div>
+            <p class="shopping-compare-note">가격과 배송 조건은 자주 바뀌므로 이 보드는 구매 확정표가 아니라 확인 순서입니다. 실제 결제 전 각 사이트의 최신 조건을 다시 확인합니다.</p>
             
             <div class="mart-tabs">
               <button class="tab-btn active" onclick="filterMart('all')">전체</button>
