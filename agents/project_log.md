@@ -2,6 +2,17 @@
 
 이 파일은 프로젝트 현황을 파악하기 위한 단일 운영 로그다. 최신 항목이 위에 오며, 세부 규칙은 `agents/logging_protocol.md`를 따른다.
 
+## 2026-06-02 07:22 - baby care planner proof cycle
+- Type: implementation/qa
+- Owner: web_admin, qa_reviewer, content_editor
+- Status: done
+- Summary: Continued the next small proof cycle by adding a `baby.html` vaccination/condition visit memo tool for Korean-Vietnamese family record keeping. The tool collects child name, visit date, clinic, visit purpose, and family memo, then generates a practical pre-visit record checklist without claiming medical advice.
+- Files: baby.html,reports/baby_care_planner_check.spec.js,reports/baby-care-planner-cycle-qa-20260602.md,reports/screenshots/baby-care-planner-20260602
+- Validation: `playwright test -g "baby care planner"` 2 passed; `playwright test -g "roadmap step 4 mobile UI"` 7 passed; `git diff --check` passed; the checklist link points to `guides/han-viet-vaccine-checklist.html` and the target page contains vaccination-record, card-photo, and medical-staff caution copy.
+- Decisions: Keep this as a private-test family record workflow, not a medical schedule, diagnosis, medication, or hospital-policy claim.
+- Risks: Medical and vaccination requirements change by child, clinic, country, and date; the page must continue to defer clinical decisions to medical staff and hospital guidance.
+- Next: If private-test deployment is needed, push `main` to `origin` and `tsst`, then verify Cloudflare `https://tsst-csa.pages.dev/baby` contains `baby-care-planner` and the result/caution markers. Public production remains unapproved.
+
 ## 2026-06-02 07:05 - shopping compare proof cycle
 - Type: implementation/qa
 - Owner: web_admin, qa_reviewer, content_editor

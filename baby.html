@@ -80,13 +80,126 @@
         font-size: 0.82rem;
         line-height: 1.45;
       }
+      .baby-care-tool {
+        margin: 0 0 30px;
+        padding: 24px;
+        border-radius: 18px;
+        background: #ffffff;
+        border: 1px solid rgba(39, 174, 96, 0.16);
+        box-shadow: 0 12px 28px rgba(39, 174, 96, 0.08);
+      }
+      .baby-care-tool h3 {
+        margin: 0 0 8px;
+        color: #1e8449;
+        font-size: 1.22rem;
+      }
+      .baby-care-tool p {
+        margin: 0;
+        color: #52645a;
+        line-height: 1.6;
+      }
+      .baby-care-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .baby-care-field {
+        display: grid;
+        gap: 7px;
+      }
+      .baby-care-field label {
+        color: #294336;
+        font-size: 0.82rem;
+        font-weight: 800;
+      }
+      .baby-care-field input,
+      .baby-care-field select,
+      .baby-care-field textarea {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        border: 1px solid rgba(39, 174, 96, 0.22);
+        border-radius: 12px;
+        padding: 11px 12px;
+        color: #294336;
+        background: #f8fff9;
+        font: inherit;
+      }
+      .baby-care-field textarea {
+        min-height: 72px;
+        resize: vertical;
+      }
+      .baby-care-wide {
+        grid-column: 1 / -1;
+      }
+      .baby-care-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+      .baby-care-actions button,
+      .baby-care-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 12px;
+        background: #27ae60;
+        color: #ffffff;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .baby-care-actions a {
+        background: #eefaf3;
+        color: #1e8449;
+        border: 1px solid rgba(39, 174, 96, 0.18);
+      }
+      .baby-care-result {
+        display: none;
+        margin-top: 18px;
+        padding: 16px;
+        border-radius: 14px;
+        background: #f3fbf5;
+        border: 1px solid rgba(39, 174, 96, 0.16);
+        color: #294336;
+        line-height: 1.6;
+      }
+      .baby-care-result.is-visible {
+        display: block;
+      }
+      .baby-care-result h4 {
+        margin: 0 0 10px;
+        color: #1e8449;
+      }
+      .baby-care-result ul {
+        margin: 8px 0 0;
+        padding-left: 18px;
+      }
+      .baby-care-note {
+        margin-top: 14px;
+        color: #6a7d70;
+        font-size: 0.9rem;
+      }
       @media (max-width: 768px) {
         .baby-daily-board,
-        .baby-proof-grid {
+        .baby-proof-grid,
+        .baby-care-grid {
           grid-template-columns: 1fr;
         }
         .baby-daily-list li {
           grid-template-columns: 1fr;
+        }
+        .baby-care-tool {
+          padding: 18px;
+        }
+        .baby-care-actions button,
+        .baby-care-actions a {
+          width: 100%;
         }
       }
     </style>
@@ -167,6 +280,47 @@
         </article>
       </section>
 
+      <section class="baby-care-tool" id="baby-care-planner" aria-label="아기 접종과 컨디션 메모 도구">
+        <h3>접종·컨디션 방문 메모</h3>
+        <p>병원 판단을 대신하지 않고, 한국어·베트남어 기록이 나뉘어도 가족이 빠뜨리지 않을 확인 항목만 정리합니다.</p>
+        <div class="baby-care-grid">
+          <div class="baby-care-field">
+            <label for="baby-care-name">아이 이름 또는 별명</label>
+            <input id="baby-care-name" type="text" placeholder="예: 또또" />
+          </div>
+          <div class="baby-care-field">
+            <label for="baby-care-date">다음 병원 방문일</label>
+            <input id="baby-care-date" type="date" />
+          </div>
+          <div class="baby-care-field">
+            <label for="baby-care-place">병원·클리닉</label>
+            <input id="baby-care-place" type="text" placeholder="예: 소아과, 예방접종 센터" />
+          </div>
+          <div class="baby-care-field">
+            <label for="baby-care-purpose">방문 목적</label>
+            <select id="baby-care-purpose">
+              <option value="예방접종 기록 확인">예방접종 기록 확인</option>
+              <option value="다음 예약 잡기">다음 예약 잡기</option>
+              <option value="발열·컨디션 상담">발열·컨디션 상담</option>
+              <option value="어린이집 제출 서류">어린이집 제출 서류</option>
+            </select>
+          </div>
+          <div class="baby-care-field baby-care-wide">
+            <label for="baby-care-memo">가족이 같이 볼 메모</label>
+            <textarea id="baby-care-memo" placeholder="예: 접종 카드 사진, 최근 열, 먹은 약, 알레르기, 다음 예약 질문"></textarea>
+          </div>
+        </div>
+        <div class="baby-care-actions">
+          <button type="button" onclick="buildBabyCareMemo()">방문 메모 만들기</button>
+          <a href="guides/han-viet-vaccine-checklist.html">접종 기록 체크리스트 보기</a>
+        </div>
+        <div class="baby-care-result" id="baby-care-result" aria-live="polite">
+          <h4 id="baby-care-result-title">방문 전 확인 메모</h4>
+          <div id="baby-care-result-body"></div>
+        </div>
+        <p class="baby-care-note">주의: 접종 일정, 약, 진료 판단은 담당 의료진과 병원 안내를 우선합니다. 이 도구는 가족 기록 누락을 줄이기 위한 private test 메모입니다.</p>
+      </section>
+
       <div class="content-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px;">
         <div class="content-card">
           <h3>글자 공부 학습판</h3>
@@ -230,6 +384,43 @@
         setTimeout(function() { if (balloon.parentNode) balloon.remove(); }, 4000);
       }
       setInterval(createBalloon, 800);
+
+      function buildBabyCareMemo() {
+        var name = document.getElementById('baby-care-name').value.trim() || '아이';
+        var date = document.getElementById('baby-care-date').value || '방문일 미정';
+        var place = document.getElementById('baby-care-place').value.trim() || '방문 병원 미정';
+        var purpose = document.getElementById('baby-care-purpose').value;
+        var memo = document.getElementById('baby-care-memo').value.trim() || '접종 카드 사진, 최근 컨디션, 먹은 약, 알레르기 메모를 준비합니다.';
+        var result = document.getElementById('baby-care-result');
+        var body = document.getElementById('baby-care-result-body');
+        document.getElementById('baby-care-result-title').textContent = name + ' 방문 전 확인 메모';
+        body.replaceChildren();
+        [
+          ['방문일', date],
+          ['장소', place],
+          ['목적', purpose],
+          ['가족 메모', memo]
+        ].forEach(function(row) {
+          var line = document.createElement('p');
+          var label = document.createElement('b');
+          label.textContent = row[0] + ': ';
+          line.appendChild(label);
+          line.appendChild(document.createTextNode(row[1]));
+          body.appendChild(line);
+        });
+        var list = document.createElement('ul');
+        [
+          '접종 카드와 이전 병원 기록 사진을 같은 폴더에 모읍니다.',
+          '최근 발열, 수면, 식사, 복용 약을 접수 전에 다시 확인합니다.',
+          '다음 예약일과 서류 발급 필요 여부를 병원에서 확인합니다.'
+        ].forEach(function(text) {
+          var item = document.createElement('li');
+          item.textContent = text;
+          list.appendChild(item);
+        });
+        body.appendChild(list);
+        result.classList.add('is-visible');
+      }
     </script>
   </body>
 </html>
