@@ -172,6 +172,11 @@
       .fs-metric { padding:12px; border-radius:8px; background:#f3f8f6; border:1px solid rgba(0,111,120,.1); }
       .fs-metric b { display:block; color:#006f78; font-size:20px; line-height:1; }
       .fs-metric span { display:block; margin-top:6px; color:var(--fs-muted); font-size:12px; font-weight:800; line-height:1.25; }
+      .fs-oauth-note { padding:34px 20px; background:#fffaf2; border-top:1px solid rgba(84,58,35,.1); }
+      .fs-oauth-note-inner { width:min(980px, 100%); margin:0 auto; display:grid; gap:10px; color:var(--fs-muted); font-size:14px; line-height:1.65; }
+      .fs-oauth-note h2 { margin:0; color:var(--fs-text); font-size:22px; letter-spacing:0; }
+      .fs-oauth-note p { margin:0; max-width:860px; }
+      .fs-oauth-note a { color:#006f78; font-weight:900; text-decoration:none; }
       .fs-footer { padding:28px 20px; background:#f5f5f7; color:var(--fs-muted); font-size:12px; } .fs-footer-inner { max-width:980px; margin:0 auto; display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; } .fs-footer a { color:var(--fs-muted); text-decoration:none; margin-left:14px; }
 
       @media (prefers-reduced-motion: reduce) { .note, .hand-sticker { animation:none; } }
@@ -353,6 +358,14 @@
       </section>
 
     </main>
+
+    <section class="fs-oauth-note" aria-labelledby="oauth-title">
+      <div class="fs-oauth-note-inner">
+        <h2 id="oauth-title">FamilySpace 계정 연결 안내</h2>
+        <p>FamilySpace는 사용자가 명시적으로 승인한 경우에만 Google OAuth와 YouTube API를 사용합니다. 연결된 권한은 사용자가 요청한 비공개 테스트, 영상 업로드, 채널 관련 작업을 수행하기 위한 범위 안에서만 사용됩니다.</p>
+        <p>자세한 데이터 처리 기준은 <a href="privacy.html">개인정보처리방침</a>과 <a href="terms.html">이용약관</a>에서 확인할 수 있습니다.</p>
+      </div>
+    </section>
 
     <footer class="fs-footer">
       <div class="fs-footer-inner">
